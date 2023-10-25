@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package relation;
+
+option go_package = "./relation";
+
+// 用户登录
+message FavoriteRequest {
+  int64 Uid = 1;
+  int64 ToUid = 2;
+  int32 Action = 3;
+
+}
+message FavoriteResponse {
+  int64 StatusCode=1;
+  string StatusMsg=2;
+}
+
+service Relation {
+  rpc Favorite(FavoriteRequest) returns(FavoriteResponse);
+}

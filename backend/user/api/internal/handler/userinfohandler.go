@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/huangsihao7/scooter-WSVA/user/api/internal/types"
 	"net/http"
 
 	"github.com/huangsihao7/scooter-WSVA/user/api/internal/logic"
@@ -10,8 +11,13 @@ import (
 
 func UserInfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		var req types.UserInfoReq
+		if err := httpx.Parse(r, &req); err != nil {
+			httpx.ErrorCtx(r.Context(), w, err)
+			return
+		}
 		l := logic.NewUserInfoLogic(r.Context(), svcCtx)
-		resp, err := l.UserInfo()
+		resp, err := l.UserInfo(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

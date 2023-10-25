@@ -29,6 +29,10 @@ type RegisterResponse struct {
 	Dec    string `json:"dec"`
 }
 
+type UserInfoReq struct {
+	Uid int64 `json:"uid"`
+}
+
 type UserInfoResponse struct {
 	Id     int64  `json:"id"`
 	Name   string `json:"name"`

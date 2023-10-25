@@ -26,7 +26,6 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 }
 
 func (l *RegisterLogic) Register(req *types.RegisterRequest) (resp *types.RegisterResponse, err error) {
-	// todo: add your logic here and delete this line
 	avatarUrl, err := common.UserUpload(l.svcCtx.Config.AccessKey, l.svcCtx.Config.SecretKey, l.svcCtx.Config.Bucket, req.Avatar)
 	if err != nil {
 		return nil, err
@@ -51,5 +50,4 @@ func (l *RegisterLogic) Register(req *types.RegisterRequest) (resp *types.Regist
 		Avatar: res.Avatar,
 		Dec:    res.Dec,
 	}, nil
-	return
 }

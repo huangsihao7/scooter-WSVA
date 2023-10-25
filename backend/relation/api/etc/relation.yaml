@@ -1,0 +1,12 @@
+Name: relation
+Host: 0.0.0.0
+Port: 8889
+Relation:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: relation.rpc
+
+Auth:
+  AccessSecret: uOvKLmVfztaXGpNYd4Z0I1SiT7MweJhl
+  AccessExpire: 86400
