@@ -1,0 +1,5 @@
+torch
+fastapi
+ffmpeg-python
+transformers
+pydantic[dotenv]

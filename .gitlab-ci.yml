@@ -1,0 +1,39 @@
+stages:
+  - build
+  - deploy
+build-ml-image:
+  image: docker:dind
+  stage: build
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 172.22.121.50
+  script:
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-ml:$CI_PIPELINE_IID" \
+      -f ML/Dockerfile \
+      ./ML
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-ml:$CI_PIPELINE_IID"
+
+deploy:
+  stage: deploy
+  tags:
+    - "54"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push" && $CI_MERGE_REQUEST_EVENT_TYPE == null'
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "=======start deploy======="
+    - docker rm -f scooter-wsva-ml
+    - |
+      docker run \
+      -di \
+      -p 8080:8000 \
+      --name scooter-wsva-ml \
+      -e DEVICE=cuda \
+      -e WHISPER_MODEL_PATH=/root/.cache/huggingface/hub/models--openai--whisper-medium/snapshots/18530d7c5ce1083f21426064b85fbd1e24bd1858 \
+      -v /root/.cache/huggingface/:/root/.cache/huggingface:ro \
+      172.22.121.50/ai-evaluation/scooter-wsva-ml:$CI_PIPELINE_IID
+    - echo "=======deploy success======="
