@@ -1,0 +1,44 @@
+syntax = "v1"
+
+info (
+    title: // TODO: add title
+    desc: // TODO: add description
+    author: "huangsihao7"
+    email: "1057434651@qq.com"
+)
+
+type (
+    actionReq {
+        ToUserId    int64 `form:"to_user_id"` //关注谁
+        Action int32 `form:"action"`  // 1 关注 2 是取关 其他是报错
+    }
+
+    actionResp {
+        StatusCode int    `json:"status_code"`
+        StatusMsg  string `json:"status_msg"`
+    }
+
+    listReq {
+    }
+
+    listResp {
+    }
+)
+
+type response {
+    // TODO: add members here and delete this comment
+}
+
+service favorite-api {
+    @handler FavoriteAction // TODO: set handler name and delete this comment
+    post /relation/action(actionReq) returns(actionResp)
+
+    @handler FollowList // TODO: set handler name and delete this comment
+    get /relation/follower/list (listReq) returns(listResp)
+
+    @handler FollowerList // TODO: set handler name and delete this comment
+    get /relation/follow/list (listReq) returns(listResp)
+
+    @handler FriendList // TODO: set handler name and delete this comment
+    get /relation/friendlist(listReq) returns(listResp)
+}

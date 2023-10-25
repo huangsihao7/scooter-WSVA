@@ -1,0 +1,8 @@
+Name: favorite-api
+Host: 0.0.0.0
+Port: 8889
+Favorite:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: favorite.rpc
