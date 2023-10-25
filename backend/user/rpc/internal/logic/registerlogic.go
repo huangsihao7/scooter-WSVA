@@ -34,7 +34,6 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 	}
 
 	if err == model.ErrNotFound {
-
 		newUser := model.User{
 			Name:     in.Name,
 			Gender:   in.Gender,

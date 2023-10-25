@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"github.com/huangsihao7/scooter-WSVA/user/api/internal/common"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 
 	"github.com/huangsihao7/scooter-WSVA/user/api/internal/svc"
@@ -26,12 +27,16 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 
 func (l *RegisterLogic) Register(req *types.RegisterRequest) (resp *types.RegisterResponse, err error) {
 	// todo: add your logic here and delete this line
+	avatarUrl, err := common.UserUpload(l.svcCtx.Config.AccessKey, l.svcCtx.Config.SecretKey, l.svcCtx.Config.Bucket, req.Avatar)
+	if err != nil {
+		return nil, err
+	}
 	res, err := l.svcCtx.UserRpc.Register(l.ctx, &user.RegisterRequest{
 		Name:     req.Name,
 		Gender:   req.Gender,
 		Mobile:   req.Mobile,
 		Password: req.Password,
-		Avatar:   req.Avatar,
+		Avatar:   avatarUrl,
 		Dec:      req.Dec,
 	})
 	if err != nil {
@@ -43,8 +48,8 @@ func (l *RegisterLogic) Register(req *types.RegisterRequest) (resp *types.Regist
 		Name:   res.Name,
 		Gender: res.Gender,
 		Mobile: res.Mobile,
-		Avatar: req.Avatar,
-		Dec:    req.Dec,
+		Avatar: res.Avatar,
+		Dec:    res.Dec,
 	}, nil
 	return
 }

@@ -16,7 +16,6 @@ type (
 		Gender   int64  `json:"gender"`
 		Mobile   string `json:"mobile"`
 		Password string `json:"password"`
-		Avatar   string `json:"avatar"`
 		Dec      string `json:"dec"`
 	}
 	RegisterResponse {
@@ -47,7 +46,7 @@ type (
 service User {
 	@handler Login
 	post /user/login (LoginRequest) returns (LoginResponse)
-	
+
 	@handler Register
 	post /user/register (RegisterRequest) returns (RegisterResponse)
 }
@@ -58,7 +57,7 @@ service User {
 service User {
 	@handler UserInfo
 	post /user/userinfo () returns (UserInfoResponse)
-	
+
 	@handler Upload
 	put /user/upload returns (UserUploadResponse)
 }
