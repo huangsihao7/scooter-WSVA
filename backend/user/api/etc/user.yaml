@@ -9,7 +9,7 @@ Auth:
 User:
   Etcd:
     Hosts:
-      - localhost:2379
+      - 127.0.0.1:2379
     Key: user.rpc
 AccessKey: cipx2awPLz7XNduXeJPtbWoTEQj7PWnV_2O727ew
 SecretKey: 4hf0lBad0AFg_IaShAN14JD3IbcEg8Xn4DPSX3fY

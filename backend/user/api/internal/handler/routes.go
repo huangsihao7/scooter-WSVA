@@ -33,11 +33,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: UserInfoHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodPost,
+				Method:  http.MethodPut,
 				Path:    "/user/upload",
 				Handler: UploadHandler(serverCtx),
 			},
 		},
-		//rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
 }

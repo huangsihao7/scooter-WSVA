@@ -47,7 +47,7 @@ type (
 service User {
 	@handler Login
 	post /user/login (LoginRequest) returns (LoginResponse)
-
+	
 	@handler Register
 	post /user/register (RegisterRequest) returns (RegisterResponse)
 }
@@ -58,7 +58,7 @@ service User {
 service User {
 	@handler UserInfo
 	post /user/userinfo () returns (UserInfoResponse)
-
+	
 	@handler Upload
-	post /user/upload returns (UserUploadResponse)
+	put /user/upload returns (UserUploadResponse)
 }
