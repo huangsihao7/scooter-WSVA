@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:49:44
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-25 14:28:32
+ * @LastEditTime: 2023-10-25 23:01:18
  * @Description: 
  * @FilePath: \scooter-wsva\frontend\src\router\index.ts
  */
@@ -16,6 +16,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/user',
+      name: 'user',
+      component: () => import('../view/User.vue')
     },
     // {
     //   path: '/login',
