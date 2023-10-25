@@ -6,6 +6,11 @@ build-ml-image:
   stage: build
   services:
     - docker:dind
+  tags:
+    - "gpu"
+  only:
+    refs:
+      - main
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 172.22.121.50
   script:
