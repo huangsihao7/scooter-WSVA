@@ -10,6 +10,7 @@ import (
 	"net/http"
 )
 
+const maxUploadSize = 100 * 1024 * 1024 // 10MB
 type UploadLogic struct {
 	logx.Logger
 	ctx    context.Context
@@ -24,8 +25,9 @@ func NewUploadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UploadLogi
 	}
 }
 
-func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse, err error) {
+func (l *UploadLogic) Upload(w http.ResponseWriter, req *http.Request) (resp *types.UserUploadResponse, err error) {
 	// todo: add your logic here and delete this line
+	req.Body = http.MaxBytesReader(w, req.Body, maxUploadSize)
 	file, handler, err := req.FormFile("file")
 	if err != nil {
 		return nil, err

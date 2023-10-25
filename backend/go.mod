@@ -3,6 +3,7 @@ module github.com/huangsihao7/scooter-WSVA
 go 1.19
 
 require (
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/qiniu/go-sdk/v7 v7.18.2
 	github.com/zeromicro/go-zero v1.5.6
 	golang.org/x/crypto v0.13.0
