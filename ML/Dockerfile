@@ -4,7 +4,7 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shangh
 WORKDIR /workspace
 
 RUN apt update && apt install ffmpeg
-COPY ML/requirements.txt /workspace/requirements.txt
+COPY requirements.txt /workspace/requirements.txt
 
 RUN pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
