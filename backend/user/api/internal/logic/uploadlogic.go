@@ -10,6 +10,7 @@ import (
 	"net/http"
 )
 
+// tip
 const maxUploadSize = 100 * 1024 * 1024 // 10MB
 type UploadLogic struct {
 	logx.Logger
