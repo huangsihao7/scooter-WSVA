@@ -1,3 +1,3 @@
 @echo off
 
-goctl api go -api favorite.api -dir .
+goctl api go -api comment.api -dir .
