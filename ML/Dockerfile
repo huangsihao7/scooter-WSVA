@@ -7,6 +7,7 @@ RUN apt update && apt install -y ffmpeg
 COPY requirements.txt /workspace/requirements.txt
 
 RUN pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
-
+COPY main.py /workspace/main.py
+COPY app /workspace/app
 
 ENTRYPOINT ["python3","main.py"]
