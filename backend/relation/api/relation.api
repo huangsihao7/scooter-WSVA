@@ -9,6 +9,21 @@ type (
 		StatusCode int    `json:"status_code"`
 		StatusMsg  string `json:"status_msg"`
 	}
+
+	FavoriteListReq {
+		Uid int64 `json:"uid"`
+	}
+	UserInfo {
+		Id     int64  `json:"id"`
+		Name   string `json:"name"`
+		Gender int64  `json:"gender"`
+		Mobile string `json:"mobile"`
+		Avatar string `json:"avatar"`
+		Dec    string `json:"dec"`
+	}
+	FavoriteListResp {
+		List []UserInfo `json:"list"`
+	}
 )
 
 @server(
@@ -18,5 +33,7 @@ service relation {
 	@handler FavoriteAction
 	post /relation/action (actionReq) returns(actionResp)
 
+	@handler FavoriteList
+	post /relation/followerList (FavoriteListReq) returns(FavoriteListResp)
 
 }

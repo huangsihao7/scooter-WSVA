@@ -13,11 +13,15 @@ import (
 )
 
 type (
+	FavoriteListReq  = relation.FavoriteListReq
+	FavoriteListResp = relation.FavoriteListResp
 	FavoriteRequest  = relation.FavoriteRequest
 	FavoriteResponse = relation.FavoriteResponse
+	UserInfo         = relation.UserInfo
 
 	Relation interface {
 		Favorite(ctx context.Context, in *FavoriteRequest, opts ...grpc.CallOption) (*FavoriteResponse, error)
+		FavoriteList(ctx context.Context, in *FavoriteListReq, opts ...grpc.CallOption) (*FavoriteListResp, error)
 	}
 
 	defaultRelation struct {
@@ -34,4 +38,9 @@ func NewRelation(cli zrpc.Client) Relation {
 func (m *defaultRelation) Favorite(ctx context.Context, in *FavoriteRequest, opts ...grpc.CallOption) (*FavoriteResponse, error) {
 	client := relation.NewRelationClient(m.cli.Conn())
 	return client.Favorite(ctx, in, opts...)
+}
+
+func (m *defaultRelation) FavoriteList(ctx context.Context, in *FavoriteListReq, opts ...grpc.CallOption) (*FavoriteListResp, error) {
+	client := relation.NewRelationClient(m.cli.Conn())
+	return client.FavoriteList(ctx, in, opts...)
 }

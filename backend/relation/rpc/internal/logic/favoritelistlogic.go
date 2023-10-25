@@ -1,0 +1,51 @@
+package logic
+
+import (
+	"context"
+	"errors"
+	"github.com/huangsihao7/scooter-WSVA/relation/rpc/internal/svc"
+	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
+
+	"github.com/zeromicro/go-zero/core/logx"
+)
+
+type FavoriteListLogic struct {
+	ctx    context.Context
+	svcCtx *svc.ServiceContext
+	logx.Logger
+}
+
+func NewFavoriteListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FavoriteListLogic {
+	return &FavoriteListLogic{
+		ctx:    ctx,
+		svcCtx: svcCtx,
+		Logger: logx.WithContext(ctx),
+	}
+}
+
+func (l *FavoriteListLogic) FavoriteList(in *relation.FavoriteListReq) (*relation.FavoriteListResp, error) {
+	// todo: add your logic here and delete this line
+	favorite, err := l.svcCtx.RelationModel.FindFavorite(l.ctx, in.Uid)
+	if err != nil {
+		return nil, errors.New("yyyy")
+	}
+
+	List := make([]*relation.UserInfo, 0)
+	for _, item := range favorite {
+		one, err := l.svcCtx.UserModel.FindOne(l.ctx, item.FollowingId)
+		if err != nil {
+			return nil, errors.New("xxx")
+		}
+		List = append(List, &relation.UserInfo{
+			Id:     one.Id,
+			Name:   one.Name,
+			Gender: one.Gender,
+			Mobile: one.Mobile,
+			Avatar: one.Avatar,
+			Dec:    one.Dec,
+		})
+	}
+	return &relation.FavoriteListResp{
+		List: List,
+	}, nil
+}

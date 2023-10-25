@@ -26,3 +26,8 @@ func (s *RelationServer) Favorite(ctx context.Context, in *relation.FavoriteRequ
 	l := logic.NewFavoriteLogic(ctx, s.svcCtx)
 	return l.Favorite(in)
 }
+
+func (s *RelationServer) FavoriteList(ctx context.Context, in *relation.FavoriteListReq) (*relation.FavoriteListResp, error) {
+	l := logic.NewFavoriteListLogic(ctx, s.svcCtx)
+	return l.FavoriteList(in)
+}
