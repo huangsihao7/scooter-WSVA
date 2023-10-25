@@ -14,7 +14,6 @@ interface userState {
   avatar: string
   username: string
 }
-
 export const userStore = defineStore({
   id: 'user',
   state: (): userState => ({
