@@ -12,13 +12,13 @@ import {
   VideoCameraFilled,
   CirclePlus
  } from '@element-plus/icons-vue'
-import { userStore } from '@/stores/user';
+// import { userStore } from '@/stores/user';
 
 const activeIndex = ref('1')
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
-const store = userStore()
+
 var avatar : string = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
 
 </script>

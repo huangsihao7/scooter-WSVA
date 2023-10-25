@@ -2,16 +2,17 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 7:08:43
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-25 14:17:52
+ * @LastEditTime: 2023-10-25 20:39:27
  * @FilePath: \scooter-wsva\frontend\src\axios\index.ts
  * @Description:
  *
  */
 import { computed, ref } from 'vue'
 import axios, { type AxiosRequestHeaders } from 'axios'
-import { createDiscreteApi, lightTheme, darkTheme, type ConfigProviderProps } from 'naive-ui'
 import router from '@/router'
 import { userStore } from '@/stores/user'
+import { ElMessage } from 'element-plus'
+
 
 // const baseURl = 'http://127.0.0.1:8080';
 const baseURl = 'http://172.22.121.53:8080'
@@ -37,22 +38,24 @@ service.interceptors.request.use(
 )
 
 const themeRef = ref<'light' | 'dark'>('dark')
-const configProviderPropsRef = computed<ConfigProviderProps>(() => ({
-  theme: themeRef.value === 'light' ? lightTheme : darkTheme
-}))
-const { message } = createDiscreteApi(['message'], { configProviderProps: configProviderPropsRef })
 
 //  response拦截器
 service.interceptors.response.use((response) => {
   if (response.data.status === 200) {
     return response.data.data
   } else if (response.data.status === 401) {
-    message.error(response.data.msg + '，请重新登录')
+    ElMessage({
+      message: response.data.msg + '，请重新登录',
+      type: 'error'
+    })
     userStore().logout()
     router.push('/login')
     return Promise.reject()
   } else {
-    message.error(response.data.msg)
+    ElMessage({
+      message: response.data.msg,
+      type: 'error'
+    })
     return Promise.reject()
   }
 })
