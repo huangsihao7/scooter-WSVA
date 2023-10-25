@@ -1,0 +1,50 @@
+{
+  "name": "mymap",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --fix --ext .ts,.tsx,.vue,.js,.jsx",
+    "prettier": "prettier --write ."
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
+    "@types/nprogress": "^0.2.2",
+    "@xdh/my": "^4.2.14",
+    "axios": "^1.5.1",
+    "element-plus": "^2.4.1",
+    "eslint-config-prettier": "^9.0.0",
+    "leaflet": "^1.9.4",
+    "nprogress": "^0.2.0",
+    "ol": "^8.1.0",
+    "pinia": "^2.1.7",
+    "prettier": "^3.0.3",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.5",
+    "yarn": "^1.22.19"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.7",
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
+    "@typescript-eslint/parser": "^6.8.0",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "babel-plugin-component": "^1.1.1",
+    "eslint": "^8.52.0",
+    "eslint-plugin-vue": "^9.17.0",
+    "node-sass": "^9.0.0",
+    "sass": "^1.69.4",
+    "sass-loader": "^13.3.2",
+    "typescript": "^5.2.2",
+    "unplugin-auto-import": "^0.16.6",
+    "unplugin-element-plus": "^0.8.0",
+    "unplugin-vue-components": "^0.25.2",
+    "vite": "^4.4.5",
+    "vue-svg-icon": "^1.2.9",
+    "vue-tsc": "^1.8.5"
+  },
+  "build:dev": "vite build --mode development",
+  "build:pro": "vite build --mode production"
+}
