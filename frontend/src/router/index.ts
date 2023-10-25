@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:49:44
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-25 23:01:18
+ * @LastEditTime: 2023-10-26 00:10:34
  * @Description: 
  * @FilePath: \scooter-wsva\frontend\src\router\index.ts
  */
@@ -13,8 +13,8 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
+      path: '/rec',
+      name: 'rec',
       component: HomeView
     },
     {
@@ -22,34 +22,16 @@ const router = createRouter({
       name: 'user',
       component: () => import('../view/User.vue')
     },
-    // {
-    //   path: '/login',
-    //   name: 'login',
-    //   component: () => import('../views/LoginView.vue')
-    // },
-    // {
-    //   path: '/detect/:id',
-    //   name: 'detect',
-    //   props: true,
-    //   component: () => import('../views/DetectView.vue')
-    // },
-    // {
-    //   path: '/customize-detect',
-    //   name: 'customize-detect',
-    //   component: () => import('../views/CustomizeDetectView.vue')
-    // },
-    // {
-    //   path: '/execute/:id',
-    //   name: 'execute',
-    //   props: true,
-    //   component: () => import('../views/ExecuteView.vue')
-    // },
-    // {
-    //   path: '/reinforcement/:id',
-    //   name: 'reinforcement',
-    //   props: true,
-    //   component: () => import('../views/ReinforceView.vue')
-    // }
+    {
+      path: '/follow',
+      name: 'follow',
+      component: () => import('../view/Follow.vue')
+    },
+    {
+      path: '/',
+      redirect: '/rec'
+    }
+    
   ]
 })
 
