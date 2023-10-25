@@ -11,7 +11,7 @@ import (
 func UploadHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		l := logic.NewUploadLogic(r.Context(), svcCtx)
-		resp, err := l.Upload(w, r)
+		resp, err := l.Upload(r)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {
