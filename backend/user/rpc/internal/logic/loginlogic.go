@@ -27,7 +27,6 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
-	// todo: add your logic here and delete this line
 	// 查询用户是否存在
 	res, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile)
 	if err != nil {

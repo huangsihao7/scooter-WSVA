@@ -45,6 +45,8 @@ message UserInfoResponse {
   string Name = 2;
   int64 Gender = 3;
   string Mobile = 4;
+  string Avatar =5;
+  string Dec = 6;
 }
 // 用户信息
 
