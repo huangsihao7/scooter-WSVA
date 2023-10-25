@@ -1,0 +1,16 @@
+Name: User
+Host: 0.0.0.0
+Port: 8888
+
+Auth:
+  AccessSecret: uOvKLmVfztaXGpNYd4Z0I1SiT7MweJhl
+  AccessExpire: 86400
+
+User:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: user.rpc
+AccessKey: cipx2awPLz7XNduXeJPtbWoTEQj7PWnV_2O727ew
+SecretKey: 4hf0lBad0AFg_IaShAN14JD3IbcEg8Xn4DPSX3fY
+Bucket: wy-video
