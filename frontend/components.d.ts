@@ -7,11 +7,30 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    copy: typeof import('./src/components/SubMenu copy.vue')['default']
+    ElAside: typeof import('element-plus/es')['ElAside']
+    ElAvatar: typeof import('element-plus/es')['ElAvatar']
+    ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
+    ElCol: typeof import('element-plus/es')['ElCol']
+    ElContainer: typeof import('element-plus/es')['ElContainer']
+    ElDivider: typeof import('element-plus/es')['ElDivider']
+    ElHeader: typeof import('element-plus/es')['ElHeader']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElMain: typeof import('element-plus/es')['ElMain']
+    ElMenu: typeof import('element-plus/es')['ElMenu']
+    ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
+    ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup']
+    ElRow: typeof import('element-plus/es')['ElRow']
+    ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    HomeView: typeof import('./src/components/HomeView.vue')['default']
     Map: typeof import('./src/components/Map.vue')['default']
+    Menu: typeof import('./src/components/Menu.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SubMenu: typeof import('./src/components/SubMenu.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon/index.vue')['default']
+    Vedio: typeof import('./src/components/Vedio.vue')['default']
   }
 }
