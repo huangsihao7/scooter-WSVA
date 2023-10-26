@@ -41,3 +41,13 @@ func (s *RelationServer) FriendList(ctx context.Context, in *relation.FriendList
 	l := logic.NewFriendListLogic(ctx, s.svcCtx)
 	return l.FriendList(in)
 }
+
+func (s *RelationServer) GetFollowCount(ctx context.Context, in *relation.FollowCountReq) (*relation.FollowCountResp, error) {
+	l := logic.NewGetFollowCountLogic(ctx, s.svcCtx)
+	return l.GetFollowCount(in)
+}
+
+func (s *RelationServer) GetFollowerCount(ctx context.Context, in *relation.FollowerCountReq) (*relation.FollowerCountResp, error) {
+	l := logic.NewGetFollowerCountLogic(ctx, s.svcCtx)
+	return l.GetFollowerCount(in)
+}

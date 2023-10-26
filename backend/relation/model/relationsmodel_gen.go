@@ -33,6 +33,8 @@ type (
 		FindFavorite(ctx context.Context, uid int64) ([]*Relations, error)
 		FindFollower(ctx context.Context, uid int64) ([]*Relations, error)
 		FindFriend(ctx context.Context, uid int64) ([]*Relations, error)
+		GetFollowCount(ctx context.Context, uid int64) (int64, error)
+		GetFollowerCount(ctx context.Context, uid int64) (int64, error)
 	}
 
 	defaultRelationsModel struct {
@@ -157,5 +159,32 @@ func (m *defaultRelationsModel) FindFriend(ctx context.Context, uid int64) ([]*R
 		return nil, ErrNotFound
 	default:
 		return nil, err
+	}
+}
+
+func (m *defaultRelationsModel) GetFollowCount(ctx context.Context, uid int64) (int64, error) {
+	query := fmt.Sprintf("select %s from %s where `follower_id` = ?", relationsRows, m.table)
+	var resp []*Relations
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, uid)
+	switch err {
+	case nil:
+		return int64(len(resp)), nil
+	case sqlc.ErrNotFound:
+		return 0, nil
+	default:
+		return 0, err
+	}
+}
+func (m *defaultRelationsModel) GetFollowerCount(ctx context.Context, uid int64) (int64, error) {
+	query := fmt.Sprintf("select %s from %s where `following_id` = ?", relationsRows, m.table)
+	var resp []*Relations
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, uid)
+	switch err {
+	case nil:
+		return int64(len(resp)), nil
+	case sqlc.ErrNotFound:
+		return 0, nil
+	default:
+		return 0, err
 	}
 }

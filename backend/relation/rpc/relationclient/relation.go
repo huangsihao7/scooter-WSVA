@@ -13,21 +13,27 @@ import (
 )
 
 type (
-	FavoriteListReq  = relation.FavoriteListReq
-	FavoriteListResp = relation.FavoriteListResp
-	FavoriteRequest  = relation.FavoriteRequest
-	FavoriteResponse = relation.FavoriteResponse
-	FollowerListReq  = relation.FollowerListReq
-	FollowerListResp = relation.FollowerListResp
-	FriendListReq    = relation.FriendListReq
-	FriendListResp   = relation.FriendListResp
-	UserInfo         = relation.UserInfo
+	FavoriteListReq   = relation.FavoriteListReq
+	FavoriteListResp  = relation.FavoriteListResp
+	FavoriteRequest   = relation.FavoriteRequest
+	FavoriteResponse  = relation.FavoriteResponse
+	FollowCountReq    = relation.FollowCountReq
+	FollowCountResp   = relation.FollowCountResp
+	FollowerCountReq  = relation.FollowerCountReq
+	FollowerCountResp = relation.FollowerCountResp
+	FollowerListReq   = relation.FollowerListReq
+	FollowerListResp  = relation.FollowerListResp
+	FriendListReq     = relation.FriendListReq
+	FriendListResp    = relation.FriendListResp
+	UserInfo          = relation.UserInfo
 
 	Relation interface {
 		Favorite(ctx context.Context, in *FavoriteRequest, opts ...grpc.CallOption) (*FavoriteResponse, error)
 		FavoriteList(ctx context.Context, in *FavoriteListReq, opts ...grpc.CallOption) (*FavoriteListResp, error)
 		FollowerList(ctx context.Context, in *FollowerListReq, opts ...grpc.CallOption) (*FollowerListResp, error)
 		FriendList(ctx context.Context, in *FriendListReq, opts ...grpc.CallOption) (*FriendListResp, error)
+		GetFollowCount(ctx context.Context, in *FollowCountReq, opts ...grpc.CallOption) (*FollowCountResp, error)
+		GetFollowerCount(ctx context.Context, in *FollowerCountReq, opts ...grpc.CallOption) (*FollowerCountResp, error)
 	}
 
 	defaultRelation struct {
@@ -59,4 +65,14 @@ func (m *defaultRelation) FollowerList(ctx context.Context, in *FollowerListReq,
 func (m *defaultRelation) FriendList(ctx context.Context, in *FriendListReq, opts ...grpc.CallOption) (*FriendListResp, error) {
 	client := relation.NewRelationClient(m.cli.Conn())
 	return client.FriendList(ctx, in, opts...)
+}
+
+func (m *defaultRelation) GetFollowCount(ctx context.Context, in *FollowCountReq, opts ...grpc.CallOption) (*FollowCountResp, error) {
+	client := relation.NewRelationClient(m.cli.Conn())
+	return client.GetFollowCount(ctx, in, opts...)
+}
+
+func (m *defaultRelation) GetFollowerCount(ctx context.Context, in *FollowerCountReq, opts ...grpc.CallOption) (*FollowerCountResp, error) {
+	client := relation.NewRelationClient(m.cli.Conn())
+	return client.GetFollowerCount(ctx, in, opts...)
 }

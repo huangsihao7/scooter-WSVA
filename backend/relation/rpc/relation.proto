@@ -48,9 +48,27 @@ message FriendListResp{
   string StatusMsg=3;
 }
 
+message FollowCountReq{
+  int64 Uid = 1;
+}
+message FollowCountResp{
+  int64 StatusCode=1;
+  string StatusMsg=2;
+  int64 Count=3;
+}
+message FollowerCountReq{
+  int64 Uid = 1;
+}
+message FollowerCountResp{
+  int64 StatusCode=1;
+  string StatusMsg=2;
+  int64 Count=3;
+}
 service Relation {
   rpc Favorite(FavoriteRequest) returns(FavoriteResponse);
   rpc FavoriteList(FavoriteListReq) returns(FavoriteListResp);
   rpc FollowerList(FollowerListReq) returns(FollowerListResp);
   rpc FriendList(FriendListReq) returns(FriendListResp);
+  rpc GetFollowCount(FollowCountReq) returns(FollowCountResp);
+  rpc GetFollowerCount(FollowerCountReq) returns(FollowerCountResp);
 }
