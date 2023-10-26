@@ -9,21 +9,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type PublishListLogic struct {
+type ListVideosByRecommendLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewPublishListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PublishListLogic {
-	return &PublishListLogic{
+func NewListVideosByRecommendLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListVideosByRecommendLogic {
+	return &ListVideosByRecommendLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *PublishListLogic) PublishList(in *feed.PublishListRequest) (*feed.PublishListResponse, error) {
+func (l *ListVideosByRecommendLogic) ListVideosByRecommend(in *feed.ListFeedRequest) (*feed.ListFeedResponse, error) {
 	// todo: add your logic here and delete this line
-	return &feed.PublishListResponse{}, nil
+
+	return &feed.ListFeedResponse{}, nil
 }

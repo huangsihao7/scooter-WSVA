@@ -1,0 +1,11 @@
+Name: feed-api
+Host: 0.0.0.0
+Port: 8890
+Feed:
+ Etcd:
+   Hosts:
+     - 127.0.0.1:2379
+   Key: feed.rpc
+Auth:
+  AccessSecret: uOvKLmVfztaXGpNYd4Z0I1SiT7MweJhl
+  AccessExpire: 86400

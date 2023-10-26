@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 7:08:43
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-25 20:39:27
+ * @LastEditTime: 2023-10-26 16:02:51
  * @FilePath: \scooter-wsva\frontend\src\axios\index.ts
  * @Description:
  *
@@ -15,12 +15,14 @@ import { ElMessage } from 'element-plus'
 
 
 // const baseURl = 'http://127.0.0.1:8080';
-const baseURl = 'http://172.22.121.53:8080'
+const baseURl = 'http://172.22.121.53:2479'
 
 const service = axios.create({
   baseURL: baseURl,
   timeout: 15000 // 请求超时时间
 })
+
+// const { token } = storeToRefs('user')
 
 // request拦截器 添加token
 service.interceptors.request.use(
@@ -37,8 +39,6 @@ service.interceptors.request.use(
   }
 )
 
-const themeRef = ref<'light' | 'dark'>('dark')
-
 //  response拦截器
 service.interceptors.response.use((response) => {
   if (response.data.status === 200) {
@@ -48,8 +48,11 @@ service.interceptors.response.use((response) => {
       message: response.data.msg + '，请重新登录',
       type: 'error'
     })
-    userStore().logout()
-    router.push('/login')
+    userStore().isLoggedIn = false
+    userStore().token = ''
+    userStore().avatar = ''
+    userStore().username = ''
+    router.push('/')
     return Promise.reject()
   } else {
     ElMessage({
