@@ -100,7 +100,7 @@ def _textkeyword(text: str) -> List[str]:
     )
     logger.info(keywords)
     try:
-        keyword = keywords.split("|")
+        keyword = keywords.split("\n")[-5:]
     except Exception as e:
         keyword = [keywords]
     return keyword
@@ -160,4 +160,4 @@ async def video2keywordAndSummary(
     text = _video2text(filename, url)
     keywords = _textkeyword(text)
     summary = _textsummary(text)
-    return VideoSummaryKeyword(keywords=keywords, summary=summary)
+    return VideoSummaryKeyword(keywords=keywords, summary=summary, text=text)
