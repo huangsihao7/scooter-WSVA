@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
-	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/sqlc"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"github.com/zeromicro/go-zero/core/stringx"
@@ -21,8 +20,6 @@ var (
 	videosRows                = strings.Join(videosFieldNames, ",")
 	videosRowsExpectAutoSet   = strings.Join(stringx.Remove(videosFieldNames, "`id`", "`create_at`", "`create_time`", "`created_at`", "`update_at`", "`update_time`", "`updated_at`"), ",")
 	videosRowsWithPlaceHolder = strings.Join(stringx.Remove(videosFieldNames, "`id`", "`create_at`", "`create_time`", "`created_at`", "`update_at`", "`update_time`", "`updated_at`"), "=?,") + "=?"
-
-	cacheVideosIdPrefix = "cache:videos:id:"
 )
 
 type (
@@ -34,7 +31,7 @@ type (
 	}
 
 	defaultVideosModel struct {
-		sqlc.CachedConn
+		conn  sqlx.SqlConn
 		table string
 	}
 
@@ -49,32 +46,34 @@ type (
 		CreatedAt     time.Time    `db:"created_at"`
 		UpdatedAt     sql.NullTime `db:"updated_at"`
 		DeletedAt     sql.NullTime `db:"deleted_at"`
+		Category      string       `db:"category"` // 视频分类
 	}
 )
 
-func newVideosModel(conn sqlx.SqlConn, c cache.CacheConf, opts ...cache.Option) *defaultVideosModel {
+func newVideosModel(conn sqlx.SqlConn) *defaultVideosModel {
 	return &defaultVideosModel{
-		CachedConn: sqlc.NewConn(conn, c, opts...),
-		table:      "`videos`",
+		conn:  conn,
+		table: "`videos`",
+	}
+}
+
+func (m *defaultVideosModel) withSession(session sqlx.Session) *defaultVideosModel {
+	return &defaultVideosModel{
+		conn:  sqlx.NewSqlConnFromSession(session),
+		table: "`videos`",
 	}
 }
 
 func (m *defaultVideosModel) Delete(ctx context.Context, id int64) error {
-	videosIdKey := fmt.Sprintf("%s%v", cacheVideosIdPrefix, id)
-	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
-		return conn.ExecCtx(ctx, query, id)
-	}, videosIdKey)
+	query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
+	_, err := m.conn.ExecCtx(ctx, query, id)
 	return err
 }
 
 func (m *defaultVideosModel) FindOne(ctx context.Context, id int64) (*Videos, error) {
-	videosIdKey := fmt.Sprintf("%s%v", cacheVideosIdPrefix, id)
+	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", videosRows, m.table)
 	var resp Videos
-	err := m.QueryRowCtx(ctx, &resp, videosIdKey, func(ctx context.Context, conn sqlx.SqlConn, v any) error {
-		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", videosRows, m.table)
-		return conn.QueryRowCtx(ctx, v, query, id)
-	})
+	err := m.conn.QueryRowCtx(ctx, &resp, query, id)
 	switch err {
 	case nil:
 		return &resp, nil
@@ -86,30 +85,15 @@ func (m *defaultVideosModel) FindOne(ctx context.Context, id int64) (*Videos, er
 }
 
 func (m *defaultVideosModel) Insert(ctx context.Context, data *Videos) (sql.Result, error) {
-	videosIdKey := fmt.Sprintf("%s%v", cacheVideosIdPrefix, data.Id)
-	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, videosRowsExpectAutoSet)
-		return conn.ExecCtx(ctx, query, data.AuthorId, data.Title, data.CoverUrl, data.PlayUrl, data.FavoriteCount, data.CommentCount, data.DeletedAt)
-	}, videosIdKey)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?)", m.table, videosRowsExpectAutoSet)
+	ret, err := m.conn.ExecCtx(ctx, query, data.AuthorId, data.Title, data.CoverUrl, data.PlayUrl, data.FavoriteCount, data.CommentCount, data.DeletedAt, data.Category)
 	return ret, err
 }
 
 func (m *defaultVideosModel) Update(ctx context.Context, data *Videos) error {
-	videosIdKey := fmt.Sprintf("%s%v", cacheVideosIdPrefix, data.Id)
-	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, videosRowsWithPlaceHolder)
-		return conn.ExecCtx(ctx, query, data.AuthorId, data.Title, data.CoverUrl, data.PlayUrl, data.FavoriteCount, data.CommentCount, data.DeletedAt, data.Id)
-	}, videosIdKey)
+	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, videosRowsWithPlaceHolder)
+	_, err := m.conn.ExecCtx(ctx, query, data.AuthorId, data.Title, data.CoverUrl, data.PlayUrl, data.FavoriteCount, data.CommentCount, data.DeletedAt, data.Category, data.Id)
 	return err
-}
-
-func (m *defaultVideosModel) formatPrimary(primary any) string {
-	return fmt.Sprintf("%s%v", cacheVideosIdPrefix, primary)
-}
-
-func (m *defaultVideosModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary any) error {
-	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", videosRows, m.table)
-	return conn.QueryRowCtx(ctx, v, query, primary)
 }
 
 func (m *defaultVideosModel) tableName() string {

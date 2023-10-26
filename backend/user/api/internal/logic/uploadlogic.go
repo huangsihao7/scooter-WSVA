@@ -97,6 +97,19 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 			return
 		}
 	}()
+
+	//operationManager := storage.NewOperationManager(mac, &cfg)
+	//fopVframe := fmt.Sprintf("vframe/jpg/offset/1|saveas/%s",
+	//	storage.EncodedEntry(bucket, "pfop_test_qiniu.jpg"))
+	//
+	//fops := fopVframe
+	//
+	//_, err = operationManager.Pfop(bucket, key, fops, "", "", true)
+	//if err != nil {
+	//	fmt.Println(err)
+	//	return
+	//}
+
 	baseURL := "s327crbzf.hn-bkt.clouddn.com"
 	fileURL = baseURL + "/" + key
 
