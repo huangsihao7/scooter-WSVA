@@ -43,4 +43,8 @@ import Menu from './components/Menu.vue'
   width:160px;
 }
 
+.el-main{
+  padding: 0;
+}
+
 </style>

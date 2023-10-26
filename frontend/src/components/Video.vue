@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-26 18:34:47
+ * @LastEditTime: 2023-10-26 18:55:32
  * @Description: 
  * @FilePath: \scooter-wsva\frontend\src\components\Video.vue
 -->
@@ -11,8 +11,8 @@
   <div ref="videoRef"></div>
 </template>
      
-<script setup>
-import DPlayer from 'dplayer'
+<script setup lang="ts">
+import DPlayer from 'dplayer';
 import Hls from 'hls.js';
 import { ref, reactive, onBeforeUnmount, onMounted } from 'vue'
 
@@ -76,10 +76,10 @@ const props = defineProps({
   video: {
     type: Object,
     default: {
-      url: 'https://api.dogecloud.com/player/get.m3u8?vcode=5ac682e6f8231991&userId=17&ext=.m3u8', //视频地址
-      type: 'customHls',
+      url: 'http://127.0.0.1:8080/WeChat_20231026155918.mp4', //视频地址
+      type: 'mp4',
       customType: {
-        customHls: function (video, player) {
+        customHls: function (video:any, player:any) {
           const hls = new Hls(); //实例化Hls  用于解析m3u8
           hls.loadSource(video.src);
           hls.attachMedia(video);
@@ -142,7 +142,9 @@ onMounted(() => {
 })
 // 销毁
 onBeforeUnmount(() => {
-  state.instance.destroy()
+  // if(state.instance != null){
+  //   state.instance.destroy()
+  // }
 })
 
 

@@ -40,6 +40,7 @@ declare module 'vue' {
     Map: typeof import('./src/components/Map.vue')['default']
     Menu: typeof import('./src/components/Menu.vue')['default']
     PostVideo: typeof import('./src/components/PostVideo.vue')['default']
+    RecommendCom: typeof import('./src/components/RecommendCom.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SubMenu: typeof import('./src/components/SubMenu.vue')['default']
