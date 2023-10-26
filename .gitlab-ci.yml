@@ -82,7 +82,6 @@ deploy-backend:
       -p 8892:8892 \
       -p 8893:8893 \
       -p 8894:8894 \
-  
       --name scooter-wsva-backend \
       172.22.121.50/ai-evaluation/scooter-wsva-backend:$CI_PIPELINE_IID
     - echo "=======deploy success======="
