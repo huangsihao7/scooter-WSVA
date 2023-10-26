@@ -13,11 +13,8 @@ RUN apk update --no-cache \
     && apk add --no-cache tzdata \
     && rm -rf /var/cache/apk/*
 
-COPY go.mod go.mod
-COPY go.sum go.sum
+COPY . .
 
 RUN go mod tidy
-
-COPY . .
 
 ENTRYPOINT ["sh", "docker-entrypoint.sh"]
