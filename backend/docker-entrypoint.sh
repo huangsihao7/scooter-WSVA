@@ -12,4 +12,4 @@ cd favorite/api && go run favorite.go -f etc/favorite.yaml >> /build/output.log 
 cd relation/api && go run relation.go -f etc/relation.yaml >> /build/output.log 2>&1 &
 cd comment/api && go run comment.go -f etc/comment.yaml >> /build/output.log 2>&1 &
 
-tail -f output.log
+tail -f /build/output.log
