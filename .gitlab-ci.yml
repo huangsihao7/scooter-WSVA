@@ -116,7 +116,7 @@ deploy-nginx:
     - |
       docker run \
       -di \
-      -p 8080:80 \
+      -p 7070:80 \
       --name scooter-wsva-nginx \
       172.22.121.50/ai-evaluation/scooter-wsva-nginx:$CI_PIPELINE_IID
     - echo "=======deploy success======="
