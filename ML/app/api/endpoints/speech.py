@@ -1,4 +1,5 @@
 import logging
+from typing import List
 
 import ffmpeg
 import numpy as np
@@ -8,6 +9,8 @@ from torchvision.datasets.utils import download_url
 from transformers import WhisperForConditionalGeneration, WhisperProcessor
 
 from app.core.config import settings
+from app.utils.sparkapi import sparkAPI
+from app.models.speech import VideoSummaryKeyword
 
 router = APIRouter()
 logger = logging.getLogger("speech")
@@ -38,6 +41,9 @@ def load_audio(file: str, sr: int = 16000) -> np.ndarray:
 
 
 def _video2text(filename: str, url: str, sampling_rate=16000) -> str:
+    """
+    视频语音识别文字提取
+    """
     download_url(url, settings.CACHE_ROOT_DIR, filename)
     audio = load_audio(f"{settings.CACHE_ROOT_DIR}/{filename}")
     input_features = whisper_processor(
@@ -55,8 +61,50 @@ def _video2text(filename: str, url: str, sampling_rate=16000) -> str:
     transcription = whisper_processor.batch_decode(
         predicted_ids, skip_special_tokens=True
     )
-    logger.info(transcription)
-    return transcription[0]
+    split = transcription[0]
+    try:
+        split = transcription[0].split(settings.WHISPER_PROMPT)[-1]
+    except Exception as e:
+        pass
+    logger.info(split)
+    return split
+
+
+def _textsummary(text: str) -> str:
+    """
+    文字摘要生成
+    """
+    summary = sparkAPI.ask(
+        [
+            {
+                "role": "user",
+                "content": "您将获得一段视频内容的文本，您的任务是给出2个简体中文句子来总结视频。下面是视频文本内容:" + text,
+            }
+        ]
+    )
+    logger.info(summary)
+    return summary
+
+
+def _textkeyword(text: str) -> List[str]:
+    """
+    文字摘要生成
+    """
+    keywords = sparkAPI.ask(
+        [
+            {
+                "role": "user",
+                "content": "您将获得一个视频内容的文本块，您的任务是为视频提供5个简体中文标签，以吸引观众。例如美食 | 旅行 | 阅读。下面是视频文本内容:"
+                + text,
+            }
+        ]
+    )
+    logger.info(keywords)
+    try:
+        keyword = keywords.split("|")
+    except Exception as e:
+        keyword = [keywords]
+    return keyword
 
 
 @router.get("/video2text", response_model=str)
@@ -70,3 +118,47 @@ async def video2text(
     filename = video_url.__str__().split("/")[-1]
     url = video_url.__str__()
     return _video2text(filename, url)
+
+
+@router.get("/video2summary", response_model=str)
+async def video2summary(
+    *,
+    video_url: AnyHttpUrl,
+):
+    """
+    视频摘要提取
+    """
+    filename = video_url.__str__().split("/")[-1]
+    url = video_url.__str__()
+    text = _video2text(filename, url)
+    return _textsummary(text)
+
+
+@router.get("/video2keyword", response_model=str)
+async def video2keyword(
+    *,
+    video_url: AnyHttpUrl,
+):
+    """
+    视频关键词提取
+    """
+    filename = video_url.__str__().split("/")[-1]
+    url = video_url.__str__()
+    text = _video2text(filename, url)
+    return _textkeyword(text)
+
+
+@router.get("/video2keywordAndSummary", response_model=VideoSummaryKeyword)
+async def video2keywordAndSummary(
+    *,
+    video_url: AnyHttpUrl,
+):
+    """
+    视频摘要和关键词提取
+    """
+    filename = video_url.__str__().split("/")[-1]
+    url = video_url.__str__()
+    text = _video2text(filename, url)
+    keywords = _textkeyword(text)
+    summary = _textsummary(text)
+    return VideoSummaryKeyword(keywords=keywords, summary=summary)

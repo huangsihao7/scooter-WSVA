@@ -35,10 +35,13 @@ deploy-ml:
     - |
       docker run \
       -di \
-      -p 8080:8000 \
+      -p 8000:8000 \
       --name scooter-wsva-ml \
       -e DEVICE=cuda \
-      -e WHISPER_MODEL_PATH=/root/.cache/huggingface/hub/models--openai--whisper-medium/snapshots/18530d7c5ce1083f21426064b85fbd1e24bd1858 \
+      -e SPARK_APPID=$SPARK_APPID \
+      -e SPARK_API_KEY=$SPARK_API_KEY \
+      -e SPARK_API_SECRET=$SPARK_API_SECRET \
+      -e WHISPER_MODEL_PATH=/root/.cache/huggingface/hub/models--openai--whisper-large-v2/snapshots/696465c62215e36a9ab3f9b7672fe7749f1a1df5 \
       -v /root/.cache/huggingface/:/root/.cache/huggingface:ro \
       172.22.121.50/ai-evaluation/scooter-wsva-ml:$CI_PIPELINE_IID
     - echo "=======deploy success======="
