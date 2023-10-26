@@ -28,7 +28,7 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 
 	userId := in.UserId
 	//actionId := in.ActorId
-	//查询用户是否存在
+	//查询用户是否存在的
 	res, err := l.svcCtx.UserModel.FindOne(l.ctx, userId)
 	if err != nil {
 		if err == model.ErrNotFound {
