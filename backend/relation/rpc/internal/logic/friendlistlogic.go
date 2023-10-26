@@ -32,12 +32,12 @@ func (l *FriendListLogic) FriendList(in *relation.FriendListReq) (*relation.Frie
 			return &relation.FriendListResp{
 				StatusCode: constants.UserDoNotExistedCode,
 				StatusMsg:  constants.UserDoNotExisted,
-			}, err
+			}, nil
 		} else {
 			return &relation.FriendListResp{
 				StatusCode: constants.UnableToGetFriendListErrorCode,
 				StatusMsg:  constants.UnableToGetFriendListError,
-			}, err
+			}, nil
 		}
 	}
 
@@ -48,7 +48,7 @@ func (l *FriendListLogic) FriendList(in *relation.FriendListReq) (*relation.Frie
 			return &relation.FriendListResp{
 				StatusCode: constants.UnableToGetFriendListErrorCode,
 				StatusMsg:  constants.UnableToGetFriendListError,
-			}, err
+			}, nil
 		}
 		List = append(List, &relation.UserInfo{
 			Id:     one.Id,

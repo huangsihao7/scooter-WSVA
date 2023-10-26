@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
 
 	"github.com/huangsihao7/scooter-WSVA/relation/api/internal/svc"
@@ -48,8 +47,8 @@ func (l *FollowerListLogic) FollowerList(req *types.FollowerListReq) (resp *type
 		})
 	}
 	return &types.FollowerListResp{
-		StatusCode: constants.ServiceOKCode,
-		StatusMsg:  constants.ServiceOK,
+		StatusCode: int(list.StatusCode),
+		StatusMsg:  list.GetStatusMsg(),
 		List:       resList,
 	}, nil
 }

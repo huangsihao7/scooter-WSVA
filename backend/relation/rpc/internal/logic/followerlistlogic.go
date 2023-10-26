@@ -4,9 +4,9 @@ import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/relation/model"
-
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
+	model2 "github.com/huangsihao7/scooter-WSVA/user/model"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -26,18 +26,25 @@ func NewFollowerListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Foll
 }
 
 func (l *FollowerListLogic) FollowerList(in *relation.FollowerListReq) (*relation.FollowerListResp, error) {
+	_, err2 := l.svcCtx.UserModel.FindOne(l.ctx, in.Uid)
+	if err2 == model2.ErrNotFound {
+		return &relation.FollowerListResp{
+			StatusCode: constants.UserDoNotExistedCode,
+			StatusMsg:  constants.UserDoNotExisted,
+		}, nil
+	}
 	follower, err := l.svcCtx.RelationModel.FindFollower(l.ctx, in.Uid)
 	if err != nil {
 		if err == model.ErrNotFound {
 			return &relation.FollowerListResp{
 				StatusCode: constants.UserDoNotExistedCode,
 				StatusMsg:  constants.UserDoNotExisted,
-			}, err
+			}, nil
 		} else {
 			return &relation.FollowerListResp{
 				StatusCode: constants.UnableToGetFollowerListErrorCode,
 				StatusMsg:  constants.UnableToGetFollowerListError,
-			}, err
+			}, nil
 		}
 	}
 
@@ -48,7 +55,7 @@ func (l *FollowerListLogic) FollowerList(in *relation.FollowerListReq) (*relatio
 			return &relation.FollowerListResp{
 				StatusCode: constants.UnableToGetFollowerListErrorCode,
 				StatusMsg:  constants.UnableToGetFollowerListError,
-			}, err
+			}, nil
 		}
 		List = append(List, &relation.UserInfo{
 			Id:     one.Id,
