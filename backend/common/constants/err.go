@@ -63,6 +63,8 @@ const (
 	UnableToGetFollowCountError       = "无法查询到关注数量"
 	UnableToGetIsFollowErrorCode      = 50028
 	UnableToGetIsFollowCountError     = "无法查询是否关注"
+	FindUserVideosErrorCode           = 50029
+	FindUserVideosError               = "查询用户视频失败"
 )
 
 // Expected Error

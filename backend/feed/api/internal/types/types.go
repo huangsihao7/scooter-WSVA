@@ -12,3 +12,39 @@ type CreateVideoResp struct {
 	StatusCode int    `json:"status_code"`
 	StatusMsg  string `json:"status_msg"`
 }
+
+type UserVideoListReq struct {
+	ToUid int `json:"toUid"`
+}
+
+type UserVideoListResp struct {
+	StatusCode int         `json:"status_code"`
+	StatusMsg  string      `json:"status_msg"`
+	Videos     []VideoInfo `json:"videos"`
+}
+
+type VideoInfo struct {
+	Id            int64    `json:"id"`
+	Author        UserInfo `json:"author"`
+	PlayUrl       string   `json:"playUrl"`
+	CoverUrl      string   `json:"coverUrl"`
+	FavoriteCount int64    `json:"favoriteCount"`
+	CommentCount  int64    `json:"commentCount"`
+	IsFavorite    bool     `json:"isFavorite"`
+	Title         string   `json:"title"`
+}
+
+type UserInfo struct {
+	Id             int64  `json:"id"`
+	Name           string `json:"name"`
+	Gender         int64  `json:"gender"`
+	Mobile         string `json:"mobile"`
+	Avatar         string `json:"avatar"`
+	Dec            string `json:"dec"`
+	FollowCount    int64  `json:"followCount"`
+	FollowerCount  int64  `json:"followerCount"`
+	IsFollow       bool   `json:"isFollow"`
+	TotalFavorited int64  `json:"totalFavorited"`
+	WorkCount      int64  `json:"workCount"`
+	FavoriteCount  int64  `json:"favoriteCount"`
+}
