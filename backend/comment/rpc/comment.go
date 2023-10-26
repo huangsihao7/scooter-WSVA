@@ -18,6 +18,7 @@ import (
 
 var configFile = flag.String("f", "etc/comment.yaml", "the config file")
 
+// ad
 func main() {
 	flag.Parse()
 
