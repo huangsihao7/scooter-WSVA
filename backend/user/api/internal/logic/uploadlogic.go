@@ -2,13 +2,15 @@ package logic
 
 import (
 	"context"
-	"github.com/huangsihao7/scooter-WSVA/common/crypt"
+	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/user/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/user/api/internal/types"
 	"github.com/qiniu/go-sdk/v7/auth/qbox"
 	"github.com/qiniu/go-sdk/v7/storage"
 	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"
+	"path/filepath"
+	"strings"
 )
 
 type UploadLogic struct {
@@ -90,17 +92,31 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 
 	//key为上传的文件名
 	key := handler.Filename // 上传路径，如果当前目录中已存在相同文件，则返回上传失败错误
-	key = crypt.PasswordEncrypt("wy", key)
+	//key = crypt.PasswordEncrypt("wy", key)
 	go func() {
 		err = resumeUploader.Put(context.Background(), &ret, upToken, key, file, handler.Size, &putExtra)
 		if err != nil {
 			return
 		}
+		operationManager := storage.NewOperationManager(mac, &cfg)
+		fopVframe := fmt.Sprintf("vframe/jpg/offset/1|saveas/%s",
+			storage.EncodedEntry(bucket, strings.TrimSuffix(key, filepath.Ext(key))+".jpg"))
+
+		fops := fopVframe
+
+		_, err = operationManager.Pfop(bucket, key, fops, "", "", true)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 	}()
+
 	baseURL := "s327crbzf.hn-bkt.clouddn.com"
 	fileURL = baseURL + "/" + key
+	coverUrl := baseURL + "/" + strings.TrimSuffix(key, filepath.Ext(key)) + ".jpg"
 
 	return &types.UserUploadResponse{
-		Url: fileURL,
+		CoverUrl: coverUrl,
+		Url:      fileURL,
 	}, nil
 }

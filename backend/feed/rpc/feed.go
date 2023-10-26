@@ -26,7 +26,7 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		feed.RegisterFeedSrvServer(grpcServer, server.NewFeedSrvServer(ctx))
+		feed.RegisterFeedServer(grpcServer, server.NewFeedServer(ctx))
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)

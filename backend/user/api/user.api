@@ -43,7 +43,8 @@ type (
 	}
 
 	UserUploadResponse {
-		Url string `json:"url"`
+		Url      string `json:"url"`
+		CoverUrl string `json:"coverUrl"`
 	}
 )
 

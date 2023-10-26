@@ -1,34 +1,22 @@
 syntax = "v1"
 
-
 type (
-    actionReq {
-        VideoId     int64  `form:"video_id"`     // 视频id
-        ActionType  int32  `form:"action_type"`  // 1-发布评论，2-删除评论
-        CommentText string `form:"comment_text"` // 用户填写的评论内容，在action_type=1的时候使用
-        CommentId   int64  `form:"comment_id"`   // 要删除的评论id，在action_type=2的时候使用
-    }
+	CreateVideoReq {
+		Url      string `json:"url"` //视频地址
+		CoverUrl string `json:"coverUrl"`
+		Title    string `json:"title"`
+		Category string `json:"category"`
+	}
 
-    actionResp {
-        StatusCode  int    `json:"status_code"`
-        StatusMsg   string `json:"status_msg"`
-        CommentText string `json:"comment_text"` // 返回用户评论的内容
-    }
-    listReq {
-    }
-
-    listResp {
-    }
+	CreateVideoResp {
+		StatusCode int    `json:"status_code"`
+		StatusMsg  string `json:"status_msg"`
+	}
 )
-
-type response {
-    // TODO: add members here and delete this comment
-}
-
+@server(
+	jwt: Auth
+)
 service feed-api {
-    @handler CommentAction // TODO: set handler name and delete this comment
-    post /comment/action (actionReq) returns(actionResp)
-
-    @handler CommentList // TODO: set handler name and delete this comment
-    get /favorite/list(listReq) returns(listResp)
+	@handler CreateVideo
+	post /feed/create (CreateVideoReq) returns(CreateVideoResp)
 }

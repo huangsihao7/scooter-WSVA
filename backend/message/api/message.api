@@ -1,0 +1,36 @@
+syntax = "v1"
+
+type (
+    Message {
+        Id     int64  `json:"id"`
+        Content   string `json:"content"`
+        CreateTime int64  `json:"gender"`
+        FromUserId string `json:"mobile"`
+        ToUserId string `json:"avatar"`
+        Dec    string `json:"dec"`
+    }
+    //查询聊天记录
+    MessageReq {
+        ToUserId int64 `json:"to_user_id"` //查询跟谁的聊天记录
+    }
+    MessageResp {
+        StatusCode int    `json:"status_code"`
+        StatusMsg  string `json:"status_msg"`
+        Messages []Message `json:"messages"`
+    }
+    //发送消息
+    SendReq {
+        ToUserId int64 `json:"to_user_id"` //接收方
+        Content   string `json:"content"`
+    }
+    SendResp {
+        StatusCode int    `json:"status_code"`
+        StatusMsg  string `json:"status_msg"`
+    }
+)
+
+@server(
+    jwt: Auth
+)
+service message {
+}
