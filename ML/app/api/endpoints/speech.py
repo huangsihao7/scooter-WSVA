@@ -78,7 +78,7 @@ def _textsummary(text: str) -> str:
         [
             {
                 "role": "user",
-                "content": "您将获得一段视频内容的文本，您的任务是给出2个简体中文句子来总结视频。下面是视频文本内容:" + text,
+                "content": settings.SUMMARY_PROMPT + text,
             }
         ]
     )
@@ -94,8 +94,7 @@ def _textkeyword(text: str) -> List[str]:
         [
             {
                 "role": "user",
-                "content": "您将获得一个视频内容的文本块，您的任务是为视频提供5个简体中文标签，以吸引观众。例如美食 | 旅行 | 阅读。下面是视频文本内容:"
-                + text,
+                "content": settings.KEYWORD_PROMPT + text,
             }
         ]
     )
