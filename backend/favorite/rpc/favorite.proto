@@ -52,7 +52,16 @@ message User {
    int64 favorite_count = 11; //点赞数量
 }
 
+
+message QueryId {
+
+}
+
 service Favorite {
   rpc FavoriteAction(favorite_action_request) returns(favorite_action_response);
   rpc FavoriteList(favorite_list_request) returns(favorite_list_response);
+//  rpc  GetVideoFavoriteCount (1: i64 video_id) retrurns (i32);//获取video_id的点赞总数
+//      i32 GetUserFavoriteCount(1:i64 user_id), //获取user_id的点赞数
+//      i32 GetUserTotalFavoritedCount(1:i64 user_id), //获取user_id的总获赞数量
+//      bool IsUserFavorite(1:IsUserFavoriteRequest Request),
 }

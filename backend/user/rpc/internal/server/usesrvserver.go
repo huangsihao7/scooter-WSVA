@@ -11,28 +11,28 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 )
 
-type UserServer struct {
+type UseSrvServer struct {
 	svcCtx *svc.ServiceContext
-	user.UnimplementedUserServer
+	user.UnimplementedUseSrvServer
 }
 
-func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
-	return &UserServer{
+func NewUseSrvServer(svcCtx *svc.ServiceContext) *UseSrvServer {
+	return &UseSrvServer{
 		svcCtx: svcCtx,
 	}
 }
 
-func (s *UserServer) Login(ctx context.Context, in *user.LoginRequest) (*user.LoginResponse, error) {
+func (s *UseSrvServer) Login(ctx context.Context, in *user.LoginRequest) (*user.LoginResponse, error) {
 	l := logic.NewLoginLogic(ctx, s.svcCtx)
 	return l.Login(in)
 }
 
-func (s *UserServer) Register(ctx context.Context, in *user.RegisterRequest) (*user.RegisterResponse, error) {
+func (s *UseSrvServer) Register(ctx context.Context, in *user.RegisterRequest) (*user.RegisterResponse, error) {
 	l := logic.NewRegisterLogic(ctx, s.svcCtx)
 	return l.Register(in)
 }
 
-func (s *UserServer) UserInfo(ctx context.Context, in *user.UserInfoRequest) (*user.UserInfoResponse, error) {
+func (s *UseSrvServer) UserInfo(ctx context.Context, in *user.UserInfoRequest) (*user.UserInfoResponse, error) {
 	l := logic.NewUserInfoLogic(ctx, s.svcCtx)
 	return l.UserInfo(in)
 }

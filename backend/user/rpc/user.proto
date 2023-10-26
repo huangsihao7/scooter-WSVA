@@ -38,19 +38,30 @@ message RegisterResponse {
 
 // 用户信息
 message UserInfoRequest {
-  int64 Id = 1;
+  int64 userId = 1;
+  int64 actorId = 2;
 }
 message UserInfoResponse {
-  int64 Id = 1;
-  string Name = 2;
-  int64 Gender = 3;
-  string Mobile = 4;
-  string Avatar =5;
-  string Dec = 6;
+  int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  string status_msg = 2; // 返回状态描述
+  User user = 3; // 用户信息
 }
 // 用户信息
+message User {
+  uint32 id = 1; // 用户id
+  string name = 2; // 用户名称
+  optional uint32 follow_count = 3; // 关注总数
+  optional uint32 follower_count = 4; // 粉丝总数
+  bool is_follow = 5; // true-已关注，false-未关注
+  optional string avatar = 6; //用户头像
+  optional string background_image = 7; //用户个人页顶部大图
+  optional string signature = 8; //个人简介
+  optional uint32 total_favorited = 9; //获赞数量
+  optional uint32 work_count = 10; //作品数量
+  optional uint32 favorite_count = 11; //点赞数量
+}
 
-service User {
+service UseSrv {
   rpc Login(LoginRequest) returns(LoginResponse);
   rpc Register(RegisterRequest) returns(RegisterResponse);
   rpc UserInfo(UserInfoRequest) returns(UserInfoResponse);
