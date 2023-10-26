@@ -4,10 +4,10 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
-	"github.com/huangsihao7/scooter-WSVA/comment/rpc/internal/config"
-	"github.com/huangsihao7/scooter-WSVA/comment/rpc/internal/server"
-	"github.com/huangsihao7/scooter-WSVA/comment/rpc/internal/svc"
+	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
+	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/config"
+	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/server"
+	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-var configFile = flag.String("f", "etc/comment.yaml", "the config file")
+var configFile = flag.String("f", "etc/feed.yaml", "the config file")
 
 func main() {
 	flag.Parse()
@@ -26,7 +26,7 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		comment.RegisterCommentSrvServer(grpcServer, server.NewCommentSrvServer(ctx))
+		feed.RegisterFeedSrvServer(grpcServer, server.NewFeedSrvServer(ctx))
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)
@@ -34,6 +34,6 @@ func main() {
 	})
 	defer s.Stop()
 
-	fmt.Printf("Starting comment rpc server at %s...\n", c.ListenOn)
+	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
 	s.Start()
 }

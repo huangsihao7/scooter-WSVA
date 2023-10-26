@@ -1,9 +1,6 @@
 package model
 
-import (
-	"github.com/zeromicro/go-zero/core/stores/cache"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
-)
+import "github.com/zeromicro/go-zero/core/stores/sqlx"
 
 var _ CommentsModel = (*customCommentsModel)(nil)
 
@@ -20,8 +17,8 @@ type (
 )
 
 // NewCommentsModel returns a model for the database table.
-func NewCommentsModel(conn sqlx.SqlConn, c cache.CacheConf, opts ...cache.Option) CommentsModel {
+func NewCommentsModel(conn sqlx.SqlConn) CommentsModel {
 	return &customCommentsModel{
-		defaultCommentsModel: newCommentsModel(conn, c, opts...),
+		defaultCommentsModel: newCommentsModel(conn),
 	}
 }
