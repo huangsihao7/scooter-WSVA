@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/comment/model"
+	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 	"log"
 
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
@@ -33,6 +34,22 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 	contents := in.CommentText
 	actionType := in.ActionType
 	commentId := in.CommentId
+
+	//检查用户id 是否能存在
+	userInfo, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
+		Id: userId,
+	})
+	if err != nil {
+		return nil, err
+	}
+	if userInfo == nil {
+		log.Println("用户不存在")
+	}
+	// 检查视频id 是否存在
+	_, err = l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
+	if err != nil {
+		return nil, err
+	}
 
 	switch actionType {
 	//添加评论
