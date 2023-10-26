@@ -16,7 +16,7 @@ var configFile = flag.String("f", "etc/feed-api.yaml", "the config file")
 
 func main() {
 	flag.Parse()
-	//dfwsffef
+	//dfwsffeffsw
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
