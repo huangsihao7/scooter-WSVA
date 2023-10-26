@@ -4,7 +4,7 @@ Port: 8893
 Relation:
   Etcd:
     Hosts:
-      - 127.0.0.1:2379
+      - 172.22.121.53:2479
     Key: relation.rpc
 
 Auth:
