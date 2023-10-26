@@ -11,27 +11,27 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type FavoriteListLogic struct {
+type FriendListLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewFavoriteListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FavoriteListLogic {
-	return &FavoriteListLogic{
+func NewFriendListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FriendListLogic {
+	return &FriendListLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *types.FavoriteListResp, err error) {
-	list, err := l.svcCtx.RelationRpc.FavoriteList(l.ctx, &relation.FavoriteListReq{
+func (l *FriendListLogic) FriendList(req *types.FriendListReq) (resp *types.FriendListResp, err error) {
+	list, err := l.svcCtx.RelationRpc.FriendList(l.ctx, &relation.FriendListReq{
 		Uid: req.Uid,
 	})
 
 	if err != nil {
-		return &types.FavoriteListResp{
+		return &types.FriendListResp{
 			StatusCode: int(list.StatusCode),
 			StatusMsg:  list.StatusMsg,
 		}, err
@@ -47,8 +47,9 @@ func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *type
 			Dec:    item.Dec,
 		})
 	}
-	return &types.FavoriteListResp{
+	return &types.FriendListResp{
 		StatusCode: constants.ServiceOKCode,
 		StatusMsg:  constants.ServiceOK,
-		List:       resList}, nil
+		List:       resList,
+	}, nil
 }

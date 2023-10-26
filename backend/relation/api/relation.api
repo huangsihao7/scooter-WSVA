@@ -22,7 +22,25 @@ type (
 		Dec    string `json:"dec"`
 	}
 	FavoriteListResp {
-		List []UserInfo `json:"list"`
+		StatusCode int        `json:"status_code"`
+		StatusMsg  string     `json:"status_msg"`
+		List       []UserInfo `json:"list"`
+	}
+	FollowerListReq {
+		Uid int64 `json:"uid"`
+	}
+	FollowerListResp {
+		StatusCode int        `json:"status_code"`
+		StatusMsg  string     `json:"status_msg"`
+		List       []UserInfo `json:"list"`
+	}
+	FriendListReq {
+		Uid int64 `json:"uid"`
+	}
+	FriendListResp {
+		StatusCode int        `json:"status_code"`
+		StatusMsg  string     `json:"status_msg"`
+		List       []UserInfo `json:"list"`
 	}
 )
 
@@ -34,6 +52,11 @@ service relation {
 	post /relation/action (actionReq) returns(actionResp)
 
 	@handler FavoriteList
-	post /relation/followerList (FavoriteListReq) returns(FavoriteListResp)
+	get /relation/favoriteList (FavoriteListReq) returns(FavoriteListResp)
 
+	@handler FollowerList
+	get /relation/followerList (FollowerListReq) returns(FollowerListResp)
+
+	@handler FriendList
+	get /relation/friendList (FriendListReq) returns(FriendListResp)
 }

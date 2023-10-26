@@ -17,11 +17,17 @@ type (
 	FavoriteListResp = relation.FavoriteListResp
 	FavoriteRequest  = relation.FavoriteRequest
 	FavoriteResponse = relation.FavoriteResponse
+	FollowerListReq  = relation.FollowerListReq
+	FollowerListResp = relation.FollowerListResp
+	FriendListReq    = relation.FriendListReq
+	FriendListResp   = relation.FriendListResp
 	UserInfo         = relation.UserInfo
 
 	Relation interface {
 		Favorite(ctx context.Context, in *FavoriteRequest, opts ...grpc.CallOption) (*FavoriteResponse, error)
 		FavoriteList(ctx context.Context, in *FavoriteListReq, opts ...grpc.CallOption) (*FavoriteListResp, error)
+		FollowerList(ctx context.Context, in *FollowerListReq, opts ...grpc.CallOption) (*FollowerListResp, error)
+		FriendList(ctx context.Context, in *FriendListReq, opts ...grpc.CallOption) (*FriendListResp, error)
 	}
 
 	defaultRelation struct {
@@ -43,4 +49,14 @@ func (m *defaultRelation) Favorite(ctx context.Context, in *FavoriteRequest, opt
 func (m *defaultRelation) FavoriteList(ctx context.Context, in *FavoriteListReq, opts ...grpc.CallOption) (*FavoriteListResp, error) {
 	client := relation.NewRelationClient(m.cli.Conn())
 	return client.FavoriteList(ctx, in, opts...)
+}
+
+func (m *defaultRelation) FollowerList(ctx context.Context, in *FollowerListReq, opts ...grpc.CallOption) (*FollowerListResp, error) {
+	client := relation.NewRelationClient(m.cli.Conn())
+	return client.FollowerList(ctx, in, opts...)
+}
+
+func (m *defaultRelation) FriendList(ctx context.Context, in *FriendListReq, opts ...grpc.CallOption) (*FriendListResp, error) {
+	client := relation.NewRelationClient(m.cli.Conn())
+	return client.FriendList(ctx, in, opts...)
 }
