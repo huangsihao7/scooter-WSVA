@@ -55,7 +55,7 @@ def _video2text(filename: str, url: str, sampling_rate=16000) -> str:
     predicted_ids = whisper_model.generate(
         input_features.to(settings.DEVICE),
         forced_decoder_ids=forced_decoder_ids,
-        prompt_ids=prompt_ids,
+        # prompt_ids=prompt_ids,
     )
     # decode token ids to text
     transcription = whisper_processor.batch_decode(
