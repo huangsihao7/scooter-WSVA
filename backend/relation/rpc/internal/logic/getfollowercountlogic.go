@@ -28,8 +28,8 @@ func (l *GetFollowerCountLogic) GetFollowerCount(in *relation.FollowerCountReq) 
 	count, err := l.svcCtx.RelationModel.GetFollowerCount(l.ctx, in.Uid)
 	if err != nil {
 		return &relation.FollowerCountResp{
-			StatusCode: constants.UnableToGetFollowCountErrorCode,
-			StatusMsg:  constants.UnableToGetFollowCountError,
+			StatusCode: constants.UnableToGetFollowerCountErrorCode,
+			StatusMsg:  constants.UnableToGetFollowerCountError,
 		}, err
 	}
 	return &relation.FollowerCountResp{

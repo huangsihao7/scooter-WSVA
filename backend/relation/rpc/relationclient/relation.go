@@ -25,6 +25,8 @@ type (
 	FollowerListResp  = relation.FollowerListResp
 	FriendListReq     = relation.FriendListReq
 	FriendListResp    = relation.FriendListResp
+	IsFollowingReq    = relation.IsFollowingReq
+	IsFollowingResp   = relation.IsFollowingResp
 	UserInfo          = relation.UserInfo
 
 	Relation interface {
@@ -34,6 +36,7 @@ type (
 		FriendList(ctx context.Context, in *FriendListReq, opts ...grpc.CallOption) (*FriendListResp, error)
 		GetFollowCount(ctx context.Context, in *FollowCountReq, opts ...grpc.CallOption) (*FollowCountResp, error)
 		GetFollowerCount(ctx context.Context, in *FollowerCountReq, opts ...grpc.CallOption) (*FollowerCountResp, error)
+		IsFollowing(ctx context.Context, in *IsFollowingReq, opts ...grpc.CallOption) (*IsFollowingResp, error)
 	}
 
 	defaultRelation struct {
@@ -75,4 +78,9 @@ func (m *defaultRelation) GetFollowCount(ctx context.Context, in *FollowCountReq
 func (m *defaultRelation) GetFollowerCount(ctx context.Context, in *FollowerCountReq, opts ...grpc.CallOption) (*FollowerCountResp, error) {
 	client := relation.NewRelationClient(m.cli.Conn())
 	return client.GetFollowerCount(ctx, in, opts...)
+}
+
+func (m *defaultRelation) IsFollowing(ctx context.Context, in *IsFollowingReq, opts ...grpc.CallOption) (*IsFollowingResp, error) {
+	client := relation.NewRelationClient(m.cli.Conn())
+	return client.IsFollowing(ctx, in, opts...)
 }

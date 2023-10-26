@@ -64,6 +64,16 @@ message FollowerCountResp{
   string StatusMsg=2;
   int64 Count=3;
 }
+message IsFollowingReq{
+  int64 ActorId = 1;
+  int64 UserId=2;
+}
+message IsFollowingResp{
+  int64 StatusCode=1;
+  string StatusMsg=2;
+  bool flag=3;
+}
+
 service Relation {
   rpc Favorite(FavoriteRequest) returns(FavoriteResponse);
   rpc FavoriteList(FavoriteListReq) returns(FavoriteListResp);
@@ -71,4 +81,5 @@ service Relation {
   rpc FriendList(FriendListReq) returns(FriendListResp);
   rpc GetFollowCount(FollowCountReq) returns(FollowCountResp);
   rpc GetFollowerCount(FollowerCountReq) returns(FollowerCountResp);
+  rpc IsFollowing(IsFollowingReq) returns(IsFollowingResp);
 }

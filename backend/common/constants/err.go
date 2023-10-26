@@ -61,6 +61,8 @@ const (
 	UnableToGetFollowerCountError     = "无法查询到粉丝数量"
 	UnableToGetFollowCountErrorCode   = 50027
 	UnableToGetFollowCountError       = "无法查询到关注数量"
+	UnableToGetIsFollowErrorCode      = 50028
+	UnableToGetIsFollowCountError     = "无法查询是否关注"
 )
 
 // Expected Error

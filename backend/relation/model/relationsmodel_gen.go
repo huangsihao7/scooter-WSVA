@@ -35,6 +35,7 @@ type (
 		FindFriend(ctx context.Context, uid int64) ([]*Relations, error)
 		GetFollowCount(ctx context.Context, uid int64) (int64, error)
 		GetFollowerCount(ctx context.Context, uid int64) (int64, error)
+		IsFollowing(ctx context.Context, aid, uid int64) (bool, error)
 	}
 
 	defaultRelationsModel struct {
@@ -186,5 +187,19 @@ func (m *defaultRelationsModel) GetFollowerCount(ctx context.Context, uid int64)
 		return 0, nil
 	default:
 		return 0, err
+	}
+}
+
+func (m *defaultRelationsModel) IsFollowing(ctx context.Context, aid, uid int64) (bool, error) {
+	query := fmt.Sprintf("select %s from %s where `follower_id` = ? and `following_id` limit 1", relationsRows, m.table)
+	var resp Relations
+	err := m.conn.QueryRowCtx(ctx, &resp, query, aid, uid)
+	switch err {
+	case nil:
+		return true, nil
+	case sqlc.ErrNotFound:
+		return false, nil
+	default:
+		return false, err
 	}
 }

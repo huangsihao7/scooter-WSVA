@@ -25,6 +25,7 @@ const (
 	Relation_FriendList_FullMethodName       = "/relation.Relation/FriendList"
 	Relation_GetFollowCount_FullMethodName   = "/relation.Relation/GetFollowCount"
 	Relation_GetFollowerCount_FullMethodName = "/relation.Relation/GetFollowerCount"
+	Relation_IsFollowing_FullMethodName      = "/relation.Relation/IsFollowing"
 )
 
 // RelationClient is the client API for Relation service.
@@ -37,6 +38,7 @@ type RelationClient interface {
 	FriendList(ctx context.Context, in *FriendListReq, opts ...grpc.CallOption) (*FriendListResp, error)
 	GetFollowCount(ctx context.Context, in *FollowCountReq, opts ...grpc.CallOption) (*FollowCountResp, error)
 	GetFollowerCount(ctx context.Context, in *FollowerCountReq, opts ...grpc.CallOption) (*FollowerCountResp, error)
+	IsFollowing(ctx context.Context, in *IsFollowingReq, opts ...grpc.CallOption) (*IsFollowingResp, error)
 }
 
 type relationClient struct {
@@ -101,6 +103,15 @@ func (c *relationClient) GetFollowerCount(ctx context.Context, in *FollowerCount
 	return out, nil
 }
 
+func (c *relationClient) IsFollowing(ctx context.Context, in *IsFollowingReq, opts ...grpc.CallOption) (*IsFollowingResp, error) {
+	out := new(IsFollowingResp)
+	err := c.cc.Invoke(ctx, Relation_IsFollowing_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RelationServer is the server API for Relation service.
 // All implementations must embed UnimplementedRelationServer
 // for forward compatibility
@@ -111,6 +122,7 @@ type RelationServer interface {
 	FriendList(context.Context, *FriendListReq) (*FriendListResp, error)
 	GetFollowCount(context.Context, *FollowCountReq) (*FollowCountResp, error)
 	GetFollowerCount(context.Context, *FollowerCountReq) (*FollowerCountResp, error)
+	IsFollowing(context.Context, *IsFollowingReq) (*IsFollowingResp, error)
 	mustEmbedUnimplementedRelationServer()
 }
 
@@ -135,6 +147,9 @@ func (UnimplementedRelationServer) GetFollowCount(context.Context, *FollowCountR
 }
 func (UnimplementedRelationServer) GetFollowerCount(context.Context, *FollowerCountReq) (*FollowerCountResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFollowerCount not implemented")
+}
+func (UnimplementedRelationServer) IsFollowing(context.Context, *IsFollowingReq) (*IsFollowingResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsFollowing not implemented")
 }
 func (UnimplementedRelationServer) mustEmbedUnimplementedRelationServer() {}
 
@@ -257,6 +272,24 @@ func _Relation_GetFollowerCount_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Relation_IsFollowing_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IsFollowingReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RelationServer).IsFollowing(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Relation_IsFollowing_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RelationServer).IsFollowing(ctx, req.(*IsFollowingReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Relation_ServiceDesc is the grpc.ServiceDesc for Relation service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -287,6 +320,10 @@ var Relation_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFollowerCount",
 			Handler:    _Relation_GetFollowerCount_Handler,
+		},
+		{
+			MethodName: "IsFollowing",
+			Handler:    _Relation_IsFollowing_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
