@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:49:44
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-26 00:10:34
+ * @LastEditTime: 2023-10-26 12:13:18
  * @Description: 
  * @FilePath: \scooter-wsva\frontend\src\router\index.ts
  */
@@ -20,12 +20,42 @@ const router = createRouter({
     {
       path: '/user',
       name: 'user',
-      component: () => import('../view/User.vue')
+      component: () => import('../view/UserView.vue')
     },
     {
       path: '/follow',
       name: 'follow',
-      component: () => import('../view/Follow.vue')
+      component: () => import('../view/FollowView.vue')
+    },
+    {
+      path: '/hot',
+      name: 'hot',
+      component: () => import('../view/ClassifiedView.vue')
+    },
+    {
+      path: '/recreation',
+      name: 'recreation',
+      component: () => import('../view/ClassifiedView.vue')
+    },
+    {
+      path: '/sports',
+      name: 'sports',
+      component: () => import('../view/ClassifiedView.vue')
+    },
+    {
+      path: '/food',
+      name: 'food',
+      component: () => import('../view/ClassifiedView.vue')
+    },
+    {
+      path: '/cartoon',
+      name: 'cartoon',
+      component: () => import('../view/ClassifiedView.vue')
+    },
+    {
+      path: '/knowledge',
+      name: 'knowledge',
+      component: () => import('../view/ClassifiedView.vue')
     },
     {
       path: '/',

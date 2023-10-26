@@ -2,47 +2,122 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-25 23:09:36
+ * @LastEditTime: 2023-10-26 16:05:30
  * @Description: 
  * @FilePath: \scooter-wsva\frontend\src\components\Menu.vue
 -->
 <script lang="ts" setup>
-import { ref} from 'vue'
+import { ref, reactive } from 'vue'
+import { userStore } from '@/stores/user'
+import { login } from '@/apis/login'
+import router from '@/router'
 import { 
   VideoCameraFilled,
   CirclePlus,
   Search
  } from '@element-plus/icons-vue'
-// import { userStore } from '@/stores/user';
+ import { ElMessage } from 'element-plus'
+import  PostVedio from './PostVideo.vue'
 
+// 路由数据
 const activeIndex = ref('')
+
+// 搜索数据
 const searchText = ref<string>('')
 const isSearch = ref<boolean>(false)
+const isTagClose = ref<boolean>(false)
 const searchHistory = ref<Array<string>>(
-  ['aaaaaa','bbbbbb','ccccc','dddddddddddddddddddddddddddd']
+  ['aaaaaa','bbbbbb','ccccc','dddddddddd']
 )
 
+// 登录表单数据
+const loginFormVisible = ref<boolean>(false)
+const formLabelWidth = '50px'
+const form = reactive({
+  username: '',
+  pwd: ''
+})
+
+// 投稿表单数据
+const VideoFormVisible = ref<boolean>(false)
+
+
+// 路由选择index标志
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
+  switch (key) {
+    case 'login':
+      loginFormVisible.value = true
+      break;
+    case 'logout':
+      doLogout()
+      break;
+  }
+ 
 }
 
+// 用户登录
+const doLogin = () =>{
+  //发请求
+  login(form.username, form.pwd).then((res: any) => {
+    userStore().token = res.token
+    userStore().isLoggedIn = true
+    userStore().avatar = res.avatar
+    userStore().username = res.username
+    ElMessage({
+      message: '登录成功',
+      type: 'success'
+    })
+    router.push('/')
+  })
+  
+  loginFormVisible.value = false
+}
+
+// 用户登出
+const doLogout = () =>{
+  userStore().isLoggedIn = false
+  userStore().token = ''
+  userStore().avatar = ''
+  userStore().username = ''
+  ElMessage({
+    message: '已退出',
+    type: 'success'
+  })
+}
+
+// 搜索
 const SearchFunc = () => {
   console.log('Enter SearchFunc',searchText.value);
 }
 
 const handleClose = (tag: string) => {
+  isTagClose.value = true
   searchHistory.value.splice(searchHistory.value.indexOf(tag), 1)
 }
 
+// 搜索框是否被点击
 const getFocus = () =>{
   isSearch.value = true
 }
 
+// 搜索框是否失去焦点
 const getBlur = () =>{
-  isSearch.value = false
+  if(!isTagClose.value){
+    isSearch.value = false
+  }
 }
 
-var avatar : string = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+// 获取投稿dialogue
+const getPostVideoForm = () =>{
+  VideoFormVisible.value = true
+}
+
+// 投稿完成后的回调
+const updateVisible = (flag : boolean) =>{
+  VideoFormVisible.value = flag
+  console.log('callback',flag)
+}
 
 </script>
 
@@ -91,16 +166,19 @@ var avatar : string = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e5
     
     <el-menu-item>
     </el-menu-item>
-    <el-menu-item index="1">
-      <el-icon>
-        <CirclePlus/>
-      </el-icon>
-      投稿
-    </el-menu-item>
-    <el-sub-menu index="2" v-if="avatar">
+    <div class="post-btn">
+      <el-button @click="getPostVideoForm">
+        <el-icon>
+          <CirclePlus/>
+        </el-icon>
+        投稿
+      </el-button>
+    </div>
+      
+    <el-sub-menu index="logout" v-if="userStore().isLoggedIn">
       <template #title>
         <el-avatar
-          :src="avatar"
+          :src="userStore().avatar"
         />
       </template>
       <el-menu-item index="logout">退出登录</el-menu-item>
@@ -108,6 +186,27 @@ var avatar : string = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e5
     <el-menu-item index="login" v-else>
       登录
     </el-menu-item>
+
+    <el-dialog v-model="loginFormVisible" title="登录" width="30%">
+      <el-form :model="form">
+        <el-form-item label="账号" :label-width="formLabelWidth">
+          <el-input v-model="form.username" autocomplete="off" placeholder="输入账号" clearable />
+        </el-form-item>
+        <el-form-item label="密码" :label-width="formLabelWidth">
+          <el-input v-model="form.pwd" autocomplete="off" type="password" placeholder="输入密码" show-password clearable />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="doLogin">
+            登录
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
+
+    <PostVedio :VideoFormVisible="VideoFormVisible"  @visible-update="updateVisible"/>
+    
   </el-menu>
 </template>
 
@@ -145,6 +244,10 @@ var avatar : string = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e5
   max-width: 99%;
 }
 
+.post-btn{
+  margin: auto;
+  margin-right: 5px;
+}
 
 
 </style>

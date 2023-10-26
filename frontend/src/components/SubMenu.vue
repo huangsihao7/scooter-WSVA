@@ -2,7 +2,7 @@
   <el-row class="tac">
     <el-col>
       <el-menu
-        default-active="rec"
+        :default-active="active"
         class="el-menu-vertical-demo"
         @open="handleOpen"
         @close="handleClose"
@@ -33,7 +33,7 @@
             <span>热门</span>
           </div>
         </el-menu-item>
-        <el-menu-item index="5">
+        <el-menu-item index="recreation">
           <div class="submenu-text">
             <el-icon><Goblet /></el-icon>
             <span>娱乐</span>
@@ -63,13 +63,14 @@
             <span>知识</span>
           </div>
         </el-menu-item>
-        
       </el-menu>
     </el-col>
   </el-row>
 </template>
 
 <script lang="ts" setup>
+import { routeStore } from '@/stores/route';
+import { onMounted, ref } from 'vue';
 import {
   KnifeFork,
   Goblet,
@@ -82,27 +83,29 @@ import {
   Star
 } from '@element-plus/icons-vue'
 
-import { useRouter, useRoute } from 'vue-router';
+const active = ref<String>('')
 
-const router = useRouter();
+// 获取当前页面的末尾路由
+function getLastSegmentFromRoute(route: string): string {
+  const segments = route.split('/');
+  return segments[segments.length - 1];
+}
 
-const getRoutePath = (index) =>{
-  switch (index){
-    case 'recommendation':
-      return '/'
-    case 'my':
-      return '/user'
+// 通过url确定menu的activekey
+onMounted(() => {
+  if(active.value == ''){
+    const currentPath = window.location.pathname;
+    let path = getLastSegmentFromRoute(currentPath)
+    active.value = path
+    routeStore().name = path
+    console.log('path', path, active.value, routeStore().name)
   }
-}
-
-// 点击更换导航栏图片
-const NavigationBarChanges = (index) => {
-    state.value = index
-    router.push(getRoutePath(index)) // 跳转到对应的路由路径
-}
+})
 
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
+  active.value = key
+  routeStore().name = key
 }
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)

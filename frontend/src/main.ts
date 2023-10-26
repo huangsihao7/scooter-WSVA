@@ -2,15 +2,14 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-25 14:53:03
+ * @LastEditTime: 2023-10-26 12:43:05
  * @Description: 
  * @FilePath: \scooter-wsva\frontend\src\main.ts
  */
 import {createApp} from 'vue'
+import {createPinia} from "pinia"
 import App from './App.vue'
 import router from './router/index'
-import {createPinia} from "pinia"
-import SvgIcon from './components/SvgIcon/index.vue'
 import ElementPlus from 'element-plus'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import "element-plus/dist/index.css"
