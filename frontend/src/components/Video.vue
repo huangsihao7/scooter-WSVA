@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-26 18:55:32
+ * @LastEditTime: 2023-10-26 20:58:05
  * @Description: 
- * @FilePath: \scooter-wsva\frontend\src\components\Video.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\Video.vue
 -->
 
 <template>
@@ -17,7 +17,7 @@ import Hls from 'hls.js';
 import { ref, reactive, onBeforeUnmount, onMounted } from 'vue'
 
 const videoRef = ref()
-const state = reactive({
+const state:any = reactive({
   instance: null
 })
 
@@ -25,7 +25,7 @@ const props = defineProps({
   // 是否自动播放
   autoplay: {
     type: Boolean,
-    default: false
+    default: true
   },
   // 主题色
   theme: {
@@ -70,7 +70,7 @@ const props = defineProps({
   // 在左上角展示一个 logo，你可以通过 CSS 调整它的大小和位置
   logo: {
     type: String,
-    default: 'http://jiuaibuni.top/wp-content/uploads/2020/12/logo.png'
+    default: 'http://127.0.0.1:8080/OIP-C.jpg'
   },
   // 视频信息
   video: {
@@ -111,11 +111,22 @@ const props = defineProps({
   mutex: {
     type: Boolean,
     default: true
+  },
+  //视频封面
+  pic:{
+    type: String,
+    default: 'http://127.0.0.1:8080/OIP-C.jpg'
+  },
+  preventClickToggle: {
+    type: Boolean,
+    default: false
   }
 })
 onMounted(() => {
-  let player = {
+  let player:any = {
     container: videoRef.value,
+    preventClickToggle: props.preventClickToggle,
+    pic: props.pic,
     autoplay: props.autoplay,
     theme: props.theme,
     loop: props.loop,
@@ -142,9 +153,9 @@ onMounted(() => {
 })
 // 销毁
 onBeforeUnmount(() => {
-  // if(state.instance != null){
-  //   state.instance.destroy()
-  // }
+  if(state.instance != null){
+    state.instance.destroy()
+  }
 })
 
 

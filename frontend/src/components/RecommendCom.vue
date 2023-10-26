@@ -2,18 +2,56 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-26 19:19:09
+ * @LastEditTime: 2023-10-26 22:37:08
  * @Description: 
- * @FilePath: \scooter-wsva\frontend\src\components\RecommendCom.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\RecommendCom.vue
 -->
 
 <script lang="ts" setup>
 import dplayer from '@/components/Video.vue';
 import Hls from 'hls.js';
 import { ref, reactive } from 'vue'
+
+const videoUrls = ref<any>([
+    {
+        url:'http://127.0.0.1:8080/3.mp4',
+        cover:'',
+        username:'我是一个粉刷匠',
+        createTime:'3天前',
+        likes:'12',
+        collect:'22',
+        isFollowed: true,
+        title: '你好哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
+        content:'在你拿着一堆早餐摆着慢慢吃，武汉人发出尖锐的爆鸣[捂脸]主要是那些炸物刚出炉最好吃了，你还等豆皮等半天[泪奔]来武汉过早，这种炸物建议到手就吃哦，热干面也不能放，拿到就要拌开'
+    },
+    {
+        url:'http://127.0.0.1:8080/3.mp4',
+        cover:'',
+        username:'我是一个粉刷匠',
+        createTime:'3天前',
+        likes:'12',
+        collect:'22',
+        isFollowed: true,
+        title: '你好哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
+        content:'离开家睡觉了还能考古发掘按时的可见光和'
+    },
+    {
+        url:'http://127.0.0.1:8080/WeChat_20231026155918.mp4',
+        cover:'',
+        username:'cccccccc',
+        createTime:'3天前',
+        likes:'12',
+        collect:'22',
+        isFollowed: true,
+        title: '你好哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
+        content:'离开家睡觉了还能考古发掘按时的可见光和'
+    }
+])
+
 const dplayerObj = reactive({
+    autoplay:true,
     video: {
-        url: 'http://127.0.0.1:8080/WeChat_20231026155918.mp4', //视频地址
+        url: videoUrls.value[0].url, //视频地址
         type: 'mp4',
         customType: {
             customHls: function (video:any, player:any) {
@@ -60,12 +98,76 @@ const dplayerObj = reactive({
 </script>
 
 <template>
-    <dplayer :video="dplayerObj.video" :danmaku="dplayerObj.danmaku" :contextmenu="dplayerObj.contextmenu"
-      :highlight="dplayerObj.highlight" />
+    <div>
+        <div class="video-container">
+            <dplayer :video="dplayerObj.video" :danmaku="dplayerObj.danmaku" :contextmenu="dplayerObj.contextmenu"
+            :highlight="dplayerObj.highlight" />
+            <div class="video-info-box">
+                <div class="header">
+                    <p class="title">@{{videoUrls[0].username}}</p>
+                    <p class="time">{{ videoUrls[0].createTime }}</p>
+                </div>
+                <div class="content">{{ videoUrls[0].content }}</div>
+            </div>
+            <!-- <div class="video-interaction-box">
+                
+            </div> -->
+        </div>
+    </div>
 </template>
 
-<style scoped>
-.dplayer{
-    height: calc(100vh - 60px);
+<style scoped lang="scss">
+
+
+.video-container{
+    .dplayer{
+        height: calc(100vh - 60px);
+    }
+    .video-info-box{
+        display: block;
+        height: auto;
+        pointer-events: none;
+        position: absolute;
+        z-index: 2;
+        width: calc(100vw - 200px);
+        bottom: 48px;
+        height: 100px;
+        padding: 0 20px;
+        .title, .time, .content{
+            color: white;
+        }
+
+        .header{
+            display: flex;
+            .time{
+                margin: 25px 0 0 15px;
+                font-size: small;
+            }
+            .title{
+                font-size: larger;
+                font-weight: bold;
+            }
+        }
+
+        .content{
+            text-align: left;
+        }
+        
+
+    }
+
+    .video-interaction-box{
+        display: block;
+        height: auto;
+        pointer-events: none;
+        position: absolute;
+        z-index: 2;
+        width: 30vw;
+        bottom: 48px;
+        height: 200px;
+        padding: 0 20px;
+        background-color: aqua;
+    }
 }
+
 </style>
