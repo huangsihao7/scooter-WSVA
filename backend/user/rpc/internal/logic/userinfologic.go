@@ -27,9 +27,9 @@ func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfo
 func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoResponse, error) {
 
 	userId := in.UserId
-	//actionId := in.ActorId
+	actionId := in.ActorId
 	//查询用户是否存在的
-	res, err := l.svcCtx.UserModel.FindOne(l.ctx, userId)
+	_, err := l.svcCtx.UserModel.FindOne(l.ctx, userId)
 	if err != nil {
 		if err == model.ErrNotFound {
 			return nil, status.Error(100, "用户不存在")
@@ -37,12 +37,64 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 		return nil, status.Error(500, err.Error())
 	}
 
-	users := &user.UserInfo{
-		Name: res.Name,
-		Id:   uint32(userId),
+	//查询用户是否存在的
+	res, err := l.svcCtx.UserModel.FindOne(context.Background(), actionId)
+	if err != nil {
+		if err == model.ErrNotFound {
+			return nil, status.Error(100, "用户不存在")
+		}
+		return nil, status.Error(500, err.Error())
 	}
+
+	//查询关注数
+	followCount, err := l.svcCtx.RelationModel.GetFollowCount(l.ctx, actionId)
+	if err != nil {
+		return nil, status.Error(500, err.Error())
+	}
+	uint32followCount := uint32(followCount)
+
+	//查询粉丝数
+	followerCount, err := l.svcCtx.RelationModel.GetFollowerCount(l.ctx, actionId)
+	if err != nil {
+		return nil, status.Error(500, err.Error())
+	}
+	uint32followerCount := uint32(followerCount)
+
+	//查询点赞视频数
+	favorCount, err := l.svcCtx.FavorModel.GetFavoriteCount(l.ctx, actionId)
+	if err != nil {
+		return nil, status.Error(500, err.Error())
+	}
+	uint32favorCount := uint32(len(favorCount))
+
+	//查询视频获赞数
+	favorVideoCount, err := l.svcCtx.FavorModel.GetVideoCount(l.ctx, actionId)
+	if err != nil {
+		return nil, status.Error(500, err.Error())
+	}
+	uint32FavorVideoCount := uint32(len(favorVideoCount))
+
+	//查询A是否关注B
+	isFavorite := l.svcCtx.RelationModel.FindIsFavorite(l.ctx, userId, actionId)
+	if err != nil {
+		return nil, status.Error(500, err.Error())
+	}
+	cons := uint32(999)
+	users := user.UserInfo{
+		Name:           res.Name,
+		Id:             uint32(actionId),
+		Avatar:         &res.Avatar,
+		Signature:      &res.Dec,
+		FollowCount:    &uint32followCount,
+		FollowerCount:  &uint32followerCount,
+		FavoriteCount:  &uint32favorCount,
+		TotalFavorited: &uint32FavorVideoCount,
+		IsFollow:       isFavorite,
+		WorkCount:      &cons,
+	}
+
 	return &user.UserInfoResponse{
-		User:       users,
+		User:       &users,
 		StatusCode: constants.ServiceOKCode,
 		StatusMsg:  constants.ServiceOK,
 	}, nil

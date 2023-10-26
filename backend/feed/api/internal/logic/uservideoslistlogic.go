@@ -42,8 +42,19 @@ func (l *UserVideosListLogic) UserVideosList(req *types.UserVideoListReq) (resp 
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range videos.VideoList {
 		resList = append(resList, types.VideoInfo{
-			Id:            int64(item.Id),
-			Author:        types.UserInfo{},
+			Id: int64(item.Id),
+			Author: types.UserInfo{
+				Id:             item.Author.Id,
+				Name:           item.Author.Name,
+				Avatar:         *item.Author.Avatar,
+				Signature:      *item.Author.Signature,
+				FollowCount:    *item.Author.FollowerCount,
+				FollowerCount:  *item.Author.FollowCount,
+				TotalFavorited: *item.Author.TotalFavorited,
+				WorkCount:      *item.Author.WorkCount,
+				FavoriteCount:  *item.Author.FavoriteCount,
+				IsFollow:       item.Author.IsFollow,
+			},
 			PlayUrl:       item.PlayUrl,
 			CoverUrl:      item.CoverUrl,
 			FavoriteCount: int64(item.FavoriteCount),

@@ -34,18 +34,17 @@ type (
 		Title         string   `json:"title"`
 	}
 	UserInfo {
-		Id             int64  `json:"id"`
+		Id             uint32 `json:"id"`
 		Name           string `json:"name"`
-		Gender         int64  `json:"gender"`
-		Mobile         string `json:"mobile"`
+		Gender         uint32 `json:"gender"`
 		Avatar         string `json:"avatar"`
-		Dec            string `json:"dec"`
-		FollowCount    int64  `json:"followCount"`
-		FollowerCount  int64  `json:"followerCount"`
-		IsFollow       bool   `json:"isFollow"`
-		TotalFavorited int64  `json:"totalFavorited"`
-		WorkCount      int64  `json:"workCount"`
-		FavoriteCount  int64  `json:"favoriteCount"`
+		Signature      string `json:"signature"`
+		FollowCount    uint32 `json:"follow_count"`
+		FollowerCount  uint32 `json:"follower_count"`
+		TotalFavorited uint32 `json:"total_favorited"`
+		WorkCount      uint32 `json:"work_count"`
+		FavoriteCount  uint32 `json:"favorite_count"`
+		IsFollow       bool   `json:"is_follow"`
 	}
 )
 @server(
@@ -54,7 +53,7 @@ type (
 service feed-api {
 	@handler CreateVideo
 	post /feed/create (CreateVideoReq) returns(CreateVideoResp)
-
+	
 	@handler UserVideosList
 	post /feed/UserVideosList (UserVideoListReq) returns(UserVideoListResp)
 }
