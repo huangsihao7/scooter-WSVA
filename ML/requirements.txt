@@ -1,6 +1,7 @@
 torch
-fastapi
-ffmpeg-python
-transformers
-pydantic[dotenv]
-uvicorn
+fastapi==0.104.0
+ffmpeg-python==0.2.0
+transformers==4.34.1
+pydantic[dotenv]==2.4.2
+uvicorn==0.23.2
+pydantic-settings==2.0.3

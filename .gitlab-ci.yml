@@ -11,6 +11,8 @@ build-ml-image:
   only:
     refs:
       - main
+    changes:
+      - ML/**/*
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 172.22.121.50
   script:
@@ -21,12 +23,17 @@ build-ml-image:
       ./ML
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-ml:$CI_PIPELINE_IID"
 
-deploy:
+deploy-ml:
   stage: deploy
   tags:
     - "54"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push" && $CI_MERGE_REQUEST_EVENT_TYPE == null'
+  only:
+    refs:
+      - main
+    changes:
+      - ML/**/*
   variables:
     GIT_STRATEGY: none
   script:
