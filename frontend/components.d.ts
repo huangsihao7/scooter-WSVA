@@ -45,5 +45,6 @@ declare module 'vue' {
     SubMenu: typeof import('./src/components/SubMenu.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon/index.vue')['default']
     Vedio: typeof import('./src/components/Vedio.vue')['default']
+    Video: typeof import('./src/components/Video.vue')['default']
   }
 }
