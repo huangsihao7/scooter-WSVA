@@ -15,7 +15,42 @@ message FavoriteResponse {
   int64 StatusCode=1;
   string StatusMsg=2;
 }
+message FavoriteListReq{
+  int64 Uid = 1;
+}
+message UserInfo{
+  int64 Id = 1;
+  string Name = 2;
+  int64 Gender = 3;
+  string Mobile = 4;
+  string Avatar =5;
+  string Dec = 6;
+}
+message FavoriteListResp{
+  repeated UserInfo list=1;
+  int64 StatusCode=2;
+  string StatusMsg=3;
+}
+message FollowerListReq{
+  int64 Uid = 1;
+}
+message FollowerListResp{
+  repeated UserInfo list=1;
+  int64 StatusCode=2;
+  string StatusMsg=3;
+}
+message FriendListReq{
+  int64 Uid = 1;
+}
+message FriendListResp{
+  repeated UserInfo list=1;
+  int64 StatusCode=2;
+  string StatusMsg=3;
+}
 
 service Relation {
   rpc Favorite(FavoriteRequest) returns(FavoriteResponse);
+  rpc FavoriteList(FavoriteListReq) returns(FavoriteListResp);
+  rpc FollowerList(FollowerListReq) returns(FollowerListResp);
+  rpc FriendList(FriendListReq) returns(FriendListResp);
 }

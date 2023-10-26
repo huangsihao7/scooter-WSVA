@@ -17,6 +17,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/relation/action",
 				Handler: FavoriteActionHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/relation/favoriteList",
+				Handler: FavoriteListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/relation/followerList",
+				Handler: FollowerListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/relation/friendList",
+				Handler: FriendListHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)

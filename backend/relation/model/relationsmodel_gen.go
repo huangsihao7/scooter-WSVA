@@ -30,6 +30,9 @@ type (
 		Delete(ctx context.Context, id int64) error
 		FindIsFavorite(ctx context.Context, uid int64, toUid int64) bool
 		DeleteUnFavorite(ctx context.Context, uid int64, toUid int64) error
+		FindFavorite(ctx context.Context, uid int64) ([]*Relations, error)
+		FindFollower(ctx context.Context, uid int64) ([]*Relations, error)
+		FindFriend(ctx context.Context, uid int64) ([]*Relations, error)
 	}
 
 	defaultRelationsModel struct {
@@ -114,4 +117,45 @@ func (m *defaultRelationsModel) DeleteUnFavorite(ctx context.Context, uid int64,
 	query := fmt.Sprintf("delete from %s where `follower_id` = ? and `following_id` = ?", m.table)
 	_, err := m.conn.ExecCtx(ctx, query, uid, toUid)
 	return err
+}
+func (m *defaultRelationsModel) FindFavorite(ctx context.Context, uid int64) ([]*Relations, error) {
+	query := fmt.Sprintf("select %s from %s where `follower_id` = ?", relationsRows, m.table)
+	var resp []*Relations
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, uid)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+func (m *defaultRelationsModel) FindFollower(ctx context.Context, uid int64) ([]*Relations, error) {
+	query := fmt.Sprintf("select %s from %s where `following_id` = ?", relationsRows, m.table)
+	var resp []*Relations
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, uid)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+func (m *defaultRelationsModel) FindFriend(ctx context.Context, uid int64) ([]*Relations, error) {
+	query := fmt.Sprintf("SELECT %s FROM %s WHERE `following_id` IN (SELECT `follower_id` FROM %s WHERE `following_id` = ?) AND `follower_id` = ?", relationsRows, m.table, m.table)
+	var resp []*Relations
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, uid, uid)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
 }

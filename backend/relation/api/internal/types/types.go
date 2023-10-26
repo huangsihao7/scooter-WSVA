@@ -10,3 +10,42 @@ type ActionResp struct {
 	StatusCode int    `json:"status_code"`
 	StatusMsg  string `json:"status_msg"`
 }
+
+type FavoriteListReq struct {
+	Uid int64 `json:"uid"`
+}
+
+type UserInfo struct {
+	Id     int64  `json:"id"`
+	Name   string `json:"name"`
+	Gender int64  `json:"gender"`
+	Mobile string `json:"mobile"`
+	Avatar string `json:"avatar"`
+	Dec    string `json:"dec"`
+}
+
+type FavoriteListResp struct {
+	StatusCode int        `json:"status_code"`
+	StatusMsg  string     `json:"status_msg"`
+	List       []UserInfo `json:"list"`
+}
+
+type FollowerListReq struct {
+	Uid int64 `json:"uid"`
+}
+
+type FollowerListResp struct {
+	StatusCode int        `json:"status_code"`
+	StatusMsg  string     `json:"status_msg"`
+	List       []UserInfo `json:"list"`
+}
+
+type FriendListReq struct {
+	Uid int64 `json:"uid"`
+}
+
+type FriendListResp struct {
+	StatusCode int        `json:"status_code"`
+	StatusMsg  string     `json:"status_msg"`
+	List       []UserInfo `json:"list"`
+}

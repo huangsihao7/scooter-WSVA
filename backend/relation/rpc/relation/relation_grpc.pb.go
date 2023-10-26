@@ -19,7 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Relation_Favorite_FullMethodName = "/relation.Relation/Favorite"
+	Relation_Favorite_FullMethodName     = "/relation.Relation/Favorite"
+	Relation_FavoriteList_FullMethodName = "/relation.Relation/FavoriteList"
+	Relation_FollowerList_FullMethodName = "/relation.Relation/FollowerList"
+	Relation_FriendList_FullMethodName   = "/relation.Relation/FriendList"
 )
 
 // RelationClient is the client API for Relation service.
@@ -27,6 +30,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RelationClient interface {
 	Favorite(ctx context.Context, in *FavoriteRequest, opts ...grpc.CallOption) (*FavoriteResponse, error)
+	FavoriteList(ctx context.Context, in *FavoriteListReq, opts ...grpc.CallOption) (*FavoriteListResp, error)
+	FollowerList(ctx context.Context, in *FollowerListReq, opts ...grpc.CallOption) (*FollowerListResp, error)
+	FriendList(ctx context.Context, in *FriendListReq, opts ...grpc.CallOption) (*FriendListResp, error)
 }
 
 type relationClient struct {
@@ -46,11 +52,41 @@ func (c *relationClient) Favorite(ctx context.Context, in *FavoriteRequest, opts
 	return out, nil
 }
 
+func (c *relationClient) FavoriteList(ctx context.Context, in *FavoriteListReq, opts ...grpc.CallOption) (*FavoriteListResp, error) {
+	out := new(FavoriteListResp)
+	err := c.cc.Invoke(ctx, Relation_FavoriteList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *relationClient) FollowerList(ctx context.Context, in *FollowerListReq, opts ...grpc.CallOption) (*FollowerListResp, error) {
+	out := new(FollowerListResp)
+	err := c.cc.Invoke(ctx, Relation_FollowerList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *relationClient) FriendList(ctx context.Context, in *FriendListReq, opts ...grpc.CallOption) (*FriendListResp, error) {
+	out := new(FriendListResp)
+	err := c.cc.Invoke(ctx, Relation_FriendList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RelationServer is the server API for Relation service.
 // All implementations must embed UnimplementedRelationServer
 // for forward compatibility
 type RelationServer interface {
 	Favorite(context.Context, *FavoriteRequest) (*FavoriteResponse, error)
+	FavoriteList(context.Context, *FavoriteListReq) (*FavoriteListResp, error)
+	FollowerList(context.Context, *FollowerListReq) (*FollowerListResp, error)
+	FriendList(context.Context, *FriendListReq) (*FriendListResp, error)
 	mustEmbedUnimplementedRelationServer()
 }
 
@@ -60,6 +96,15 @@ type UnimplementedRelationServer struct {
 
 func (UnimplementedRelationServer) Favorite(context.Context, *FavoriteRequest) (*FavoriteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Favorite not implemented")
+}
+func (UnimplementedRelationServer) FavoriteList(context.Context, *FavoriteListReq) (*FavoriteListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FavoriteList not implemented")
+}
+func (UnimplementedRelationServer) FollowerList(context.Context, *FollowerListReq) (*FollowerListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FollowerList not implemented")
+}
+func (UnimplementedRelationServer) FriendList(context.Context, *FriendListReq) (*FriendListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FriendList not implemented")
 }
 func (UnimplementedRelationServer) mustEmbedUnimplementedRelationServer() {}
 
@@ -92,6 +137,60 @@ func _Relation_Favorite_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Relation_FavoriteList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FavoriteListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RelationServer).FavoriteList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Relation_FavoriteList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RelationServer).FavoriteList(ctx, req.(*FavoriteListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Relation_FollowerList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FollowerListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RelationServer).FollowerList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Relation_FollowerList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RelationServer).FollowerList(ctx, req.(*FollowerListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Relation_FriendList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FriendListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RelationServer).FriendList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Relation_FriendList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RelationServer).FriendList(ctx, req.(*FriendListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Relation_ServiceDesc is the grpc.ServiceDesc for Relation service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +201,18 @@ var Relation_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Favorite",
 			Handler:    _Relation_Favorite_Handler,
+		},
+		{
+			MethodName: "FavoriteList",
+			Handler:    _Relation_FavoriteList_Handler,
+		},
+		{
+			MethodName: "FollowerList",
+			Handler:    _Relation_FollowerList_Handler,
+		},
+		{
+			MethodName: "FriendList",
+			Handler:    _Relation_FriendList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

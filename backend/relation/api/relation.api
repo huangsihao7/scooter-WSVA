@@ -9,6 +9,39 @@ type (
 		StatusCode int    `json:"status_code"`
 		StatusMsg  string `json:"status_msg"`
 	}
+
+	FavoriteListReq {
+		Uid int64 `json:"uid"`
+	}
+	UserInfo {
+		Id     int64  `json:"id"`
+		Name   string `json:"name"`
+		Gender int64  `json:"gender"`
+		Mobile string `json:"mobile"`
+		Avatar string `json:"avatar"`
+		Dec    string `json:"dec"`
+	}
+	FavoriteListResp {
+		StatusCode int        `json:"status_code"`
+		StatusMsg  string     `json:"status_msg"`
+		List       []UserInfo `json:"list"`
+	}
+	FollowerListReq {
+		Uid int64 `json:"uid"`
+	}
+	FollowerListResp {
+		StatusCode int        `json:"status_code"`
+		StatusMsg  string     `json:"status_msg"`
+		List       []UserInfo `json:"list"`
+	}
+	FriendListReq {
+		Uid int64 `json:"uid"`
+	}
+	FriendListResp {
+		StatusCode int        `json:"status_code"`
+		StatusMsg  string     `json:"status_msg"`
+		List       []UserInfo `json:"list"`
+	}
 )
 
 @server(
@@ -18,5 +51,12 @@ service relation {
 	@handler FavoriteAction
 	post /relation/action (actionReq) returns(actionResp)
 
+	@handler FavoriteList
+	get /relation/favoriteList (FavoriteListReq) returns(FavoriteListResp)
 
+	@handler FollowerList
+	get /relation/followerList (FollowerListReq) returns(FollowerListResp)
+
+	@handler FriendList
+	get /relation/friendList (FriendListReq) returns(FriendListResp)
 }
