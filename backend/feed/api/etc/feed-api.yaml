@@ -1,6 +1,6 @@
 Name: feed-api
 Host: 0.0.0.0
-Port: 8890
+Port: 8891
 Feed:
  Etcd:
    Hosts:

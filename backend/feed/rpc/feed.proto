@@ -75,7 +75,7 @@ message ListFeedResponse {
 service Feed {
    rpc CreateVideo(CreateVideoRequest) returns (CreateVideoResponse) {}
    rpc ListVideo(ListVideoRequest) returns (ListVideoResponse) {}
-   rpc CountVideo(CountVideoRequest) returns (CountVideoResponse) {}
-   rpc ListVideosByRecommend(ListFeedRequest) returns (ListFeedResponse);
+//   rpc CountVideo(CountVideoRequest) returns (CountVideoResponse) {}
+//   rpc ListVideosByRecommend(ListFeedRequest) returns (ListFeedResponse);
    rpc ListVideos(ListFeedRequest) returns (ListFeedResponse);
 }

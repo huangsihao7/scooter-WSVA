@@ -44,10 +44,10 @@ message UserInfoRequest {
 message UserInfoResponse {
   int32 status_code = 1; // 状态码，0-成功，其他值-失败
   string status_msg = 2; // 返回状态描述
-  User user = 3; // 用户信息
+  UserInfo user = 3; // 用户信息
 }
 // 用户信息
-message User {
+message UserInfo {
   uint32 id = 1; // 用户id
   string name = 2; // 用户名称
   optional uint32 follow_count = 3; // 关注总数

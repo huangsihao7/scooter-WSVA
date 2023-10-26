@@ -1,6 +1,6 @@
 Name: comment-api
 Host: 0.0.0.0
-Port: 8890
+Port: 8894
 Comment:
   Etcd:
     Hosts:

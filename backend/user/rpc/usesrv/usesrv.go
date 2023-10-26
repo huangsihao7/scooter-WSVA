@@ -17,7 +17,7 @@ type (
 	LoginResponse    = user.LoginResponse
 	RegisterRequest  = user.RegisterRequest
 	RegisterResponse = user.RegisterResponse
-	User             = user.User
+	UserInfo         = user.UserInfo
 	UserInfoRequest  = user.UserInfoRequest
 	UserInfoResponse = user.UserInfoResponse
 

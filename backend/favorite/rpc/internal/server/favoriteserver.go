@@ -31,3 +31,18 @@ func (s *FavoriteServer) FavoriteList(ctx context.Context, in *favorite.Favorite
 	l := logic.NewFavoriteListLogic(ctx, s.svcCtx)
 	return l.FavoriteList(in)
 }
+
+func (s *FavoriteServer) GetVideoFavoriteCount(ctx context.Context, in *favorite.QueryId) (*favorite.QueryCount, error) {
+	l := logic.NewGetVideoFavoriteCountLogic(ctx, s.svcCtx)
+	return l.GetVideoFavoriteCount(in)
+}
+
+func (s *FavoriteServer) GetUserFavoriteCount(ctx context.Context, in *favorite.QueryId) (*favorite.QueryCount, error) {
+	l := logic.NewGetUserFavoriteCountLogic(ctx, s.svcCtx)
+	return l.GetUserFavoriteCount(in)
+}
+
+func (s *FavoriteServer) GetUserTotalFavoritedCount(ctx context.Context, in *favorite.QueryId) (*favorite.QueryCount, error) {
+	l := logic.NewGetUserTotalFavoritedCountLogic(ctx, s.svcCtx)
+	return l.GetUserTotalFavoritedCount(in)
+}

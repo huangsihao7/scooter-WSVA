@@ -14,6 +14,6 @@ type ServiceContext struct {
 func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		c:     c,
-		Model: model.NewFavoritesModel(sqlx.NewMysql(c.DataSource), c.Cache), // 手动代码
+		Model: model.NewFavoritesModel(sqlx.NewMysql(c.DataSource)), // 手动代码
 	}
 }

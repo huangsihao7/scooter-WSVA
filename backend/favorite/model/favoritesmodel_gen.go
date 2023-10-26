@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
-	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/sqlc"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"github.com/zeromicro/go-zero/core/stringx"
@@ -21,8 +20,6 @@ var (
 	favoritesRows                = strings.Join(favoritesFieldNames, ",")
 	favoritesRowsExpectAutoSet   = strings.Join(stringx.Remove(favoritesFieldNames, "`id`", "`create_at`", "`create_time`", "`created_at`", "`update_at`", "`update_time`", "`updated_at`"), ",")
 	favoritesRowsWithPlaceHolder = strings.Join(stringx.Remove(favoritesFieldNames, "`id`", "`create_at`", "`create_time`", "`created_at`", "`update_at`", "`update_time`", "`updated_at`"), "=?,") + "=?"
-
-	cacheFavoritesIdPrefix = "cache:favorites:id:"
 )
 
 type (
@@ -31,10 +28,12 @@ type (
 		FindOne(ctx context.Context, id int64) (*Favorites, error)
 		Update(ctx context.Context, data *Favorites) error
 		Delete(ctx context.Context, id int64) error
+		GetVideoCount(ctx context.Context, id int64) ([] *Favorites, error)
+		GetFavoriteCount(ctx context.Context, id int64) ([] *Favorites, error)
 	}
 
 	defaultFavoritesModel struct {
-		sqlc.CachedConn
+		conn  sqlx.SqlConn
 		table string
 	}
 
@@ -48,29 +47,23 @@ type (
 	}
 )
 
-func newFavoritesModel(conn sqlx.SqlConn, c cache.CacheConf, opts ...cache.Option) *defaultFavoritesModel {
+func newFavoritesModel(conn sqlx.SqlConn) *defaultFavoritesModel {
 	return &defaultFavoritesModel{
-		CachedConn: sqlc.NewConn(conn, c, opts...),
-		table:      "`favorites`",
+		conn:  conn,
+		table: "`favorites`",
 	}
 }
 
 func (m *defaultFavoritesModel) Delete(ctx context.Context, id int64) error {
-	favoritesIdKey := fmt.Sprintf("%s%v", cacheFavoritesIdPrefix, id)
-	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
-		return conn.ExecCtx(ctx, query, id)
-	}, favoritesIdKey)
+	query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
+	_, err := m.conn.ExecCtx(ctx, query, id)
 	return err
 }
 
 func (m *defaultFavoritesModel) FindOne(ctx context.Context, id int64) (*Favorites, error) {
-	favoritesIdKey := fmt.Sprintf("%s%v", cacheFavoritesIdPrefix, id)
+	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", favoritesRows, m.table)
 	var resp Favorites
-	err := m.QueryRowCtx(ctx, &resp, favoritesIdKey, func(ctx context.Context, conn sqlx.SqlConn, v any) error {
-		query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", favoritesRows, m.table)
-		return conn.QueryRowCtx(ctx, v, query, id)
-	})
+	err := m.conn.QueryRowCtx(ctx, &resp, query, id)
 	switch err {
 	case nil:
 		return &resp, nil
@@ -82,32 +75,44 @@ func (m *defaultFavoritesModel) FindOne(ctx context.Context, id int64) (*Favorit
 }
 
 func (m *defaultFavoritesModel) Insert(ctx context.Context, data *Favorites) (sql.Result, error) {
-	favoritesIdKey := fmt.Sprintf("%s%v", cacheFavoritesIdPrefix, data.Id)
-	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?)", m.table, favoritesRowsExpectAutoSet)
-		return conn.ExecCtx(ctx, query, data.Uid, data.Vid, data.DeletedAt)
-	}, favoritesIdKey)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?)", m.table, favoritesRowsExpectAutoSet)
+	ret, err := m.conn.ExecCtx(ctx, query, data.Uid, data.Vid, data.DeletedAt)
 	return ret, err
 }
 
 func (m *defaultFavoritesModel) Update(ctx context.Context, data *Favorites) error {
-	favoritesIdKey := fmt.Sprintf("%s%v", cacheFavoritesIdPrefix, data.Id)
-	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, favoritesRowsWithPlaceHolder)
-		return conn.ExecCtx(ctx, query, data.Uid, data.Vid, data.DeletedAt, data.Id)
-	}, favoritesIdKey)
+	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, favoritesRowsWithPlaceHolder)
+	_, err := m.conn.ExecCtx(ctx, query, data.Uid, data.Vid, data.DeletedAt, data.Id)
 	return err
-}
-
-func (m *defaultFavoritesModel) formatPrimary(primary any) string {
-	return fmt.Sprintf("%s%v", cacheFavoritesIdPrefix, primary)
-}
-
-func (m *defaultFavoritesModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary any) error {
-	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", favoritesRows, m.table)
-	return conn.QueryRowCtx(ctx, v, query, primary)
 }
 
 func (m *defaultFavoritesModel) tableName() string {
 	return m.table
+}
+func (m *defaultFavoritesModel) GetVideoCount(ctx context.Context, uid int64) ([]*Favorites, error) {
+	query := fmt.Sprintf("select %s from %s where `vid` = ?", favoritesRows, m.table)
+	var resp []*Favorites
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, uid)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+func (m *defaultFavoritesModel) GetFavoriteCount(ctx context.Context, uid int64) ([]*Favorites, error) {
+	query := fmt.Sprintf("select %s from %s where `uid` = ?", favoritesRows, m.table)
+	var resp []*Favorites
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, uid)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
 }

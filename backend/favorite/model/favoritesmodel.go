@@ -1,9 +1,6 @@
 package model
 
-import (
-	"github.com/zeromicro/go-zero/core/stores/cache"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
-)
+import "github.com/zeromicro/go-zero/core/stores/sqlx"
 
 var _ FavoritesModel = (*customFavoritesModel)(nil)
 
@@ -20,8 +17,8 @@ type (
 )
 
 // NewFavoritesModel returns a model for the database table.
-func NewFavoritesModel(conn sqlx.SqlConn, c cache.CacheConf, opts ...cache.Option) FavoritesModel {
+func NewFavoritesModel(conn sqlx.SqlConn) FavoritesModel {
 	return &customFavoritesModel{
-		defaultFavoritesModel: newFavoritesModel(conn, c, opts...),
+		defaultFavoritesModel: newFavoritesModel(conn),
 	}
 }

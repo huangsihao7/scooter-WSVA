@@ -1,5 +1,5 @@
 Name: user.rpc
-ListenOn: 0.0.0.0:8080
+ListenOn: 0.0.0.0:8010
 Etcd:
   Hosts:
   - 127.0.0.1:2379
@@ -9,3 +9,13 @@ DataSource: root:8691136f0fc946ffb141307209d3143f@tcp(172.22.110.66:3310)/qiniu?
 Cache:
   - Host: 172.22.110.66:6388
 Salt: HWVOFkGgPTryzICwd7qnJaZR9KQ2i8xe
+FavoriteRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: favorite.rpc
+RelationRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: relation.rpc

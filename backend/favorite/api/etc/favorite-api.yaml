@@ -1,6 +1,6 @@
 Name: favorite-api
 Host: 0.0.0.0
-Port: 8889
+Port: 8892
 Favorite:
   Etcd:
     Hosts:

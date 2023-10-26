@@ -14,13 +14,12 @@
  Date: 25/10/2023 14:03:58
 */
 
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
+
 
 -- ----------------------------
 -- Table structure for favorites
 -- ----------------------------
-DROP TABLE IF EXISTS `favorites`;
+
 CREATE TABLE `favorites`  (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `uid` int UNSIGNED NOT NULL,
@@ -30,5 +29,3 @@ CREATE TABLE `favorites`  (
   `deleted_at` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
-
-SET FOREIGN_KEY_CHECKS = 1;
