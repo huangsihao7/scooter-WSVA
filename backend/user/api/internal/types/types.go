@@ -43,5 +43,6 @@ type UserInfoResponse struct {
 }
 
 type UserUploadResponse struct {
-	Url string `json:"url"`
+	Url      string `json:"url"`
+	CoverUrl string `json:"coverUrl"`
 }
