@@ -66,6 +66,7 @@ func (l *ListVideoLogic) ListVideo(in *feed.ListVideoRequest) (*feed.ListVideoRe
 			CommentCount:  uint32(item.CommentCount),
 			IsFavorite:    IsFavorite,
 			Title:         item.Title,
+			CreateTime:    item.CreatedAt.Unix(),
 		})
 	}
 	return &feed.ListVideoResponse{

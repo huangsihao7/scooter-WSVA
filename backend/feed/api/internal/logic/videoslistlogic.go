@@ -58,6 +58,7 @@ func (l *VideosListLogic) VideosList() (resp *types.VideosListResp, err error) {
 			CommentCount:  int64(item.CommentCount),
 			IsFavorite:    item.IsFavorite,
 			Title:         item.Title,
+			CreateTime:    item.CreateTime,
 		})
 	}
 	return &types.VideosListResp{

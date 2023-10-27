@@ -32,6 +32,7 @@ type VideoInfo struct {
 	CommentCount  int64    `json:"commentCount"`
 	IsFavorite    bool     `json:"isFavorite"`
 	Title         string   `json:"title"`
+	CreateTime    int64    `json:"createTime"`
 }
 
 type UserInfo struct {
