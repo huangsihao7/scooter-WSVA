@@ -70,6 +70,16 @@ message ListFeedResponse {
    string status_msg = 2;
    repeated VideoInfo video_list = 3;
 }
+message CategoryFeedRequest {
+   uint32 actor_id = 1;
+   string category =2;
+}
+
+message CategoryFeedResponse {
+   int32 status_code = 1;
+   string status_msg = 2;
+   repeated VideoInfo video_list = 3;
+}
 
 service Feed {
    rpc CreateVideo(CreateVideoRequest) returns (CreateVideoResponse) {}
@@ -77,4 +87,5 @@ service Feed {
 //   rpc CountVideo(CountVideoRequest) returns (CountVideoResponse) {}
 //   rpc ListVideosByRecommend(ListFeedRequest) returns (ListFeedResponse);
    rpc ListVideos(ListFeedRequest) returns (ListFeedResponse);
+   rpc ListCategoryVideos(CategoryFeedRequest) returns (CategoryFeedResponse);
 }

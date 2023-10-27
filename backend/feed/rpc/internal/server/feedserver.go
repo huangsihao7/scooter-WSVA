@@ -37,3 +37,8 @@ func (s *FeedServer) ListVideos(ctx context.Context, in *feed.ListFeedRequest) (
 	l := logic.NewListVideosLogic(ctx, s.svcCtx)
 	return l.ListVideos(in)
 }
+
+func (s *FeedServer) ListCategoryVideos(ctx context.Context, in *feed.CategoryFeedRequest) (*feed.CategoryFeedResponse, error) {
+	l := logic.NewListCategoryVideosLogic(ctx, s.svcCtx)
+	return l.ListCategoryVideos(in)
+}
