@@ -6,9 +6,9 @@ go run relation/rpc/relation.go -f relation/rpc/etc/relation.yaml >> /build/outp
 go run comment/rpc/comment.go -f comment/rpc/etc/comment.yaml >> /build/output.log 2>&1 &
 
 go run user/api/user.go -f user/api/etc/user.yaml >> /build/output.log 2>&1 &
-go run feed/api/feed.go -f feed/api/etc/feed.yaml >> /build/output.log 2>&1 &
-go run favorite/api/favorite.go -f favorite/api/etc/favorite.yaml >> /build/output.log 2>&1 &
+go run feed/api/feed.go -f feed/api/etc/feed-api.yaml >> /build/output.log 2>&1 &
+go run favorite/api/favorite.go -f favorite/api/etc/favorite-api.yaml >> /build/output.log 2>&1 &
 go run relation/api/relation.go -f relation/api/etc/relation.yaml >> /build/output.log 2>&1 &
-go run comment/api/comment.go -f comment/api/etc/comment.yaml >> /build/output.log 2>&1 &
+go run comment/api/comment.go -f comment/api/etc/comment-api.yaml >> /build/output.log 2>&1 &
 
 tail -f /build/output.log
