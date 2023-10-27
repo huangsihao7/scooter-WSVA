@@ -222,9 +222,3 @@ const GetVideoLink = () =>{
 
   
 </style>
-  
-    
-
-<style >
-
-</style>

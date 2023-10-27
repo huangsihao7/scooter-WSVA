@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import { NCarousel, NDrawer, NDrawerContent } from 'naive-ui';
+import { NCarousel, NDrawer, NDrawerContent, NCarouselItem } from 'naive-ui';
 import VideoPlus from './VideoPlus.vue'
 import { onMounted, ref } from 'vue'
 import CommentListCom from '@/components/comment/CommentListCom.vue'
+import { getVideosList } from '@/apis/video'
+
 
 // 评论区域是否可见
-const drawerVisible = ref<boolean>(true)
+const drawerVisible = ref<boolean>(false)
 
 // 动态变化轮播视频类
 const carouselClass = ref<string>('wide-carousel')
 
+const videos = ref<any>()
+
 onMounted(() => {
-    
+    getVideosList().then((res:any)=>{
+        videos.value = res.videos
+    })
 })
 
 // 更新评论区可见状态
@@ -34,10 +40,8 @@ const updateVisible = () =>{
             :show-dots="false"
             style="width: 100%; height: calc(100vh - 60px);"
         >
-            <VideoPlus @comment-visible-update="updateVisible"/>
-            <VideoPlus @comment-visible-update="updateVisible"/>
-            <VideoPlus @comment-visible-update="updateVisible"/>
-            <VideoPlus @comment-visible-update="updateVisible"/>
+            <n-carousel-item v-for="(video,index) in videos"> <VideoPlus :key="index" :video="video" @comment-visible-update="updateVisible"/></n-carousel-item>
+            
         </n-carousel>
     </div>
     <n-drawer

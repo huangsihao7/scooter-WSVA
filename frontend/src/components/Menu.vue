@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 22:36:38
+ * @LastEditTime: 2023-10-27 23:14:23
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\Menu.vue
 -->
@@ -147,7 +147,7 @@ const updateVisible = (flag : boolean) =>{
           <el-button :icon="Search" class="menu-search-btn" @click="SearchFunc">搜索</el-button>
         </template>
       </el-input>
-      <el-card shadow="always" v-if="isSearch" >
+      <el-card id="search-tab" shadow="always" v-if="isSearch" >
         <div><el-text class="mx-1" size="small">历史记录</el-text></div>
         <el-tag
           class="mx-1"
@@ -211,7 +211,7 @@ const updateVisible = (flag : boolean) =>{
 
 
 
-<style>
+<style scoped>
 .flex-grow {
   flex-grow: 1;
 }
@@ -229,8 +229,9 @@ const updateVisible = (flag : boolean) =>{
   border: 1px solid #e1e4ea;
 }
 
-.el-card {
+#search-tab {
   text-align: left;
+  z-index: 3000;
 }
 
 .el-text{

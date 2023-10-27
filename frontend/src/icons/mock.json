@@ -1,0 +1,23 @@
+{
+    "id": 17,
+    "author": {
+        "id": 5,
+        "name": "刘备",
+        "gender": 0,
+        "avatar": "s327crbzf.hn-bkt.clouddn.com/a74c50c16c528f561ecb3fc2f8e4856b9bd70c828616c558cad98be75a400c81.jpg",
+        "signature": "大汉江山都是我的",
+        "follow_count": 0,
+        "follower_count": 0,
+        "total_favorited": 0,
+        "work_count": 999,
+        "favorite_count": 0,
+        "is_follow": false
+    },
+    "playUrl": "s327crbzf.hn-bkt.clouddn.com/73f08fc96c88831d7e8e1a02f8135c0db01361b4814864c6d67527d462f3bcd1.mp4",
+    "coverUrl": "s327crbzf.hn-bkt.clouddn.com/73f08fc96c88831d7e8e1a02f8135c0db01361b4814864c6d67527d462f3bcd1.jpg",
+    "favoriteCount": 0,
+    "commentCount": 0,
+    "isFavorite": false,
+    "title": "动漫里面的男的好帅",
+    "createTime": 1698407252
+}

@@ -20,6 +20,6 @@ const drawerVisible = ref<boolean>(true)
     
     
 
-<style >
+<style scoped>
 
 </style>

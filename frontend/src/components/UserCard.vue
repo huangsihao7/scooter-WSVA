@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 20:20:32
+ * @LastEditTime: 2023-10-27 23:13:13
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -154,10 +154,4 @@ const cancleFollow = (item:any, index:any) =>{
 }
 
   
-</style>
-  
-    
-
-<style >
-
 </style>

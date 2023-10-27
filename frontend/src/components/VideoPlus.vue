@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 21:53:50
+ * @LastEditTime: 2023-10-27 23:57:27
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\VideoPlus.vue
 -->
@@ -13,6 +13,14 @@ import Hls from 'hls.js';
 import { ref, reactive, onMounted } from 'vue'
 import { NIcon, NButton } from 'naive-ui'
 import { Heart, ArrowRedo, ChatbubbleEllipses, Star  } from '@vicons/ionicons5'
+import { VideoType } from '@/apis/interface'
+
+interface propsType {
+  video: VideoType,
+  key:number
+}
+
+const props = defineProps<propsType>()
 
 const emit = defineEmits(['comment-visible-update'])
 const videoUrls = ref<any>([
@@ -56,7 +64,7 @@ const videoUrls = ref<any>([
 const dplayerObj = reactive({
     autoplay:true,
     video: {
-        url: videoUrls.value[0].url, //视频地址
+        url: 'http://'+props.video.playUrl, //视频地址
         type: 'mp4',
         customType: {
             customHls: function (video:any, player:any) {
@@ -103,13 +111,13 @@ const dplayerObj = reactive({
 
 // 喜欢按钮的操作
 const handleLikeBtn = () =>{
-    if(!videoUrls.value[0].isLike){
+    if(!props.video.isFavorite){
         likeAnimateClass.value = 'animate__heartBeat'
     }
     else{
         likeAnimateClass.value = ''
     }
-    videoUrls.value[0].isLike = !videoUrls.value[0].isLike
+    props.video.isFavorite = !props.video.isFavorite
     // TODO: 发请求
 }
 
@@ -153,15 +161,15 @@ onMounted(() => {
             :highlight="dplayerObj.highlight" />
             <div class="video-info-box">
                 <div class="header">
-                    <p class="title">@{{videoUrls[0].username}}</p>
-                    <p class="time">{{ videoUrls[0].createTime }}</p>
+                    <p class="title">@{{props.video.author.name}}</p>
+                    <p class="time">{{ props.video.createTime }}</p>
                 </div>
                 <div class="content">{{ videoUrls[0].content }}</div>
             </div>
             <div class='video-interaction-box'>
                 <div class="like">
                     <div :class=likeAnimateClass>
-                        <n-button v-if="videoUrls[0].isLike" class="btn" text @click="handleLikeBtn" color="rgb(254, 44, 85)" >
+                        <n-button v-if="props.video.isFavorite" class="btn" text @click="handleLikeBtn" color="rgb(254, 44, 85)" >
                             <n-icon  >
                                 <Heart  />
                             </n-icon>

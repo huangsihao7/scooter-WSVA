@@ -17,10 +17,5 @@ import VideoList from '@/components/VideoList.vue'
     
     
 
-<style >
-
-header {
-  line-height: 1.5;
-}
-
+<style scoped>
 </style>
