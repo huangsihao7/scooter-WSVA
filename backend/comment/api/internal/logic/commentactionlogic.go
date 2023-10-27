@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 
@@ -30,10 +31,10 @@ func (l *CommentActionLogic) CommentAction(req *types.ActionReq) (resp *types.Ac
 
 	//验证token是否有效
 	//token 解析
+	usrId, _ := l.ctx.Value("uid").(json.Number).Int64()
 
-	usrId := 10
 	_, err = l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
-		UserId:      int64(usrId),
+		UserId:      usrId,
 		ActionType:  req.ActionType,
 		VideoId:     req.VideoId,
 		CommentText: req.CommentText,

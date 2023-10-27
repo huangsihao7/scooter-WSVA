@@ -19,9 +19,10 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/favorite/list",
-				Handler: CommentListHandler(serverCtx),
+				Path:    "/comment/list",
+				Handler: GetCommentListHandler(serverCtx),
 			},
 		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
 }

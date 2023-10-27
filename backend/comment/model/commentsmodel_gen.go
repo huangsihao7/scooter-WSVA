@@ -28,6 +28,7 @@ type (
 		FindOne(ctx context.Context, id int64) (*Comments, error)
 		Update(ctx context.Context, data *Comments) error
 		Delete(ctx context.Context, id int64) error
+		FindComments(ctx context.Context, uid int64) ([]*Comments, error)
 	}
 
 	defaultCommentsModel struct {
@@ -87,4 +88,17 @@ func (m *defaultCommentsModel) Update(ctx context.Context, data *Comments) error
 
 func (m *defaultCommentsModel) tableName() string {
 	return m.table
+}
+func (m *defaultCommentsModel) FindComments(ctx context.Context, uid int64) ([]*Comments, error) {
+	query := fmt.Sprintf("select %s from %s where `vid` = ?", commentsRows, m.table)
+	var resp []*Comments
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, uid)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
 }
