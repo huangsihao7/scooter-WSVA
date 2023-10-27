@@ -7,12 +7,12 @@
  * @FilePath: \scooter-wsva\frontend\src\view\User.vue
 -->
 <script setup lang="ts">
-
+import VideoList from '@/components/VideoList.vue'
 </script>
 
 
 <template>
-  user
+  <VideoList/>
 </template>
     
     
