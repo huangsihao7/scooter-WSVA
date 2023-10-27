@@ -5,8 +5,12 @@ type (
 		Password string `json:"password"`
 	}
 	LoginResponse {
-		AccessToken  string `json:"accessToken"`
-		AccessExpire int64  `json:"accessExpire"`
+		Data       DataInfo `json:"data"`
+		StatusCode int      `json:"status_code"`
+		StatusMsg  string   `json:"status_msg"`
+	}
+	DataInfo {
+		AccessToken string `json:"accessToken"`
 	}
 	// 用户登录
 
@@ -56,7 +60,7 @@ type (
 service User {
 	@handler Login
 	post /user/login (LoginRequest) returns (LoginResponse)
-	
+
 	@handler Register
 	post /user/register (RegisterRequest) returns (RegisterResponse)
 }
@@ -67,7 +71,7 @@ service User {
 service User {
 	@handler UserInfo
 	post /user/userinfo (UserInfoReq) returns (UserInfoResponse)
-	
+
 	@handler Upload
 	put /user/upload returns (UserUploadResponse)
 }

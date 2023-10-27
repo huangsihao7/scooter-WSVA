@@ -1,6 +1,6 @@
 package constants
 
 const (
-	ServiceOKCode = 0
+	ServiceOKCode = 200
 	ServiceOK     = "success"
 )

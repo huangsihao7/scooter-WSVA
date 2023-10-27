@@ -7,8 +7,13 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	AccessToken  string `json:"accessToken"`
-	AccessExpire int64  `json:"accessExpire"`
+	Data       DataInfo `json:"data"`
+	StatusCode int      `json:"status_code"`
+	StatusMsg  string   `json:"status_msg"`
+}
+
+type DataInfo struct {
+	AccessToken string `json:"accessToken"`
 }
 
 type RegisterRequest struct {

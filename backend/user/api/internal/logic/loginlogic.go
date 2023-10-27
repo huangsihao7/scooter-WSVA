@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/common/jwtx"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 	"time"
@@ -33,7 +34,11 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 		Password: req.Password,
 	})
 	if err != nil {
-		return nil, err
+		return &types.LoginResponse{
+			Data:       types.DataInfo{AccessToken: ""},
+			StatusCode: constants.UserLoginFailCode,
+			StatusMsg:  constants.UserLoginFail,
+		}, err
 	}
 
 	now := time.Now().Unix()
@@ -45,7 +50,8 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 	}
 
 	return &types.LoginResponse{
-		AccessToken:  accessToken,
-		AccessExpire: now + accessExpire,
+		Data:       types.DataInfo{AccessToken: accessToken},
+		StatusCode: constants.ServiceOKCode,
+		StatusMsg:  constants.ServiceOK,
 	}, nil
 }

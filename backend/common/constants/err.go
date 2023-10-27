@@ -99,4 +99,6 @@ const (
 	OversizeVideo                 = "上传视频超过了200MB"
 	UserVideosDoNotExistedCode    = 10015
 	UserVideosDoNotExisted        = "查询用户无视频！"
+	UserLoginFailCode             = 10016
+	UserLoginFail                 = "手机号或密码错误"
 )
