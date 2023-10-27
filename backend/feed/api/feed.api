@@ -46,6 +46,12 @@ type (
 		FavoriteCount  uint32 `json:"favorite_count"`
 		IsFollow       bool   `json:"is_follow"`
 	}
+
+	VideosListResp {
+		StatusCode int         `json:"status_code"`
+		StatusMsg  string      `json:"status_msg"`
+		Videos     []VideoInfo `json:"videos"`
+	}
 )
 @server(
 	jwt: Auth
@@ -53,7 +59,10 @@ type (
 service feed-api {
 	@handler CreateVideo
 	post /feed/create (CreateVideoReq) returns(CreateVideoResp)
-	
+
 	@handler UserVideosList
 	post /feed/UserVideosList (UserVideoListReq) returns(UserVideoListResp)
+
+	@handler VideosList
+	get /feed/VideosList () returns(VideosListResp)
 }

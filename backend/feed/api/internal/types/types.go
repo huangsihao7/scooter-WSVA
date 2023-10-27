@@ -47,3 +47,9 @@ type UserInfo struct {
 	FavoriteCount  uint32 `json:"favorite_count"`
 	IsFollow       bool   `json:"is_follow"`
 }
+
+type VideosListResp struct {
+	StatusCode int         `json:"status_code"`
+	StatusMsg  string      `json:"status_msg"`
+	Videos     []VideoInfo `json:"videos"`
+}

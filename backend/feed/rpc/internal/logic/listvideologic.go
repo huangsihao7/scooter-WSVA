@@ -30,8 +30,8 @@ func (l *ListVideoLogic) ListVideo(in *feed.ListVideoRequest) (*feed.ListVideoRe
 	if err != nil {
 		if err == model.ErrNotFound {
 			return &feed.ListVideoResponse{
-				StatusCode: constants.UserDoNotExistedCode,
-				StatusMsg:  constants.UserDoNotExisted,
+				StatusCode: constants.UserVideosDoNotExistedCode,
+				StatusMsg:  constants.UserVideosDoNotExisted,
 			}, nil
 		} else {
 			return &feed.ListVideoResponse{

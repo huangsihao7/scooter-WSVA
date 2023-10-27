@@ -97,4 +97,6 @@ const (
 	UserDoNotExisted              = "查询用户不存在！"
 	OversizeVideoCode             = 10014
 	OversizeVideo                 = "上传视频超过了200MB"
+	UserVideosDoNotExistedCode    = 10015
+	UserVideosDoNotExisted        = "查询用户无视频！"
 )

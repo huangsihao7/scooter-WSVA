@@ -61,15 +61,13 @@ message User {
    optional uint32 favorite_count = 11; //点赞数量
 }
 message ListFeedRequest {
-   optional string latest_time = 1;
-   optional uint32 actor_id = 2;
+    uint32 actor_id = 1;
 }
 
 message ListFeedResponse {
    int32 status_code = 1;
    string status_msg = 2;
-   optional uint64 next_time = 3;
-   repeated VideoInfo video_list = 4;
+   repeated VideoInfo video_list = 3;
 }
 
 service Feed {

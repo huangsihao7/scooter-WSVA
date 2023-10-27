@@ -29,6 +29,7 @@ type (
 		Update(ctx context.Context, data *Videos) error
 		Delete(ctx context.Context, id int64) error
 		FindOwnFeed(ctx context.Context, uid int64) ([]*Videos, error)
+		FindFeeds(ctx context.Context) ([]*Videos, error)
 	}
 
 	defaultVideosModel struct {
@@ -105,6 +106,19 @@ func (m *defaultVideosModel) FindOwnFeed(ctx context.Context, uid int64) ([]*Vid
 	query := fmt.Sprintf("select %s from %s where `author_id` = ?", videosRows, m.table)
 	var resp []*Videos
 	err := m.conn.QueryRowsCtx(ctx, &resp, query, uid)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+func (m *defaultVideosModel) FindFeeds(ctx context.Context) ([]*Videos, error) {
+	query := fmt.Sprintf("select %s from %s ORDER BY `id` DESC", videosRows, m.table)
+	var resp []*Videos
+	err := m.conn.QueryRowsCtx(ctx, &resp, query)
 	switch err {
 	case nil:
 		return resp, nil
