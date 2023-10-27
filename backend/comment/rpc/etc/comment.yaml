@@ -2,7 +2,7 @@ Name: comment.rpc
 ListenOn: 0.0.0.0:8014
 Etcd:
   Hosts:
-  - 127.0.0.1:2379
+  - 172.22.121.53:2479
   Key: comment.rpc
 DataSource: root:8691136f0fc946ffb141307209d3143f@tcp(172.22.110.66:3310)/qiniu?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 Cache:
@@ -10,5 +10,5 @@ Cache:
 UserRpc:
   Etcd:
     Hosts:
-      - 127.0.0.1:2379
+      - 172.22.121.53:2479
     Key: user.rpc

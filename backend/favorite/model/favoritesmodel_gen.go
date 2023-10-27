@@ -20,6 +20,7 @@ var (
 	favoritesRows                = strings.Join(favoritesFieldNames, ",")
 	favoritesRowsExpectAutoSet   = strings.Join(stringx.Remove(favoritesFieldNames, "`id`", "`create_at`", "`create_time`", "`created_at`", "`update_at`", "`update_time`", "`updated_at`"), ",")
 	favoritesRowsWithPlaceHolder = strings.Join(stringx.Remove(favoritesFieldNames, "`id`", "`create_at`", "`create_time`", "`created_at`", "`update_at`", "`update_time`", "`updated_at`"), "=?,") + "=?"
+
 )
 
 type (
@@ -30,6 +31,7 @@ type (
 		Delete(ctx context.Context, id int64) error
 		GetVideoCount(ctx context.Context, id int64) ([] *Favorites, error)
 		GetFavoriteCount(ctx context.Context, id int64) ([] *Favorites, error)
+		IsFavorite(ctx context.Context, uid, vid int64) (bool, error)
 	}
 
 	defaultFavoritesModel struct {
@@ -114,5 +116,19 @@ func (m *defaultFavoritesModel) GetFavoriteCount(ctx context.Context, uid int64)
 		return nil, ErrNotFound
 	default:
 		return nil, err
+	}
+}
+
+func (m *defaultFavoritesModel) IsFavorite(ctx context.Context, uid, vid int64) (bool, error) {
+	query := fmt.Sprintf("select %s from %s where `uid` = ? and `vid` limit 1", favoritesRows, m.table)
+	var resp Favorites
+	err := m.conn.QueryRowCtx(ctx, &resp, query, uid, vid)
+	switch err {
+	case nil:
+		return true, nil
+	case sqlc.ErrNotFound:
+		return false, nil
+	default:
+		return false, err
 	}
 }

@@ -5,8 +5,12 @@ type (
 		Password string `json:"password"`
 	}
 	LoginResponse {
-		AccessToken  string `json:"accessToken"`
-		AccessExpire int64  `json:"accessExpire"`
+		Data       DataInfo `json:"data"`
+		StatusCode int      `json:"status_code"`
+		StatusMsg  string   `json:"status_msg"`
+	}
+	DataInfo {
+		AccessToken string `json:"accessToken"`
 	}
 	// 用户登录
 
@@ -34,12 +38,17 @@ type (
 		Uid int64 `json:"uid"`
 	}
 	UserInfoResponse {
-		Id     int64  `json:"id"`
-		Name   string `json:"name"`
-		Gender int64  `json:"gender"`
-		Mobile string `json:"mobile"`
-		Avatar string `json:"avatar"`
-		Dec    string `json:"dec"`
+		Id             uint32 `json:"id"`
+		Name           string `json:"name"`
+		Gender         uint32 `json:"gender"`
+		Avatar         string `json:"avatar"`
+		Signature      string `json:"signature"`
+		FollowCount    uint32 `json:"follow_count"`
+		FollowerCount  uint32 `json:"follower_count"`
+		TotalFavorited uint32 `json:"total_favorited"`
+		WorkCount      uint32 `json:"work_count"`
+		FavoriteCount  uint32 `json:"favorite_count"`
+		IsFollow       bool   `json:"is_follow"`
 	}
 
 	UserUploadResponse {

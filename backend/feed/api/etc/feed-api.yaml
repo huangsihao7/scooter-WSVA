@@ -4,7 +4,7 @@ Port: 8891
 Feed:
  Etcd:
    Hosts:
-     - 127.0.0.1:2379
+     - 172.22.121.53:2479
    Key: feed.rpc
 Auth:
   AccessSecret: uOvKLmVfztaXGpNYd4Z0I1SiT7MweJhl

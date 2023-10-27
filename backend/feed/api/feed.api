@@ -12,6 +12,46 @@ type (
 		StatusCode int    `json:"status_code"`
 		StatusMsg  string `json:"status_msg"`
 	}
+
+	UserVideoListReq {
+		ToUid int `json:"toUid"`
+	}
+
+	UserVideoListResp {
+		StatusCode int         `json:"status_code"`
+		StatusMsg  string      `json:"status_msg"`
+		Videos     []VideoInfo `json:"videos"`
+	}
+
+	VideoInfo {
+		Id            int64    `json:"id"`
+		Author        UserInfo `json:"author"`
+		PlayUrl       string   `json:"playUrl"`
+		CoverUrl      string   `json:"coverUrl"`
+		FavoriteCount int64    `json:"favoriteCount"`
+		CommentCount  int64    `json:"commentCount"`
+		IsFavorite    bool     `json:"isFavorite"`
+		Title         string   `json:"title"`
+	}
+	UserInfo {
+		Id             uint32 `json:"id"`
+		Name           string `json:"name"`
+		Gender         uint32 `json:"gender"`
+		Avatar         string `json:"avatar"`
+		Signature      string `json:"signature"`
+		FollowCount    uint32 `json:"follow_count"`
+		FollowerCount  uint32 `json:"follower_count"`
+		TotalFavorited uint32 `json:"total_favorited"`
+		WorkCount      uint32 `json:"work_count"`
+		FavoriteCount  uint32 `json:"favorite_count"`
+		IsFollow       bool   `json:"is_follow"`
+	}
+
+	VideosListResp {
+		StatusCode int         `json:"status_code"`
+		StatusMsg  string      `json:"status_msg"`
+		Videos     []VideoInfo `json:"videos"`
+	}
 )
 @server(
 	jwt: Auth
@@ -19,4 +59,10 @@ type (
 service feed-api {
 	@handler CreateVideo
 	post /feed/create (CreateVideoReq) returns(CreateVideoResp)
+
+	@handler UserVideosList
+	post /feed/UserVideosList (UserVideoListReq) returns(UserVideoListResp)
+
+	@handler VideosList
+	get /feed/VideosList () returns(VideosListResp)
 }

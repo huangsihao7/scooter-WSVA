@@ -4,6 +4,6 @@ Port: 8894
 Comment:
   Etcd:
     Hosts:
-      - 127.0.0.1:2379
+      - 172.22.121.53:2479
     Key: comment.rpc
 

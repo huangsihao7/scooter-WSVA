@@ -63,6 +63,8 @@ const (
 	UnableToGetFollowCountError       = "无法查询到关注数量"
 	UnableToGetIsFollowErrorCode      = 50028
 	UnableToGetIsFollowCountError     = "无法查询是否关注"
+	FindUserVideosErrorCode           = 50029
+	FindUserVideosError               = "查询用户视频失败"
 )
 
 // Expected Error
@@ -95,4 +97,8 @@ const (
 	UserDoNotExisted              = "查询用户不存在！"
 	OversizeVideoCode             = 10014
 	OversizeVideo                 = "上传视频超过了200MB"
+	UserVideosDoNotExistedCode    = 10015
+	UserVideosDoNotExisted        = "查询用户无视频！"
+	UserLoginFailCode             = 10016
+	UserLoginFail                 = "手机号或密码错误"
 )
