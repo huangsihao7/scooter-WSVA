@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 13:52:53
+ * @LastEditTime: 2023-10-27 14:40:15
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\Menu.vue
 -->
@@ -62,7 +62,7 @@ const doLogin = () =>{
   login(form.username, form.pwd).then((res: any) => {
     userStore().token = res.accessToken
     userStore().isLoggedIn = true
-    userStore().avatar = res.avatar
+    userStore().avatar ='http://' + res.avatar
     userStore().username = form.username
     ElMessage({
       message: '登录成功',
@@ -176,9 +176,7 @@ const updateVisible = (flag : boolean) =>{
       
     <el-sub-menu index="logout" v-if="userStore().isLoggedIn">
       <template #title>
-        <el-avatar
-          :src="userStore().avatar"
-        />
+        <el-avatar :src=userStore().avatar />
       </template>
       <el-menu-item index="logout">退出登录</el-menu-item>
     </el-sub-menu>
