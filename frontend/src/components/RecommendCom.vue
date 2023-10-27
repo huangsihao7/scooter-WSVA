@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 12:37:01
+ * @LastEditTime: 2023-10-27 14:08:24
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\RecommendCom.vue
 -->
@@ -12,7 +12,7 @@ import dplayer from '@/components/Video.vue';
 import Hls from 'hls.js';
 import { ref, reactive, onMounted } from 'vue'
 import { NIcon, NButton } from 'naive-ui'
-import { Heart  } from '@vicons/ionicons5'
+import { Heart, ArrowRedo, ChatbubbleEllipses, Star  } from '@vicons/ionicons5'
 
 
 const videoUrls = ref<any>([
@@ -22,8 +22,9 @@ const videoUrls = ref<any>([
         username:'我是一个粉刷匠',
         createTime:'3天前',
         likes:'12',
-        isLike:false,
+        isLike:true,
         collect:'22',
+        isCollect: true,
         isFollowed: false,
         title: '你好哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
         content:'在你拿着一堆早餐摆着慢慢吃，武汉人发出尖锐的爆鸣[捂脸]主要是那些炸物刚出炉最好吃了，你还等豆皮等半天[泪奔]来武汉过早，这种炸物建议到手就吃哦，热干面也不能放，拿到就要拌开'
@@ -100,13 +101,46 @@ const dplayerObj = reactive({
     ],
 })
 
-const likeState = ref<boolean>(false)
-
-const handleBtn = () =>{
-    console.log('btnnnnn')
-    videoUrls[0].isLike = !videoUrls[0].isLike
+// 喜欢按钮的操作
+const handleLikeBtn = () =>{
+    if(!videoUrls.value[0].isLike){
+        likeAnimateClass.value = 'animate__heartBeat'
+    }
+    else{
+        likeAnimateClass.value = ''
+    }
+    videoUrls.value[0].isLike = !videoUrls.value[0].isLike
+    // TODO: 发请求
 }
 
+// 收藏按钮的操作
+const handleCollectBtn = () =>{
+    if(!videoUrls.value[0].isCollect){
+        collectAnimateClass.value = 'animate__heartBeat'
+    }
+    else{
+        collectAnimateClass.value = ''
+    }
+    videoUrls.value[0].isCollect = !videoUrls.value[0].isCollect
+    // TODO: 发请求
+}
+
+// 评论按钮的操作
+const handleCommentBtn = () =>{
+    commentVisible.value = !commentVisible.value
+}
+
+// 分享按钮的操作
+const handleShareBtn = () =>{
+    shareVisible.value = !shareVisible.value
+}
+
+const likeAnimateClass = ref<String>('')
+const collectAnimateClass = ref<String>('')
+const commentAnimateClass = ref<String>('')
+const shareAnimateClass = ref<String>('')
+const commentVisible = ref<boolean>(false)
+const shareVisible = ref<boolean>(false)
 onMounted(() => {
 })
 </script>
@@ -125,18 +159,54 @@ onMounted(() => {
             </div>
             <div class="video-interaction-box">
                 <div class="like">
-                    <n-icon :component="Heart" size="40" color="rgb(254, 44, 85)"  :depth="1" />
-                    <div class="animate__heartBeat">
-                        <n-button   text style="font-size: 40px" @click="handleBtn">
-                            <n-icon v-if="videoUrls[0].isLike" color="rgb(254, 44, 85)">
-                                <Heart  />
-                            </n-icon>
-                            <n-icon v-else>
+                    <div :class=likeAnimateClass>
+                        <n-button v-if="videoUrls[0].isLike" class="btn" text @click="handleLikeBtn" color="rgb(254, 44, 85)" >
+                            <n-icon  >
                                 <Heart  />
                             </n-icon>
                         </n-button>
-                        <p v-if="videoUrls[0].isLike">123</p>
+                        <n-button v-else class="btn" text @click="handleLikeBtn" color="#ffffff" >
+                            <n-icon  >
+                                <Heart  />
+                            </n-icon>
+                        </n-button>
                     </div>
+                    <p>123</p>
+                </div>
+                <div class="comment">
+                    <div :class=commentAnimateClass>
+                        <n-button class="btn" text @click="handleCommentBtn" color="#fff" >
+                            <n-icon  >
+                                <ChatbubbleEllipses  />
+                            </n-icon>
+                        </n-button>
+                    </div>
+                    <p>123</p>
+                </div>
+                <div class="collect">
+                    <div :class=collectAnimateClass>
+                        <n-button v-if="videoUrls[0].isCollect" class="btn" text @click="handleCollectBtn" color="#ffb802" >
+                            <n-icon  >
+                                <Star  />
+                            </n-icon>
+                        </n-button>
+                        <n-button v-else class="btn" text @click="handleCollectBtn" color="#ffffff" >
+                            <n-icon  >
+                                <Star  />
+                            </n-icon>
+                        </n-button>
+                    </div>
+                    <p>123</p>
+                </div>
+                <div class="share">
+                    <div :class=shareAnimateClass>
+                        <n-button class="btn" text @click="handleShareBtn" color="#fff" >
+                            <n-icon  >
+                                <ArrowRedo  />
+                            </n-icon>
+                        </n-button>
+                    </div>
+                    <p>123</p>
                 </div>
             </div>
         </div>
@@ -197,8 +267,11 @@ onMounted(() => {
         right: 0;
         height: 400px;
         padding: 0 20px;
-        .like{
-            
+        .like, .collect, .comment, .share{
+            margin-top: 10px;
+            .btn{
+                font-size: 35px
+            }
             p{
                 display: block;
                 margin: 0;
