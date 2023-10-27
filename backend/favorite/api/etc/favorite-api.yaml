@@ -6,3 +6,6 @@ Favorite:
     Hosts:
       - 172.22.121.53:2479
     Key: favorite.rpc
+Auth:
+  AccessSecret: uOvKLmVfztaXGpNYd4Z0I1SiT7MweJhl
+  AccessExpire: 86400

@@ -9,4 +9,5 @@ type Config struct {
 	zrpc.RpcServerConf
 	DataSource string          // 手动代码
 	Cache      cache.CacheConf // 手动代码
+	UserRpc    zrpc.RpcClientConf
 }

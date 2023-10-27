@@ -32,6 +32,9 @@ type (
 		GetVideoCount(ctx context.Context, id int64) ([] *Favorites, error)
 		GetFavoriteCount(ctx context.Context, id int64) ([] *Favorites, error)
 		IsFavorite(ctx context.Context, uid, vid int64) (bool, error)
+		FindOwnFavorites(ctx context.Context, uid int64) ([]*Favorites, error)
+		FindIsFavorite(ctx context.Context, uid int64, vid int64) bool
+		DeleteFavorite(ctx context.Context, uid int64, vid int64) error
 	}
 
 	defaultFavoritesModel struct {
@@ -120,7 +123,7 @@ func (m *defaultFavoritesModel) GetFavoriteCount(ctx context.Context, uid int64)
 }
 
 func (m *defaultFavoritesModel) IsFavorite(ctx context.Context, uid, vid int64) (bool, error) {
-	query := fmt.Sprintf("select %s from %s where `uid` = ? and `vid` limit 1", favoritesRows, m.table)
+	query := fmt.Sprintf("select %s from %s where `uid` = ? and `vid` = ? limit 1", favoritesRows, m.table)
 	var resp Favorites
 	err := m.conn.QueryRowCtx(ctx, &resp, query, uid, vid)
 	switch err {
@@ -131,4 +134,35 @@ func (m *defaultFavoritesModel) IsFavorite(ctx context.Context, uid, vid int64) 
 	default:
 		return false, err
 	}
+}
+func (m *defaultFavoritesModel) FindOwnFavorites(ctx context.Context, uid int64) ([]*Favorites, error) {
+	query := fmt.Sprintf("select %s from %s where `uid` = ?", favoritesRows, m.table)
+	var resp []*Favorites
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, uid)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+func (m *defaultFavoritesModel) FindIsFavorite(ctx context.Context, uid int64, vid int64) bool {
+	query := fmt.Sprintf("select %s from %s where `uid` = ? and `vid` = ? limit 1", favoritesRows, m.table)
+	var resp Favorites
+	err := m.conn.QueryRowCtx(ctx, &resp, query, uid, vid)
+	switch err {
+	case nil:
+		return true
+	case sqlc.ErrNotFound:
+		return false
+	default:
+		return false
+	}
+}
+func (m *defaultFavoritesModel) DeleteFavorite(ctx context.Context, uid int64, vid int64) error {
+	query := fmt.Sprintf("delete from %s where `uid` = ? and `vid` = ?", m.table)
+	_, err := m.conn.ExecCtx(ctx, query, uid, vid)
+	return err
 }
