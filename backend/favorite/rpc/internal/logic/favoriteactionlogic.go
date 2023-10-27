@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/favorite/model"
-	"log"
-
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/internal/svc"
-
+	model2 "github.com/huangsihao7/scooter-WSVA/feed/model"
 	"github.com/zeromicro/go-zero/core/logx"
+	"log"
 )
 
 type FavoriteActionLogic struct {
@@ -48,7 +47,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		return nil, err
 	}
 	// Check if video exists
-	_, err = l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
+	videoDetail, err := l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
 		if err == model.ErrNotFound {
 			log.Println("视频不存在")
@@ -83,7 +82,29 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 			Uid: userId,
 			Vid: videoId,
 		}
+
+		//添加到数据库
 		_, err = l.svcCtx.Model.Insert(l.ctx, &newFavorite)
+		if err != nil {
+			log.Println(err.Error())
+			return &favorite.FavoriteActionResponse{
+				StatusCode: constants.FavoriteServiceErrorCode,
+				StatusMsg:  constants.FavoriteServiceError,
+			}, nil
+		}
+
+		//增加video的点赞数
+		err = l.svcCtx.VideoModel.Update(l.ctx, &model2.Videos{
+			Id:            videoId,
+			AuthorId:      videoDetail.AuthorId,
+			Title:         videoDetail.Title,
+			CoverUrl:      videoDetail.CoverUrl,
+			PlayUrl:       videoDetail.PlayUrl,
+			FavoriteCount: videoDetail.FavoriteCount + 1,
+			CommentCount:  videoDetail.CommentCount,
+			Category:      videoDetail.Category,
+		})
+
 		if err != nil {
 			log.Println(err.Error())
 			return &favorite.FavoriteActionResponse{
@@ -113,6 +134,24 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 			}, nil
 		}
 		err = l.svcCtx.Model.DeleteFavorite(l.ctx, userId, videoId)
+		if err != nil {
+			log.Println(err.Error())
+			return &favorite.FavoriteActionResponse{
+				StatusCode: constants.FavoriteServiceErrorCode,
+				StatusMsg:  constants.FavoriteServiceError,
+			}, nil
+		}
+		//减少video的点赞数
+		err = l.svcCtx.VideoModel.Update(l.ctx, &model2.Videos{
+			Id:            videoId,
+			AuthorId:      videoDetail.AuthorId,
+			Title:         videoDetail.Title,
+			CoverUrl:      videoDetail.CoverUrl,
+			PlayUrl:       videoDetail.PlayUrl,
+			FavoriteCount: videoDetail.FavoriteCount - 1,
+			CommentCount:  videoDetail.CommentCount,
+			Category:      videoDetail.Category,
+		})
 		if err != nil {
 			log.Println(err.Error())
 			return &favorite.FavoriteActionResponse{

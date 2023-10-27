@@ -7,6 +7,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/internal/svc"
 	constants "github.com/huangsihao7/scooter-WSVA/common/constants"
+	model2 "github.com/huangsihao7/scooter-WSVA/feed/model"
 	"log"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -44,7 +45,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 		return nil, err
 	}
 	// 检查视频id 是否存在
-	_, err = l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
+	videoDetail, err := l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
 		if err == model.ErrNotFound {
 			log.Println("视频不存在")
@@ -66,6 +67,24 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 			log.Println(err.Error())
 			return nil, err
 		}
+		//添加video的评论数
+		err = l.svcCtx.VideoModel.Update(l.ctx, &model2.Videos{
+			Id:            videoId,
+			AuthorId:      videoDetail.AuthorId,
+			Title:         videoDetail.Title,
+			CoverUrl:      videoDetail.CoverUrl,
+			PlayUrl:       videoDetail.PlayUrl,
+			FavoriteCount: videoDetail.FavoriteCount,
+			CommentCount:  videoDetail.CommentCount + 1,
+			Category:      videoDetail.Category,
+		})
+		if err != nil {
+			log.Println(err.Error())
+			return &comment.CommentActionResponse{
+				StatusCode: constants.UnableToCreateCommentErrorCode,
+				StatusMsg:  constants.UnableToCreateCommentError,
+			}, nil
+		}
 		return &comment.CommentActionResponse{
 			StatusCode: constants.ServiceOKCode,
 			StatusMsg:  constants.ServiceOK,
@@ -76,6 +95,24 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 		if err != nil {
 			log.Println(err.Error())
 			return nil, err
+		}
+		//减少video的评论数
+		err = l.svcCtx.VideoModel.Update(l.ctx, &model2.Videos{
+			Id:            videoId,
+			AuthorId:      videoDetail.AuthorId,
+			Title:         videoDetail.Title,
+			CoverUrl:      videoDetail.CoverUrl,
+			PlayUrl:       videoDetail.PlayUrl,
+			FavoriteCount: videoDetail.FavoriteCount,
+			CommentCount:  videoDetail.CommentCount - 1,
+			Category:      videoDetail.Category,
+		})
+		if err != nil {
+			log.Println(err.Error())
+			return &comment.CommentActionResponse{
+				StatusCode: constants.UnableToCreateCommentErrorCode,
+				StatusMsg:  constants.UnableToCreateCommentError,
+			}, nil
 		}
 		return &comment.CommentActionResponse{
 			StatusCode: constants.ServiceOKCode,
