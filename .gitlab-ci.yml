@@ -68,10 +68,11 @@ deploy-ml:
     - "54"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push" && $CI_MERGE_REQUEST_EVENT_TYPE == null'
+    - when: on_failure
+      exists:
+        - build-ml-image
   variables:
     GIT_STRATEGY: none
-  needs:
-    - job: build-ml-image
   script:
     - echo "=======start deploy======="
     - docker rm -f scooter-wsva-ml
@@ -94,10 +95,11 @@ deploy-backend:
     - "53"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push" && $CI_MERGE_REQUEST_EVENT_TYPE == null'
+    - when: on_failure
+      exists:
+        - build-backend-image
   variables:
     GIT_STRATEGY: none
-  needs:
-    - job: build-backend-image
   script:
     - echo "=======start deploy======="
     - docker rm -f scooter-wsva-backend
@@ -118,10 +120,11 @@ deploy-nginx:
     - "53"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push" && $CI_MERGE_REQUEST_EVENT_TYPE == null'
+    - when: on_failure
+      exists:
+        - build-nginx-image
   variables:
     GIT_STRATEGY: none
-  needs:
-    - job: build-nginx-image
   script:
     - echo "=======start deploy======="
     - docker rm -f scooter-wsva-nginx
