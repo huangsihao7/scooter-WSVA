@@ -43,13 +43,13 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 	now := time.Now().Unix()
 	accessExpire := l.svcCtx.Config.Auth.AccessExpire
 
-	accessToken, _ := jwtx.GetToken(l.svcCtx.Config.Auth.AccessSecret, now, accessExpire, res.Id)
+	accessToken, _ := jwtx.GetToken(l.svcCtx.Config.Auth.AccessSecret, now, accessExpire, res.UserId)
 
 	return &types.LoginResponse{
 		Avatar:      res.Avatar,
 		AccessToken: accessToken,
 		StatusCode:  int(res.StatusCode),
 		StatusMsg:   res.StatusMsg,
-		Id:          res.Id,
+		UserID:      res.UserId,
 	}, nil
 }

@@ -12,8 +12,8 @@ message LoginRequest {
 message LoginResponse {
   int32 status_code = 1; // 状态码，0-成功，其他值-失败
   string status_msg = 2; // 返回状态描述
-  int64 Id = 3;
-  string Avatar=4;
+  int64 UserId = 3;
+  string Avatar= 4;
 
 }
 // 用户登录

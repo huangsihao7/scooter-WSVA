@@ -48,7 +48,7 @@ const (
 	FavoriteServiceErrorCode          = 50020
 	FavoriteServiceError              = "点赞服务内部出错"
 	UserServiceInnerErrorCode         = 50021
-	UserServiceInnerError             = "登录服务出现内部错误，请稍后重试！"
+	UserServiceInnerError             = "user服务出现内部错误，请稍后重试！"
 	UnableToQueryVideoErrorCode       = 50022
 	UnableToQueryVideoError           = "无法查询到该视频"
 	AlreadyFollowingErrorCode         = 50023

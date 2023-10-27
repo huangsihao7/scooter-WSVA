@@ -35,7 +35,7 @@ func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
 			return &user.LoginResponse{
 				StatusCode: constants.UserNotExistedCode,
 				StatusMsg:  constants.UserNotExisted,
-				Id:         0,
+				UserId:     0,
 				Avatar:     "",
 			}, err
 		}
@@ -51,7 +51,7 @@ func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
 	return &user.LoginResponse{
 		StatusCode: constants.ServiceOKCode,
 		StatusMsg:  constants.ServiceOK,
-		Id:         res.Id,
+		UserId:     res.Id,
 		Avatar:     res.Avatar,
 	}, nil
 }
