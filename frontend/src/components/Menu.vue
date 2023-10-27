@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 14:40:15
+ * @LastEditTime: 2023-10-27 22:36:38
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\Menu.vue
 -->
@@ -61,6 +61,7 @@ const doLogin = () =>{
   //发请求
   login(form.username, form.pwd).then((res: any) => {
     userStore().token = res.accessToken
+    userStore().user_id = res.user_id
     userStore().isLoggedIn = true
     userStore().avatar ='http://' + res.avatar
     userStore().username = form.username
@@ -79,6 +80,7 @@ const doLogout = () =>{
   userStore().token = ''
   userStore().avatar = ''
   userStore().username = ''
+  userStore().user_id = -1
   ElMessage({
     message: '已退出',
     type: 'success'

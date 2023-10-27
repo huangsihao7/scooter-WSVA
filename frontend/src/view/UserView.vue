@@ -12,7 +12,7 @@ import VideoList from '@/components/VideoList.vue'
 
 
 <template>
-  <VideoList/>
+  
 </template>
     
     

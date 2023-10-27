@@ -7,6 +7,8 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Comment: typeof import('./src/components/comment/Comment.vue')['default']
+    CommentListCom: typeof import('./src/components/Comment/CommentListCom.vue')['default']
     copy: typeof import('./src/components/UserCard copy.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
@@ -47,6 +49,7 @@ declare module 'vue' {
     Video: typeof import('./src/components/Video.vue')['default']
     VideoCard: typeof import('./src/components/VideoCard.vue')['default']
     VideoList: typeof import('./src/components/VideoList.vue')['default']
+    VideoPlus: typeof import('./src/components/VideoPlus.vue')['default']
     WaterfallList: typeof import('./src/components/WaterfallList.vue')['default']
   }
 }

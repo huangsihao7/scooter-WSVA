@@ -7,12 +7,12 @@
  * @FilePath: \scooter-wsva\frontend\src\view\HomeView.vue
 -->
 <script setup lang="ts">
-import RecommendCom from '@/components/RecommendCom.vue'
+import VideoList from '@/components/VideoList.vue'
 </script>
 
 
 <template>
-  <div class="recommend-video-space"><RecommendCom/></div>
+  <VideoList/>
   
 </template>
     

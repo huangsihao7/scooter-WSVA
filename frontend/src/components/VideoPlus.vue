@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 14:08:24
+ * @LastEditTime: 2023-10-27 21:53:50
  * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\RecommendCom.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\VideoPlus.vue
 -->
 
 <script lang="ts" setup>
@@ -14,7 +14,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { NIcon, NButton } from 'naive-ui'
 import { Heart, ArrowRedo, ChatbubbleEllipses, Star  } from '@vicons/ionicons5'
 
-
+const emit = defineEmits(['comment-visible-update'])
 const videoUrls = ref<any>([
     {
         url:'http://127.0.0.1:8080/3.mp4',
@@ -128,6 +128,7 @@ const handleCollectBtn = () =>{
 // 评论按钮的操作
 const handleCommentBtn = () =>{
     commentVisible.value = !commentVisible.value
+    emit('comment-visible-update')
 }
 
 // 分享按钮的操作
@@ -157,7 +158,7 @@ onMounted(() => {
                 </div>
                 <div class="content">{{ videoUrls[0].content }}</div>
             </div>
-            <div class="video-interaction-box">
+            <div class='video-interaction-box'>
                 <div class="like">
                     <div :class=likeAnimateClass>
                         <n-button v-if="videoUrls[0].isLike" class="btn" text @click="handleLikeBtn" color="rgb(254, 44, 85)" >
@@ -214,14 +215,12 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-
-
 .video-container{
-
     .el-button{
         z-index: 9999;
     }
     .dplayer{
+        width: calc(100vw - 160px);
         height: calc(100vh - 60px);
     }
     .video-info-box{
@@ -237,7 +236,6 @@ onMounted(() => {
         .title, .time, .content{
             color: white;
         }
-
         .header{
             display: flex;
             .time{
@@ -249,12 +247,9 @@ onMounted(() => {
                 font-weight: bold;
             }
         }
-
         .content{
             text-align: left;
         }
-        
-
     }
 
     .video-interaction-box{
@@ -279,5 +274,4 @@ onMounted(() => {
         }
     }
 }
-
 </style>
