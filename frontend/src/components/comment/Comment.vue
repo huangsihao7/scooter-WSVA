@@ -2,18 +2,26 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 22:00:03
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 22:11:16
+ * @LastEditTime: 2023-10-27 23:02:56
  * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\Comment.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\comment\Comment.vue
 -->
 <script lang="ts" setup>
 import { defineComponent, ref } from 'vue'
-import { CashOutline as CashIcon } from '@vicons/ionicons5'
+import { CashOutline as CashIcon, Heart, ChatbubbleEllipses } from '@vicons/ionicons5'
 import { NIcon, NButton, NSpace,NThing,NAvatar } from 'naive-ui'
 
 interface propsType {
-  comment: Object
+  comment: CommentType
 }
+interface CommentType{
+  avatar: string,
+  name:string,
+  content:string,
+  likenum:number,
+  date:string
+}
+
 const props = defineProps<propsType>()
 
 const avatar = ref(true)
@@ -26,51 +34,47 @@ const action = ref(true)
 <template>
     <n-thing content-indented>
       <template v-if="avatar" #avatar>
-        <n-avatar>
+        <n-avatar :src="props.comment.avatar">
           <n-icon>
             <cash-icon />
           </n-icon>
         </n-avatar>
       </template>
-      <template v-if="header" #header>
-        货币
+      <template v-if="header" #header >
+        <span class="name"> {{props.comment.name}} </span>
       </template>
       <template v-if="headerExtra" #header-extra>
-        <n-button circle size="small">
-          <template #icon>
-            <cash-icon />
-          </template>
-        </n-button>
+        {{props.comment.date}}
       </template>
-      货币是为了提高交易效率而用于交换的中介商品。货币有多种形式，如贝壳粮食等自然物、金属纸张等加工品、银行卡信用卡等磁条卡、移动支付加密货币等APP。
+      {{ props.comment.content }}
       <template v-if="action" #action>
         <n-space>
           <n-button size="small">
             <template #icon>
               <n-icon>
-                <cash-icon />
+                <Heart />
               </n-icon>
             </template>
-            1 块钱
+            {{ props.comment.likenum }}
           </n-button>
           <n-button size="small">
             <template #icon>
               <n-icon>
-                <cash-icon />
+                <ChatbubbleEllipses />
               </n-icon>
             </template>
-            10 块钱
-          </n-button>
-          <n-button size="small">
-            <template #icon>
-              <n-icon>
-                <cash-icon />
-              </n-icon>
-            </template>
-            100 块钱
+            评论
           </n-button>
         </n-space>
       </template>
     </n-thing>
   </template>
+<style lang="scss" scoped>
+.n-thing{
+  text-align: left;
+  .name{
+    font-weight: bold;
+  }
+}
+</style>
   

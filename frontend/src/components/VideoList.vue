@@ -2,7 +2,7 @@
 import { NCarousel, NDrawer, NDrawerContent } from 'naive-ui';
 import VideoPlus from './VideoPlus.vue'
 import { onMounted, ref } from 'vue'
-import Comment from '@/components/comment/Comment.vue'
+import CommentListCom from '@/components/comment/CommentListCom.vue'
 
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(true)
@@ -51,7 +51,7 @@ const updateVisible = () =>{
     >
     
         <n-drawer-content title="评论" :native-scrollbar="false">
-            <Comment/>
+            <CommentListCom />
         </n-drawer-content>
   </n-drawer>
 </template>
