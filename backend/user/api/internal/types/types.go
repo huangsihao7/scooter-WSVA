@@ -7,13 +7,10 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	Data       DataInfo `json:"data"`
-	StatusCode int      `json:"status_code"`
-	StatusMsg  string   `json:"status_msg"`
-}
-
-type DataInfo struct {
+	Avatar      string `json:"avatar"`
 	AccessToken string `json:"accessToken"`
+	StatusCode  int    `json:"status_code"`
+	StatusMsg   string `json:"status_msg"`
 }
 
 type RegisterRequest struct {

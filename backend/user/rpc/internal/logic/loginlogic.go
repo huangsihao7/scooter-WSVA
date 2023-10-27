@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/common/crypt"
 	"github.com/huangsihao7/scooter-WSVA/user/model"
 	"google.golang.org/grpc/status"
@@ -31,7 +32,12 @@ func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
 	res, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile)
 	if err != nil {
 		if err == model.ErrNotFound {
-			return nil, status.Error(100, "用户不存在")
+			return &user.LoginResponse{
+				StatusCode: constants.UserNotExistedCode,
+				StatusMsg:  constants.UserNotExisted,
+				Id:         0,
+				Avatar:     "",
+			}, err
 		}
 		return nil, status.Error(500, err.Error())
 	}
@@ -43,9 +49,9 @@ func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
 	}
 
 	return &user.LoginResponse{
-		Id:     res.Id,
-		Name:   res.Name,
-		Gender: res.Gender,
-		Mobile: res.Mobile,
+		StatusCode: constants.ServiceOKCode,
+		StatusMsg:  constants.ServiceOK,
+		Id:         res.Id,
+		Avatar:     res.Avatar,
 	}, nil
 }

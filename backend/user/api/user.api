@@ -5,13 +5,12 @@ type (
 		Password string `json:"password"`
 	}
 	LoginResponse {
-		Data       DataInfo `json:"data"`
-		StatusCode int      `json:"status_code"`
-		StatusMsg  string   `json:"status_msg"`
-	}
-	DataInfo {
+		Avatar      string `json:"avatar"`
 		AccessToken string `json:"accessToken"`
+		StatusCode  int    `json:"status_code"`
+		StatusMsg   string `json:"status_msg"`
 	}
+
 	// 用户登录
 
 	// 用户注册
