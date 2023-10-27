@@ -30,7 +30,7 @@ func UserUpload(accessKey, secretKey, bucket string, filepath string) (string, e
 	putExtra := storage.RputV2Extra{} // 额外参数
 
 	//key为上传的文件名
-	key := crypt.PasswordEncrypt("wy", filepath)
+	key := crypt.PasswordEncrypt("wy", filepath) + ".jpg"
 	go func() {
 		err := resumeUploader.PutFile(context.Background(), &ret, upToken, key, filepath, &putExtra)
 		if err != nil {
