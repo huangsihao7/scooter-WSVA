@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-26 22:37:08
+ * @LastEditTime: 2023-10-27 12:37:01
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\RecommendCom.vue
 -->
@@ -10,7 +10,10 @@
 <script lang="ts" setup>
 import dplayer from '@/components/Video.vue';
 import Hls from 'hls.js';
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
+import { NIcon, NButton } from 'naive-ui'
+import { Heart  } from '@vicons/ionicons5'
+
 
 const videoUrls = ref<any>([
     {
@@ -19,8 +22,9 @@ const videoUrls = ref<any>([
         username:'我是一个粉刷匠',
         createTime:'3天前',
         likes:'12',
+        isLike:false,
         collect:'22',
-        isFollowed: true,
+        isFollowed: false,
         title: '你好哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
         content:'在你拿着一堆早餐摆着慢慢吃，武汉人发出尖锐的爆鸣[捂脸]主要是那些炸物刚出炉最好吃了，你还等豆皮等半天[泪奔]来武汉过早，这种炸物建议到手就吃哦，热干面也不能放，拿到就要拌开'
     },
@@ -95,6 +99,16 @@ const dplayerObj = reactive({
         },
     ],
 })
+
+const likeState = ref<boolean>(false)
+
+const handleBtn = () =>{
+    console.log('btnnnnn')
+    videoUrls[0].isLike = !videoUrls[0].isLike
+}
+
+onMounted(() => {
+})
 </script>
 
 <template>
@@ -109,9 +123,22 @@ const dplayerObj = reactive({
                 </div>
                 <div class="content">{{ videoUrls[0].content }}</div>
             </div>
-            <!-- <div class="video-interaction-box">
-                
-            </div> -->
+            <div class="video-interaction-box">
+                <div class="like">
+                    <n-icon :component="Heart" size="40" color="rgb(254, 44, 85)"  :depth="1" />
+                    <div class="animate__heartBeat">
+                        <n-button   text style="font-size: 40px" @click="handleBtn">
+                            <n-icon v-if="videoUrls[0].isLike" color="rgb(254, 44, 85)">
+                                <Heart  />
+                            </n-icon>
+                            <n-icon v-else>
+                                <Heart  />
+                            </n-icon>
+                        </n-button>
+                        <p v-if="videoUrls[0].isLike">123</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -120,6 +147,10 @@ const dplayerObj = reactive({
 
 
 .video-container{
+
+    .el-button{
+        z-index: 9999;
+    }
     .dplayer{
         height: calc(100vh - 60px);
     }
@@ -159,14 +190,20 @@ const dplayerObj = reactive({
     .video-interaction-box{
         display: block;
         height: auto;
-        pointer-events: none;
         position: absolute;
-        z-index: 2;
-        width: 30vw;
-        bottom: 48px;
-        height: 200px;
+        z-index: 999;
+        width: 100px;
+        bottom: 150px;
+        right: 0;
+        height: 400px;
         padding: 0 20px;
-        background-color: aqua;
+        .like{
+            
+            p{
+                display: block;
+                margin: 0;
+            }
+        }
     }
 }
 

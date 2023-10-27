@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-26 16:05:30
+ * @LastEditTime: 2023-10-27 12:57:09
  * @Description: 
- * @FilePath: \scooter-wsva\frontend\src\components\Menu.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\Menu.vue
 -->
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
@@ -60,17 +60,16 @@ const handleSelect = (key: string, keyPath: string[]) => {
 const doLogin = () =>{
   //发请求
   login(form.username, form.pwd).then((res: any) => {
-    userStore().token = res.token
+    userStore().token = res.data.accessToken
     userStore().isLoggedIn = true
     userStore().avatar = res.avatar
-    userStore().username = res.username
+    userStore().username = form.username
     ElMessage({
       message: '登录成功',
       type: 'success'
     })
     router.push('/')
   })
-  
   loginFormVisible.value = false
 }
 

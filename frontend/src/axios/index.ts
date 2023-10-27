@@ -2,8 +2,8 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 7:08:43
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-26 16:02:51
- * @FilePath: \scooter-wsva\frontend\src\axios\index.ts
+ * @LastEditTime: 2023-10-27 12:43:21
+ * @FilePath: \scooter-WSVA\frontend\src\axios\index.ts
  * @Description:
  *
  */
@@ -15,7 +15,7 @@ import { ElMessage } from 'element-plus'
 
 
 // const baseURl = 'http://127.0.0.1:8080';
-const baseURl = 'http://172.22.121.53:2479'
+const baseURl = 'http://172.22.121.53:7070'
 
 const service = axios.create({
   baseURL: baseURl,
@@ -41,11 +41,12 @@ service.interceptors.request.use(
 
 //  response拦截器
 service.interceptors.response.use((response) => {
-  if (response.data.status === 200) {
-    return response.data.data
-  } else if (response.data.status === 401) {
+  console.log(response,response.data)
+  if (response.status === 200) {
+    return response.data
+  } else if (response.status === 401) {
     ElMessage({
-      message: response.data.msg + '，请重新登录',
+      message: response.data.status_msg + '，请重新登录',
       type: 'error'
     })
     userStore().isLoggedIn = false
@@ -56,7 +57,7 @@ service.interceptors.response.use((response) => {
     return Promise.reject()
   } else {
     ElMessage({
-      message: response.data.msg,
+      message: response.data.status_msg,
       type: 'error'
     })
     return Promise.reject()
