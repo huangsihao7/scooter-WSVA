@@ -11,6 +11,8 @@ build-ml-image:
   only:
     refs:
       - main
+    changes:
+      - ML/**/*
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 172.22.121.50
   script:
@@ -29,6 +31,8 @@ build-backend-image:
   only:
     refs:
       - main
+    changes:
+      - backend/**/*
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 172.22.121.50
   script:
@@ -46,14 +50,16 @@ build-nginx-image:
   only:
     refs:
       - main
+    changes:
+      - scripts/nginx/**/*
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 172.22.121.50
   script:
     - |
       docker build \
       -t "172.22.121.50/ai-evaluation/scooter-wsva-nginx:$CI_PIPELINE_IID" \
-      -f backend/nginx.Dockerfile \
-      ./backend
+      -f scripts/nginx/Dockerfile \
+      ./scripts/nginx
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-nginx:$CI_PIPELINE_IID"
 
 deploy-ml:
@@ -64,6 +70,8 @@ deploy-ml:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push" && $CI_MERGE_REQUEST_EVENT_TYPE == null'
   variables:
     GIT_STRATEGY: none
+  dependencies:
+    - build-ml-image
   script:
     - echo "=======start deploy======="
     - docker rm -f scooter-wsva-ml
@@ -88,6 +96,8 @@ deploy-backend:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push" && $CI_MERGE_REQUEST_EVENT_TYPE == null'
   variables:
     GIT_STRATEGY: none
+  dependencies:
+    - build-backend-image
   script:
     - echo "=======start deploy======="
     - docker rm -f scooter-wsva-backend
@@ -110,6 +120,8 @@ deploy-nginx:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push" && $CI_MERGE_REQUEST_EVENT_TYPE == null'
   variables:
     GIT_STRATEGY: none
+  dependencies:
+    - build-nginx-image
   script:
     - echo "=======start deploy======="
     - docker rm -f scooter-wsva-nginx
