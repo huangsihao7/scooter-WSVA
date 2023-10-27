@@ -37,7 +37,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 
 	//检查用户id 是否能存在
 	userInfo, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
-		Id: userId,
+		ActorId: userId,
 	})
 	if err != nil {
 		return nil, err
