@@ -10,6 +10,6 @@ type Config struct {
 	DataSource string          // 手动代码
 	Cache      cache.CacheConf // 手动代码
 	Salt       string
-	//FavoriteRpc zrpc.RpcClientConf //手动代码
+	//FavoriteRpc zrpc.RpcClientConf //手动代码 fweqfqw
 	//RelationRpc zrpc.RpcClientConf //手动代码
 }
