@@ -84,7 +84,15 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 		}
 	}
 
-	cons := uint32(999)
+	voideoList, err := l.svcCtx.VideoModel.FindOwnFeed(l.ctx, actionId)
+	if err != nil {
+		logx.Error(err.Error())
+		return &user.UserInfoResponse{
+			StatusCode: constants.UserServiceInnerErrorCode,
+			StatusMsg:  constants.UserServiceInnerError,
+		}, nil
+	}
+	workCount := uint32(len(voideoList))
 	users := user.UserInfo{
 		Name:           res.Name,
 		Id:             uint32(actionId),
@@ -95,7 +103,7 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 		FavoriteCount:  &uint32favorCount,
 		TotalFavorited: &uint32FavorVideoCount,
 		IsFollow:       isFavorite,
-		WorkCount:      &cons,
+		WorkCount:      &workCount,
 	}
 
 	return &user.UserInfoResponse{

@@ -13,22 +13,25 @@ import (
 )
 
 type (
-	CountVideoRequest   = feed.CountVideoRequest
-	CountVideoResponse  = feed.CountVideoResponse
-	CreateVideoRequest  = feed.CreateVideoRequest
-	CreateVideoResponse = feed.CreateVideoResponse
-	ListFeedRequest     = feed.ListFeedRequest
-	ListFeedResponse    = feed.ListFeedResponse
-	ListVideoRequest    = feed.ListVideoRequest
-	ListVideoResponse   = feed.ListVideoResponse
-	User                = feed.User
-	VideoInfo           = feed.VideoInfo
+	CategoryFeedRequest  = feed.CategoryFeedRequest
+	CategoryFeedResponse = feed.CategoryFeedResponse
+	CountVideoRequest    = feed.CountVideoRequest
+	CountVideoResponse   = feed.CountVideoResponse
+	CreateVideoRequest   = feed.CreateVideoRequest
+	CreateVideoResponse  = feed.CreateVideoResponse
+	ListFeedRequest      = feed.ListFeedRequest
+	ListFeedResponse     = feed.ListFeedResponse
+	ListVideoRequest     = feed.ListVideoRequest
+	ListVideoResponse    = feed.ListVideoResponse
+	User                 = feed.User
+	VideoInfo            = feed.VideoInfo
 
 	Feed interface {
 		CreateVideo(ctx context.Context, in *CreateVideoRequest, opts ...grpc.CallOption) (*CreateVideoResponse, error)
 		ListVideo(ctx context.Context, in *ListVideoRequest, opts ...grpc.CallOption) (*ListVideoResponse, error)
 		// rpc CountVideo(CountVideoRequest) returns (CountVideoResponse) {}
 		ListVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
+		ListCategoryVideos(ctx context.Context, in *CategoryFeedRequest, opts ...grpc.CallOption) (*CategoryFeedResponse, error)
 	}
 
 	defaultFeed struct {
@@ -56,4 +59,9 @@ func (m *defaultFeed) ListVideo(ctx context.Context, in *ListVideoRequest, opts 
 func (m *defaultFeed) ListVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error) {
 	client := feed.NewFeedClient(m.cli.Conn())
 	return client.ListVideos(ctx, in, opts...)
+}
+
+func (m *defaultFeed) ListCategoryVideos(ctx context.Context, in *CategoryFeedRequest, opts ...grpc.CallOption) (*CategoryFeedResponse, error) {
+	client := feed.NewFeedClient(m.cli.Conn())
+	return client.ListCategoryVideos(ctx, in, opts...)
 }

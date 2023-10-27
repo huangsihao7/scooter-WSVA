@@ -61,6 +61,7 @@ func (l *UserVideosListLogic) UserVideosList(req *types.UserVideoListReq) (resp 
 			CommentCount:  int64(item.CommentCount),
 			IsFavorite:    item.IsFavorite,
 			Title:         item.Title,
+			CreateTime:    item.CreateTime,
 		})
 	}
 	return &types.UserVideoListResp{

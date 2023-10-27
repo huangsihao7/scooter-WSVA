@@ -12,25 +12,28 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type VideosListLogic struct {
+type CategoryVideosListLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewVideosListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *VideosListLogic {
-	return &VideosListLogic{
+func NewCategoryVideosListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CategoryVideosListLogic {
+	return &CategoryVideosListLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *VideosListLogic) VideosList() (resp *types.VideosListResp, err error) {
+func (l *CategoryVideosListLogic) CategoryVideosList(req *types.CategoryVideosListReq) (resp *types.CategoryVideosListResp, err error) {
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
-	videos, err := l.svcCtx.FeedRpc.ListVideos(l.ctx, &feed.ListFeedRequest{ActorId: uint32(uid)})
+	videos, err := l.svcCtx.FeedRpc.ListCategoryVideos(l.ctx, &feed.CategoryFeedRequest{
+		ActorId:  uint32(uid),
+		Category: req.Category,
+	})
 	if err != nil {
-		return &types.VideosListResp{
+		return &types.CategoryVideosListResp{
 			StatusCode: int(videos.StatusCode),
 			StatusMsg:  videos.StatusMsg,
 			Videos:     nil,
@@ -61,9 +64,10 @@ func (l *VideosListLogic) VideosList() (resp *types.VideosListResp, err error) {
 			CreateTime:    item.CreateTime,
 		})
 	}
-	return &types.VideosListResp{
+	return &types.CategoryVideosListResp{
 		StatusCode: constants.ServiceOKCode,
 		StatusMsg:  constants.ServiceOK,
 		Videos:     resList,
 	}, nil
+
 }

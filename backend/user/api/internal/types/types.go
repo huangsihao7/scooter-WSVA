@@ -9,7 +9,7 @@ type LoginRequest struct {
 type LoginResponse struct {
 	Avatar      string `json:"avatar"`
 	AccessToken string `json:"accessToken"`
-	Id          int64  `json:"id"`
+	UserID      int64  `json:"user_id"`
 	StatusCode  int    `json:"status_code"`
 	StatusMsg   string `json:"status_msg"`
 }
@@ -39,7 +39,6 @@ type UserInfoReq struct {
 type UserInfoResponse struct {
 	Id             uint32 `json:"id"`
 	Name           string `json:"name"`
-	Gender         uint32 `json:"gender"`
 	Avatar         string `json:"avatar"`
 	Signature      string `json:"signature"`
 	FollowCount    uint32 `json:"follow_count"`

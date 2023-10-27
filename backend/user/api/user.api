@@ -7,7 +7,7 @@ type (
 	LoginResponse {
 		Avatar      string `json:"avatar"`
 		AccessToken string `json:"accessToken"`
-		Id          int64  `json:"id"`
+		UserID      int64  `json:"user_id"`
 		StatusCode  int    `json:"status_code"`
 		StatusMsg   string `json:"status_msg"`
 	}
@@ -59,7 +59,7 @@ type (
 service User {
 	@handler Login
 	post /user/login (LoginRequest) returns (LoginResponse)
-
+	
 	@handler Register
 	post /user/register (RegisterRequest) returns (RegisterResponse)
 }
@@ -70,7 +70,7 @@ service User {
 service User {
 	@handler UserInfo
 	post /user/userinfo (UserInfoReq) returns (UserInfoResponse)
-
+	
 	@handler Upload
 	put /user/upload returns (UserUploadResponse)
 }

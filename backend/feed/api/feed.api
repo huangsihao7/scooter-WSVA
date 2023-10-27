@@ -32,6 +32,7 @@ type (
 		CommentCount  int64    `json:"commentCount"`
 		IsFavorite    bool     `json:"isFavorite"`
 		Title         string   `json:"title"`
+		CreateTime    int64    `json:"createTime"`
 	}
 	UserInfo {
 		Id             uint32 `json:"id"`
@@ -52,6 +53,14 @@ type (
 		StatusMsg  string      `json:"status_msg"`
 		Videos     []VideoInfo `json:"videos"`
 	}
+	CategoryVideosListReq {
+		Category string `form:"category"`
+	}
+	CategoryVideosListResp {
+		StatusCode int         `json:"status_code"`
+		StatusMsg  string      `json:"status_msg"`
+		Videos     []VideoInfo `json:"videos"`
+	}
 )
 @server(
 	jwt: Auth
@@ -65,4 +74,7 @@ service feed-api {
 
 	@handler VideosList
 	get /feed/VideosList () returns(VideosListResp)
+
+	@handler CategoryVideosList
+	get /feed/CategoryVideosList (CategoryVideosListReq) returns(CategoryVideosListResp)
 }

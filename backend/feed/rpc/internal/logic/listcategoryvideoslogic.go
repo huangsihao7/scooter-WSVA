@@ -12,38 +12,45 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type ListVideosLogic struct {
+type ListCategoryVideosLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewListVideosLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListVideosLogic {
-	return &ListVideosLogic{
+func NewListCategoryVideosLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListCategoryVideosLogic {
+	return &ListCategoryVideosLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *ListVideosLogic) ListVideos(in *feed.ListFeedRequest) (*feed.ListFeedResponse, error) {
-	Feeds, err := l.svcCtx.FeedModel.FindFeeds(l.ctx)
+func (l *ListCategoryVideosLogic) ListCategoryVideos(in *feed.CategoryFeedRequest) (*feed.CategoryFeedResponse, error) {
+	Feeds, err := l.svcCtx.FeedModel.FindCategoryFeeds(l.ctx, in.Category)
 	if err != nil {
 		if err == model.ErrNotFound {
-			return &feed.ListFeedResponse{
-				StatusCode: constants.UserVideosDoNotExistedCode,
-				StatusMsg:  constants.UserVideosDoNotExisted,
-			}, nil
+			return &feed.CategoryFeedResponse{
+				StatusCode: constants.CategoryVideosDoNotExistedCode,
+				StatusMsg:  constants.CategoryVideosDoNotExisted,
+			}, err
 		} else {
-			return &feed.ListFeedResponse{
-				StatusCode: constants.FindUserVideosErrorCode,
-				StatusMsg:  constants.FindUserVideosError,
-			}, nil
+			return &feed.CategoryFeedResponse{
+				StatusCode: constants.FindCategoryVideosErrorCode,
+				StatusMsg:  constants.FindCategoryVideosError,
+			}, err
 		}
 	}
+
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range Feeds {
-		userRpcRes, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.ActorId), ActorId: item.AuthorId})
+		userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.ActorId), ActorId: item.AuthorId})
+		if err != nil {
+			return &feed.CategoryFeedResponse{
+				StatusCode: constants.FindUserErrorCode,
+				StatusMsg:  constants.FindUserError,
+			}, err
+		}
 
 		userInfo := &feed.User{
 			Id:             userRpcRes.User.Id,
@@ -70,7 +77,7 @@ func (l *ListVideosLogic) ListVideos(in *feed.ListFeedRequest) (*feed.ListFeedRe
 			CreateTime:    item.CreatedAt.Unix(),
 		})
 	}
-	return &feed.ListFeedResponse{
+	return &feed.CategoryFeedResponse{
 		StatusCode: constants.ServiceOKCode,
 		StatusMsg:  constants.ServiceOK,
 		VideoList:  VideoList,

@@ -32,6 +32,7 @@ type VideoInfo struct {
 	CommentCount  int64    `json:"commentCount"`
 	IsFavorite    bool     `json:"isFavorite"`
 	Title         string   `json:"title"`
+	CreateTime    int64    `json:"createTime"`
 }
 
 type UserInfo struct {
@@ -49,6 +50,16 @@ type UserInfo struct {
 }
 
 type VideosListResp struct {
+	StatusCode int         `json:"status_code"`
+	StatusMsg  string      `json:"status_msg"`
+	Videos     []VideoInfo `json:"videos"`
+}
+
+type CategoryVideosListReq struct {
+	Category string `form:"category"`
+}
+
+type CategoryVideosListResp struct {
 	StatusCode int         `json:"status_code"`
 	StatusMsg  string      `json:"status_msg"`
 	Videos     []VideoInfo `json:"videos"`
