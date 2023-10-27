@@ -9,6 +9,7 @@ type LoginRequest struct {
 type LoginResponse struct {
 	Avatar      string `json:"avatar"`
 	AccessToken string `json:"accessToken"`
+	Id          int64  `json:"id"`
 	StatusCode  int    `json:"status_code"`
 	StatusMsg   string `json:"status_msg"`
 }

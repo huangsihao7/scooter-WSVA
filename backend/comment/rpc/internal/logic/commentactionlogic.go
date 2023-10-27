@@ -4,11 +4,10 @@ import (
 	"context"
 	"errors"
 	"github.com/huangsihao7/scooter-WSVA/comment/model"
-	"log"
-
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/internal/svc"
 	constants "github.com/huangsihao7/scooter-WSVA/common/constants"
+	"log"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -47,6 +46,10 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 	// 检查视频id 是否存在
 	_, err = l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
+		if err == model.ErrNotFound {
+			log.Println("视频不存在")
+			return nil, errors.New("评论视频不存在")
+		}
 		return nil, err
 	}
 
@@ -79,6 +82,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 			StatusMsg:  constants.ServiceOK,
 		}, nil
 	}
+
 	return &comment.CommentActionResponse{
 		StatusCode: constants.UnableToCreateCommentErrorCode,
 		StatusMsg:  constants.UnableToCreateCommentError,

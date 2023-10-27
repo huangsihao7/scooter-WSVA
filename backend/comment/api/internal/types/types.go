@@ -2,22 +2,44 @@
 package types
 
 type ActionReq struct {
-	VideoId     int64  `form:"video_id"`     // 视频id
-	ActionType  int32  `form:"action_type"`  // 1-发布评论，2-删除评论
-	CommentText string `form:"comment_text"` // 用户填写的评论内容，在action_type=1的时候使用
-	CommentId   int64  `form:"comment_id"`   // 要删除的评论id，在action_type=2的时候使用
+	VideoId     int64  `json:"video_id"`     // 视频id
+	ActionType  int32  `json:"action_type"`  // 1-发布评论，2-删除评论
+	CommentText string `json:"comment_text"` // 用户填写的评论内容，在action_type=1的时候使用
+	CommentId   int64  `json:"comment_id"`   // 要删除的评论id，在action_type=2的时候使用
 }
 
 type ActionResp struct {
-	StatusCode  int    `json:"status_code"`
-	StatusMsg   string `json:"status_msg"`
-	CommentText string `json:"comment_text"` // 返回用户评论的内容
+	StatusCode int    `json:"status_code"`
+	StatusMsg  string `json:"status_msg"`
 }
 
 type ListReq struct {
+	VideoId int64 `form:"video_id"` // 视频id
 }
 
 type ListResp struct {
+	StatusCode  int           `json:"status_code"`
+	StatusMsg   string        `json:"status_msg"`
+	CommentList []CommentInfo `json:"comment_list"`
+}
+
+type CommentInfo struct {
+	User       User   `json:"user"`
+	Content    string `json:"content"`
+	CreateDate string `json:"create_date"`
+}
+
+type User struct {
+	Id             uint32 `json:"id"`
+	Name           string `json:"name"`
+	Avatar         string `json:"avatar"`
+	Signature      string `json:"signature"`
+	FollowCount    uint32 `json:"follow_count"`
+	FollowerCount  uint32 `json:"follower_count"`
+	TotalFavorited uint32 `json:"total_favorited"`
+	WorkCount      uint32 `json:"work_count"`
+	FavoriteCount  uint32 `json:"favorite_count"`
+	IsFollow       bool   `json:"is_follow"`
 }
 
 type Response struct {

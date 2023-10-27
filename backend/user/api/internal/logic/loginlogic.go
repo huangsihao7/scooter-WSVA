@@ -50,5 +50,6 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 		AccessToken: accessToken,
 		StatusCode:  int(res.StatusCode),
 		StatusMsg:   res.StatusMsg,
+		Id:          res.Id,
 	}, nil
 }
