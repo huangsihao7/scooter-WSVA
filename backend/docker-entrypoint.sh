@@ -21,5 +21,3 @@ sleep 10
 go run comment/api/comment.go -f comment/api/etc/comment-api.yaml >> /build/output.log 2>&1 &
 
 tail -f /build/output.log
-backend/comment/api/etc/comment-api.yaml
-backend/comment/rpc/etc/comment.yaml
