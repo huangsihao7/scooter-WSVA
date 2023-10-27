@@ -29,6 +29,7 @@ declare module 'vue' {
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElRow: typeof import('element-plus/es')['ElRow']
+    ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSpace: typeof import('element-plus/es')['ElSpace']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
@@ -45,6 +46,7 @@ declare module 'vue' {
     UserCard: typeof import('./src/components/UserCard.vue')['default']
     Video: typeof import('./src/components/Video.vue')['default']
     VideoCard: typeof import('./src/components/VideoCard.vue')['default']
+    VideoList: typeof import('./src/components/VideoList.vue')['default']
     WaterfallList: typeof import('./src/components/WaterfallList.vue')['default']
   }
 }

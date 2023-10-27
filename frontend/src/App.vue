@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-25 18:53:55
+ * @LastEditTime: 2023-10-27 20:26:10
  * @Description: 
- * @FilePath: \scooter-wsva\frontend\src\App.vue
+ * @FilePath: \scooter-WSVA\frontend\src\App.vue
 -->
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
@@ -45,6 +45,9 @@ import Menu from './components/Menu.vue'
 
 .el-main{
   padding: 0;
+  background-color: #ffffff;
+  background-image: linear-gradient(133deg, #ffffff 12%, #d6e4ff 100%);
+
 }
 
 </style>

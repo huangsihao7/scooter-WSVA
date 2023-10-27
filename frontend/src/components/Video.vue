@@ -2,8 +2,8 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-26 20:58:05
- * @Description: 
+ * @LastEditTime: 2023-10-27 20:33:54
+ * @Description: 视频基础组件
  * @FilePath: \scooter-WSVA\frontend\src\components\Video.vue
 -->
 

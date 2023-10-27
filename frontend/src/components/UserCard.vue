@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 19:24:28
+ * @LastEditTime: 2023-10-27 20:20:32
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -121,7 +121,7 @@ const cancleFollow = (item:any, index:any) =>{
         
         .el-image{
             width: 100%;
-            height: 20vh;
+            height: 30vh;
         }
         .play-btn{
             width: 100%;
