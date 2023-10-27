@@ -11,8 +11,8 @@ build-ml-image:
   only:
     refs:
       - main
-    changes:
-      - ML/**/*
+    # changes:
+    #   - ML/**/*
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 172.22.121.50
   script:
@@ -31,8 +31,8 @@ build-backend-image:
   only:
     refs:
       - main
-    changes:
-      - backend/**/*
+    # changes:
+    #   - backend/**/*
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 172.22.121.50
   script:
@@ -50,8 +50,8 @@ build-nginx-image:
   only:
     refs:
       - main
-    changes:
-      - scripts/nginx/**/*
+    # changes:
+    #   - scripts/nginx/**/*
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 172.22.121.50
   script:
@@ -68,9 +68,9 @@ deploy-ml:
     - "54"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push" && $CI_MERGE_REQUEST_EVENT_TYPE == null'
-    - when: on_failure
-      exists:
-        - build-ml-image
+    # - when: on_failure
+    #   exists:
+    #     - build-ml-image
   variables:
     GIT_STRATEGY: none
   script:
@@ -95,9 +95,9 @@ deploy-backend:
     - "53"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push" && $CI_MERGE_REQUEST_EVENT_TYPE == null'
-    - when: on_failure
-      exists:
-        - build-backend-image
+    # - when: on_failure
+    #   exists:
+    #     - build-backend-image
   variables:
     GIT_STRATEGY: none
   script:
@@ -120,9 +120,9 @@ deploy-nginx:
     - "53"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push" && $CI_MERGE_REQUEST_EVENT_TYPE == null'
-    - when: on_failure
-      exists:
-        - build-nginx-image
+    # - when: on_failure
+    #   exists:
+    #     - build-nginx-image
   variables:
     GIT_STRATEGY: none
   script:
