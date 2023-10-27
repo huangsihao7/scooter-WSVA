@@ -5,13 +5,13 @@ type (
 		Password string `json:"password"`
 	}
 	LoginResponse {
-		Data       DataInfo `json:"data"`
-		StatusCode int      `json:"status_code"`
-		StatusMsg  string   `json:"status_msg"`
-	}
-	DataInfo {
+		Avatar      string `json:"avatar"`
 		AccessToken string `json:"accessToken"`
+		Id          int64  `json:"id"`
+		StatusCode  int    `json:"status_code"`
+		StatusMsg   string `json:"status_msg"`
 	}
+
 	// 用户登录
 
 	// 用户注册
@@ -40,7 +40,6 @@ type (
 	UserInfoResponse {
 		Id             uint32 `json:"id"`
 		Name           string `json:"name"`
-		Gender         uint32 `json:"gender"`
 		Avatar         string `json:"avatar"`
 		Signature      string `json:"signature"`
 		FollowCount    uint32 `json:"follow_count"`

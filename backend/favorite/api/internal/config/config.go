@@ -8,4 +8,7 @@ import (
 type Config struct {
 	rest.RestConf
 	Favorite zrpc.RpcClientConf // 手动代码
+	Auth     struct {
+		AccessSecret string
+	}
 }

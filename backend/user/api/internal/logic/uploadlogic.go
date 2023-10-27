@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"fmt"
+	"github.com/huangsihao7/scooter-WSVA/common/crypt"
 	"github.com/huangsihao7/scooter-WSVA/user/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/user/api/internal/types"
 	"github.com/qiniu/go-sdk/v7/auth/qbox"
@@ -92,7 +93,7 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 
 	//key为上传的文件名
 	key := handler.Filename // 上传路径，如果当前目录中已存在相同文件，则返回上传失败错误
-	//key = crypt.PasswordEncrypt("wy", key)
+	key = crypt.PasswordEncrypt("wy", key) + ".mp4"
 	go func() {
 		err = resumeUploader.Put(context.Background(), &ret, upToken, key, file, handler.Size, &putExtra)
 		if err != nil {

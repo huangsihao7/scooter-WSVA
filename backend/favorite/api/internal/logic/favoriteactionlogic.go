@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
 
 	"github.com/huangsihao7/scooter-WSVA/favorite/api/internal/svc"
@@ -29,17 +30,15 @@ func (l *FavoriteActionLogic) FavoriteAction(req *types.ActionReq) (resp *types.
 
 	//拿到用户token
 
-	//token过期返回用户身份过期
-
 	//token解析得到用户id
-
-	userId := 1
+	//token 解析
+	userId, _ := l.ctx.Value("uid").(json.Number).Int64()
 
 	//请求服务
 	r, err := l.svcCtx.Favor.FavoriteAction(l.ctx, &favorite.FavoriteActionRequest{
-		UserId:     int64(userId),
-		VideoId:    req.Vid,
-		ActionType: req.Action,
+		UserId:     userId,
+		VideoId:    req.VideoId,
+		ActionType: req.ActionType,
 	})
 	if err != nil {
 		return nil, err

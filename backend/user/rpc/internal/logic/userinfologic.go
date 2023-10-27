@@ -75,10 +75,15 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 	uint32FavorVideoCount := uint32(len(favorVideoCount))
 
 	//查询A是否关注B
-	isFavorite := l.svcCtx.RelationModel.FindIsFavorite(l.ctx, userId, actionId)
-	if err != nil {
-		return nil, status.Error(500, err.Error())
+	isFavorite := false
+	//如果查询的是自己 那就不做这个查询了
+	if userId != actionId {
+		isFavorite = l.svcCtx.RelationModel.FindIsFavorite(l.ctx, userId, actionId)
+		if err != nil {
+			return nil, status.Error(500, err.Error())
+		}
 	}
+
 	cons := uint32(999)
 	users := user.UserInfo{
 		Name:           res.Name,

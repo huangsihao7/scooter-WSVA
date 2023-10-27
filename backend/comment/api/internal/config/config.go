@@ -8,4 +8,8 @@ import (
 type Config struct {
 	rest.RestConf
 	Comment zrpc.RpcClientConf
+	Auth    struct {
+		AccessSecret string
+		AccessExpire int64
+	}
 }

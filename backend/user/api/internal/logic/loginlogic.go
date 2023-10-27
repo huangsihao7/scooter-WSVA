@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/common/jwtx"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 	"time"
@@ -35,23 +34,22 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 	})
 	if err != nil {
 		return &types.LoginResponse{
-			Data:       types.DataInfo{AccessToken: ""},
-			StatusCode: constants.UserLoginFailCode,
-			StatusMsg:  constants.UserLoginFail,
-		}, err
+
+			StatusCode: int(res.StatusCode),
+			StatusMsg:  res.StatusMsg,
+		}, nil
 	}
 
 	now := time.Now().Unix()
 	accessExpire := l.svcCtx.Config.Auth.AccessExpire
 
-	accessToken, err := jwtx.GetToken(l.svcCtx.Config.Auth.AccessSecret, now, accessExpire, res.Id)
-	if err != nil {
-		return nil, err
-	}
+	accessToken, _ := jwtx.GetToken(l.svcCtx.Config.Auth.AccessSecret, now, accessExpire, res.Id)
 
 	return &types.LoginResponse{
-		Data:       types.DataInfo{AccessToken: accessToken},
-		StatusCode: constants.ServiceOKCode,
-		StatusMsg:  constants.ServiceOK,
+		Avatar:      res.Avatar,
+		AccessToken: accessToken,
+		StatusCode:  int(res.StatusCode),
+		StatusMsg:   res.StatusMsg,
+		Id:          res.Id,
 	}, nil
 }
