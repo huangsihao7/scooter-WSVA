@@ -94,16 +94,17 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 	}
 	workCount := uint32(len(voideoList))
 	users := user.UserInfo{
-		Name:           res.Name,
-		Id:             uint32(actionId),
-		Avatar:         &res.Avatar,
-		Signature:      &res.Dec,
-		FollowCount:    &uint32followCount,
-		FollowerCount:  &uint32followerCount,
-		FavoriteCount:  &uint32favorCount,
-		TotalFavorited: &uint32FavorVideoCount,
-		IsFollow:       isFavorite,
-		WorkCount:      &workCount,
+		Name:            res.Name,
+		Id:              uint32(actionId),
+		Avatar:          &res.Avatar,
+		Signature:       &res.Dec,
+		FollowCount:     &uint32followCount,
+		FollowerCount:   &uint32followerCount,
+		FavoriteCount:   &uint32favorCount,
+		TotalFavorited:  &uint32FavorVideoCount,
+		IsFollow:        isFavorite,
+		WorkCount:       &workCount,
+		BackgroundImage: &res.BackgroundUrl,
 	}
 
 	return &user.UserInfoResponse{

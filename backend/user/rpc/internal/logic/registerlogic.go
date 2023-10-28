@@ -35,12 +35,13 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 
 	if err == model.ErrNotFound {
 		newUser := model.User{
-			Name:     in.Name,
-			Gender:   in.Gender,
-			Mobile:   in.Mobile,
-			Password: crypt.PasswordEncrypt(l.svcCtx.Config.Salt, in.Password),
-			Avatar:   in.Avatar,
-			Dec:      in.Dec,
+			Name:          in.Name,
+			Gender:        in.Gender,
+			Mobile:        in.Mobile,
+			Password:      crypt.PasswordEncrypt(l.svcCtx.Config.Salt, in.Password),
+			Avatar:        in.Avatar,
+			Dec:           in.Dec,
+			BackgroundUrl: in.BackgroundImage,
 		}
 
 		res, err := l.svcCtx.UserModel.Insert(l.ctx, &newUser)
@@ -54,12 +55,13 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 		}
 
 		return &user.RegisterResponse{
-			Id:     newUser.Id,
-			Name:   newUser.Name,
-			Gender: newUser.Gender,
-			Mobile: newUser.Mobile,
-			Avatar: newUser.Avatar,
-			Dec:    newUser.Dec,
+			Id:              newUser.Id,
+			Name:            newUser.Name,
+			Gender:          newUser.Gender,
+			Mobile:          newUser.Mobile,
+			Avatar:          newUser.Avatar,
+			Dec:             newUser.Dec,
+			BackgroundImage: newUser.BackgroundUrl,
 		}, nil
 
 	}

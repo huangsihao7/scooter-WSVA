@@ -36,16 +36,17 @@ func (l *UserInfoLogic) UserInfo(req *types.UserInfoReq) (resp *types.UserInfoRe
 		return nil, err
 	}
 	userInfo := types.User{
-		Id:             res.User.Id,
-		Name:           res.User.Name,
-		Avatar:         *res.User.Avatar,
-		Signature:      *res.User.Signature,
-		FollowCount:    *res.User.FollowCount,
-		FollowerCount:  *res.User.FollowerCount,
-		TotalFavorited: *res.User.TotalFavorited,
-		FavoriteCount:  *res.User.FavoriteCount,
-		WorkCount:      *res.User.WorkCount,
-		IsFollow:       res.User.IsFollow,
+		Id:              res.User.Id,
+		Name:            res.User.Name,
+		Avatar:          *res.User.Avatar,
+		Signature:       *res.User.Signature,
+		FollowCount:     *res.User.FollowCount,
+		FollowerCount:   *res.User.FollowerCount,
+		TotalFavorited:  *res.User.TotalFavorited,
+		FavoriteCount:   *res.User.FavoriteCount,
+		WorkCount:       *res.User.WorkCount,
+		IsFollow:        res.User.IsFollow,
+		BackgroundImage: *res.User.BackgroundImage,
 	}
 	return &types.UserInfoResponse{
 		StatusCode: int(res.StatusCode),

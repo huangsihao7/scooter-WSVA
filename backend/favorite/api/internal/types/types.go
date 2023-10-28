@@ -18,7 +18,7 @@ type ListReq struct {
 type ListResp struct {
 	StatusCode int         `json:"status_code"`
 	StatusMsg  string      `json:"status_msg"`
-	VideoList  []VideoInfo `json:"comment_list"`
+	VideoList  []VideoInfo `json:"video_list"`
 }
 
 type VideoInfo struct {

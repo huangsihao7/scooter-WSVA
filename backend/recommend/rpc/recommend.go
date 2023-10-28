@@ -4,10 +4,10 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
-	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/internal/config"
-	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/internal/server"
-	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/internal/svc"
+	"github.com/huangsihao7/scooter-WSVA/recommend/rpc/internal/config"
+	"github.com/huangsihao7/scooter-WSVA/recommend/rpc/internal/server"
+	"github.com/huangsihao7/scooter-WSVA/recommend/rpc/internal/svc"
+	"github.com/huangsihao7/scooter-WSVA/recommend/rpc/recommend"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
@@ -16,9 +16,8 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-var configFile = flag.String("f", "etc/favorite.yaml", "the config file")
+var configFile = flag.String("f", "etc/recommend.yaml", "the config file")
 
-// favorite rpc
 func main() {
 	flag.Parse()
 
@@ -27,7 +26,7 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		favorite.RegisterFavoriteServer(grpcServer, server.NewFavoriteServer(ctx))
+		recommend.RegisterRecommendSrvServer(grpcServer, server.NewRecommendSrvServer(ctx))
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)

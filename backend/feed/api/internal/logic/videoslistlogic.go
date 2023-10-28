@@ -28,6 +28,7 @@ func NewVideosListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Videos
 
 func (l *VideosListLogic) VideosList() (resp *types.VideosListResp, err error) {
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
+
 	videos, err := l.svcCtx.FeedRpc.ListVideos(l.ctx, &feed.ListFeedRequest{ActorId: uint32(uid)})
 	if err != nil {
 		return &types.VideosListResp{

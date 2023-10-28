@@ -19,6 +19,10 @@ type (
 	FavoriteListResponse   = favorite.FavoriteListResponse
 	QueryCount             = favorite.QueryCount
 	QueryId                = favorite.QueryId
+	StarActionRequest      = favorite.StarActionRequest
+	StarActionResponse     = favorite.StarActionResponse
+	StarListRequest        = favorite.StarListRequest
+	StarListResponse       = favorite.StarListResponse
 	User                   = favorite.User
 	Video                  = favorite.Video
 
@@ -28,6 +32,8 @@ type (
 		GetVideoFavoriteCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error)
 		GetUserFavoriteCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error)
 		GetUserTotalFavoritedCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error)
+		StarAction(ctx context.Context, in *StarActionRequest, opts ...grpc.CallOption) (*StarActionResponse, error)
+		StarList(ctx context.Context, in *StarListRequest, opts ...grpc.CallOption) (*StarListResponse, error)
 	}
 
 	defaultFavorite struct {
@@ -64,4 +70,14 @@ func (m *defaultFavorite) GetUserFavoriteCount(ctx context.Context, in *QueryId,
 func (m *defaultFavorite) GetUserTotalFavoritedCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error) {
 	client := favorite.NewFavoriteClient(m.cli.Conn())
 	return client.GetUserTotalFavoritedCount(ctx, in, opts...)
+}
+
+func (m *defaultFavorite) StarAction(ctx context.Context, in *StarActionRequest, opts ...grpc.CallOption) (*StarActionResponse, error) {
+	client := favorite.NewFavoriteClient(m.cli.Conn())
+	return client.StarAction(ctx, in, opts...)
+}
+
+func (m *defaultFavorite) StarList(ctx context.Context, in *StarListRequest, opts ...grpc.CallOption) (*StarListResponse, error) {
+	client := favorite.NewFavoriteClient(m.cli.Conn())
+	return client.StarList(ctx, in, opts...)
 }

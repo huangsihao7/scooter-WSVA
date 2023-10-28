@@ -22,6 +22,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/favorite/list",
 				Handler: FavoriteListHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/star/action",
+				Handler: StarActionHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/star/list",
+				Handler: StarListHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)

@@ -1,5 +1,5 @@
 Name: favorite.rpc
-ListenOn: 0.0.0.0:8012
+ListenOn: 0.0.0.0:8022
 Etcd:
   Hosts:
   - 172.22.121.53:2479
@@ -17,3 +17,10 @@ UserRpc:
     Hosts:
       - 172.22.121.53:2479
     Key: user.rpc
+Telemetry:
+  Name: favorite.api
+  Endpoint: http://172.22.110.66:14278/api/traces
+Prometheus:
+  Host: 0.0.0.0
+  Port: 9080
+  Path: /metrics

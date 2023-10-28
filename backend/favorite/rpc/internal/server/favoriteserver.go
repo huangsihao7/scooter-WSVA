@@ -46,3 +46,13 @@ func (s *FavoriteServer) GetUserTotalFavoritedCount(ctx context.Context, in *fav
 	l := logic.NewGetUserTotalFavoritedCountLogic(ctx, s.svcCtx)
 	return l.GetUserTotalFavoritedCount(in)
 }
+
+func (s *FavoriteServer) StarAction(ctx context.Context, in *favorite.StarActionRequest) (*favorite.StarActionResponse, error) {
+	l := logic.NewStarActionLogic(ctx, s.svcCtx)
+	return l.StarAction(in)
+}
+
+func (s *FavoriteServer) StarList(ctx context.Context, in *favorite.StarListRequest) (*favorite.StarListResponse, error) {
+	l := logic.NewStarListLogic(ctx, s.svcCtx)
+	return l.StarList(in)
+}

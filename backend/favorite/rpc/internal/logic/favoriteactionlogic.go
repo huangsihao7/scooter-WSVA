@@ -59,12 +59,6 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		return nil, err
 	}
 
-	gromRes, err := l.svcCtx.GormFavorModel.FindByUserId(l.ctx, userId, 1)
-	if err != nil {
-		log.Println(err.Error())
-	}
-	log.Println("++++++++++++++++++++++++++++++++++++++++++", gromRes)
-
 	//将点赞信息添加到数据库
 	switch actionType {
 	case 1:

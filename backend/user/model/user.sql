@@ -7,6 +7,7 @@ CREATE TABLE `user`
     `password`    varchar(255)        NOT NULL DEFAULT '' COMMENT '用户密码',
     `dec`        varchar(255)        NOT NULL DEFAULT '' COMMENT '个性签名',
     `avatar`        varchar(255)        NOT NULL DEFAULT '' COMMENT '头像',
+    `background_url`        varchar(255)        NOT NULL DEFAULT '' COMMENT '背景图',
     `create_time` timestamp           NULL     DEFAULT CURRENT_TIMESTAMP,
     `update_time` timestamp           NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),

@@ -64,6 +64,30 @@ message QueryCount {
 }
 
 
+// 收藏操作
+message star_action_request {
+  int64 user_id = 1; // 用户鉴权token
+  int64 video_id = 2; // 视频id
+  int32 action_type = 3; // 1-点赞，2-取消点赞
+}
+
+message star_action_response {
+  int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  string status_msg = 2; // 返回状态描述
+}
+
+// 得到登录用户的点赞视频列表
+message star_list_request {
+  int64 user_id = 1; // 用户id
+  int64 actor_id = 2; // 查询用户id
+
+}
+
+message star_list_response {
+  int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  string status_msg = 2; // 返回状态描述
+  repeated Video video_list = 3; // 用户点赞视频列表
+}
 
 service Favorite {
   rpc FavoriteAction(favorite_action_request) returns(favorite_action_response); //点赞操作
@@ -72,4 +96,6 @@ service Favorite {
   rpc  GetUserFavoriteCount (QueryId) returns (QueryCount); //获取user_id的点赞数
   rpc  GetUserTotalFavoritedCount(QueryId) returns (QueryCount); //获取user_id的总获赞数量
 
+  rpc StarAction(star_action_request) returns(star_action_response); //收藏操作
+  rpc StarList(star_list_request) returns(star_list_response); //得到收藏列表
 }
