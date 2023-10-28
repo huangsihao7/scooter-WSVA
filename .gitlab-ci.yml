@@ -38,7 +38,7 @@ install-frontend:
   artifacts:
     expire_in: 1 day
     paths:
-      - dist
+      - frontend/dist
 
 build-ml-image:
   image: docker:dind
