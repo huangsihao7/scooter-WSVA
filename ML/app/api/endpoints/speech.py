@@ -3,7 +3,7 @@ from typing import List
 
 import ffmpeg
 import numpy as np
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from pydantic import AnyHttpUrl
 from torchvision.datasets.utils import download_url
 from transformers import WhisperForConditionalGeneration, WhisperProcessor
@@ -99,13 +99,10 @@ def _textkeyword(text: str) -> List[str]:
         ]
     )
     logger.info(keywords)
-    exp = HTTPException(402, "视频关键词提取失败！")
-    try:
-        keyword = keywords.split("|")
-        if len(keyword) < 2:
-            raise exp
-    except Exception:
-        raise exp
+    keyword = []
+    for k in settings.KEYWORD_TYPES:
+        if k in keywords:
+            keyword.append(k)
     return keyword
 
 
