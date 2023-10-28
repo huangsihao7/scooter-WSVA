@@ -10,13 +10,15 @@
 interface VideoType{
     id: number,
     author:AuthorType,
-    playUrl?:string,
-    coverUrl?:string,
-    favoriteCount?:number,
-    commentCount?:number,
-    isFavorite?:boolean,
-    title?:number,
-    createTime?:number,
+    playUrl:string,
+    coverUrl:string,
+    favoriteCount:number,
+    commentCount:number,
+    isFavorite:boolean,
+    title:number,
+    createTime:number,
+    isCollect:boolean,
+    collectCount:number
 }
 
 interface AuthorType{
@@ -25,11 +27,11 @@ interface AuthorType{
     gender?:number,
     avatar:string,
     signature?:string,
-    follow_count?:number,
-    follower_count?:number,
-    total_favorited?:number,
-    work_count?:number,
-    favorite_count?:number,
+    follow_count:number,
+    follower_count:number,
+    total_favorited:number,
+    work_count:number,
+    favorite_count:number,
     is_follow:boolean,
 }
 

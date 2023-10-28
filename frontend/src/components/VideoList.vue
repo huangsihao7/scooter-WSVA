@@ -4,6 +4,7 @@ import VideoPlus from './VideoPlus.vue'
 import { onMounted, ref } from 'vue'
 import CommentListCom from '@/components/comment/CommentListCom.vue'
 import { getVideosList } from '@/apis/video'
+import { keys } from 'lodash';
 
 
 // 评论区域是否可见
@@ -25,12 +26,24 @@ const updateVisible = () =>{
     drawerVisible.value = !drawerVisible.value
 }
 
+const carouselRef = ref<any>()
+
+const upPage = () =>{
+    carouselRef.value.prev()
+}
+
+const downPage = () =>{
+    carouselRef.value.next()
+}
 
 </script>
 
 <template>
-    <div  >
+    <div>
         <n-carousel
+            ref="carouselRef"
+            @keydown.arrow-up="upPage"
+            @keydown.arrow-down="downPage"
             class= 'wide-carousel'
             id = "drawer-target"
             direction="vertical"

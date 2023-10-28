@@ -11,7 +11,7 @@
 import dplayer from '@/components/Video.vue';
 import Hls from 'hls.js';
 import { ref, reactive, onMounted } from 'vue'
-import { NIcon, NButton } from 'naive-ui'
+import es, { NIcon, NButton } from 'naive-ui'
 import { Heart, ArrowRedo, ChatbubbleEllipses, Star  } from '@vicons/ionicons5'
 import { VideoType } from '@/apis/interface'
 
@@ -112,17 +112,28 @@ const dplayerObj = reactive({
 // 喜欢按钮的操作
 const handleLikeBtn = () =>{
     if(!props.video.isFavorite){
+        props.video.favoriteCount ++
+    }else{
+        props.video.favoriteCount --
+    }
+    if(!props.video.isFavorite){
         likeAnimateClass.value = 'animate__heartBeat'
     }
     else{
         likeAnimateClass.value = ''
     }
     props.video.isFavorite = !props.video.isFavorite
+    
     // TODO: 发请求
 }
 
 // 收藏按钮的操作
 const handleCollectBtn = () =>{
+    if(!props.video.isCollect){
+        props.video.collectCount ++
+    }else{
+        props.video.collectCount --
+    }
     if(!videoUrls.value[0].isCollect){
         collectAnimateClass.value = 'animate__heartBeat'
     }
@@ -137,6 +148,7 @@ const handleCollectBtn = () =>{
 const handleCommentBtn = () =>{
     commentVisible.value = !commentVisible.value
     emit('comment-visible-update')
+    
 }
 
 // 分享按钮的操作
@@ -180,7 +192,7 @@ onMounted(() => {
                             </n-icon>
                         </n-button>
                     </div>
-                    <p>123</p>
+                    <p>{{ props.video.favoriteCount }}</p>
                 </div>
                 <div class="comment">
                     <div :class=commentAnimateClass>
@@ -190,7 +202,7 @@ onMounted(() => {
                             </n-icon>
                         </n-button>
                     </div>
-                    <p>123</p>
+                    <p>{{ props.video.commentCount }}</p>
                 </div>
                 <div class="collect">
                     <div :class=collectAnimateClass>
@@ -205,7 +217,7 @@ onMounted(() => {
                             </n-icon>
                         </n-button>
                     </div>
-                    <p>123</p>
+                    <p>{{ props.video.collectCount }}</p>
                 </div>
                 <div class="share">
                     <div :class=shareAnimateClass>
@@ -215,7 +227,6 @@ onMounted(() => {
                             </n-icon>
                         </n-button>
                     </div>
-                    <p>123</p>
                 </div>
             </div>
         </div>
