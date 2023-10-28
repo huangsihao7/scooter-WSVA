@@ -1,5 +1,7 @@
 package format
 
+import "time"
+
 type UploadFile struct {
 	Id  int64  `json:"id"`
 	Url string `json:"url"`
@@ -15,4 +17,14 @@ type UploadResponse struct {
 		Summary  string   `json:"summary"`
 		Text     string   `json:"text"`
 	} `json:"data"`
+}
+
+type VideosGoresBody struct {
+	ItemId    string    `json:"ItemId"`
+	Labels    []string  `json:"Labels"`
+	Timestamp time.Time `json:"Timestamp"`
+}
+
+type UserGoresBody struct {
+	UserId string `json:"UserId"`
 }

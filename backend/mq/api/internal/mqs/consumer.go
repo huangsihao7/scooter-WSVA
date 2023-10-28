@@ -10,9 +10,8 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/mq/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/zeromicro/go-zero/core/logx"
-	"io/ioutil"
-	"net/http"
 	"net/url"
+	"time"
 )
 
 type PaymentSuccess struct {
@@ -49,17 +48,8 @@ func (l *PaymentSuccess) Consume(key, val string) error {
 	url := fmt.Sprintf("%s?%s", baseurl, queryParams.Encode())
 	println(url)
 	// 发起 GET 请求
-	response, err := http.Get(url)
+	body, err := format.QiNiuGet(url)
 	if err != nil {
-		fmt.Println("请求失败:", err.Error())
-		return err
-	}
-	defer response.Body.Close()
-
-	// 读取响应内容
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		fmt.Println("读取响应失败:", err.Error())
 		return err
 	}
 	var uploadRes format.UploadResponse
@@ -68,6 +58,9 @@ func (l *PaymentSuccess) Consume(key, val string) error {
 		fmt.Println("JSON解析错误:", err)
 		return err
 	}
+	// 打印响应内容
+	fmt.Println(string(body))
+	//调用评论rpc接口，将摘要存进评论
 	commentRes, err := l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
 		UserId:      videoInfo.Uid,
 		ActionType:  1,
@@ -78,6 +71,7 @@ func (l *PaymentSuccess) Consume(key, val string) error {
 		fmt.Println("评论错误:", commentRes.StatusMsg, err)
 		return err
 	}
+	//调用标签接口，将标签存入数据库
 	InsertLabelRes, err := l.svcCtx.Labeler.InsertLabel(l.ctx, &label.InsertLabelReq{
 		VideoId: videoInfo.Id,
 		Label:   uploadRes.Data.Keywords,
@@ -86,7 +80,22 @@ func (l *PaymentSuccess) Consume(key, val string) error {
 		fmt.Println("往数据库插入标签错误", err)
 		return err
 	}
+	//调用post请求，将视频id与标签存入推荐系统
+	postbaseurl := "http://172.22.121.54:8088/api/item"
+	requestBody := format.VideosGoresBody{
+		ItemId:    fmt.Sprintf("%d", videoInfo.Id),
+		Labels:    uploadRes.Data.Keywords,
+		Timestamp: time.Now(),
+	}
+
+	// 将请求体编码为JSON字节
+	jsonData, err := json.Marshal(requestBody)
+	if err != nil {
+		fmt.Println("JSON编码失败:", err)
+		return err
+	}
+	post, err := format.QiNiuPost(postbaseurl, jsonData)
 	// 打印响应内容
-	fmt.Println(string(body))
+	fmt.Println(string(post))
 	return nil
 }

@@ -2,7 +2,10 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/common/crypt"
+	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/huangsihao7/scooter-WSVA/user/model"
 	"google.golang.org/grpc/status"
 
@@ -53,7 +56,14 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 		if err != nil {
 			return nil, status.Error(500, err.Error())
 		}
-
+		postbaseurl := "http://172.22.121.54:8088/api/user"
+		userReq := format.UserGoresBody{UserId: fmt.Sprintf("%d", newUser.Id)}
+		jsonData, err := json.Marshal(userReq)
+		if err != nil {
+			fmt.Println("JSON编码失败:", err)
+			return nil, status.Error(500, "JSON编码失败")
+		}
+		_, err = format.QiNiuPost(postbaseurl, jsonData)
 		return &user.RegisterResponse{
 			Id:              newUser.Id,
 			Name:            newUser.Name,
