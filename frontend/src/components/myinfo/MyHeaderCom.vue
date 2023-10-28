@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 15:51:59
+ * @LastEditTime: 2023-10-28 19:53:09
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\myHeaderCom.vue
 -->
@@ -19,7 +19,7 @@ const userInfo = ref<UserType>()
 
 const getUserInfoFunc = () =>{
     getUserInfo(user_id).then((res:any)=>{
-        userInfo.value = res
+        userInfo.value = res.user
     })
 }
 

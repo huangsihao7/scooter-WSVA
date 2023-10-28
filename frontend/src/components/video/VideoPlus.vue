@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 16:49:33
+ * @LastEditTime: 2023-10-28 20:15:14
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -40,7 +40,6 @@ const videoUrls = ref<any>([
 ])
 
 const dplayerObj = reactive({
-    autoplay:false,
     video: {
         url: props.video.playUrl, //视频地址
         type: 'mp4',

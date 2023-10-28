@@ -2,54 +2,57 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 15:26:18
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 17:11:57
+ * @LastEditTime: 2023-10-28 21:29:53
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\PostVideo.vue
 -->
 <script setup lang="ts">
-import { reactive, onMounted, ref } from 'vue'
+import { reactive, onMounted, ref, computed } from 'vue'
 import { NUpload, NUploadDragger, NIcon } from 'naive-ui';
 import { baseURl } from '@/axios';
 import type { UploadFileInfo } from 'naive-ui'
 import { ElMessage } from 'element-plus';
 import { CloudUpload   } from '@vicons/ionicons5'
+import { userStore } from '@/stores/user'
+import { postVideo } from '@/apis/video'
 
 interface propsType {
     VideoFormVisible: boolean
 }
 interface ClassifyList {
   label: string
-  value: string
+  value: number
 }
 
 const props = defineProps<propsType>()
+const token = computed(()=>userStore().token)
 const emit = defineEmits(['visible-update'])
 const videoForm = reactive({
     title: '',
-    category:'',
+    category:1,
     url:'',
     coverUrl:''
 })
 
 // 分类下拉框数据
 const classifyList = ref<Array<ClassifyList>>([{
-    value: 'Option1',
+    value: 1,
     label: '娱乐',
   },
   {
-    value: 'Option2',
+    value: 2,
     label: '体育',
   },
   {
-    value: 'Option3',
+    value: 3,
     label: '美食',
   },
   {
-    value: 'Option4',
+    value: 4,
     label: '二次元',
   },
   {
-    value: 'Option5',
+    value: 5,
     label: '知识',
 }])
 
@@ -66,7 +69,9 @@ const getClassifyList = () =>{
 }
 // 点击投稿的回调函数
 const handlePostVideo = () => {
-
+    postVideo(videoForm.url, videoForm.coverUrl, videoForm.title, videoForm.category).then((res:any)=>{
+        console.log(res)
+    })
     emit('visible-update', false)
 }
 
@@ -75,7 +80,6 @@ const handleCancelVideo = () =>{
 }
 
 const beforeUpload = (data: { file: UploadFileInfo, fileList: UploadFileInfo[] }) =>  {
-    console.log(data.file,data.fileList)
     var fileSize
     if(data.file.file){
         fileSize = data.file.file.size / 1024 / 1024 < 100;   //控制大小  修改100的值即可
@@ -103,18 +107,26 @@ const beforeUpload = (data: { file: UploadFileInfo, fileList: UploadFileInfo[] }
     return true
 }
 
-//上传成功回调
-const handleVideoSuccess = (data: { file: UploadFileInfo }) => {
- console.log(data.file);
- //后台上传数据
-//  if (res.success == true) {  
-//    videoForm.url = url;    //上传成功后端返回视频地址 回显
-//  } else {
-//    ElMessage({
-//        message: res.data.msg,
-//        type: 'error'
-//    })
-//  }
+// 上传成功回调, 把url和coverurl添加
+const handleFinish = ({file,event}: {file: UploadFileInfo,event?: ProgressEvent}) => {
+      console.log('111111',file, event)
+      if(event && event.target){
+        let res:any = event.target
+        if(res.response){
+            let resJson = JSON.parse(res.response)
+            let url = resJson.url
+            let coverUrl = resJson.coverUrl
+            videoForm.url = url
+            videoForm.coverUrl = coverUrl
+        }
+      }
+      return file
+}
+
+function uploadHeader (){
+    return {
+        Authorization: token.value
+    }
 }
 
 </script>
@@ -129,16 +141,23 @@ const handleVideoSuccess = (data: { file: UploadFileInfo }) => {
         width="30%"
     >
         <el-form label-position="right" :model="videoForm" label-width="50px">
-            <el-form-item label="标题">
-                <el-input clearable v-model="videoForm.title" />
+            <el-form-item label="描述">
+                <el-input
+                    clearable 
+                    v-model="videoForm.title"
+                    autosize
+                    type="textarea"
+                    placeholder="请输入"
+                />
             </el-form-item>
             <el-form-item label="上传">
                 <n-upload
                     multiple
                     directory-dnd
                     :action= postBaseURl
+                    :headers = "uploadHeader"
                     @before-upload="beforeUpload"
-                    @on-finish = "handleVideoSuccess"
+                    @finish="handleFinish"
                 >
                     <n-upload-dragger>
                     <div style="margin-bottom: 12px">

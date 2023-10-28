@@ -32,11 +32,17 @@ const downPage = () =>{
     carouselRef.value.next()
 }
 
+const updatePage = (currentIndex: number, lastIndex: number) =>{
+    console.log('hello', currentIndex, lastIndex)
+}
+
 </script>
 
 <template>
     <div>
         <n-carousel
+            :loop="false"
+            :on-update:current-index="updatePage"
             ref="carouselRef"
             @keydown.arrow-up="upPage"
             @keydown.arrow-down="downPage"
