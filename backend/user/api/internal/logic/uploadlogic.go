@@ -94,25 +94,24 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 	//key为上传的文件名
 	key := handler.Filename // 上传路径，如果当前目录中已存在相同文件，则返回上传失败错误
 	key = crypt.PasswordEncrypt("wy", key) + ".mp4"
-	go func() {
-		err = resumeUploader.Put(context.Background(), &ret, upToken, key, file, handler.Size, &putExtra)
-		if err != nil {
-			return
-		}
-		operationManager := storage.NewOperationManager(mac, &cfg)
-		fopVframe := fmt.Sprintf("vframe/jpg/offset/1|saveas/%s",
-			storage.EncodedEntry(bucket, strings.TrimSuffix(key, filepath.Ext(key))+".jpg"))
 
-		fops := fopVframe
+	err = resumeUploader.Put(context.Background(), &ret, upToken, key, file, handler.Size, &putExtra)
+	if err != nil {
+		return
+	}
+	operationManager := storage.NewOperationManager(mac, &cfg)
+	fopVframe := fmt.Sprintf("vframe/jpg/offset/1|saveas/%s",
+		storage.EncodedEntry(bucket, strings.TrimSuffix(key, filepath.Ext(key))+".jpg"))
 
-		_, err = operationManager.Pfop(bucket, key, fops, "", "", true)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-	}()
+	fops := fopVframe
 
-	baseURL := "s327crbzf.hn-bkt.clouddn.com"
+	_, err = operationManager.Pfop(bucket, key, fops, "", "", true)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	baseURL := "http://s327crbzf.hn-bkt.clouddn.com"
 	fileURL = baseURL + "/" + key
 	coverUrl := baseURL + "/" + strings.TrimSuffix(key, filepath.Ext(key)) + ".jpg"
 
