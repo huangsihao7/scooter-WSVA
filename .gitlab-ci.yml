@@ -25,7 +25,7 @@ install-backend:
     paths:
       - backend/output
 install-frontend:
-  image: node:16.17.0-bullseye
+  image: node:20.9.0-bullseye
   stage: install
   cache:
     paths:

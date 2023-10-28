@@ -66,7 +66,7 @@ def _video2text(filename: str, url: str, sampling_rate=16000) -> str:
         split = transcription[0].split(settings.WHISPER_PROMPT)[-1]
     except Exception:
         pass
-    logger.info(split)
+    logger.info(f"视频文字:{split}")
     return split
 
 
@@ -82,7 +82,7 @@ def _textsummary(text: str) -> str:
             }
         ]
     )
-    logger.info(summary)
+    logger.info(f"summary提取结果:{summary}")
     return summary
 
 
@@ -98,7 +98,7 @@ def _textkeyword(text: str) -> List[str]:
             }
         ]
     )
-    logger.info(keywords)
+    logger.info(f"keywords提取结果:{keywords}")
     keyword = []
     for k in settings.KEYWORD_TYPES:
         if k in keywords:
