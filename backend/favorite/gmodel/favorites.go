@@ -32,7 +32,7 @@ func NewFavoriteModel(db *gorm.DB) *FavoriteModel {
 func (m *FavoriteModel) FindByUserId(ctx context.Context, userId int64, limit int) ([]*Favorites, error) {
 	var result []*Favorites
 	err := m.db.WithContext(ctx).
-		Where("user_id = ? ", userId).
+		Where("uid = ? ", userId).
 		Order("id desc").
 		Limit(limit).
 		Find(&result).Error
