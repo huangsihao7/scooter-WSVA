@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 12:33:41
+ * @LastEditTime: 2023-10-28 12:58:47
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -11,7 +11,7 @@
 import dplayer from '@/components/video/Video.vue';
 import Hls from 'hls.js';
 import { ref, reactive, onMounted } from 'vue'
-import es, { NIcon, NButton } from 'naive-ui'
+import  { NIcon, NButton } from 'naive-ui'
 import { Heart, ArrowRedo, ChatbubbleEllipses, Star  } from '@vicons/ionicons5'
 import { VideoType } from '@/apis/interface'
 
@@ -68,6 +68,7 @@ const dplayerObj = reactive({
         type: 'mp4',
         customType: {
             customHls: function (video:any, player:any) {
+                console.log(player)
                 const hls = new Hls(); //实例化Hls  用于解析m3u8
                 hls.loadSource(video.src);
                 hls.attachMedia(video);

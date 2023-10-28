@@ -3,12 +3,12 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 20:19:30
+ * @LastEditTime: 2023-10-28 12:59:06
  * @Description: 各个视频分类的视频卡片渲染
  * @FilePath: \scooter-WSVA\frontend\src\components\VideoCard.vue
 -->
 <script lang="ts" setup>
-import { ref, reactive } from 'vue'
+import { reactive } from 'vue'
 import { NTag, NIcon } from 'naive-ui';
 import { Play, Heart } from '@vicons/ionicons5'
 
@@ -101,18 +101,6 @@ const res:any = reactive([
 ])
 const handleShowVedio = () =>{
     console.log('show')
-}
-
-const cancleFollow = (item:any, index:any) =>{
-    if(item.isfollowed){
-        res[index].isfollowed = false
-    }
-    else{
-        res[index].isfollowed = true
-    }
-    
-    // item.isfollowed = false
-    // TODO 取消关注接口
 }
 
 // 跳转路由，展示视频

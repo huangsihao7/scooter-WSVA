@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 15:26:18
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 12:32:55
+ * @LastEditTime: 2023-10-28 12:57:53
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\PostVideo.vue
 -->
@@ -50,9 +50,6 @@ const classifyList = ref<Array<ClassifyList>>([{
     label: '知识',
 }])
 
-// 是否在上传video
-const videoFlag = ref<boolean>(false)
-
 // 上传video的URL
 const postBaseURl = baseURl + '/user/upload'
 
@@ -97,12 +94,12 @@ const getClassifyList = () =>{
 
 //进度条
 const uploadVideoProcess = (event:any, file:any, fileList:any) => {    //注意在data中添加对应的变量名
-
+    console.log(event, file, fileList)
 }
 //上传成功回调
 const handleVideoSuccess = (res:any, file:any) => {
  
-      console.log(res);
+      console.log(res, file);
       //后台上传数据
       if (res.success == true) {  
         videoForm.url = res.data.url;    //上传成功后端返回视频地址 回显

@@ -7,7 +7,7 @@
  * @FilePath: \scooter-WSVA\frontend\src\components\comment\Comment.vue
 -->
 <script lang="ts" setup>
-import { defineComponent, ref } from 'vue'
+import { ref } from 'vue'
 import { CashOutline as CashIcon, Heart, ChatbubbleEllipses } from '@vicons/ionicons5'
 import { NIcon, NButton, NSpace,NThing,NAvatar } from 'naive-ui'
 

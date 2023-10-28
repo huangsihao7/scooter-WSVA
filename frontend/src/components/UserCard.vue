@@ -2,12 +2,12 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 23:13:13
+ * @LastEditTime: 2023-10-28 12:57:44
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
 <script lang="ts" setup>
-import { ref, reactive } from 'vue'
+import { reactive } from 'vue'
 
 const res:any = reactive([
     {
@@ -141,8 +141,7 @@ const cancleFollow = (item:any, index:any) =>{
         .avatar, span, p, .el-button{
             margin-left: 10px;
         }
-        .avatar{
-        }
+
         span{
             font-weight: bold;
             font-size: 1.2rem;
@@ -152,6 +151,4 @@ const cancleFollow = (item:any, index:any) =>{
         }
     }
 }
-
-  
 </style>

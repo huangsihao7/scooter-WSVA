@@ -4,14 +4,10 @@ import VideoPlus from '@/components/video/VideoPlus.vue'
 import { onMounted, ref } from 'vue'
 import CommentListCom from '@/components/comment/CommentListCom.vue'
 import { getVideosList } from '@/apis/video'
-import { keys } from 'lodash';
 
 
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false)
-
-// 动态变化轮播视频类
-const carouselClass = ref<string>('wide-carousel')
 
 const videos = ref<any>()
 

@@ -7,9 +7,7 @@
  * @FilePath: \scooter-WSVA\frontend\src\view\FollowView.vue
 -->
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
 import UserCard from '@/components/UserCard.vue'
-const drawerVisible = ref<boolean>(true)
 
 </script>
 
