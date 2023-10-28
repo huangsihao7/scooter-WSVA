@@ -1,6 +1,7 @@
 package svc
 
 import (
+	"github.com/huangsihao7/scooter-WSVA/favorite/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/favorite/model"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/internal/config"
 	model3 "github.com/huangsihao7/scooter-WSVA/feed/model"
@@ -12,12 +13,13 @@ import (
 )
 
 type ServiceContext struct {
-	c          config.Config
-	Model      model.FavoritesModel // 手动代码
-	UserModel  model2.UserModel
-	VideoModel model3.VideosModel
-	UserRpc    usesrv.UseSrv
-	DB         *orm.DB
+	c              config.Config
+	Model          model.FavoritesModel // 手动代码
+	UserModel      model2.UserModel
+	VideoModel     model3.VideosModel
+	UserRpc        usesrv.UseSrv
+	DB             *orm.DB
+	GormFavorModel *gmodel.FavoriteModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -28,11 +30,12 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		MaxLifetime:  c.DB.MaxLifetime,
 	})
 	return &ServiceContext{
-		c:          c,
-		Model:      model.NewFavoritesModel(sqlx.NewMysql(c.DataSource)), // 手动代码
-		UserModel:  model2.NewUserModel(sqlx.NewMysql(c.DataSource), c.Cache),
-		VideoModel: model3.NewVideosModel(sqlx.NewMysql(c.DataSource)),
-		UserRpc:    usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
-		DB:         db,
+		c:              c,
+		Model:          model.NewFavoritesModel(sqlx.NewMysql(c.DataSource)), // 手动代码
+		UserModel:      model2.NewUserModel(sqlx.NewMysql(c.DataSource), c.Cache),
+		VideoModel:     model3.NewVideosModel(sqlx.NewMysql(c.DataSource)),
+		UserRpc:        usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
+		DB:             db,
+		GormFavorModel: gmodel.NewFavoriteModel(db.DB),
 	}
 }

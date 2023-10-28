@@ -66,7 +66,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 	//	log.Println(err.Error())
 	//}
 	//log.Println("++++++++++++++++++++++++++++++++++++++++++++++", gormRes)
-
+	l.svcCtx.DB.
 	//将点赞信息添加到数据库
 	switch actionType {
 	case 1:
