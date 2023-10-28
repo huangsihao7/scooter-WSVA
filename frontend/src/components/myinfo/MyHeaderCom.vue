@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 14:53:03
+ * @LastEditTime: 2023-10-28 14:56:12
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\myHeaderCom.vue
 -->
@@ -40,11 +40,12 @@ onMounted(() => {
             <el-col :span="20" v-if="userInfo" class="info-tab">
                 <el-text tag="b" >{{ userInfo.name }}</el-text>
                 <el-text tag="p">{{ userInfo.signature }}</el-text>
-                <el-text tag="p" class="follow">
-                    <span>关注：{{ userInfo.follow_count }}</span>
-                    <span>粉丝：{{ userInfo.follower_count }}</span>
-                </el-text>
-                <n-button strong round color="#409eff85">
+                <div class="follow">
+                    <n-button color="#606266" text>关注 {{ userInfo.follow_count }}</n-button>
+                    <el-divider direction="vertical" />
+                    <n-button color="#606266" text>粉丝 {{ userInfo.follower_count }}</n-button>
+                </div>
+                <n-button strong round class="edit-info" color="#409eff85">
                     <template #icon>
                         <n-icon><cash-icon /></n-icon>
                     </template>
@@ -75,19 +76,17 @@ onMounted(() => {
     .info-tab{
         // flex-direction: column;
         // justify-content: space-evenly;
-        .n-button{
+        .edit-info{
             position: absolute;
             top: 0;
             right: 20px;
         }
-        .el-text{
+        .el-text, .follow{
             margin: 10px 20px;
-
             display: block;
         }
         .follow{
-            
-            span{
+            .n-button{
                 padding-right: 10px;
             }
         }
