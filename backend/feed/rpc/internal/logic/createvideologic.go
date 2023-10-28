@@ -2,10 +2,12 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/feed/model"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/svc"
+	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -34,6 +36,7 @@ func (l *CreateVideoLogic) CreateVideo(in *feed.CreateVideoRequest) (*feed.Creat
 		Category:      in.Category,
 	}
 	res, err := l.svcCtx.FeedModel.Insert(l.ctx, &newVideo)
+	//newVideo.Id,_ = res.LastInsertId()
 	if err != nil {
 		return &feed.CreateVideoResponse{
 			StatusCode: constants.VideoServiceInnerErrorCode,
@@ -41,6 +44,23 @@ func (l *CreateVideoLogic) CreateVideo(in *feed.CreateVideoRequest) (*feed.Creat
 		}, nil
 	}
 	newVideo.Id, err = res.LastInsertId()
+
+	//将文件信息传入mq
+	messagekq := format.UploadFile{
+		Id:  newVideo.Id,
+		Url: in.Url,
+	}
+	jsonString, err := json.Marshal(messagekq)
+	if err != nil {
+		return &feed.CreateVideoResponse{
+			StatusCode: constants.VideoServiceInnerErrorCode,
+			StatusMsg:  constants.VideoServiceInnerError,
+		}, nil
+	}
+	if err = l.svcCtx.KqPusherClient.Push(string(jsonString)); err != nil {
+		logx.Errorf("KqPusherClient Push Error , err :%v", err)
+	}
+
 	return &feed.CreateVideoResponse{
 		StatusCode: constants.ServiceOKCode,
 		StatusMsg:  constants.ServiceOK,

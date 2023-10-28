@@ -11,3 +11,8 @@ UserRpc:
     Hosts:
       - 172.22.121.53:2479
     Key: user.rpc
+
+KqPusherConf:
+  Brokers:
+    - 127.0.0.1:9092
+  Topic: uploadVideos

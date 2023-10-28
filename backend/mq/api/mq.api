@@ -1,0 +1,15 @@
+syntax = "v1"
+
+type request {
+	// TODO: add members here and delete this comment
+}
+
+type response {
+	// TODO: add members here and delete this comment
+}
+
+service mq-api {
+	@handler Null // TODO: set handler name and delete this comment
+	get /null (request) returns(response)
+
+}

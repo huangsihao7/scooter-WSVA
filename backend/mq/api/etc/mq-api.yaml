@@ -1,0 +1,13 @@
+Name: mq-api
+Host: 0.0.0.0
+Port: 8895
+
+KqConsumerConf:
+  Name: kqConsumer1
+  Brokers:
+    - 127.0.0.1:9092
+  Group: kqConsumer
+  Topic: uploadVideos
+  Offset: first
+  Consumers: 8
+  Processors: 8
