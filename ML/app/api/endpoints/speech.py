@@ -100,7 +100,7 @@ def _textkeyword(text: str) -> List[str]:
     )
     logger.info(keywords)
     try:
-        keyword = keywords.split("|")[-5:]
+        keyword = keywords.split("|")
     except Exception as e:
         raise HTTPException("视频关键词提取失败！")
     return keyword
