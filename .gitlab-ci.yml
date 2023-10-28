@@ -23,7 +23,7 @@ install:
   artifacts:
     expire_in: 1 day
     paths:
-      - output
+      - backend/output
 
 build-ml-image:
   image: docker:dind
