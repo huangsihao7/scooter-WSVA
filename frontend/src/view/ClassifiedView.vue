@@ -8,7 +8,7 @@
 -->
 
 <template>
-  <VideoCard/>
+  <VideoCard :isScroll="true"/>
 </template>
 
 <script lang="ts" setup>

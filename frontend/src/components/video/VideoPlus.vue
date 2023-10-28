@@ -53,17 +53,17 @@ const dplayerObj = reactive({
             }
         }
     },
-    // danmaku: {
-    //     id: '9E2E3368B56CDBB4',
-    //     api: 'https://api.prprpr.me/dplayer/',
-    //     token: 'tokendemo',
-    //     maximum: 1000,
-    //     addition: ['https://api.prprpr.me/dplayer/v3/bilibili?aid=4157142'],
-    //     user: 'DIYgod',
-    //     bottom: '15%',
-    //     unlimited: true,
-    //     speedRate: 0.5,
-    // },
+    danmaku: {
+        // id: '9E2E3368B56CDBB4',
+        // api: 'https://api.prprpr.me/dplayer/',
+        // token: 'tokendemo',
+        // maximum: 1000,
+        // addition: ['https://api.prprpr.me/dplayer/v3/bilibili?aid=4157142'],
+        // user: 'DIYgod',
+        // bottom: '15%',
+        // unlimited: true,
+        // speedRate: 0.5,
+    },
     contextmenu: [
         {
             text: 'custom1',

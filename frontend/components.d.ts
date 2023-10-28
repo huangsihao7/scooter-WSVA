@@ -8,7 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Comment: typeof import('./src/components/comment/Comment.vue')['default']
-    CommentListCom: typeof import('./src/components/Comment/CommentListCom.vue')['default']
+    CommentListCom: typeof import('./src/components/comment/CommentListCom.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
@@ -33,11 +33,8 @@ declare module 'vue' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSpace: typeof import('element-plus/es')['ElSpace']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
-    ElTabPane: typeof import('element-plus/es')['ElTabPane']
-    ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElText: typeof import('element-plus/es')['ElText']
-    ElUpload: typeof import('element-plus/es')['ElUpload']
     Menu: typeof import('./src/components/Menu.vue')['default']
     MyHeaderCom: typeof import('./src/components/myinfo/MyHeaderCom.vue')['default']
     MyInteractCom: typeof import('./src/components/myinfo/MyInteractCom.vue')['default']

@@ -13,14 +13,16 @@ import MyInteractCom from '@/components/myinfo/MyInteractCom.vue';
 
 
 <template>
-  <div class="user">
-    <div class="header">
-      <MyHeaderCom/>
+  <el-scrollbar>
+    <div class="user">
+      <div class="header">
+        <MyHeaderCom/>
+      </div>
+      <div class="interaction">
+        <MyInteractCom/>
+      </div>
     </div>
-    <div class="interaction">
-      <MyInteractCom/>
-    </div>
-  </div>
+  </el-scrollbar>
 </template>
     
     
