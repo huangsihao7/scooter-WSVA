@@ -10,7 +10,7 @@ stages:
   cache:
     paths:
       - .go/pkg/mod/
-install:
+install-backend:
   image: golang:1.20.3
   stage: install
   extends: .go-cache
@@ -24,6 +24,21 @@ install:
     expire_in: 1 day
     paths:
       - backend/output
+install-frontend:
+  image: node:18.6.0-alpine
+  stage: install
+  cache:
+    paths:
+      - node_modules/
+  script:
+    - cd frontend
+    - npm install --registry=https://registry.npmmirror.com/
+    - npm run lint
+    - npm run build
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - dist
 
 build-ml-image:
   image: docker:dind
@@ -46,7 +61,6 @@ build-ml-image:
       -f ML/Dockerfile \
       ./ML
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-ml:$CI_PIPELINE_IID"
-
 build-backend-image:
   image: docker:dind
   stage: build
@@ -139,6 +153,25 @@ build-nginx-image:
       -f scripts/nginx/Dockerfile \
       ./scripts/nginx
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-nginx:$CI_PIPELINE_IID"
+build-frontend-image:
+  image: docker:dind
+  stage: build
+  services:
+    - docker:dind
+  only:
+    refs:
+      - main
+    # changes:
+    #   - scripts/nginx/**/*
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 172.22.121.50
+  script:
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-frontend:$CI_PIPELINE_IID" \
+      -f frontend/Dockerfile \
+      ./frontend
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-frontend:$CI_PIPELINE_IID"
 
 deploy-ml:
   stage: deploy
@@ -280,4 +313,25 @@ deploy-nginx:
       -p 7070:80 \
       --name scooter-wsva-nginx \
       172.22.121.50/ai-evaluation/scooter-wsva-nginx:$CI_PIPELINE_IID
+    - echo "=======deploy success======="
+deploy-frontend:
+  stage: deploy
+  tags:
+    - "53"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push" && $CI_MERGE_REQUEST_EVENT_TYPE == null'
+    # - when: on_failure
+    #   exists:
+    #     - build-nginx-image
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "=======start deploy======="
+    - docker rm -f scooter-wsva-frontend
+    - |
+      docker run \
+      -di \
+      -p 7070:80 \
+      --name scooter-wsva-frontend \
+      172.22.121.50/ai-evaluation/scooter-wsva-frontend:$CI_PIPELINE_IID
     - echo "=======deploy success======="
