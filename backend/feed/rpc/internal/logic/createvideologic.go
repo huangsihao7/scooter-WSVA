@@ -49,6 +49,7 @@ func (l *CreateVideoLogic) CreateVideo(in *feed.CreateVideoRequest) (*feed.Creat
 	messagekq := format.UploadFile{
 		Id:  newVideo.Id,
 		Url: in.Url,
+		Uid: newVideo.AuthorId,
 	}
 	jsonString, err := json.Marshal(messagekq)
 	if err != nil {
