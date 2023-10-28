@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 12:58:47
+ * @LastEditTime: 2023-10-28 16:49:33
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -36,35 +36,13 @@ const videoUrls = ref<any>([
         isFollowed: false,
         title: '你好哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
         content:'在你拿着一堆早餐摆着慢慢吃，武汉人发出尖锐的爆鸣[捂脸]主要是那些炸物刚出炉最好吃了，你还等豆皮等半天[泪奔]来武汉过早，这种炸物建议到手就吃哦，热干面也不能放，拿到就要拌开'
-    },
-    {
-        url:'http://127.0.0.1:8080/3.mp4',
-        cover:'',
-        username:'我是一个粉刷匠',
-        createTime:'3天前',
-        likes:'12',
-        collect:'22',
-        isFollowed: true,
-        title: '你好哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-        content:'离开家睡觉了还能考古发掘按时的可见光和'
-    },
-    {
-        url:'http://127.0.0.1:8080/WeChat_20231026155918.mp4',
-        cover:'',
-        username:'cccccccc',
-        createTime:'3天前',
-        likes:'12',
-        collect:'22',
-        isFollowed: true,
-        title: '你好哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-        content:'离开家睡觉了还能考古发掘按时的可见光和'
     }
 ])
 
 const dplayerObj = reactive({
-    autoplay:true,
+    autoplay:false,
     video: {
-        url: 'http://'+props.video.playUrl, //视频地址
+        url: props.video.playUrl, //视频地址
         type: 'mp4',
         customType: {
             customHls: function (video:any, player:any) {
@@ -75,17 +53,17 @@ const dplayerObj = reactive({
             }
         }
     },
-    danmaku: {
-        id: '9E2E3368B56CDBB4',
-        api: 'https://api.prprpr.me/dplayer/',
-        token: 'tokendemo',
-        maximum: 1000,
-        addition: ['https://api.prprpr.me/dplayer/v3/bilibili?aid=4157142'],
-        user: 'DIYgod',
-        bottom: '15%',
-        unlimited: true,
-        speedRate: 0.5,
-    },
+    // danmaku: {
+    //     id: '9E2E3368B56CDBB4',
+    //     api: 'https://api.prprpr.me/dplayer/',
+    //     token: 'tokendemo',
+    //     maximum: 1000,
+    //     addition: ['https://api.prprpr.me/dplayer/v3/bilibili?aid=4157142'],
+    //     user: 'DIYgod',
+    //     bottom: '15%',
+    //     unlimited: true,
+    //     speedRate: 0.5,
+    // },
     contextmenu: [
         {
             text: 'custom1',

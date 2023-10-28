@@ -18,9 +18,9 @@ import Menu from './components/Menu.vue'
 <template>
   <div class="common-layout">
     <el-container class="common-layout">
-      <el-header><Menu/></el-header>
+        <el-header><Menu/></el-header>
       <el-container>
-        <el-aside ><SubMenu /></el-aside>
+          <el-aside ><SubMenu /></el-aside>
         <el-main><RouterView /></el-main>
       </el-container>
     </el-container>
@@ -36,11 +36,16 @@ import Menu from './components/Menu.vue'
 
 .el-header{
   padding: 0;
+  z-index: 10;
 }
 
 .el-aside{
   height: 100%;
   width:160px;
+}
+
+.el-aside{
+  z-index: 2;
 }
 
 .el-main{

@@ -2,27 +2,31 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 12:36:55
+ * @LastEditTime: 2023-10-28 15:57:32
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyInteractCom.vue
 -->
 <template>
-    <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-      <el-tab-pane label="User" name="first">User</el-tab-pane>
-      <el-tab-pane label="Config" name="second">Config</el-tab-pane>
-      <el-tab-pane label="Role" name="third">Role</el-tab-pane>
-      <el-tab-pane label="Task" name="fourth">Task</el-tab-pane>
-    </el-tabs>
-  </template>
-  <script lang="ts" setup>
-  import { ref } from 'vue'
-  import type { TabsPaneContext } from 'element-plus'
-  
-  const activeName = ref('first')
-  
-  const handleClick = (tab: TabsPaneContext, event: Event) => {
-    console.log(tab, event)
-  }
+    <n-tabs default-value="work" justify-content="space-evenly" type="line">
+        <n-tab-pane name="work" tab="作品">
+            <VideoCard :isScroll="false"/>
+        </n-tab-pane>
+        <n-tab-pane name="favourite" tab="喜欢">
+            <VideoCard :isScroll="false"/>
+        </n-tab-pane>
+        <n-tab-pane name="collect" tab="收藏">
+            <VideoCard :isScroll="false"/>
+        </n-tab-pane>
+        <n-tab-pane name="history" tab="观看历史">
+            <VideoCard :isScroll="false"/>
+        </n-tab-pane>
+    </n-tabs>
+</template>
+<script lang="ts" setup>
+import {  NTabs, NTabPane } from 'naive-ui';
+import VideoCard from '../VideoCard.vue';
+
+
   </script>
   <style>
   .demo-tabs > .el-tabs__content {

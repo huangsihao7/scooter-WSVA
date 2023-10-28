@@ -3,15 +3,19 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 12:59:06
+ * @LastEditTime: 2023-10-28 15:38:37
  * @Description: 各个视频分类的视频卡片渲染
  * @FilePath: \scooter-WSVA\frontend\src\components\VideoCard.vue
 -->
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { reactive, onMounted } from 'vue'
 import { NTag, NIcon } from 'naive-ui';
 import { Play, Heart } from '@vicons/ionicons5'
-
+import { NEllipsis } from 'naive-ui';
+interface propsType {
+    isScroll: boolean
+}
+const props = defineProps<propsType>()
 
 const res:any = reactive([
     {
@@ -108,10 +112,14 @@ const GetVideoLink = () =>{
     
 }
 
+onMounted(() => {
+    //info.content
+})
+
 </script>
 
 <template>
-    <el-scrollbar class="card-space">
+    <el-scrollbar v-if="props.isScroll" class="card-space">
         <el-space wrap >
             <el-card 
             v-for="(info, index) in res" 
@@ -136,7 +144,7 @@ const GetVideoLink = () =>{
                 </div>
                 <div class="card-footer">
                     <div class="content">
-                        {{ info.content }}
+                        <n-ellipsis :tooltip="false" style="max-width: calc((100vw - 360px) / 4)">{{ info.content }}</n-ellipsis>
                     </div>
                     <div class="name">
                         <span>@ {{ info.name }}</span> 
@@ -148,6 +156,41 @@ const GetVideoLink = () =>{
             </el-card>
         </el-space>
     </el-scrollbar>
+    <el-space wrap v-else>
+            <el-card 
+            v-for="(info, index) in res" 
+            :key="index" 
+            class="box-card" 
+            style="width: calc((100vw - 260px) / 4)"
+            @click="GetVideoLink">
+                <div style="position: relative;">
+                    <el-image @click="handleShowVedio" :src="info.url" fit="fill"/>
+                    <n-tag class="time" round :bordered="false" type="info">
+                        7：26
+                        <template #icon>
+                            <n-icon color="#fff" :component="Play" />
+                        </template>
+                    </n-tag>
+                    <n-tag class="like" round :bordered="false" type="error">
+                        10
+                        <template #icon>
+                            <n-icon color="#fff" :component="Heart" />
+                        </template>
+                    </n-tag>
+                </div>
+                <div class="card-footer">
+                    <div class="content">
+                        <n-ellipsis :tooltip="false" style="max-width: calc((100vw - 360px) / 4)">{{ info.content }}</n-ellipsis>
+                    </div>
+                    <div class="name">
+                        <span>@ {{ info.name }}</span> 
+                        <span class="date">7月8日</span>
+                    </div>
+                    
+                </div>
+            
+            </el-card>
+        </el-space>
  </template>
   
 
@@ -165,6 +208,7 @@ const GetVideoLink = () =>{
 .box-card{
     margin-top: 15px;
     margin-left: 10px;
+    
     .time{
         position: absolute;
         // bottom: 40px;
@@ -197,8 +241,13 @@ const GetVideoLink = () =>{
     }
     
     .card-footer{
-        span, p, .content{
+        span, p, .content, .name{
             margin-left: 10px;
+            text-align: left;
+        }
+        .content span{
+            font-weight: bold;
+            color:#333333;
         }
         span{
             font-weight: 400;

@@ -1,6 +1,6 @@
 import { service } from '@/axios'
 
-export function getRunId(Url: string, CoverUrl: string,  Title: string,  Category: string) {
+export function postVideo(Url: string, CoverUrl: string,  Title: string,  Category: string) {
   return service({
     url: '/feed/create',
     method: 'post',
