@@ -31,7 +31,7 @@ install-frontend:
   cache:
     paths:
       - frontend/node_modules/
-    key: ${CI_COMMIT_REF_SLUG}_backend
+    key: ${CI_COMMIT_REF_SLUG}_frontend
   script:
     - cd frontend
     - npm install --registry=https://registry.npmmirror.com/
