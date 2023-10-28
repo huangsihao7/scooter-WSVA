@@ -9,8 +9,8 @@ from torchvision.datasets.utils import download_url
 from transformers import WhisperForConditionalGeneration, WhisperProcessor
 
 from app.core.config import settings
-from app.utils.sparkapi import sparkAPI
 from app.models.speech import VideoSummaryKeyword
+from app.utils.sparkapi import sparkAPI
 
 router = APIRouter()
 logger = logging.getLogger("speech")
@@ -64,7 +64,7 @@ def _video2text(filename: str, url: str, sampling_rate=16000) -> str:
     split = transcription[0]
     try:
         split = transcription[0].split(settings.WHISPER_PROMPT)[-1]
-    except Exception as e:
+    except Exception:
         pass
     logger.info(split)
     return split
@@ -99,10 +99,13 @@ def _textkeyword(text: str) -> List[str]:
         ]
     )
     logger.info(keywords)
+    exp = HTTPException(402, "视频关键词提取失败！")
     try:
         keyword = keywords.split("|")
-    except Exception as e:
-        raise HTTPException("视频关键词提取失败！")
+        if len(keyword) < 2:
+            raise exp
+    except Exception:
+        raise exp
     return keyword
 
 
