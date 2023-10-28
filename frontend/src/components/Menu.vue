@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 12:32:33
+ * @LastEditTime: 2023-10-28 13:41:17
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\Menu.vue
 -->
@@ -64,7 +64,6 @@ const doLogin = () =>{
     userStore().user_id = res.user_id
     userStore().isLoggedIn = true
     userStore().avatar ='http://' + res.avatar
-    userStore().username = form.username
     ElMessage({
       message: '登录成功',
       type: 'success'
