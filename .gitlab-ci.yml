@@ -196,7 +196,7 @@ deploy-backend:
       --name scooter-wsva-feed-rpc \
       172.22.121.50/ai-evaluation/scooter-wsva-feed-rpc:$CI_PIPELINE_IID
     - sleep 10
-    - docker rm -f scooter-wsva-user-rpc
+    - docker rm -f scooter-wsva-favorite-rpc
     - |
       docker run \
       -di \
