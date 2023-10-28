@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/mq/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -59,7 +60,22 @@ func (l *PaymentSuccess) Consume(key, val string) error {
 		fmt.Println("读取响应失败:", err.Error())
 		return err
 	}
-
+	var uploadRes format.UploadResponse
+	err = json.Unmarshal(body, &uploadRes)
+	if err != nil {
+		fmt.Println("JSON解析错误:", err)
+		return err
+	}
+	_, err = l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
+		UserId:      videoInfo.Uid,
+		ActionType:  1,
+		VideoId:     videoInfo.Id,
+		CommentText: uploadRes.Data.Summary,
+	})
+	if err != nil {
+		fmt.Println("评论错误:", err)
+		return err
+	}
 	// 打印响应内容
 	fmt.Println(string(body))
 	return nil
