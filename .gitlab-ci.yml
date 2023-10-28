@@ -29,7 +29,7 @@ install-frontend:
   stage: install
   cache:
     paths:
-      - node_modules/
+      - frontend/node_modules/
   script:
     - cd frontend
     - npm install --registry=https://registry.npmmirror.com/
@@ -124,6 +124,11 @@ build-backend-image:
       -t "172.22.121.50/ai-evaluation/scooter-wsva-user-rpc:$CI_PIPELINE_IID" \
       -f backend/deployments/user_rpc.Dockerfile \
       ./backend
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-mq-api:$CI_PIPELINE_IID" \
+      -f backend/deployments/mq_api.Dockerfile \
+      ./backend
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-comment-api:$CI_PIPELINE_IID"
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-comment-rpc:$CI_PIPELINE_IID"
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-favorite-api:$CI_PIPELINE_IID"
@@ -134,6 +139,7 @@ build-backend-image:
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-relation-rpc:$CI_PIPELINE_IID"
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-user-api:$CI_PIPELINE_IID"
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-user-rpc:$CI_PIPELINE_IID"
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-mq-api:$CI_PIPELINE_IID"
 build-nginx-image:
   image: docker:dind
   stage: build
@@ -293,6 +299,15 @@ deploy-backend:
       --name scooter-wsva-comment-api \
       172.22.121.50/ai-evaluation/scooter-wsva-comment-api:$CI_PIPELINE_IID
     - echo "=======deploy success======="
+    - sleep 10
+    - docker rm -f scooter-wsva-mq-api
+    - |
+      docker run \
+      -di \
+      -p 8895:8895 \
+      --name scooter-wsva-mq-api \
+      172.22.121.50/ai-evaluation/scooter-wsva-mq-api:$CI_PIPELINE_IID
+    - echo "=======deploy success======="
 deploy-nginx:
   stage: deploy
   tags:
@@ -331,7 +346,7 @@ deploy-frontend:
     - |
       docker run \
       -di \
-      -p 7070:80 \
+      -p 80:80 \
       --name scooter-wsva-frontend \
       172.22.121.50/ai-evaluation/scooter-wsva-frontend:$CI_PIPELINE_IID
     - echo "=======deploy success======="
