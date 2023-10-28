@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 20:33:54
+ * @LastEditTime: 2023-10-28 13:08:06
  * @Description: 视频基础组件
- * @FilePath: \scooter-WSVA\frontend\src\components\Video.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\Video.vue
 -->
 
 <template>
@@ -80,6 +80,7 @@ const props = defineProps({
       type: 'mp4',
       customType: {
         customHls: function (video:any, player:any) {
+          console.log(player)
           const hls = new Hls(); //实例化Hls  用于解析m3u8
           hls.loadSource(video.src);
           hls.attachMedia(video);

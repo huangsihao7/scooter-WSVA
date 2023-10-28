@@ -2,12 +2,11 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 7:08:43
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 12:43:21
+ * @LastEditTime: 2023-10-28 13:06:34
  * @FilePath: \scooter-WSVA\frontend\src\axios\index.ts
  * @Description:
  *
  */
-import { computed, ref } from 'vue'
 import axios, { type AxiosRequestHeaders } from 'axios'
 import router from '@/router'
 import { userStore } from '@/stores/user'

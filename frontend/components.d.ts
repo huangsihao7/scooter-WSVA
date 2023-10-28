@@ -9,15 +9,12 @@ declare module 'vue' {
   export interface GlobalComponents {
     Comment: typeof import('./src/components/comment/Comment.vue')['default']
     CommentListCom: typeof import('./src/components/Comment/CommentListCom.vue')['default']
-    copy: typeof import('./src/components/UserCard copy.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
-    ElDescriptions: typeof import('element-plus/es')['ElDescriptions']
-    ElDescriptionsItem: typeof import('element-plus/es')['ElDescriptionsItem']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDivider: typeof import('element-plus/es')['ElDivider']
     ElForm: typeof import('element-plus/es')['ElForm']
@@ -44,7 +41,6 @@ declare module 'vue' {
     MyHeaderCom: typeof import('./src/components/myinfo/MyHeaderCom.vue')['default']
     MyInteractCom: typeof import('./src/components/myinfo/MyInteractCom.vue')['default']
     PostVideo: typeof import('./src/components/video/PostVideo.vue')['default']
-    RecommendCom: typeof import('./src/components/RecommendCom.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SubMenu: typeof import('./src/components/SubMenu.vue')['default']
@@ -54,6 +50,5 @@ declare module 'vue' {
     VideoCard: typeof import('./src/components/VideoCard.vue')['default']
     VideoList: typeof import('./src/components/VideoList.vue')['default']
     VideoPlus: typeof import('./src/components/video/VideoPlus.vue')['default']
-    WaterfallList: typeof import('./src/components/WaterfallList.vue')['default']
   }
 }
