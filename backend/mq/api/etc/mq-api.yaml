@@ -17,3 +17,8 @@ Comment:
     Hosts:
       - 172.22.121.53:2479
     Key: comment.rpc
+Label:
+  Etcd:
+    Hosts:
+      - 172.22.121.53:2479
+    Key: label.rpc

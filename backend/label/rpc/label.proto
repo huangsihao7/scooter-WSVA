@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package label;
+
+option go_package = "./label";
+
+message InsertLabelReq{
+  int64 video_id=1; //视频id
+  repeated string label=2; //视频标签
+}
+message InsertLabelResp{
+  bool success=1; //是否成功
+}
+
+service Label {
+  rpc InsertLabel(InsertLabelReq) returns(InsertLabelResp); //增加标签
+}

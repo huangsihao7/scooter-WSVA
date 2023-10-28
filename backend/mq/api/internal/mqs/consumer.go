@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
+	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/label/rpc/label"
 	"github.com/huangsihao7/scooter-WSVA/mq/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -66,14 +68,22 @@ func (l *PaymentSuccess) Consume(key, val string) error {
 		fmt.Println("JSON解析错误:", err)
 		return err
 	}
-	_, err = l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
+	commentRes, err := l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
 		UserId:      videoInfo.Uid,
 		ActionType:  1,
 		VideoId:     videoInfo.Id,
 		CommentText: uploadRes.Data.Summary,
 	})
-	if err != nil {
-		fmt.Println("评论错误:", err)
+	if err != nil || commentRes.StatusCode != constants.ServiceOKCode {
+		fmt.Println("评论错误:", commentRes.StatusMsg, err)
+		return err
+	}
+	InsertLabelRes, err := l.svcCtx.Labeler.InsertLabel(l.ctx, &label.InsertLabelReq{
+		VideoId: videoInfo.Id,
+		Label:   uploadRes.Data.Keywords,
+	})
+	if !InsertLabelRes.Success {
+		fmt.Println("往数据库插入标签错误", err)
 		return err
 	}
 	// 打印响应内容
