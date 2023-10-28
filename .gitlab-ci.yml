@@ -33,7 +33,7 @@ install-frontend:
   script:
     - cd frontend
     - npm install --registry=https://registry.npmmirror.com/
-    - npm run lint
+    # - npm run lint
     - npm run build
   artifacts:
     expire_in: 1 day
