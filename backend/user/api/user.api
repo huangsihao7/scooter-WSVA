@@ -46,6 +46,11 @@ type (
 		Uid int64 `json:"uid"`
 	}
 	UserInfoResponse {
+		StatusCode int    `json:"status_code"`
+		StatusMsg  string `json:"status_msg"`
+		User       User   `json:"user"`
+	}
+	User {
 		Id             uint32 `json:"id"`
 		Name           string `json:"name"`
 		Avatar         string `json:"avatar"`
@@ -57,7 +62,6 @@ type (
 		FavoriteCount  uint32 `json:"favorite_count"`
 		IsFollow       bool   `json:"is_follow"`
 	}
-
 	UserUploadResponse {
 		Url      string `json:"url"`
 		CoverUrl string `json:"coverUrl"`

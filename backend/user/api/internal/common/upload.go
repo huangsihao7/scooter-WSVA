@@ -41,7 +41,7 @@ func UserUpload(accessKey, secretKey, bucket string, filepath string) (string, e
 		}
 	}()
 
-	baseURL := "s327crbzf.hn-bkt.clouddn.com"
+	baseURL := "http://s327crbzf.hn-bkt.clouddn.com"
 	fileURL = baseURL + "/" + key
 
 	return fileURL, nil

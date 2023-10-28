@@ -18,6 +18,7 @@ import (
 
 var configFile = flag.String("f", "etc/favorite.yaml", "the config file")
 
+// favorite api
 func main() {
 	flag.Parse()
 

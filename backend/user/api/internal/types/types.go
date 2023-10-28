@@ -37,6 +37,12 @@ type UserInfoReq struct {
 }
 
 type UserInfoResponse struct {
+	StatusCode int    `json:"status_code"`
+	StatusMsg  string `json:"status_msg"`
+	User       User   `json:"user"`
+}
+
+type User struct {
 	Id             uint32 `json:"id"`
 	Name           string `json:"name"`
 	Avatar         string `json:"avatar"`
