@@ -58,6 +58,15 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		}
 		return nil, err
 	}
+
+	//db := gmodel.NewFavoriteModel(l.svcCtx.DB)
+	//l.svcCtx.DB.
+	//gormRes, err := db.FindByUserId(l.ctx, userId, 1)
+	//if err != nil {
+	//	log.Println(err.Error())
+	//}
+	//log.Println("++++++++++++++++++++++++++++++++++++++++++++++", gormRes)
+
 	//将点赞信息添加到数据库
 	switch actionType {
 	case 1:
