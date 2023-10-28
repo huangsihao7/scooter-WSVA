@@ -10,6 +10,7 @@ stages:
   cache:
     paths:
       - .go/pkg/mod/
+    key: ${CI_COMMIT_REF_SLUG}_backend
 install-backend:
   image: golang:1.20.3
   stage: install
@@ -30,6 +31,7 @@ install-frontend:
   cache:
     paths:
       - frontend/node_modules/
+    key: ${CI_COMMIT_REF_SLUG}_backend
   script:
     - cd frontend
     - npm install --registry=https://registry.npmmirror.com/
