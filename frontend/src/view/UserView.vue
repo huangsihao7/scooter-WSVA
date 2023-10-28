@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-05-08 15:29:52
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 14:28:55
+ * @LastEditTime: 2023-10-28 19:49:11
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\view\UserView.vue
 -->
@@ -13,7 +13,7 @@ import MyInteractCom from '@/components/myinfo/MyInteractCom.vue';
 
 
 <template>
-  <el-scrollbar>
+  <el-scrollbar height="calc(100vh - 60px)">
     <div class="user">
       <div class="header">
         <MyHeaderCom/>
