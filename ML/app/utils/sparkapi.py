@@ -116,7 +116,7 @@ class SparkAPI(object):
         )
         ws.send(data)
 
-    def ask(self, question: list, domain: str = "generalv2") -> str:
+    def ask(self, question: list, domain: str = "generalv3") -> str:
         wsUrl = self.wsParam.create_url()
         websocket.enableTrace(False)
         ws = websocket.WebSocketApp(

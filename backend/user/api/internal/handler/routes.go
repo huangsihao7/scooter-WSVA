@@ -33,7 +33,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: UserInfoHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodPut,
+				Method:  http.MethodPost,
 				Path:    "/user/upload",
 				Handler: UploadHandler(serverCtx),
 			},
