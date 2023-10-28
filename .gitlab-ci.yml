@@ -131,6 +131,11 @@ build-backend-image:
       -t "172.22.121.50/ai-evaluation/scooter-wsva-mq-api:$CI_PIPELINE_IID" \
       -f backend/deployments/mq_api.Dockerfile \
       ./backend
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-label-rpc:$CI_PIPELINE_IID" \
+      -f backend/deployments/label_rpc.Dockerfile \
+      ./backend
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-comment-api:$CI_PIPELINE_IID"
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-comment-rpc:$CI_PIPELINE_IID"
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-favorite-api:$CI_PIPELINE_IID"
@@ -142,6 +147,7 @@ build-backend-image:
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-user-api:$CI_PIPELINE_IID"
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-user-rpc:$CI_PIPELINE_IID"
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-mq-api:$CI_PIPELINE_IID"
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-label-rpc:$CI_PIPELINE_IID"
 build-nginx-image:
   image: docker:dind
   stage: build
@@ -260,6 +266,14 @@ deploy-backend:
       -p 8014:8014 \
       --name scooter-wsva-comment-rpc \
       172.22.121.50/ai-evaluation/scooter-wsva-comment-rpc:$CI_PIPELINE_IID
+    - sleep 10
+    - docker rm -f scooter-wsva-label-rpc
+    - |
+      docker run \
+      -di \
+      -p 8016:8016 \
+      --name scooter-wsva-label-rpc \
+      172.22.121.50/ai-evaluation/scooter-wsva-label-rpc:$CI_PIPELINE_IID
     - sleep 10
     - docker rm -f scooter-wsva-user-api
     - |
