@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 23:14:23
+ * @LastEditTime: 2023-10-28 12:32:33
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\Menu.vue
 -->
@@ -17,7 +17,7 @@ import {
   Search
  } from '@element-plus/icons-vue'
  import { ElMessage } from 'element-plus'
-import  PostVedio from './PostVideo.vue'
+import  PostVedio from '@/components/video/PostVideo.vue'
 
 // 路由数据
 const activeIndex = ref('')

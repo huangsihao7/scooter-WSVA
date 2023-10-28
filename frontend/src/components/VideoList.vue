@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NCarousel, NDrawer, NDrawerContent, NCarouselItem } from 'naive-ui';
-import VideoPlus from './VideoPlus.vue'
+import VideoPlus from '@/components/video/VideoPlus.vue'
 import { onMounted, ref } from 'vue'
 import CommentListCom from '@/components/comment/CommentListCom.vue'
 import { getVideosList } from '@/apis/video'

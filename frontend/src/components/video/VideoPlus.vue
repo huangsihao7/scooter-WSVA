@@ -2,13 +2,13 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 23:57:27
+ * @LastEditTime: 2023-10-28 12:33:41
  * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\VideoPlus.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
 
 <script lang="ts" setup>
-import dplayer from '@/components/Video.vue';
+import dplayer from '@/components/video/Video.vue';
 import Hls from 'hls.js';
 import { ref, reactive, onMounted } from 'vue'
 import es, { NIcon, NButton } from 'naive-ui'

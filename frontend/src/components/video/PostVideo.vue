@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 15:26:18
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-26 17:20:05
+ * @LastEditTime: 2023-10-28 12:32:55
  * @Description: 
- * @FilePath: \scooter-wsva\frontend\src\components\PostVideo.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\PostVideo.vue
 -->
 <script setup lang="ts">
 import { reactive, onMounted, ref } from 'vue'
