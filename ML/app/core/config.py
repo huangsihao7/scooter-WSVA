@@ -14,7 +14,8 @@ class Settings(BaseSettings):
 """
     KEYWORD_PROMPT: str = """
 您将获得一段视频内容的文本，您的任务是为视频提供5个简体中文标签，以吸引观众。
-请直接输出这5个标签，例如: 美食|旅行|阅读|搞笑|游戏
+请直接输出这5个标签，下面是一个输出的例子：
+美食|旅行|阅读|搞笑|游戏
 下面是视频文本内容:
 """
     CACHE_ROOT_DIR: str = tempfile.mkdtemp()

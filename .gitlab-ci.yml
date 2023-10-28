@@ -1,6 +1,45 @@
 stages:
+  - install
   - build
   - deploy
+.go-cache:
+  variables:
+    GOPATH: $CI_PROJECT_DIR/.go
+  before_script:
+    - mkdir -p .go
+  cache:
+    paths:
+      - .go/pkg/mod/
+install-backend:
+  image: golang:1.20.3
+  stage: install
+  extends: .go-cache
+  variables:
+    GOPROXY: https://goproxy.cn
+  script:
+    - cd backend
+    - make download
+    - make build
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - backend/output
+install-frontend:
+  image: node:18.6.0-alpine
+  stage: install
+  cache:
+    paths:
+      - node_modules/
+  script:
+    - cd frontend
+    - npm install --registry=https://registry.npmmirror.com/
+    - npm run lint
+    - npm run build
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - dist
+
 build-ml-image:
   image: docker:dind
   stage: build
@@ -22,7 +61,6 @@ build-ml-image:
       -f ML/Dockerfile \
       ./ML
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-ml:$CI_PIPELINE_IID"
-
 build-backend-image:
   image: docker:dind
   stage: build
@@ -38,10 +76,64 @@ build-backend-image:
   script:
     - |
       docker build \
-      -t "172.22.121.50/ai-evaluation/scooter-wsva-backend:$CI_PIPELINE_IID" \
-      -f backend/Dockerfile \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-comment-api:$CI_PIPELINE_IID" \
+      -f backend/deployments/comment_api.Dockerfile \
       ./backend
-    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-backend:$CI_PIPELINE_IID"
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-comment-rpc:$CI_PIPELINE_IID" \
+      -f backend/deployments/comment_rpc.Dockerfile \
+      ./backend
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-favorite-api:$CI_PIPELINE_IID" \
+      -f backend/deployments/favorite_api.Dockerfile \
+      ./backend
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-favorite-rpc:$CI_PIPELINE_IID" \
+      -f backend/deployments/favorite_rpc.Dockerfile \
+      ./backend
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-feed-api:$CI_PIPELINE_IID" \
+      -f backend/deployments/feed_api.Dockerfile \
+      ./backend
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-feed-rpc:$CI_PIPELINE_IID" \
+      -f backend/deployments/feed_rpc.Dockerfile \
+      ./backend
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-relation-api:$CI_PIPELINE_IID" \
+      -f backend/deployments/relation_api.Dockerfile \
+      ./backend
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-relation-rpc:$CI_PIPELINE_IID" \
+      -f backend/deployments/relation_rpc.Dockerfile \
+      ./backend
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-user-api:$CI_PIPELINE_IID" \
+      -f backend/deployments/user_api.Dockerfile \
+      ./backend
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-user-rpc:$CI_PIPELINE_IID" \
+      -f backend/deployments/user_rpc.Dockerfile \
+      ./backend
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-comment-api:$CI_PIPELINE_IID"
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-comment-rpc:$CI_PIPELINE_IID"
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-favorite-api:$CI_PIPELINE_IID"
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-favorite-rpc:$CI_PIPELINE_IID"
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-feed-api:$CI_PIPELINE_IID"
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-feed-rpc:$CI_PIPELINE_IID"
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-relation-api:$CI_PIPELINE_IID"
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-relation-rpc:$CI_PIPELINE_IID"
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-user-api:$CI_PIPELINE_IID"
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-user-rpc:$CI_PIPELINE_IID"
 build-nginx-image:
   image: docker:dind
   stage: build
@@ -61,6 +153,25 @@ build-nginx-image:
       -f scripts/nginx/Dockerfile \
       ./scripts/nginx
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-nginx:$CI_PIPELINE_IID"
+build-frontend-image:
+  image: docker:dind
+  stage: build
+  services:
+    - docker:dind
+  only:
+    refs:
+      - main
+    # changes:
+    #   - scripts/nginx/**/*
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" 172.22.121.50
+  script:
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-frontend:$CI_PIPELINE_IID" \
+      -f frontend/Dockerfile \
+      ./frontend
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-frontend:$CI_PIPELINE_IID"
 
 deploy-ml:
   stage: deploy
@@ -102,17 +213,85 @@ deploy-backend:
     GIT_STRATEGY: none
   script:
     - echo "=======start deploy======="
-    - docker rm -f scooter-wsva-backend
+    - docker rm -f scooter-wsva-user-rpc
+    - |
+      docker run \
+      -di \
+      -p 8020:8020 \
+      --name scooter-wsva-user-rpc \
+      172.22.121.50/ai-evaluation/scooter-wsva-user-rpc:$CI_PIPELINE_IID
+    - sleep 10
+    - docker rm -f scooter-wsva-feed-rpc
+    - |
+      docker run \
+      -di \
+      -p 8011:8011 \
+      --name scooter-wsva-feed-rpc \
+      172.22.121.50/ai-evaluation/scooter-wsva-feed-rpc:$CI_PIPELINE_IID
+    - sleep 10
+    - docker rm -f scooter-wsva-favorite-rpc
+    - |
+      docker run \
+      -di \
+      -p 8012:8012 \
+      --name scooter-wsva-favorite-rpc \
+      172.22.121.50/ai-evaluation/scooter-wsva-favorite-rpc:$CI_PIPELINE_IID
+    - sleep 10
+    - docker rm -f scooter-wsva-relation-rpc
+    - |
+      docker run \
+      -di \
+      -p 8013:8013 \
+      --name scooter-wsva-relation-rpc \
+      172.22.121.50/ai-evaluation/scooter-wsva-relation-rpc:$CI_PIPELINE_IID
+    - sleep 10
+    - docker rm -f scooter-wsva-comment-rpc
+    - |
+      docker run \
+      -di \
+      -p 8014:8014 \
+      --name scooter-wsva-comment-rpc \
+      172.22.121.50/ai-evaluation/scooter-wsva-comment-rpc:$CI_PIPELINE_IID
+    - sleep 10
+    - docker rm -f scooter-wsva-user-api
     - |
       docker run \
       -di \
       -p 8890:8890 \
+      --name scooter-wsva-user-api \
+      172.22.121.50/ai-evaluation/scooter-wsva-user-api:$CI_PIPELINE_IID
+    - sleep 10
+    - docker rm -f scooter-wsva-feed-api
+    - |
+      docker run \
+      -di \
       -p 8891:8891 \
+      --name scooter-wsva-feed-api \
+      172.22.121.50/ai-evaluation/scooter-wsva-feed-api:$CI_PIPELINE_IID
+    - sleep 10
+    - docker rm -f scooter-wsva-favorite-api
+    - |
+      docker run \
+      -di \
       -p 8892:8892 \
+      --name scooter-wsva-favorite-api \
+      172.22.121.50/ai-evaluation/scooter-wsva-favorite-api:$CI_PIPELINE_IID
+    - sleep 10
+    - docker rm -f scooter-wsva-relation-api
+    - |
+      docker run \
+      -di \
       -p 8893:8893 \
+      --name scooter-wsva-relation-api \
+      172.22.121.50/ai-evaluation/scooter-wsva-relation-api:$CI_PIPELINE_IID
+    - sleep 10
+    - docker rm -f scooter-wsva-comment-api
+    - |
+      docker run \
+      -di \
       -p 8894:8894 \
-      --name scooter-wsva-backend \
-      172.22.121.50/ai-evaluation/scooter-wsva-backend:$CI_PIPELINE_IID
+      --name scooter-wsva-comment-api \
+      172.22.121.50/ai-evaluation/scooter-wsva-comment-api:$CI_PIPELINE_IID
     - echo "=======deploy success======="
 deploy-nginx:
   stage: deploy
@@ -134,4 +313,25 @@ deploy-nginx:
       -p 7070:80 \
       --name scooter-wsva-nginx \
       172.22.121.50/ai-evaluation/scooter-wsva-nginx:$CI_PIPELINE_IID
+    - echo "=======deploy success======="
+deploy-frontend:
+  stage: deploy
+  tags:
+    - "53"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push" && $CI_MERGE_REQUEST_EVENT_TYPE == null'
+    # - when: on_failure
+    #   exists:
+    #     - build-nginx-image
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "=======start deploy======="
+    - docker rm -f scooter-wsva-frontend
+    - |
+      docker run \
+      -di \
+      -p 7070:80 \
+      --name scooter-wsva-frontend \
+      172.22.121.50/ai-evaluation/scooter-wsva-frontend:$CI_PIPELINE_IID
     - echo "=======deploy success======="
