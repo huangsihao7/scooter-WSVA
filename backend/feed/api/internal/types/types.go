@@ -5,7 +5,7 @@ type CreateVideoReq struct {
 	Url      string `json:"url"` //视频地址
 	CoverUrl string `json:"coverUrl"`
 	Title    string `json:"title"`
-	Category string `json:"category"`
+	Category int    `json:"category"`
 }
 
 type CreateVideoResp struct {
@@ -56,7 +56,7 @@ type VideosListResp struct {
 }
 
 type CategoryVideosListReq struct {
-	Category string `form:"category"`
+	Category uint32 `form:"category"`
 }
 
 type CategoryVideosListResp struct {

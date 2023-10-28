@@ -33,7 +33,7 @@ func (l *CreateVideoLogic) CreateVideo(in *feed.CreateVideoRequest) (*feed.Creat
 		PlayUrl:       in.Url,
 		FavoriteCount: 0,
 		CommentCount:  0,
-		Category:      in.Category,
+		Category:      int64(in.Category),
 	}
 	res, err := l.svcCtx.FeedModel.Insert(l.ctx, &newVideo)
 	//newVideo.Id,_ = res.LastInsertId()

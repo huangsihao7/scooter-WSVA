@@ -27,7 +27,7 @@ func NewListCategoryVideosLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 }
 
 func (l *ListCategoryVideosLogic) ListCategoryVideos(in *feed.CategoryFeedRequest) (*feed.CategoryFeedResponse, error) {
-	Feeds, err := l.svcCtx.FeedModel.FindCategoryFeeds(l.ctx, in.Category)
+	Feeds, err := l.svcCtx.FeedModel.FindCategoryFeeds(l.ctx, int64(in.Category))
 	if err != nil {
 		if err == model.ErrNotFound {
 			return &feed.CategoryFeedResponse{

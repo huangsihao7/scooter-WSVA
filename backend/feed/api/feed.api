@@ -5,7 +5,7 @@ type (
 		Url      string `json:"url"` //视频地址
 		CoverUrl string `json:"coverUrl"`
 		Title    string `json:"title"`
-		Category string `json:"category"`
+		Category int    `json:"category"`
 	}
 
 	CreateVideoResp {
@@ -54,7 +54,7 @@ type (
 		Videos     []VideoInfo `json:"videos"`
 	}
 	CategoryVideosListReq {
-		Category string `form:"category"`
+		Category uint32 `form:"category"`
 	}
 	CategoryVideosListResp {
 		StatusCode int         `json:"status_code"`

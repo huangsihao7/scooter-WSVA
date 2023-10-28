@@ -32,7 +32,7 @@ func (l *CreateVideoLogic) CreateVideo(req *types.CreateVideoReq) (resp *types.C
 		CoverUrl: req.CoverUrl,
 		Url:      req.Url,
 		Title:    req.Title,
-		Category: req.Category,
+		Category: uint32(req.Category),
 	})
 	if err != nil {
 		return &types.CreateVideoResp{

@@ -8,7 +8,7 @@ message CreateVideoRequest {
    string cover_url=2;
    string url = 3; // 视频url
    string title = 4; // 视频标题
-   string category = 5; // 视频分类
+   uint32 category = 5; // 视频分类
 }
 
 message CreateVideoResponse {
@@ -72,7 +72,7 @@ message ListFeedResponse {
 }
 message CategoryFeedRequest {
    uint32 actor_id = 1;
-   string category =2;
+   uint32 category =2;
 }
 
 message CategoryFeedResponse {

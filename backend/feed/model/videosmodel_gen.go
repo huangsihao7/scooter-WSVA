@@ -30,7 +30,7 @@ type (
 		Delete(ctx context.Context, id int64) error
 		FindOwnFeed(ctx context.Context, uid int64) ([]*Videos, error)
 		FindFeeds(ctx context.Context) ([]*Videos, error)
-		FindCategoryFeeds(ctx context.Context, category string) ([]*Videos, error)
+		FindCategoryFeeds(ctx context.Context, category int64) ([]*Videos, error)
 	}
 
 	defaultVideosModel struct {
@@ -49,7 +49,7 @@ type (
 		CreatedAt     time.Time    `db:"created_at"`
 		UpdatedAt     sql.NullTime `db:"updated_at"`
 		DeletedAt     sql.NullTime `db:"deleted_at"`
-		Category      string       `db:"category"` // 视频分类
+		Category      int64        `db:"category"` // 视频分类
 	}
 )
 
@@ -129,7 +129,7 @@ func (m *defaultVideosModel) FindFeeds(ctx context.Context) ([]*Videos, error) {
 		return nil, err
 	}
 }
-func (m *defaultVideosModel) FindCategoryFeeds(ctx context.Context, category string) ([]*Videos, error) {
+func (m *defaultVideosModel) FindCategoryFeeds(ctx context.Context, category int64) ([]*Videos, error) {
 	query := fmt.Sprintf("select %s from %s where `category` = ? ORDER BY `id` DESC", videosRows, m.table)
 	var resp []*Videos
 	err := m.conn.QueryRowsCtx(ctx, &resp, query, category)
