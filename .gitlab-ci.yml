@@ -17,6 +17,7 @@ install:
   variables:
     GOPROXY: https://goproxy.cn
   script:
+    - cd backend
     - make download
     - make build
   artifacts:
