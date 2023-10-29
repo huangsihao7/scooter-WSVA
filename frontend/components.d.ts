@@ -41,6 +41,7 @@ declare module 'vue' {
     ElText: typeof import('element-plus/es')['ElText']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     HeaderMenu: typeof import('./src/components/HeaderMenu.vue')['default']
+    InfoEditCom: typeof import('./src/components/myinfo/InfoEditCom.vue')['default']
     Menu: typeof import('./src/components/Menu.vue')['default']
     MyHeaderCom: typeof import('./src/components/myinfo/MyHeaderCom.vue')['default']
     MyInteractCom: typeof import('./src/components/myinfo/MyInteractCom.vue')['default']
