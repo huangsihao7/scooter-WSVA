@@ -97,6 +97,7 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 		Name:            res.Name,
 		Id:              uint32(actionId),
 		Avatar:          &res.Avatar,
+		Gender:          uint32(res.Gender),
 		Signature:       &res.Dec,
 		FollowCount:     &uint32followCount,
 		FollowerCount:   &uint32followerCount,

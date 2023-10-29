@@ -39,6 +39,7 @@ func (l *UserInfoLogic) UserInfo(req *types.UserInfoReq) (resp *types.UserInfoRe
 		Id:              res.User.Id,
 		Name:            res.User.Name,
 		Avatar:          *res.User.Avatar,
+		Gender:          res.User.Gender,
 		Signature:       *res.User.Signature,
 		FollowCount:     *res.User.FollowCount,
 		FollowerCount:   *res.User.FollowerCount,

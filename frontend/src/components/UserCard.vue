@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-29 19:50:27
+ * @LastEditTime: 2023-10-29 20:25:04
  * @Description: 
  * @FilePath: /scooter-WSVA/frontend/src/components/UserCard.vue
 -->
@@ -77,7 +77,11 @@ const cancleFollow = (item: any, _index: any) => {
         </div>
       </template>
       <div>
-        <ElImage :src="info.backImg" fit="fill" @click="handleShowVedio" />
+        <ElImage
+          :src="info.background_image"
+          fit="fill"
+          @click="handleShowVedio"
+        />
       </div>
     </ElCard>
   </ElSpace>

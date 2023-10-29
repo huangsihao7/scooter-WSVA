@@ -48,6 +48,7 @@ type User struct {
 	Id              uint32 `json:"id"`
 	Name            string `json:"name"`
 	Avatar          string `json:"avatar"`
+	Gender          uint32 `json:"gender"`
 	Signature       string `json:"signature"`
 	BackgroundImage string `json:"background_image"` //用户个人页顶部大图
 	FollowCount     uint32 `json:"follow_count"`

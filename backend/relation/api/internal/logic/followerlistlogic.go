@@ -38,13 +38,13 @@ func (l *FollowerListLogic) FollowerList(req *types.FollowerListReq) (resp *type
 	resList := make([]types.UserInfo, 0)
 	for _, item := range list.List {
 		resList = append(resList, types.UserInfo{
-			Id:      item.Id,
-			Name:    item.Name,
-			Gender:  item.Gender,
-			Mobile:  item.Mobile,
-			Avatar:  item.Avatar,
-			Dec:     item.Dec,
-			BackImg: item.BackImg,
+			Id:              item.Id,
+			Name:            item.Name,
+			Gender:          item.Gender,
+			Mobile:          item.Mobile,
+			Avatar:          item.Avatar,
+			Dec:             item.Dec,
+			BackgroundImage: item.BackgroundImage,
 		})
 	}
 	return &types.FollowerListResp{

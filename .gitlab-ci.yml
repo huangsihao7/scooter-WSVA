@@ -20,11 +20,13 @@ install-backend:
   script:
     - cd backend
     - make download
+    - make doc
     - make build
   artifacts:
     expire_in: 1 day
     paths:
       - backend/output
+      - swagger/api
 install-frontend:
   image: node:20.9.0-bullseye
   stage: install
@@ -166,7 +168,13 @@ build-nginx-image:
       -t "172.22.121.50/ai-evaluation/scooter-wsva-nginx:$CI_PIPELINE_IID" \
       -f scripts/nginx/Dockerfile \
       ./scripts/nginx
+    - |
+      docker build \
+      -t "172.22.121.50/ai-evaluation/scooter-wsva-swagger:$CI_PIPELINE_IID" \
+      -f scripts/swagger/Dockerfile \
+      ./scripts/swagger
     - docker push "172.22.121.50/ai-evaluation/scooter-wsva-nginx:$CI_PIPELINE_IID"
+    - docker push "172.22.121.50/ai-evaluation/scooter-wsva-swagger:$CI_PIPELINE_IID"
 build-frontend-image:
   image: docker:dind
   stage: build
@@ -333,6 +341,13 @@ deploy-nginx:
       -p 7070:80 \
       --name scooter-wsva-nginx \
       172.22.121.50/ai-evaluation/scooter-wsva-nginx:$CI_PIPELINE_IID
+    - docker rm -f scooter-wsva-swagger
+    - |
+      docker run \
+      -di \
+      -p 7071:10000 \
+      --name scooter-wsva-swagger \
+      172.22.121.50/ai-evaluation/scooter-wsva-swagger:$CI_PIPELINE_IID
     - echo "=======deploy success======="
 deploy-frontend:
   stage: deploy

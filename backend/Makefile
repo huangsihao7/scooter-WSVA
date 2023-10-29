@@ -1,5 +1,21 @@
 download:
 	GOPROXY=https://goproxy.cn go mod tidy
+doc:
+	mkdir -p ../scripts/swagger/api
+	GO111MODULE=on GOPROXY=https://goproxy.cn/,direct go install github.com/zeromicro/go-zero/tools/goctl@v1.6.0
+	GO111MODULE=on GOPROXY=https://goproxy.cn/,direct go install github.com/zeromicro/goctl-swagger@v0.1.0
+	# user
+	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/user.json -host 172.22.121.53:7070" -api user/api/user.api -dir .
+	# feed
+	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/feed.json -host 172.22.121.53:7070" -api feed/api/feed.api -dir .
+	# favorite
+	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/favorite.json -host 172.22.121.53:7070" -api favorite/api/favorite.api -dir .
+	# relation
+	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/relation.json -host 172.22.121.53:7070" -api relation/api/relation.api -dir .
+	# comment
+	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/comment.json -host 172.22.121.53:7070" -api comment/api/comment.api -dir .
+	# mq
+	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/mq.json -host 172.22.121.53:7070" -api mq/api/mq.api -dir .
 
 build:
 	mkdir -p output

@@ -35,6 +35,7 @@ interface UserType {
   favorite_count: number;
   is_follow: boolean;
   phoneNum?: string;
+  background_image: string;
 }
 
 export type { VideoType, UserType };
