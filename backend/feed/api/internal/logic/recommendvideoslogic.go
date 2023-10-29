@@ -33,14 +33,14 @@ func (l *RecommendVideosLogic) RecommendVideos(req *types.RecommendVideosListReq
 			Num:     5,
 			Offset:  req.Offset,
 		})
-		println(111111111111111111, recommend.StatusMsg, err)
+		//println(111111111111111111, recommend.StatusMsg, err)
 	} else {
 		recommend, err = l.svcCtx.FeedRpc.ListVideosByRecommend(l.ctx, &feed.ListFeedRequest{
 			ActorId: uint32(uid),
 			Num:     1,
 			Offset:  req.Offset,
 		})
-		println(122222, recommend)
+		//println(122222, recommend)
 	}
 	println(111111111111111111, recommend.StatusMsg)
 	if err != nil {
