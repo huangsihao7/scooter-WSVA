@@ -63,6 +63,8 @@ message User {
 }
 message ListFeedRequest {
     uint32 actor_id = 1;
+    int64 num=2;
+    int64 offset=3;
 }
 
 message ListFeedResponse {
@@ -85,7 +87,7 @@ service Feed {
    rpc CreateVideo(CreateVideoRequest) returns (CreateVideoResponse) {}
    rpc ListVideo(ListVideoRequest) returns (ListVideoResponse) {}
 //   rpc CountVideo(CountVideoRequest) returns (CountVideoResponse) {}
-//   rpc ListVideosByRecommend(ListFeedRequest) returns (ListFeedResponse);
+   rpc ListVideosByRecommend(ListFeedRequest) returns (ListFeedResponse);
    rpc ListVideos(ListFeedRequest) returns (ListFeedResponse);
    rpc ListCategoryVideos(CategoryFeedRequest) returns (CategoryFeedResponse);
 }

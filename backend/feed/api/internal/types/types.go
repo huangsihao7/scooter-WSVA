@@ -64,3 +64,13 @@ type CategoryVideosListResp struct {
 	StatusMsg  string      `json:"status_msg"`
 	Videos     []VideoInfo `json:"videos"`
 }
+
+type RecommendVideosListReq struct {
+	Offset int64 `json:"offset"`
+}
+
+type RecommendVideosListResp struct {
+	StatusCode int         `json:"status_code"`
+	StatusMsg  string      `json:"status_msg"`
+	Videos     []VideoInfo `json:"videos"`
+}

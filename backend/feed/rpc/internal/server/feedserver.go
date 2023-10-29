@@ -33,6 +33,11 @@ func (s *FeedServer) ListVideo(ctx context.Context, in *feed.ListVideoRequest) (
 }
 
 // rpc CountVideo(CountVideoRequest) returns (CountVideoResponse) {}
+func (s *FeedServer) ListVideosByRecommend(ctx context.Context, in *feed.ListFeedRequest) (*feed.ListFeedResponse, error) {
+	l := logic.NewListVideosByRecommendLogic(ctx, s.svcCtx)
+	return l.ListVideosByRecommend(in)
+}
+
 func (s *FeedServer) ListVideos(ctx context.Context, in *feed.ListFeedRequest) (*feed.ListFeedResponse, error) {
 	l := logic.NewListVideosLogic(ctx, s.svcCtx)
 	return l.ListVideos(in)

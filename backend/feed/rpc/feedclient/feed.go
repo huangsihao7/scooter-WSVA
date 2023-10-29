@@ -30,6 +30,7 @@ type (
 		CreateVideo(ctx context.Context, in *CreateVideoRequest, opts ...grpc.CallOption) (*CreateVideoResponse, error)
 		ListVideo(ctx context.Context, in *ListVideoRequest, opts ...grpc.CallOption) (*ListVideoResponse, error)
 		// rpc CountVideo(CountVideoRequest) returns (CountVideoResponse) {}
+		ListVideosByRecommend(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 		ListVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 		ListCategoryVideos(ctx context.Context, in *CategoryFeedRequest, opts ...grpc.CallOption) (*CategoryFeedResponse, error)
 	}
@@ -56,6 +57,11 @@ func (m *defaultFeed) ListVideo(ctx context.Context, in *ListVideoRequest, opts 
 }
 
 // rpc CountVideo(CountVideoRequest) returns (CountVideoResponse) {}
+func (m *defaultFeed) ListVideosByRecommend(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error) {
+	client := feed.NewFeedClient(m.cli.Conn())
+	return client.ListVideosByRecommend(ctx, in, opts...)
+}
+
 func (m *defaultFeed) ListVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error) {
 	client := feed.NewFeedClient(m.cli.Conn())
 	return client.ListVideos(ctx, in, opts...)

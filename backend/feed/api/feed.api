@@ -61,6 +61,15 @@ type (
 		StatusMsg  string      `json:"status_msg"`
 		Videos     []VideoInfo `json:"videos"`
 	}
+
+	RecommendVideosListReq {
+		Offset int64 `json:"offset"`
+	}
+	RecommendVideosListResp {
+		StatusCode int         `json:"status_code"`
+		StatusMsg  string      `json:"status_msg"`
+		Videos     []VideoInfo `json:"videos"`
+	}
 )
 
 @server(
@@ -78,4 +87,7 @@ service feed-api {
 
 	@handler CategoryVideosList
 	get /feed/CategoryVideosList (CategoryVideosListReq) returns(CategoryVideosListResp)
+
+	@handler RecommendVideos
+	post /feed/recommends (RecommendVideosListReq) returns(RecommendVideosListResp)
 }

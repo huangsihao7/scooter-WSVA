@@ -69,8 +69,8 @@ const (
 	FindCategoryVideosError           = "查询分类视频失败"
 	FindUserErrorCode                 = 50031
 	FindUserError                     = "查询用户信息失败"
-	jsonErrorCode                     = 50032
-	jsonError                         = "json解析失败"
+	JsonErrorCode                     = 50032
+	JsonError                         = "json解析失败"
 )
 
 // Expected Error

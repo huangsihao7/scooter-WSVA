@@ -19,10 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Feed_CreateVideo_FullMethodName        = "/feed.Feed/CreateVideo"
-	Feed_ListVideo_FullMethodName          = "/feed.Feed/ListVideo"
-	Feed_ListVideos_FullMethodName         = "/feed.Feed/ListVideos"
-	Feed_ListCategoryVideos_FullMethodName = "/feed.Feed/ListCategoryVideos"
+	Feed_CreateVideo_FullMethodName           = "/feed.Feed/CreateVideo"
+	Feed_ListVideo_FullMethodName             = "/feed.Feed/ListVideo"
+	Feed_ListVideosByRecommend_FullMethodName = "/feed.Feed/ListVideosByRecommend"
+	Feed_ListVideos_FullMethodName            = "/feed.Feed/ListVideos"
+	Feed_ListCategoryVideos_FullMethodName    = "/feed.Feed/ListCategoryVideos"
 )
 
 // FeedClient is the client API for Feed service.
@@ -32,7 +33,7 @@ type FeedClient interface {
 	CreateVideo(ctx context.Context, in *CreateVideoRequest, opts ...grpc.CallOption) (*CreateVideoResponse, error)
 	ListVideo(ctx context.Context, in *ListVideoRequest, opts ...grpc.CallOption) (*ListVideoResponse, error)
 	// rpc CountVideo(CountVideoRequest) returns (CountVideoResponse) {}
-	// rpc ListVideosByRecommend(ListFeedRequest) returns (ListFeedResponse);
+	ListVideosByRecommend(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 	ListVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 	ListCategoryVideos(ctx context.Context, in *CategoryFeedRequest, opts ...grpc.CallOption) (*CategoryFeedResponse, error)
 }
@@ -57,6 +58,15 @@ func (c *feedClient) CreateVideo(ctx context.Context, in *CreateVideoRequest, op
 func (c *feedClient) ListVideo(ctx context.Context, in *ListVideoRequest, opts ...grpc.CallOption) (*ListVideoResponse, error) {
 	out := new(ListVideoResponse)
 	err := c.cc.Invoke(ctx, Feed_ListVideo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *feedClient) ListVideosByRecommend(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error) {
+	out := new(ListFeedResponse)
+	err := c.cc.Invoke(ctx, Feed_ListVideosByRecommend_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +98,7 @@ type FeedServer interface {
 	CreateVideo(context.Context, *CreateVideoRequest) (*CreateVideoResponse, error)
 	ListVideo(context.Context, *ListVideoRequest) (*ListVideoResponse, error)
 	// rpc CountVideo(CountVideoRequest) returns (CountVideoResponse) {}
-	// rpc ListVideosByRecommend(ListFeedRequest) returns (ListFeedResponse);
+	ListVideosByRecommend(context.Context, *ListFeedRequest) (*ListFeedResponse, error)
 	ListVideos(context.Context, *ListFeedRequest) (*ListFeedResponse, error)
 	ListCategoryVideos(context.Context, *CategoryFeedRequest) (*CategoryFeedResponse, error)
 	mustEmbedUnimplementedFeedServer()
@@ -103,6 +113,9 @@ func (UnimplementedFeedServer) CreateVideo(context.Context, *CreateVideoRequest)
 }
 func (UnimplementedFeedServer) ListVideo(context.Context, *ListVideoRequest) (*ListVideoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListVideo not implemented")
+}
+func (UnimplementedFeedServer) ListVideosByRecommend(context.Context, *ListFeedRequest) (*ListFeedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListVideosByRecommend not implemented")
 }
 func (UnimplementedFeedServer) ListVideos(context.Context, *ListFeedRequest) (*ListFeedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListVideos not implemented")
@@ -159,6 +172,24 @@ func _Feed_ListVideo_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Feed_ListVideosByRecommend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFeedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FeedServer).ListVideosByRecommend(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Feed_ListVideosByRecommend_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FeedServer).ListVideosByRecommend(ctx, req.(*ListFeedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Feed_ListVideos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListFeedRequest)
 	if err := dec(in); err != nil {
@@ -209,6 +240,10 @@ var Feed_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListVideo",
 			Handler:    _Feed_ListVideo_Handler,
+		},
+		{
+			MethodName: "ListVideosByRecommend",
+			Handler:    _Feed_ListVideosByRecommend_Handler,
 		},
 		{
 			MethodName: "ListVideos",

@@ -32,6 +32,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/feed/CategoryVideosList",
 				Handler: CategoryVideosListHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/feed/recommends",
+				Handler: RecommendVideosHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
