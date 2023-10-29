@@ -20,6 +20,8 @@ install-backend:
   script:
     - cd backend
     - make download
+    - export PATH=$PATH:$GOPATH/bin
+    - source ~/.profile
     - make doc
     - make build
   artifacts:
