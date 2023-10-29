@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 20:15:14
+ * @LastEditTime: 2023-10-29 09:46:40
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -10,19 +10,26 @@
 <script lang="ts" setup>
 import dplayer from '@/components/video/Video.vue';
 import Hls from 'hls.js';
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import  { NIcon, NButton } from 'naive-ui'
 import { Heart, ArrowRedo, ChatbubbleEllipses, Star  } from '@vicons/ionicons5'
 import { VideoType } from '@/apis/interface'
+import { ElMessageBox, ElMessage } from 'element-plus';
+import { Action } from 'element-plus';
 
 interface propsType {
   video: VideoType,
-  key:number
+  index: number,
+  onplay: number
 }
 
 const props = defineProps<propsType>()
 
 const emit = defineEmits(['comment-visible-update'])
+
+// const mystart = computed(()=>props.index == props.onplay?true:false)
+const firstIndex = computed(()=>props.index == 0? true:false)
+
 const videoUrls = ref<any>([
     {
         url:'http://127.0.0.1:8080/3.mp4',
@@ -35,7 +42,6 @@ const videoUrls = ref<any>([
         isCollect: true,
         isFollowed: false,
         title: '你好哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-        content:'在你拿着一堆早餐摆着慢慢吃，武汉人发出尖锐的爆鸣[捂脸]主要是那些炸物刚出炉最好吃了，你还等豆皮等半天[泪奔]来武汉过早，这种炸物建议到手就吃哦，热干面也不能放，拿到就要拌开'
     }
 ])
 
@@ -132,6 +138,17 @@ const handleCommentBtn = () =>{
 // 分享按钮的操作
 const handleShareBtn = () =>{
     shareVisible.value = !shareVisible.value
+    ElMessageBox.alert('这是分享链接', '分享', {
+    confirmButtonText: '复制',
+    center: true,
+    callback: () => {
+        
+      ElMessage({
+        type: 'info',
+        message: `复制成功`,
+      })
+    },
+  })
 }
 
 const likeAnimateClass = ref<String>('')
@@ -148,13 +165,13 @@ onMounted(() => {
     <div>
         <div class="video-container">
             <dplayer :video="dplayerObj.video" :danmaku="dplayerObj.danmaku" :contextmenu="dplayerObj.contextmenu"
-            :highlight="dplayerObj.highlight" />
+            :highlight="dplayerObj.highlight" :videoIndex="props.index" :onPlayIndex="props.onplay"/>
             <div class="video-info-box">
                 <div class="header">
                     <p class="title">@{{props.video.author.name}}</p>
                     <p class="time">{{ props.video.createTime }}</p>
                 </div>
-                <div class="content">{{ videoUrls[0].content }}</div>
+                <div class="content">{{ props.video.title }}</div>
             </div>
             <div class='video-interaction-box'>
                 <div class="like">
@@ -205,6 +222,7 @@ onMounted(() => {
                             </n-icon>
                         </n-button>
                     </div>
+                    <p>{{ props.video.favoriteCount }}</p>
                 </div>
             </div>
         </div>

@@ -8,7 +8,8 @@ import { getVideosList } from '@/apis/video'
 
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false)
-
+const currentVideoIndex = ref<number>(0)
+const lastVideoIndex = ref<number>(0)
 const videos = ref<any>()
 
 onMounted(() => {
@@ -34,6 +35,8 @@ const downPage = () =>{
 
 const updatePage = (currentIndex: number, lastIndex: number) =>{
     console.log('hello', currentIndex, lastIndex)
+    currentVideoIndex.value = currentIndex
+    lastVideoIndex.value = lastIndex
 }
 
 </script>
@@ -55,7 +58,9 @@ const updatePage = (currentIndex: number, lastIndex: number) =>{
             :show-dots="false"
             style="width: 100%; height: calc(100vh - 60px);"
         >
-            <n-carousel-item v-for="(video,index) in videos"> <VideoPlus :key="index" :video="video" @comment-visible-update="updateVisible"/></n-carousel-item>
+            <n-carousel-item v-for="(video,index) in videos">
+                <VideoPlus :onplay="currentVideoIndex"  :index="index" :video="video" @comment-visible-update="updateVisible"/>
+            </n-carousel-item>
             
         </n-carousel>
     </div>
@@ -81,6 +86,7 @@ width: 100%;
 height: 240px;
 object-fit: cover;
 }
+
 
 .short-carousel{
     .video-com{

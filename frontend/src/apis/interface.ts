@@ -18,7 +18,8 @@ interface VideoType{
     title:number,
     createTime:number,
     isCollect:boolean,
-    collectCount:number
+    collectCount:number,
+    shareCount:number
 }
 
 interface UserType{
@@ -32,7 +33,7 @@ interface UserType{
     total_favorited:number,
     work_count:number,
     favorite_count:number,
-    is_follow:boolean,
+    is_follow:boolean
 }
 
 export type { VideoType, UserType}

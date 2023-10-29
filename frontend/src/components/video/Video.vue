@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 13:08:06
+ * @LastEditTime: 2023-10-29 11:28:18
  * @Description: 视频基础组件
  * @FilePath: \scooter-WSVA\frontend\src\components\video\Video.vue
 -->
@@ -13,8 +13,9 @@
      
 <script setup lang="ts">
 import DPlayer from 'dplayer';
+import { number } from 'echarts';
 import Hls from 'hls.js';
-import { ref, reactive, onBeforeUnmount, onMounted } from 'vue'
+import { ref, reactive, onBeforeUnmount, onMounted, onUpdated } from 'vue'
 
 const videoRef = ref()
 const state:any = reactive({
@@ -22,10 +23,21 @@ const state:any = reactive({
 })
 
 const props = defineProps({
+  // 是否是第一个视频
+  // firstStart:{
+  //   type: Boolean,
+  //   default: false
+  // },
+  videoIndex:{
+    type: Number
+  },
+  onPlayIndex:{
+    type: Number
+  },
   // 是否自动播放
   autoplay: {
     type: Boolean,
-    default: true
+    default: false
   },
   // 主题色
   theme: {
@@ -149,9 +161,71 @@ onMounted(() => {
   if (props.danmaku) {
     player.danmaku = props.danmaku
   }
-  console.log(player);
-  state.instance = new DPlayer(player)
+  console.log('mystart',props.onPlayIndex, props.videoIndex)
+  // 第一个视频自动播放
+  // if(props.videoIndex == 0){
+  //   player.autoplay = true
+  //   state.instance = new DPlayer(player)
+  // }
+  // else{
+  //   state.instance = new DPlayer(player)
+  // }
+  if(props.videoIndex == 0){
+    player.autoplay = true
+    state.instance = new DPlayer(player)
+  }
 })
+
+
+
+onUpdated(() => {
+  // console.log('myupdate',props.onPlayIndex, props.videoIndex)
+  // if(props.onPlayIndex == props.videoIndex)
+  // {
+  //   state.instance.play()
+  //   // videoInstance
+  // }
+  console.log('myupdated', props.videoIndex)
+  if(state.instance == null){
+      console.log('myinstance', props.videoIndex)
+      let player:any = {
+      container: videoRef.value,
+      preventClickToggle: props.preventClickToggle,
+      pic: props.pic,
+      autoplay: props.autoplay,
+      theme: props.theme,
+      loop: props.loop,
+      lang: props.lang,
+      screenshot: props.screenshot,
+      hotkey: props.hotkey,
+      preload: props.preload,
+      volume: props.volume,
+      playbackSpeed: props.playbackSpeed,
+      logo: props.logo,
+      video: props.video,
+      contextmenu: props.contextmenu,
+      highlight: props.highlight,
+      mutex: props.mutex,
+    }
+    if (props.subtitle.url) {
+      player.subtitle = props.subtitle
+    }
+    if (props.danmaku) {
+      player.danmaku = props.danmaku
+    }
+    if(props.onPlayIndex == props.videoIndex){
+      player.autoplay = true
+      state.instance = new DPlayer(player)
+    }
+  }
+  if(props.onPlayIndex == props.videoIndex){
+    state.instance.pause()
+    console.log('2222222',state.instance,state.instance.pause())
+  }
+ 
+})
+
+
 // 销毁
 onBeforeUnmount(() => {
   if(state.instance != null){

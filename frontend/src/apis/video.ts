@@ -1,10 +1,10 @@
 import { service } from '@/axios'
 
-export function postVideo(Url: string, CoverUrl: string,  Title: string,  Category: number) {
+export function postVideo(url: string, coverUrl: string,  title: string,  category: number) {
   return service({
     url: '/feed/create',
     method: 'post',
-    data: { Url, CoverUrl, Title, Category }
+    data: { url, coverUrl, title, category }
   })
 }
 
