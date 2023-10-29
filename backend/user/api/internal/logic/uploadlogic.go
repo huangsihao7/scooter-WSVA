@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 type UploadLogic struct {
@@ -93,7 +94,7 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 
 	//key为上传的文件名
 	key := handler.Filename // 上传路径，如果当前目录中已存在相同文件，则返回上传失败错误
-	key = crypt.PasswordEncrypt("wy", key) + ".mp4"
+	key = crypt.PasswordEncrypt(time.Now().String(), key) + ".mp4"
 
 	err = resumeUploader.Put(context.Background(), &ret, upToken, key, file, handler.Size, &putExtra)
 	if err != nil {

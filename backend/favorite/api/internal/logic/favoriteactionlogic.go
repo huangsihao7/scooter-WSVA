@@ -3,10 +3,10 @@ package logic
 import (
 	"context"
 	"encoding/json"
-	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
-
 	"github.com/huangsihao7/scooter-WSVA/favorite/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/favorite/api/internal/types"
+	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
+	"github.com/huangsihao7/scooter-WSVA/mq/format"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -33,7 +33,9 @@ func (l *FavoriteActionLogic) FavoriteAction(req *types.ActionReq) (resp *types.
 	//token解析得到用户id
 	//token 解析
 	userId, _ := l.ctx.Value("uid").(json.Number).Int64()
-
+	if req.ActionType == 1 {
+		format.Feedback("like", int(req.VideoId), int(userId))
+	}
 	//请求服务
 	r, err := l.svcCtx.Favor.FavoriteAction(l.ctx, &favorite.FavoriteActionRequest{
 		UserId:     userId,
@@ -43,6 +45,7 @@ func (l *FavoriteActionLogic) FavoriteAction(req *types.ActionReq) (resp *types.
 	if err != nil {
 		return nil, err
 	}
+
 	return &types.ActionResp{
 		StatusCode: int(r.StatusCode),
 		StatusMsg:  r.StatusMsg,
