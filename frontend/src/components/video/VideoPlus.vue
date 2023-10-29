@@ -1,14 +1,14 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
- * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 16:48:51
+ * @LastEditors: huangsihao7 1057434651@qq.com
+ * @LastEditTime: 2023-10-29 16:55:57
  * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
+ * @FilePath: /scooter-WSVA/frontend/src/components/video/VideoPlus.vue
 -->
 
 <script lang="ts" setup>
-import dplayer from "@/components/video/VideoCom.vue";
+import Dplayer from "@/components/video/VideoCom.vue";
 import Hls from "hls.js";
 import { ref, reactive, onMounted } from "vue";
 import { NIcon, NButton } from "naive-ui";
@@ -169,7 +169,7 @@ onMounted(() => {
 <template>
   <div>
     <div class="video-container">
-      <dplayer
+      <Dplayer
         :video="dplayerObj.video"
         :danmaku="dplayerObj.danmaku"
         :contextmenu="dplayerObj.contextmenu"
@@ -269,10 +269,12 @@ onMounted(() => {
   .el-button {
     z-index: 9999;
   }
+
   .dplayer {
     width: calc(100vw - 160px);
     height: calc(100vh - 60px);
   }
+
   .video-info-box {
     display: block;
     height: auto;
@@ -283,22 +285,27 @@ onMounted(() => {
     bottom: 48px;
     height: 100px;
     padding: 0 20px;
+
     .title,
     .time,
     .content {
       color: white;
     }
+
     .header {
       display: flex;
+
       .time {
         margin: 25px 0 0 15px;
         font-size: small;
       }
+
       .title {
         font-size: larger;
         font-weight: bold;
       }
     }
+
     .content {
       text-align: left;
     }
@@ -314,14 +321,17 @@ onMounted(() => {
     right: 0;
     height: 400px;
     padding: 0 20px;
+
     .like,
     .collect,
     .comment,
     .share {
       margin-top: 10px;
+
       .btn {
         font-size: 35px;
       }
+
       p {
         display: block;
         margin: 0;
