@@ -78,6 +78,11 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 		if err != nil {
 			return nil, err
 		}
+		//userId 是否收藏该视频
+		isStar, err := l.svcCtx.StarModel.IsStarExist(l.ctx, userId, int64(videoId))
+		if err != nil {
+			return nil, err
+		}
 		userDetail := &favorite.User{
 			Id:             userInfo.User.Id,
 			Name:           userInfo.User.Name,
@@ -100,6 +105,7 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 			CommentCount:  int64(videoDetail.CommentCount),
 			StarCount:     int64(videoDetail.StarCount),
 			IsFavorite:    isFavorited,
+			IsStar:        isStar,
 			Title:         videoDetail.Title,
 		}
 

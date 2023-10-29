@@ -37,7 +37,8 @@ message Video {
   int64 comment_count = 6; // 视频的评论总数
   int64 star_count = 7; // 视频的评论总数
   bool is_favorite = 8; // true-已点赞，false-未点赞
-  string title = 9; // 视频标题
+  bool is_star = 9; // true-已收藏，false-未收藏
+  string title = 10; // 视频标题
 }
 
 // 用户信息

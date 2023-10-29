@@ -18,6 +18,7 @@ import (
 
 var configFile = flag.String("f", "etc/user.yaml", "the config file")
 
+// user rpc
 func main() {
 	flag.Parse()
 
