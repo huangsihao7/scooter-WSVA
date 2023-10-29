@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 13:37:51
+ * @LastEditTime: 2023-10-29 16:14:25
  * @Description: 各个视频分类的视频卡片渲染
  * @FilePath: \scooter-WSVA\frontend\src\components\VideoCard.vue
 -->
@@ -125,7 +125,6 @@ onMounted(() => {
         style="width: calc((100vw - 260px) / 4)"
         @click="GetVideoLink"
       >
-        >
         <div style="position: relative">
           <ElImage :src="info.url" fit="fill" @click="handleShowVedio" />
           <NTag class="time" round :bordered="false" type="info">

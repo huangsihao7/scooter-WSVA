@@ -2,13 +2,13 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 13:57:12
+ * @LastEditTime: 2023-10-29 16:48:51
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
 
 <script lang="ts" setup>
-import Dplayer from "@/components/video/VideoCom.vue";
+import dplayer from "@/components/video/VideoCom.vue";
 import Hls from "hls.js";
 import { ref, reactive, onMounted } from "vue";
 import { NIcon, NButton } from "naive-ui";
@@ -169,14 +169,13 @@ onMounted(() => {
 <template>
   <div>
     <div class="video-container">
-      <Dplayer
+      <dplayer
         :video="dplayerObj.video"
         :danmaku="dplayerObj.danmaku"
         :contextmenu="dplayerObj.contextmenu"
         :highlight="dplayerObj.highlight"
         :video-index="props.index"
         :on-play-index="props.onplay"
-      />
       />
       <div class="video-info-box">
         <div class="header">

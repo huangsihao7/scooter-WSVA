@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 14:00:08
+ * @LastEditTime: 2023-10-29 16:46:31
  * @Description: 视频基础组件
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCom.vue
 -->
@@ -83,51 +83,62 @@ const props = defineProps({
     },
   },
   // 在左上角展示一个 logo，你可以通过 CSS 调整它的大小和位置
-  logo: {
-    type: String,
-    default: "http://127.0.0.1:8080/OIP-C.jpg",
-  },
+  // logo: {
+  //   type: String,
+  //   default: "http://127.0.0.1:8080/OIP-C.jpg",
+  // },
   // 视频信息
+  // video: {
+  //   type: Object,
+  //   default: function () {
+  //     return {
+  //       url: "", //视频地址
+  //       type: "mp4",
+  //       customType: {
+  //         customHls: function (video: any, player: any) {
+  //           console.log(player);
+  //           const hls = new Hls(); //实例化Hls  用于解析m3u8
+  //           hls.loadSource(video.src);
+  //           hls.attachMedia(video);
+  //         },
+  //       },
+  //     };
+  //   },
+  // },
   video: {
     type: Object,
-    default: function () {
-      return {
-        url: "http://127.0.0.1:8080/WeChat_20231026155918.mp4", //视频地址
-        type: "mp4",
-        customType: {
-          customHls: function (video: any, player: any) {
-            console.log(player);
-            const hls = new Hls(); //实例化Hls  用于解析m3u8
-            hls.loadSource(video.src);
-            hls.attachMedia(video);
-          },
+    default: {
+      url: "http://s327crbzf.hn-bkt.clouddn.com/4993187b41132025aaaa88063de94727b54d482b203c325a78ce8bf61e41e514.mp4", //视频地址
+      type: "mp4",
+      customType: {
+        customHls: function (video: any, player: any) {
+          console.log(player);
+          const hls = new Hls(); //实例化Hls  用于解析m3u8
+          hls.loadSource(video.src);
+          hls.attachMedia(video);
         },
-      };
+      },
     },
   },
   // 外挂字幕
   subtitle: {
     type: Object,
-    default: function () {},
+    default: {},
   },
   // 显示弹幕
   danmaku: {
     type: Object,
-    default: function () {},
+    default: {},
   },
   // 自定义右键菜单
   contextmenu: {
     type: Array,
-    default: function () {
-      return [];
-    },
+    default: [],
   },
   // 自定义进度条提示点
   highlight: {
     type: Array,
-    default: function () {
-      return [];
-    },
+    default: [],
   },
   // 阻止多个播放器同时播放，当前播放器播放时暂停其他播放器
   mutex: {
@@ -144,7 +155,9 @@ const props = defineProps({
     default: false,
   },
 });
+
 onMounted(() => {
+  console.log(props);
   let player: any = {
     container: videoRef.value,
     preventClickToggle: props.preventClickToggle,
@@ -158,7 +171,7 @@ onMounted(() => {
     preload: props.preload,
     volume: props.volume,
     playbackSpeed: props.playbackSpeed,
-    logo: props.logo,
+    // logo: props.logo,
     video: props.video,
     contextmenu: props.contextmenu,
     highlight: props.highlight,
@@ -199,7 +212,7 @@ onUpdated(() => {
       preload: props.preload,
       volume: props.volume,
       playbackSpeed: props.playbackSpeed,
-      logo: props.logo,
+      // logo: props.logo,
       video: props.video,
       contextmenu: props.contextmenu,
       highlight: props.highlight,
