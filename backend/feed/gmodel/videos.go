@@ -1,6 +1,10 @@
 package gmodel
 
-import "database/sql"
+import (
+	"context"
+	"database/sql"
+	"gorm.io/gorm"
+)
 
 type Videos struct {
 	Id            uint         `gorm:"column:id;type:int(11) unsigned;primary_key;AUTO_INCREMENT;comment:主键" json:"id"`
@@ -15,4 +19,50 @@ type Videos struct {
 	UpdatedAt     sql.NullTime `gorm:"column:updated_at;type:datetime" json:"updated_at"`
 	DeletedAt     sql.NullTime `gorm:"column:deleted_at;type:datetime" json:"deleted_at"`
 	Category      int          `gorm:"column:category;type:int(11);comment:视频分类;NOT NULL" json:"category"`
+}
+
+func (m *Videos) TableName() string {
+	return "videos"
+}
+
+type VideoModel struct {
+	db *gorm.DB
+}
+
+func NewFavoriteModel(db *gorm.DB) *VideoModel {
+	return &VideoModel{
+		db: db,
+	}
+}
+
+func (m *VideoModel) FindById(ctx context.Context, Id int64, limit int) ([]*Videos, error) {
+	var result []*Videos
+	err := m.db.WithContext(ctx).
+		Where("id = ? ", Id).
+		Order("id desc").
+		Limit(limit).
+		Find(&result).Error
+	return result, err
+}
+
+func (m *VideoModel) IncrStarCount(ctx context.Context, video *Videos) error {
+
+	err := m.db.First(video).Error
+	if err != nil {
+		return err
+	}
+	video.StarCount += 1
+
+	return m.db.WithContext(ctx).Save(video).Error
+}
+
+func (m *VideoModel) DecrStarCount(ctx context.Context, video *Videos) error {
+	err := m.db.First(video).Error
+	if err != nil {
+		return err
+	}
+
+	video.StarCount -= 1
+
+	return m.db.WithContext(ctx).Save(video).Error
 }
