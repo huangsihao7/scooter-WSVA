@@ -56,7 +56,7 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
       @keydown.arrow-up="upPage"
       @keydown.arrow-down="downPage"
     >
-      <NCarouselItem v-for="(video, index) in videos">
+      <NCarouselItem v-for="(video, index) in videos" :key="index">
         <VideoPlus
           :onplay="currentVideoIndex"
           :index="index"

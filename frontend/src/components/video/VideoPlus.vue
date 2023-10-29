@@ -2,13 +2,13 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 12:14:46
+ * @LastEditTime: 2023-10-29 13:57:12
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
 
 <script lang="ts" setup>
-import dplayer from "@/components/video/Video.vue";
+import Dplayer from "@/components/video/VideoCom.vue";
 import Hls from "hls.js";
 import { ref, reactive, onMounted } from "vue";
 import { NIcon, NButton } from "naive-ui";
@@ -26,6 +26,8 @@ interface propsType {
 const props = defineProps<propsType>();
 
 const emit = defineEmits(["comment-visible-update"]);
+
+const thisVideo = ref<VideoType>();
 
 // const mystart = computed(()=>props.index == props.onplay?true:false)
 // const firstIndex = computed(()=>props.index == 0? true:false)
@@ -95,34 +97,40 @@ const dplayerObj = reactive({
 
 // 喜欢按钮的操作
 const handleLikeBtn = () => {
-  if (!props.video.isFavorite) {
-    props.video.favoriteCount++;
-  } else {
-    props.video.favoriteCount--;
+  if (thisVideo.value) {
+    if (!thisVideo.value?.isFavorite) {
+      thisVideo.value.favoriteCount++;
+    } else {
+      thisVideo.value.favoriteCount--;
+    }
+    if (!thisVideo.value?.isFavorite) {
+      likeAnimateClass.value = "animate__heartBeat";
+    } else {
+      likeAnimateClass.value = "";
+    }
+    thisVideo.value.isFavorite = !thisVideo.value.isFavorite;
   }
-  if (!props.video.isFavorite) {
-    likeAnimateClass.value = "animate__heartBeat";
-  } else {
-    likeAnimateClass.value = "";
-  }
-  props.video.isFavorite = !props.video.isFavorite;
-
   // TODO: 发请求
 };
 
 // 收藏按钮的操作
 const handleCollectBtn = () => {
-  if (!props.video.isCollect) {
-    props.video.collectCount++;
-  } else {
-    props.video.collectCount--;
+  if (thisVideo.value) {
+    if (!thisVideo.value?.isCollect) {
+      thisVideo.value.collectCount++;
+    } else {
+      thisVideo.value.collectCount--;
+    }
+
+    // TODO: 等待后端返回collect值
+    if (!videoUrls.value[0].isCollect) {
+      collectAnimateClass.value = "animate__heartBeat";
+    } else {
+      collectAnimateClass.value = "";
+    }
+    videoUrls.value[0].isCollect = !videoUrls.value[0].isCollect;
   }
-  if (!videoUrls.value[0].isCollect) {
-    collectAnimateClass.value = "animate__heartBeat";
-  } else {
-    collectAnimateClass.value = "";
-  }
-  videoUrls.value[0].isCollect = !videoUrls.value[0].isCollect;
+
   // TODO: 发请求
 };
 
@@ -153,7 +161,9 @@ const commentAnimateClass = ref<String>("");
 const shareAnimateClass = ref<String>("");
 const commentVisible = ref<boolean>(false);
 const shareVisible = ref<boolean>(false);
-onMounted(() => {});
+onMounted(() => {
+  thisVideo.value = props.video;
+});
 </script>
 
 <template>
@@ -179,7 +189,7 @@ onMounted(() => {});
         <div class="like">
           <div :class="likeAnimateClass">
             <NButton
-              v-if="props.video.isFavorite"
+              v-if="thisVideo?.isFavorite"
               class="btn"
               text
               color="rgb(254, 44, 85)"
@@ -201,7 +211,7 @@ onMounted(() => {});
               </NIcon>
             </NButton>
           </div>
-          <p>{{ props.video.favoriteCount }}</p>
+          <p>{{ thisVideo?.favoriteCount }}</p>
         </div>
         <div class="comment">
           <div :class="commentAnimateClass">
@@ -248,7 +258,7 @@ onMounted(() => {});
               </NIcon>
             </NButton>
           </div>
-          <p>{{ props.video.favoriteCount }}</p>
+          <p>{{ thisVideo?.shareCount }}</p>
         </div>
       </div>
     </div>

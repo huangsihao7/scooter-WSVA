@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import SubMenu from "./components/SubMenu.vue";
-import Menu from "./components/Menu.vue";
+import HeaderMenu from "./components/HeaderMenu.vue";
 
 // import HomeView from './view/HomeView.vue'
 </script>
@@ -17,7 +17,7 @@ import Menu from "./components/Menu.vue";
 <template>
   <div class="common-layout">
     <ElContainer class="common-layout">
-      <ElHeader><Menu /></ElHeader>
+      <ElHeader><HeaderMenu /></ElHeader>
       <ElContainer>
         <ElAside><SubMenu /></ElAside>
         <ElMain><RouterView /></ElMain>

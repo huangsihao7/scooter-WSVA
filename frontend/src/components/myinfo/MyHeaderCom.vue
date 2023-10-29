@@ -38,13 +38,13 @@ onMounted(() => {
         <ElText tag="b">{{ userInfo.name }}</ElText>
         <ElText tag="p">{{ userInfo.signature }}</ElText>
         <div class="follow">
-          <NButton color="#606266" text
-            >关注 {{ userInfo.follow_count }}</NButton
-          >
+          <NButton color="#606266" text>
+            关注 {{ userInfo.follow_count }}
+          </NButton>
           <ElDivider direction="vertical" />
-          <NButton color="#606266" text
-            >粉丝 {{ userInfo.follower_count }}</NButton
-          >
+          <NButton color="#606266" text>
+            粉丝 {{ userInfo.follower_count }}
+          </NButton>
         </div>
         <NButton strong round class="edit-info" color="#409eff85">
           <template #icon>

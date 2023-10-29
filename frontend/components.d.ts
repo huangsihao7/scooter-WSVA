@@ -8,7 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Comment: typeof import('./src/components/comment/Comment.vue')['default']
-    CommentListCom: typeof import('./src/components/comment/CommentListCom.vue')['default']
+    CommentCom: typeof import('./src/components/comment/CommentCom.vue')['default']
+    CommentListCom: typeof import('./src/components/Comment/CommentListCom.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
@@ -39,6 +40,7 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElText: typeof import('element-plus/es')['ElText']
     ElUpload: typeof import('element-plus/es')['ElUpload']
+    HeaderMenu: typeof import('./src/components/HeaderMenu.vue')['default']
     Menu: typeof import('./src/components/Menu.vue')['default']
     MyHeaderCom: typeof import('./src/components/myinfo/MyHeaderCom.vue')['default']
     MyInteractCom: typeof import('./src/components/myinfo/MyInteractCom.vue')['default']
@@ -50,6 +52,7 @@ declare module 'vue' {
     UserCard: typeof import('./src/components/UserCard.vue')['default']
     Video: typeof import('./src/components/video/Video.vue')['default']
     VideoCard: typeof import('./src/components/VideoCard.vue')['default']
+    VideoCom: typeof import('./src/components/video/VideoCom.vue')['default']
     VideoList: typeof import('./src/components/VideoList.vue')['default']
     VideoPlus: typeof import('./src/components/video/VideoPlus.vue')['default']
   }

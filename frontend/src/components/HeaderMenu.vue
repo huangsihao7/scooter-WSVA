@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 13:41:17
+ * @LastEditTime: 2023-10-29 13:42:05
  * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\Menu.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
@@ -38,7 +38,7 @@ const form = reactive({
 });
 
 // 投稿表单数据
-const VideoFormVisible = ref<boolean>(false);
+const isVideoFormVisible = ref<boolean>(false);
 
 // 路由选择index标志
 const handleSelect = (key: string, keyPath: string[]) => {
@@ -107,12 +107,12 @@ const getBlur = () => {
 
 // 获取投稿dialogue
 const getPostVideoForm = () => {
-  VideoFormVisible.value = true;
+  isVideoFormVisible.value = true;
 };
 
 // 投稿完成后的回调
 const updateVisible = (flag: boolean) => {
-  VideoFormVisible.value = flag;
+  isVideoFormVisible.value = flag;
   console.log("callback", flag);
 };
 </script>
@@ -140,9 +140,13 @@ const updateVisible = (flag: boolean) => {
           @blur="getBlur"
         >
           <template #append>
-            <ElButton :icon="Search" class="menu-search-btn" @click="SearchFunc"
-            >搜索</ElButton
+            <ElButton
+              :icon="Search"
+              class="menu-search-btn"
+              @click="SearchFunc"
             >
+              搜索
+            </ElButton>
           </template>
         </ElInput>
         <ElCard v-if="isSearch" id="search-tab" shadow="always">
@@ -210,7 +214,7 @@ const updateVisible = (flag: boolean) => {
       </ElDialog>
 
       <PostVedio
-        :VideoFormVisible="VideoFormVisible"
+        :video-form-visible="isVideoFormVisible"
         @visible-update="updateVisible"
       />
     </ElMenu>

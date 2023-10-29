@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 15:38:37
+ * @LastEditTime: 2023-10-29 13:37:51
  * @Description: 各个视频分类的视频卡片渲染
  * @FilePath: \scooter-WSVA\frontend\src\components\VideoCard.vue
 -->
@@ -146,8 +146,9 @@ onMounted(() => {
             <NEllipsis
               :tooltip="false"
               style="max-width: calc((100vw - 360px) / 4)"
-            >{{ info.content }}</NEllipsis
             >
+              {{ info.content }}
+            </NEllipsis>
           </div>
           <div class="name">
             <span>@ {{ info.name }}</span>
@@ -158,33 +159,38 @@ onMounted(() => {
     </ElSpace>
   </ElScrollbar>
   <ElSpace v-else wrap>
-    <ElCard 
+    <ElCard
       v-for="(info, index) in res"
       :key="index"
       class="box-card"
       style="width: calc((100vw - 260px) / 4)"
-      <div
-      style="position: relative;" @click="GetVideoLink">
-      <ElImage :src="info.url" fit="fill" @click="handleShowVedio"/>
-      <NTag class="time" round :bordered="false" type="info">
-        7：26
-        <template #icon>
-          <NIcon color="#fff" :component="Play" />
-        </template>
-      </NTag>
-      <NTag class="like" round :bordered="false" type="error">
-        10
-        <template #icon>
-          <NIcon color="#fff" :component="Heart" />
-        </template>
-      </NTag>
+    >
+      <div style="position: relative" @click="GetVideoLink">
+        <ElImage :src="info.url" fit="fill" @click="handleShowVedio" />
+        <NTag class="time" round :bordered="false" type="info">
+          7：26
+          <template #icon>
+            <NIcon color="#fff" :component="Play" />
+          </template>
+        </NTag>
+        <NTag class="like" round :bordered="false" type="error">
+          10
+          <template #icon>
+            <NIcon color="#fff" :component="Heart" />
+          </template>
+        </NTag>
       </div>
       <div class="card-footer">
         <div class="content">
-          <NEllipsis :tooltip="false" style="max-width: calc((100vw - 360px) / 4)">{{ info.content }}</NEllipsis>
+          <NEllipsis
+            :tooltip="false"
+            style="max-width: calc((100vw - 360px) / 4)"
+          >
+            {{ info.content }}
+          </NEllipsis>
         </div>
         <div class="name">
-          <span>@ {{ info.name }}</span> 
+          <span>@ {{ info.name }}</span>
           <span class="date">7月8日</span>
         </div>
       </div>

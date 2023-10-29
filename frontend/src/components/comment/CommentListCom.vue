@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import Comment from "./Comment.vue";
+import CommentCom from "./CommentCom.vue";
 
 const commentlist = ref<Array<any>>([
   {
@@ -44,7 +44,7 @@ const commentlist = ref<Array<any>>([
     :key="index"
     class="comment-lists"
   >
-    <Comment class="comment" :comment="comment" />
+    <CommentCom class="comment" :comment="comment" />
   </div>
 </template>
 <style lang="scss" scoped>

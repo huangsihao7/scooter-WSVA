@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 15:26:18
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 21:29:53
+ * @LastEditTime: 2023-10-29 13:39:37
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\PostVideo.vue
 -->
@@ -17,7 +17,7 @@ import { userStore } from "@/stores/user";
 import { postVideo } from "@/apis/video";
 
 interface propsType {
-  VideoFormVisible: boolean;
+  videoFormVisible: boolean;
 }
 interface ClassifyList {
   label: string;
@@ -25,8 +25,13 @@ interface ClassifyList {
 }
 
 const props = defineProps<propsType>();
-const token = computed(() => userStore().token);
 const emit = defineEmits(["visible-update"]);
+
+// 表单是否可见
+const formVisible = computed(() => props.videoFormVisible);
+// 用户token
+const token = computed(() => userStore().token);
+// 表单数据
 const videoForm = reactive({
   title: "",
   category: 1,
@@ -67,6 +72,7 @@ onMounted(() => {
 
 // 获取分类
 const getClassifyList = () => {};
+
 // 点击投稿的回调函数
 const handlePostVideo = () => {
   postVideo(
@@ -84,6 +90,7 @@ const handleCancelVideo = () => {
   emit("visible-update", false);
 };
 
+// 上传前的回调，判断视频大小等
 const beforeUpload = (data: {
   file: UploadFileInfo;
   fileList: UploadFileInfo[];
@@ -150,7 +157,7 @@ function uploadHeader() {
 
 <template>
   <ElDialog
-    v-model="props.VideoFormVisible"
+    v-model="formVisible"
     title="投稿视频"
     :show-close="false"
     :close-on-click-modal="false"

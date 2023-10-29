@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 12:16:47
+ * @LastEditTime: 2023-10-29 14:00:08
  * @Description: 视频基础组件
- * @FilePath: \scooter-WSVA\frontend\src\components\video\Video.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCom.vue
 -->
 
 <template>
@@ -29,9 +29,11 @@ const props = defineProps({
   // },
   videoIndex: {
     type: Number,
+    default: -1,
   },
   onPlayIndex: {
     type: Number,
+    default: -1,
   },
   // 是否自动播放
   autoplay: {
@@ -76,7 +78,9 @@ const props = defineProps({
   // 可选的播放速率，可以设置成自定义的数组
   playbackSpeed: {
     type: Array,
-    default: [0.5, 0.75, 1, 1.25, 1.5, 2],
+    default: function () {
+      return [0.5, 0.75, 1, 1.25, 1.5, 2];
+    },
   },
   // 在左上角展示一个 logo，你可以通过 CSS 调整它的大小和位置
   logo: {
@@ -86,38 +90,44 @@ const props = defineProps({
   // 视频信息
   video: {
     type: Object,
-    default: {
-      url: "http://127.0.0.1:8080/WeChat_20231026155918.mp4", //视频地址
-      type: "mp4",
-      customType: {
-        customHls: function (video: any, player: any) {
-          console.log(player);
-          const hls = new Hls(); //实例化Hls  用于解析m3u8
-          hls.loadSource(video.src);
-          hls.attachMedia(video);
+    default: function () {
+      return {
+        url: "http://127.0.0.1:8080/WeChat_20231026155918.mp4", //视频地址
+        type: "mp4",
+        customType: {
+          customHls: function (video: any, player: any) {
+            console.log(player);
+            const hls = new Hls(); //实例化Hls  用于解析m3u8
+            hls.loadSource(video.src);
+            hls.attachMedia(video);
+          },
         },
-      },
+      };
     },
   },
   // 外挂字幕
   subtitle: {
     type: Object,
-    default: {},
+    default: function () {},
   },
   // 显示弹幕
   danmaku: {
     type: Object,
-    default: {},
+    default: function () {},
   },
   // 自定义右键菜单
   contextmenu: {
     type: Array,
-    default: [],
+    default: function () {
+      return [];
+    },
   },
   // 自定义进度条提示点
   highlight: {
     type: Array,
-    default: [],
+    default: function () {
+      return [];
+    },
   },
   // 阻止多个播放器同时播放，当前播放器播放时暂停其他播放器
   mutex: {
