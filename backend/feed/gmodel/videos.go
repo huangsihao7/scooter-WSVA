@@ -35,13 +35,12 @@ func NewFavoriteModel(db *gorm.DB) *VideoModel {
 	}
 }
 
-func (m *VideoModel) FindById(ctx context.Context, Id int64, limit int) ([]*Videos, error) {
-	var result []*Videos
+func (m *VideoModel) FindById(ctx context.Context, Id int64) (*Videos, error) {
+	var result *Videos
 	err := m.db.WithContext(ctx).
 		Where("id = ? ", Id).
-		Order("id desc").
-		Limit(limit).
-		Find(&result).Error
+		First(&result).Error
+
 	return result, err
 }
 

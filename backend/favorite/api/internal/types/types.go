@@ -12,7 +12,7 @@ type ActionResp struct {
 }
 
 type ListReq struct {
-	UserId int64 `form:"user_id"` // 用户id
+	UserId int64 `json:"uid"` // 用户id
 }
 
 type ListResp struct {
@@ -28,6 +28,8 @@ type VideoInfo struct {
 	CoverUrl      string `json:"cover_url"`
 	FavoriteCount int64  `json:"favorite_count"`
 	CommentCount  int64  `json:"comment_count"`
+	StarCount     int64  `json:"star_count"`
+	IsStar        bool   `json:"is_star"`
 	IsFavorite    bool   `json:"is_favorite"`
 	Title         string `json:"title"`
 }
