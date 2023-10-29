@@ -24,6 +24,7 @@ const (
 	Feed_ListVideosByRecommend_FullMethodName = "/feed.Feed/ListVideosByRecommend"
 	Feed_ListVideos_FullMethodName            = "/feed.Feed/ListVideos"
 	Feed_ListCategoryVideos_FullMethodName    = "/feed.Feed/ListCategoryVideos"
+	Feed_ListPopularVideos_FullMethodName     = "/feed.Feed/ListPopularVideos"
 )
 
 // FeedClient is the client API for Feed service.
@@ -36,6 +37,7 @@ type FeedClient interface {
 	ListVideosByRecommend(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 	ListVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 	ListCategoryVideos(ctx context.Context, in *CategoryFeedRequest, opts ...grpc.CallOption) (*CategoryFeedResponse, error)
+	ListPopularVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 }
 
 type feedClient struct {
@@ -91,6 +93,15 @@ func (c *feedClient) ListCategoryVideos(ctx context.Context, in *CategoryFeedReq
 	return out, nil
 }
 
+func (c *feedClient) ListPopularVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error) {
+	out := new(ListFeedResponse)
+	err := c.cc.Invoke(ctx, Feed_ListPopularVideos_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FeedServer is the server API for Feed service.
 // All implementations must embed UnimplementedFeedServer
 // for forward compatibility
@@ -101,6 +112,7 @@ type FeedServer interface {
 	ListVideosByRecommend(context.Context, *ListFeedRequest) (*ListFeedResponse, error)
 	ListVideos(context.Context, *ListFeedRequest) (*ListFeedResponse, error)
 	ListCategoryVideos(context.Context, *CategoryFeedRequest) (*CategoryFeedResponse, error)
+	ListPopularVideos(context.Context, *ListFeedRequest) (*ListFeedResponse, error)
 	mustEmbedUnimplementedFeedServer()
 }
 
@@ -122,6 +134,9 @@ func (UnimplementedFeedServer) ListVideos(context.Context, *ListFeedRequest) (*L
 }
 func (UnimplementedFeedServer) ListCategoryVideos(context.Context, *CategoryFeedRequest) (*CategoryFeedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListCategoryVideos not implemented")
+}
+func (UnimplementedFeedServer) ListPopularVideos(context.Context, *ListFeedRequest) (*ListFeedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListPopularVideos not implemented")
 }
 func (UnimplementedFeedServer) mustEmbedUnimplementedFeedServer() {}
 
@@ -226,6 +241,24 @@ func _Feed_ListCategoryVideos_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Feed_ListPopularVideos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFeedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FeedServer).ListPopularVideos(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Feed_ListPopularVideos_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FeedServer).ListPopularVideos(ctx, req.(*ListFeedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Feed_ServiceDesc is the grpc.ServiceDesc for Feed service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -252,6 +285,10 @@ var Feed_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListCategoryVideos",
 			Handler:    _Feed_ListCategoryVideos_Handler,
+		},
+		{
+			MethodName: "ListPopularVideos",
+			Handler:    _Feed_ListPopularVideos_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

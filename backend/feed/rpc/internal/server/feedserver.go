@@ -47,3 +47,8 @@ func (s *FeedServer) ListCategoryVideos(ctx context.Context, in *feed.CategoryFe
 	l := logic.NewListCategoryVideosLogic(ctx, s.svcCtx)
 	return l.ListCategoryVideos(in)
 }
+
+func (s *FeedServer) ListPopularVideos(ctx context.Context, in *feed.ListFeedRequest) (*feed.ListFeedResponse, error) {
+	l := logic.NewListPopularVideosLogic(ctx, s.svcCtx)
+	return l.ListPopularVideos(in)
+}

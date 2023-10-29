@@ -91,4 +91,5 @@ service Feed {
    rpc ListVideosByRecommend(ListFeedRequest) returns (ListFeedResponse);
    rpc ListVideos(ListFeedRequest) returns (ListFeedResponse);
    rpc ListCategoryVideos(CategoryFeedRequest) returns (CategoryFeedResponse);
+   rpc ListPopularVideos(ListFeedRequest) returns (ListFeedResponse);
 }

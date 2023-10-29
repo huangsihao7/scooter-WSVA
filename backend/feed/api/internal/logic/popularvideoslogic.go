@@ -4,51 +4,53 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
+
 	"github.com/huangsihao7/scooter-WSVA/feed/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/feed/api/internal/types"
-	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
+
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type RecommendVideosLogic struct {
+type PopularVideosLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewRecommendVideosLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RecommendVideosLogic {
-	return &RecommendVideosLogic{
+func NewPopularVideosLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PopularVideosLogic {
+	return &PopularVideosLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *RecommendVideosLogic) RecommendVideos(req *types.RecommendVideosListReq) (resp *types.RecommendVideosListResp, err error) {
+func (l *PopularVideosLogic) PopularVideos(req *types.PopularVideosListReq) (resp *types.PopularVideosListResp, err error) {
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
-	var recommend *feed.ListFeedResponse
+	var popular *feed.ListFeedResponse
 	if req.Offset == 0 {
-		recommend, err = l.svcCtx.FeedRpc.ListVideosByRecommend(l.ctx, &feed.ListFeedRequest{
+		popular, err = l.svcCtx.FeedRpc.ListPopularVideos(l.ctx, &feed.ListFeedRequest{
 			ActorId: uint32(uid),
 			Num:     5,
 			Offset:  req.Offset,
 		})
 	} else {
-		recommend, err = l.svcCtx.FeedRpc.ListVideosByRecommend(l.ctx, &feed.ListFeedRequest{
+		popular, err = l.svcCtx.FeedRpc.ListPopularVideos(l.ctx, &feed.ListFeedRequest{
 			ActorId: uint32(uid),
 			Num:     1,
 			Offset:  req.Offset,
 		})
 	}
 	if err != nil {
-		return &types.RecommendVideosListResp{
-			StatusCode: int(recommend.StatusCode),
-			StatusMsg:  recommend.StatusMsg,
+		return &types.PopularVideosListResp{
+			StatusCode: int(popular.StatusCode),
+			StatusMsg:  popular.StatusMsg,
 			Videos:     nil,
 		}, nil
 	}
 	resList := make([]types.VideoInfo, 0)
-	for _, item := range recommend.VideoList {
+	for _, item := range popular.VideoList {
 		resList = append(resList, types.VideoInfo{
 			Id: int64(item.Id),
 			Author: types.UserInfo{
@@ -73,10 +75,9 @@ func (l *RecommendVideosLogic) RecommendVideos(req *types.RecommendVideosListReq
 			CreateTime:    item.CreateTime,
 		})
 	}
-	return &types.RecommendVideosListResp{
+	return &types.PopularVideosListResp{
 		StatusCode: constants.ServiceOKCode,
 		StatusMsg:  constants.ServiceOK,
 		Videos:     resList,
 	}, nil
-
 }
