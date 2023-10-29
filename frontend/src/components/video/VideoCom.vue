@@ -3,7 +3,7 @@
  * @Date: 2023-10-22 19:33:20
 <<<<<<< HEAD
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 20:16:56
+ * @LastEditTime: 2023-10-29 21:39:27
 =======
  * @LastEditors: huangsihao7 1057434651@qq.com
  * @LastEditTime: 2023-10-29 17:10:55
@@ -167,7 +167,6 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  console.log(props);
   let player: any = {
     container: videoRef.value,
     preventClickToggle: props.preventClickToggle,
@@ -194,60 +193,36 @@ onMounted(() => {
     player.danmaku = props.danmaku;
   }
   if (props.videoIndex == 0) {
+    //自动播放开启
     player.autoplay = true;
+    state.instance = new DPlayer(player);
+    // state.instance.video.play()
+    console.log(state.instance)
+    
+  }
+  else{
+    player.autoplay = false;
     state.instance = new DPlayer(player);
   }
 });
 
 onUpdated(() => {
-  // console.log('myupdate',props.onPlayIndex, props.videoIndex)
-  // if(props.onPlayIndex == props.videoIndex)
-  // {
-  //   state.instance.play()
-  //   // videoInstance
-  // }
-  console.log("myupdated", props.videoIndex);
-  if (state.instance == null) {
-    // console.log('myinstance', props.videoIndex)
-    let player: any = {
-      container: videoRef.value,
-      preventClickToggle: props.preventClickToggle,
-      pic: props.pic,
-      autoplay: props.autoplay,
-      theme: props.theme,
-      loop: props.loop,
-      lang: props.lang,
-      screenshot: props.screenshot,
-      hotkey: props.hotkey,
-      preload: props.preload,
-      volume: props.volume,
-      playbackSpeed: props.playbackSpeed,
-      // logo: props.logo,
-      video: props.video,
-      contextmenu: props.contextmenu,
-      highlight: props.highlight,
-      mutex: props.mutex,
-    };
-    if (props.subtitle.url) {
-      player.subtitle = props.subtitle;
+  if (state.instance) {
+    // 如果需要播放的不是当前video 则暂停
+    if(props.onPlayIndex != props.videoIndex){
+      state.instance.video.pause();
+      console.log(
+        "2222222pause",
+        props.videoIndex,
+        props.onPlayIndex,
+        state.instance,
+        state.instance.pause(),
+      );
     }
-    if (props.danmaku) {
-      player.danmaku = props.danmaku;
+    else{
+      state.instance.video.play()
     }
-    if (props.onPlayIndex == props.videoIndex) {
-      player.autoplay = true;
-      state.instance = new DPlayer(player);
-    }
-  }
-  if (props.onPlayIndex == props.videoIndex) {
-    state.instance.pause();
-    console.log(
-      "2222222",
-      props.videoIndex,
-      props.onPlayIndex,
-      state.instance,
-      state.instance.pause(),
-    );
+    
   }
 });
 
