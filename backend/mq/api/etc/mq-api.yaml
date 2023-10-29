@@ -5,7 +5,7 @@ Port: 8895
 KqConsumerConf:
   Name: kqConsumer1
   Brokers:
-    - 127.0.0.1:9092
+    - 172.22.121.54:9092
   Group: kqConsumer
   Topic: uploadVideos
   Offset: first
