@@ -10,4 +10,10 @@ type Config struct {
 		Brokers []string
 		Topic   string
 	}
+	DB struct {
+		DataSource   string
+		MaxOpenConns int `json:",default=10"`
+		MaxIdleConns int `json:",default=100"`
+		MaxLifetime  int `json:",default=3600"`
+	}
 }

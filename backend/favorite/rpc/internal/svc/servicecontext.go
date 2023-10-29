@@ -5,6 +5,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/favorite/model"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/favorite/starModel"
+	model4 "github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	model3 "github.com/huangsihao7/scooter-WSVA/feed/model"
 	"github.com/huangsihao7/scooter-WSVA/pkg/orm"
 	model2 "github.com/huangsihao7/scooter-WSVA/user/model"
@@ -22,7 +23,7 @@ type ServiceContext struct {
 	DB             *orm.DB
 	GormFavorModel *gmodel.FavoriteModel
 	StarModel      *starModel.StarModel
-	StarCountModel *starModel.StarCountModel
+	VideoGModel    *model4.VideoModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -41,6 +42,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		DB:             db,
 		GormFavorModel: gmodel.NewFavoriteModel(db.DB),
 		StarModel:      starModel.NewStarModel(db.DB),
-		StarCountModel: starModel.NewStarCountModel(db.DB),
+		VideoGModel:    model4.NewFavoriteModel(db.DB),
 	}
 }

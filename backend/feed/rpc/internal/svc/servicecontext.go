@@ -2,8 +2,10 @@ package svc
 
 import (
 	model2 "github.com/huangsihao7/scooter-WSVA/favorite/model"
+	"github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/feed/model"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/config"
+	"github.com/huangsihao7/scooter-WSVA/pkg/orm"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/usesrv"
 	"github.com/zeromicro/go-queue/kq"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
@@ -16,14 +18,23 @@ type ServiceContext struct {
 	FavorModel     model2.FavoritesModel
 	UserRpc        usesrv.UseSrv
 	KqPusherClient *kq.Pusher
+	DB             *orm.DB
+	VideoModel     *gmodel.VideoModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
+	db := orm.MustNewMysql(&orm.Config{
+		DSN:          c.DB.DataSource,
+		MaxOpenConns: c.DB.MaxOpenConns,
+		MaxIdleConns: c.DB.MaxIdleConns,
+		MaxLifetime:  c.DB.MaxLifetime,
+	})
 	return &ServiceContext{
 		Config:         c,
 		FeedModel:      model.NewVideosModel(sqlx.NewMysql(c.DataSource)),
 		FavorModel:     model2.NewFavoritesModel(sqlx.NewMysql(c.DataSource)),
 		UserRpc:        usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
 		KqPusherClient: kq.NewPusher(c.KqPusherConf.Brokers, c.KqPusherConf.Topic),
+		VideoModel:     gmodel.NewFavoriteModel(db.DB),
 	}
 }
