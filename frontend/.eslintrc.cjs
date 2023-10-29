@@ -1,10 +1,10 @@
 /*
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:44:44
- * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-22 19:44:51
+ * @LastEditors: huangsihao7 1057434651@qq.com
+ * @LastEditTime: 2023-10-29 13:24:55
  * @Description: 
- * @FilePath: \myMap\.eslintrc.js
+ * @FilePath: /scooter-WSVA/frontend/.eslintrc.cjs
  */
 // 需要安装依赖:  npm i eslint-define-config
 const { defineConfig } = require('eslint-define-config')
@@ -47,7 +47,7 @@ module.exports = defineConfig({
         '@typescript-eslint/no-unused-vars': 'off',
         'vue/html-indent': [
             'error',
-            4,
+            2,
             {
                 attribute: 1,
                 baseIndent: 1,

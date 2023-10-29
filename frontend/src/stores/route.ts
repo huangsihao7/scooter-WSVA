@@ -6,10 +6,10 @@
  * @Description: route
  * @FilePath: \scooter-wsva\frontend\src\stores\route.ts
  */
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia";
 export const routeStore = defineStore({
-  id: 'route',
+  id: "route",
   state: () => ({
-    name:''
+    name: "",
   }),
-})
+});

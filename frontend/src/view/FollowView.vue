@@ -7,17 +7,11 @@
  * @FilePath: \scooter-WSVA\frontend\src\view\FollowView.vue
 -->
 <script setup lang="ts">
-import UserCard from '@/components/UserCard.vue'
-
+import UserCard from "@/components/UserCard.vue";
 </script>
 
-
 <template>
-    <UserCard/>
+  <UserCard />
 </template>
-    
-    
 
-<style scoped>
-
-</style>
+<style scoped></style>

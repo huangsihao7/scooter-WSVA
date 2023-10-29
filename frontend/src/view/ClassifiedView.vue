@@ -8,9 +8,9 @@
 -->
 
 <template>
-  <VideoCard :isScroll="true"/>
+  <VideoCard :is-scroll="true" />
 </template>
 
 <script lang="ts" setup>
-import VideoCard from '@/components/VideoCard.vue'
+import VideoCard from "@/components/VideoCard.vue";
 </script>
