@@ -24,6 +24,8 @@ const (
 	Favorite_GetVideoFavoriteCount_FullMethodName      = "/favorite.Favorite/GetVideoFavoriteCount"
 	Favorite_GetUserFavoriteCount_FullMethodName       = "/favorite.Favorite/GetUserFavoriteCount"
 	Favorite_GetUserTotalFavoritedCount_FullMethodName = "/favorite.Favorite/GetUserTotalFavoritedCount"
+	Favorite_StarAction_FullMethodName                 = "/favorite.Favorite/StarAction"
+	Favorite_StarList_FullMethodName                   = "/favorite.Favorite/StarList"
 )
 
 // FavoriteClient is the client API for Favorite service.
@@ -35,6 +37,8 @@ type FavoriteClient interface {
 	GetVideoFavoriteCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error)
 	GetUserFavoriteCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error)
 	GetUserTotalFavoritedCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error)
+	StarAction(ctx context.Context, in *StarActionRequest, opts ...grpc.CallOption) (*StarActionResponse, error)
+	StarList(ctx context.Context, in *StarListRequest, opts ...grpc.CallOption) (*StarListResponse, error)
 }
 
 type favoriteClient struct {
@@ -90,6 +94,24 @@ func (c *favoriteClient) GetUserTotalFavoritedCount(ctx context.Context, in *Que
 	return out, nil
 }
 
+func (c *favoriteClient) StarAction(ctx context.Context, in *StarActionRequest, opts ...grpc.CallOption) (*StarActionResponse, error) {
+	out := new(StarActionResponse)
+	err := c.cc.Invoke(ctx, Favorite_StarAction_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *favoriteClient) StarList(ctx context.Context, in *StarListRequest, opts ...grpc.CallOption) (*StarListResponse, error) {
+	out := new(StarListResponse)
+	err := c.cc.Invoke(ctx, Favorite_StarList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FavoriteServer is the server API for Favorite service.
 // All implementations must embed UnimplementedFavoriteServer
 // for forward compatibility
@@ -99,6 +121,8 @@ type FavoriteServer interface {
 	GetVideoFavoriteCount(context.Context, *QueryId) (*QueryCount, error)
 	GetUserFavoriteCount(context.Context, *QueryId) (*QueryCount, error)
 	GetUserTotalFavoritedCount(context.Context, *QueryId) (*QueryCount, error)
+	StarAction(context.Context, *StarActionRequest) (*StarActionResponse, error)
+	StarList(context.Context, *StarListRequest) (*StarListResponse, error)
 	mustEmbedUnimplementedFavoriteServer()
 }
 
@@ -120,6 +144,12 @@ func (UnimplementedFavoriteServer) GetUserFavoriteCount(context.Context, *QueryI
 }
 func (UnimplementedFavoriteServer) GetUserTotalFavoritedCount(context.Context, *QueryId) (*QueryCount, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserTotalFavoritedCount not implemented")
+}
+func (UnimplementedFavoriteServer) StarAction(context.Context, *StarActionRequest) (*StarActionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StarAction not implemented")
+}
+func (UnimplementedFavoriteServer) StarList(context.Context, *StarListRequest) (*StarListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StarList not implemented")
 }
 func (UnimplementedFavoriteServer) mustEmbedUnimplementedFavoriteServer() {}
 
@@ -224,6 +254,42 @@ func _Favorite_GetUserTotalFavoritedCount_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Favorite_StarAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StarActionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FavoriteServer).StarAction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Favorite_StarAction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FavoriteServer).StarAction(ctx, req.(*StarActionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Favorite_StarList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StarListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FavoriteServer).StarList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Favorite_StarList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FavoriteServer).StarList(ctx, req.(*StarListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Favorite_ServiceDesc is the grpc.ServiceDesc for Favorite service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -250,6 +316,14 @@ var Favorite_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserTotalFavoritedCount",
 			Handler:    _Favorite_GetUserTotalFavoritedCount_Handler,
+		},
+		{
+			MethodName: "StarAction",
+			Handler:    _Favorite_StarAction_Handler,
+		},
+		{
+			MethodName: "StarList",
+			Handler:    _Favorite_StarList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

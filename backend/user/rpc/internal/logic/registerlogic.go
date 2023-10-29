@@ -2,7 +2,10 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/common/crypt"
+	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/huangsihao7/scooter-WSVA/user/model"
 	"google.golang.org/grpc/status"
 
@@ -35,12 +38,13 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 
 	if err == model.ErrNotFound {
 		newUser := model.User{
-			Name:     in.Name,
-			Gender:   in.Gender,
-			Mobile:   in.Mobile,
-			Password: crypt.PasswordEncrypt(l.svcCtx.Config.Salt, in.Password),
-			Avatar:   in.Avatar,
-			Dec:      in.Dec,
+			Name:          in.Name,
+			Gender:        in.Gender,
+			Mobile:        in.Mobile,
+			Password:      crypt.PasswordEncrypt(l.svcCtx.Config.Salt, in.Password),
+			Avatar:        in.Avatar,
+			Dec:           in.Dec,
+			BackgroundUrl: in.BackgroundImage,
 		}
 
 		res, err := l.svcCtx.UserModel.Insert(l.ctx, &newUser)
@@ -52,14 +56,22 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 		if err != nil {
 			return nil, status.Error(500, err.Error())
 		}
-
+		postbaseurl := "http://172.22.121.54:8088/api/user"
+		userReq := format.UserGoresBody{UserId: fmt.Sprintf("%d", newUser.Id)}
+		jsonData, err := json.Marshal(userReq)
+		if err != nil {
+			fmt.Println("JSON编码失败:", err)
+			return nil, status.Error(500, "JSON编码失败")
+		}
+		_, err = format.QiNiuPost(postbaseurl, jsonData)
 		return &user.RegisterResponse{
-			Id:     newUser.Id,
-			Name:   newUser.Name,
-			Gender: newUser.Gender,
-			Mobile: newUser.Mobile,
-			Avatar: newUser.Avatar,
-			Dec:    newUser.Dec,
+			Id:              newUser.Id,
+			Name:            newUser.Name,
+			Gender:          newUser.Gender,
+			Mobile:          newUser.Mobile,
+			Avatar:          newUser.Avatar,
+			Dec:             newUser.Dec,
+			BackgroundImage: newUser.BackgroundUrl,
 		}, nil
 
 	}

@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package feed;
+option go_package="./recommend";
+
+message CreateVideoRequest {
+  uint32 actor_id = 1; // 用户id
+  string cover_url=2;
+  string url = 3; // 视频url
+  string title = 4; // 视频标题
+  string category = 5; // 视频分类
+}
+
+message CreateVideoResponse {
+  int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  string status_msg = 2; // 返回状态描述
+}
+
+message ListVideoRequest{
+  uint32 uid = 1; // 用户id
+  uint32 to_uid=2;
+}
+
+message ListVideoResponse{
+  int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  string status_msg = 2; // 返回状态描述
+  repeated VideoInfo video_list = 3; // 视频列表
+}
+
+message CountVideoRequest{
+  uint32 user_id = 1; // 用户id
+}
+
+message CountVideoResponse{
+  int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  string status_msg = 2; // 返回状态描述
+  uint32 count = 3; // 视频数量
+}
+message VideoInfo {
+  uint32 id = 1;
+  User author = 2;
+  string play_url = 3;
+  string cover_url = 4;
+  uint32 favorite_count = 5;
+  uint32 comment_count = 6;
+  bool is_favorite = 7;
+  string title = 8;
+  int64 create_time=9;
+}
+
+message User {
+  uint32 id = 1; // 用户id
+  string name = 2; // 用户名称
+  optional uint32 follow_count = 3; // 关注总数
+  optional uint32 follower_count = 4; // 粉丝总数
+  bool is_follow = 5; // true-已关注，false-未关注
+  optional string avatar = 6; //用户头像
+  optional string background_image = 7; //用户个人页顶部大图
+  optional string signature = 8; //个人简介
+  optional uint32 total_favorited = 9; //获赞数量
+  optional uint32 work_count = 10; //作品数量
+  optional uint32 favorite_count = 11; //点赞数量
+}
+message ListFeedRequest {
+  uint32 actor_id = 1;
+}
+
+message ListFeedResponse {
+  int32 status_code = 1;
+  string status_msg = 2;
+  repeated VideoInfo video_list = 3;
+}
+message CategoryFeedRequest {
+  uint32 actor_id = 1;
+  string category =2;
+}
+
+message CategoryFeedResponse {
+  int32 status_code = 1;
+  string status_msg = 2;
+  repeated VideoInfo video_list = 3;
+}
+
+service RecommendSrv {
+  rpc CreateVideo(CreateVideoRequest) returns (CreateVideoResponse) {}
+}

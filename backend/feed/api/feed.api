@@ -62,6 +62,7 @@ type (
 		Videos     []VideoInfo `json:"videos"`
 	}
 )
+
 @server(
 	jwt: Auth
 )

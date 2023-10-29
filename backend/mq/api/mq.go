@@ -29,6 +29,7 @@ func main() {
 	serviceGroup := service.NewServiceGroup()
 	defer serviceGroup.Stop()
 
+	//循环
 	for _, mq := range mqs.Consumers(c, ctx, svcCtx) {
 		serviceGroup.Add(mq)
 	}

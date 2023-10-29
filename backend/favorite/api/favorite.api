@@ -25,7 +25,7 @@ type (
 	listResp {
 		StatusCode int         `json:"status_code"`
 		StatusMsg  string      `json:"status_msg"`
-		VideoList  []VideoInfo `json:"comment_list"`
+		VideoList  []VideoInfo `json:"video_list"`
 	}
 
 	VideoInfo {
@@ -65,4 +65,10 @@ service favorite-api {
 	
 	@handler FavoriteList // TODO: set handler name and delete this comment
 	get /favorite/list(listReq) returns(listResp)
+	
+	@handler StarAction // TODO: set handler name and delete this comment
+	post /star/action(actionReq) returns(actionResp)
+	
+	@handler StarList // TODO: set handler name and delete this comment
+	get /star/list(listReq) returns(listResp)
 }

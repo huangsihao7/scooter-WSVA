@@ -26,6 +26,7 @@ message RegisterRequest {
   string Password = 4;
   string Avatar =5;
   string Dec = 6;
+  string background_image=7;
 }
 message RegisterResponse {
   int64 Id = 1;
@@ -34,6 +35,7 @@ message RegisterResponse {
   string Mobile = 4;
   string Avatar =5;
   string Dec = 6;
+  string background_image=7;
 }
 // 用户注册
 

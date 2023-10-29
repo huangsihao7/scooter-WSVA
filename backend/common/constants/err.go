@@ -109,4 +109,8 @@ const (
 	UserLoginFail                  = "手机号或密码错误"
 	CategoryVideosDoNotExistedCode = 10017
 	CategoryVideosDoNotExisted     = "该分类没有视频！"
+	StarServiceDuplicateCode       = 10018
+	StarServiceDuplicateError      = "不能重复收藏"
+	StarServiceCancelCode          = 10019
+	StarServiceCancelError         = "没有收藏,不能取消收藏"
 )

@@ -36,6 +36,5 @@ func (m *FavoriteModel) FindByUserId(ctx context.Context, userId int64, limit in
 		Order("id desc").
 		Limit(limit).
 		Find(&result).Error
-
 	return result, err
 }

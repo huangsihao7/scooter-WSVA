@@ -18,7 +18,7 @@ import (
 
 var configFile = flag.String("f", "etc/favorite.yaml", "the config file")
 
-// favorite api
+// favorite rpc
 func main() {
 	flag.Parse()
 
