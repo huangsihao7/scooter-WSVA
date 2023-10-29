@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 22:05:34
+ * @LastEditTime: 2023-10-29 22:09:40
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -153,6 +153,8 @@ const handleCommentBtn = () => {
   emit("comment-visible-update");
 };
 
+const copyFlag = ref<boolean>(false)
+
 // 分享按钮的操作
 const handleShareBtn = () => {
   shareVisible.value = !shareVisible.value;
@@ -167,6 +169,7 @@ const handleShareBtn = () => {
         instance.confirmButtonLoading = true
         console.log('action',action)
         copy(currentUrl)
+        copyFlag.value = true
         setTimeout(() => {
           instance.confirmButtonLoading = false
           done()
@@ -176,11 +179,13 @@ const handleShareBtn = () => {
       }
     },
     callback: () => {
-      
-      ElMessage({
-        type: "info",
-        message: `复制成功`,
-      });
+      if(copyFlag){
+        ElMessage({
+          type: "info",
+          message: `复制成功`,
+        });
+        copyFlag.value = false;
+      }
     },
   });
 };
