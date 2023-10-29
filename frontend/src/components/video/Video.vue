@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 11:28:18
+ * @LastEditTime: 2023-10-29 12:14:34
  * @Description: 视频基础组件
  * @FilePath: \scooter-WSVA\frontend\src\components\video\Video.vue
 -->
@@ -13,7 +13,6 @@
      
 <script setup lang="ts">
 import DPlayer from 'dplayer';
-import { number } from 'echarts';
 import Hls from 'hls.js';
 import { ref, reactive, onBeforeUnmount, onMounted, onUpdated } from 'vue'
 
@@ -161,7 +160,7 @@ onMounted(() => {
   if (props.danmaku) {
     player.danmaku = props.danmaku
   }
-  console.log('mystart',props.onPlayIndex, props.videoIndex)
+  // console.log('mystart',props.onPlayIndex, props.videoIndex)
   // 第一个视频自动播放
   // if(props.videoIndex == 0){
   //   player.autoplay = true
@@ -187,7 +186,7 @@ onUpdated(() => {
   // }
   console.log('myupdated', props.videoIndex)
   if(state.instance == null){
-      console.log('myinstance', props.videoIndex)
+      // console.log('myinstance', props.videoIndex)
       let player:any = {
       container: videoRef.value,
       preventClickToggle: props.preventClickToggle,
@@ -220,7 +219,7 @@ onUpdated(() => {
   }
   if(props.onPlayIndex == props.videoIndex){
     state.instance.pause()
-    console.log('2222222',state.instance,state.instance.pause())
+    console.log('2222222',props.videoIndex,props.onPlayIndex,state.instance,state.instance.pause())
   }
  
 })

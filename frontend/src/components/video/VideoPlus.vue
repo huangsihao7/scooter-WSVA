@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 09:46:40
+ * @LastEditTime: 2023-10-29 12:14:46
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -10,12 +10,12 @@
 <script lang="ts" setup>
 import dplayer from '@/components/video/Video.vue';
 import Hls from 'hls.js';
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import  { NIcon, NButton } from 'naive-ui'
 import { Heart, ArrowRedo, ChatbubbleEllipses, Star  } from '@vicons/ionicons5'
 import { VideoType } from '@/apis/interface'
 import { ElMessageBox, ElMessage } from 'element-plus';
-import { Action } from 'element-plus';
+// import { Action } from 'element-plus';
 
 interface propsType {
   video: VideoType,
@@ -28,7 +28,7 @@ const props = defineProps<propsType>()
 const emit = defineEmits(['comment-visible-update'])
 
 // const mystart = computed(()=>props.index == props.onplay?true:false)
-const firstIndex = computed(()=>props.index == 0? true:false)
+// const firstIndex = computed(()=>props.index == 0? true:false)
 
 const videoUrls = ref<any>([
     {
