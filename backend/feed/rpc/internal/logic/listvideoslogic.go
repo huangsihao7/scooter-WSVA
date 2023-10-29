@@ -65,6 +65,7 @@ func (l *ListVideosLogic) ListVideos(in *feed.ListFeedRequest) (*feed.ListFeedRe
 			CoverUrl:      item.CoverUrl,
 			FavoriteCount: uint32(item.FavoriteCount),
 			CommentCount:  uint32(item.CommentCount),
+			StarCount:     uint32(item.StarCount),
 			IsFavorite:    IsFavorite,
 			Title:         item.Title,
 			CreateTime:    item.CreatedAt.Unix(),

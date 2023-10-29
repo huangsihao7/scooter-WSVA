@@ -29,6 +29,7 @@ type VideoInfo struct {
 	PlayUrl       string   `json:"playUrl"`
 	CoverUrl      string   `json:"coverUrl"`
 	FavoriteCount int64    `json:"favoriteCount"`
+	StarCount     int64    `json:"starCount"`
 	CommentCount  int64    `json:"commentCount"`
 	IsFavorite    bool     `json:"isFavorite"`
 	Title         string   `json:"title"`

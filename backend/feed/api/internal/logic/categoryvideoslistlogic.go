@@ -59,6 +59,7 @@ func (l *CategoryVideosListLogic) CategoryVideosList(req *types.CategoryVideosLi
 			CoverUrl:      item.CoverUrl,
 			FavoriteCount: int64(item.FavoriteCount),
 			CommentCount:  int64(item.CommentCount),
+			StarCount:     int64(item.StarCount),
 			IsFavorite:    item.IsFavorite,
 			Title:         item.Title,
 			CreateTime:    item.CreateTime,

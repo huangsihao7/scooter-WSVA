@@ -46,6 +46,7 @@ message VideoInfo {
    bool is_favorite = 7;
    string title = 8;
    int64 create_time=9;
+   uint32 star_count = 10;
 }
 
 message User {
