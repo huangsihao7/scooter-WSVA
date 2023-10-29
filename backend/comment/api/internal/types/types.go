@@ -14,7 +14,7 @@ type ActionResp struct {
 }
 
 type ListReq struct {
-	VideoId int64 `path:"video_id"` // 视频id
+	VideoId int64 `form:"video_id"` // 视频id
 }
 
 type ListResp struct {
@@ -40,7 +40,4 @@ type User struct {
 	WorkCount      uint32 `json:"work_count"`
 	FavoriteCount  uint32 `json:"favorite_count"`
 	IsFollow       bool   `json:"is_follow"`
-}
-
-type Response struct {
 }

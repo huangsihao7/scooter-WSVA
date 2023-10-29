@@ -19,7 +19,7 @@ type (
 	}
 
 	listReq {
-		UserId int64 `path:"uid"` // 用户id
+		UserId int64 `form:"uid"` // 用户id
 	}
 
 	listResp {

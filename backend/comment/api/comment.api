@@ -14,7 +14,7 @@ type (
 	}
 
 	listReq {
-		VideoId int64 `path:"video_id"` // 视频id
+		VideoId int64 `form:"video_id"` // 视频id
 	}
 
 	listResp {
@@ -43,9 +43,7 @@ type (
 	}
 )
 
-type response {
-	// TODO: add members here and delete this comment
-}
+
 @server(
 	jwt: Auth
 )

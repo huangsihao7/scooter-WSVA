@@ -55,7 +55,7 @@ type (
 		Videos     []VideoInfo `json:"videos"`
 	}
 	CategoryVideosListReq {
-		Category uint32 `path:"category"`
+		Category uint32 `form:"category"`
 	}
 	CategoryVideosListResp {
 		StatusCode int         `json:"status_code"`
