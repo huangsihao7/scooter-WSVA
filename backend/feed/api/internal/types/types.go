@@ -56,7 +56,7 @@ type VideosListResp struct {
 }
 
 type CategoryVideosListReq struct {
-	Category uint32 `form:"category"`
+	Category uint32 `path:"category"`
 }
 
 type CategoryVideosListResp struct {

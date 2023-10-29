@@ -14,7 +14,7 @@ type ActionResp struct {
 }
 
 type ListReq struct {
-	VideoId int64 `form:"video_id"` // 视频id
+	VideoId int64 `path:"video_id"` // 视频id
 }
 
 type ListResp struct {

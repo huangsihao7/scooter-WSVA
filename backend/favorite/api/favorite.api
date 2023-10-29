@@ -19,7 +19,7 @@ type (
 	}
 
 	listReq {
-		UserId int64 `json:"uid"` // 用户id
+		UserId int64 `path:"uid"` // 用户id
 	}
 
 	listResp {
@@ -55,22 +55,19 @@ type (
 	}
 )
 
-type response {
-	// TODO: add members here and delete this comment
-}
 @server(
 	jwt: Auth
 )
 service favorite-api {
-	@handler FavoriteAction // TODO: set handler name and delete this comment
+	@handler FavoriteAction
 	post /favorite/action(actionReq) returns(actionResp)
-	
-	@handler FavoriteList // TODO: set handler name and delete this comment
+
+	@handler FavoriteList
 	get /favorite/list(listReq) returns(listResp)
-	
-	@handler StarAction // TODO: set handler name and delete this comment
+
+	@handler StarAction
 	post /star/action(actionReq) returns(actionResp)
-	
-	@handler StarList // TODO: set handler name and delete this comment
+
+	@handler StarList
 	get /star/list(listReq) returns(listResp)
 }

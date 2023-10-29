@@ -12,7 +12,7 @@ type ActionResp struct {
 }
 
 type ListReq struct {
-	UserId int64 `json:"uid"` // 用户id
+	UserId int64 `path:"uid"` // 用户id
 }
 
 type ListResp struct {
@@ -45,7 +45,4 @@ type User struct {
 	WorkCount      uint32 `json:"work_count"`
 	FavoriteCount  uint32 `json:"favorite_count"`
 	IsFollow       bool   `json:"is_follow"`
-}
-
-type Response struct {
 }

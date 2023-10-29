@@ -14,7 +14,7 @@ type (
 	}
 
 	listReq {
-		VideoId int64 `form:"video_id"` // 视频id
+		VideoId int64 `path:"video_id"` // 视频id
 	}
 
 	listResp {
@@ -52,7 +52,7 @@ type response {
 service comment-api {
 	@handler CommentAction
 	post /comment/action (actionReq) returns(actionResp)
-	
+
 	@handler GetCommentList
 	get /comment/list (listReq) returns(listResp)
 }
