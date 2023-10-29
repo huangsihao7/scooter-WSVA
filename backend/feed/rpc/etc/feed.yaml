@@ -14,5 +14,5 @@ UserRpc:
 
 KqPusherConf:
   Brokers:
-    - 127.0.0.1:9092
+    - 172.22.121.54:9092
   Topic: uploadVideos
