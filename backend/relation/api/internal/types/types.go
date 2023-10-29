@@ -16,12 +16,13 @@ type FavoriteListReq struct {
 }
 
 type UserInfo struct {
-	Id     int64  `json:"id"`
-	Name   string `json:"name"`
-	Gender int64  `json:"gender"`
-	Mobile string `json:"mobile"`
-	Avatar string `json:"avatar"`
-	Dec    string `json:"dec"`
+	Id      int64  `json:"id"`
+	Name    string `json:"name"`
+	Gender  int64  `json:"gender"`
+	Mobile  string `json:"mobile"`
+	Avatar  string `json:"avatar"`
+	Dec     string `json:"dec"`
+	BackImg string `json:"backImg"`
 }
 
 type FavoriteListResp struct {

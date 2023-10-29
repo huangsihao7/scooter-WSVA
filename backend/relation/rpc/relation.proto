@@ -25,6 +25,7 @@ message UserInfo{
   string Mobile = 4;
   string Avatar =5;
   string Dec = 6;
+  string BackImg=7;
 }
 message FavoriteListResp{
   repeated UserInfo list=1;
