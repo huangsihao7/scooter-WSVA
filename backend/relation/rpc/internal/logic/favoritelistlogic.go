@@ -50,13 +50,13 @@ func (l *FavoriteListLogic) FavoriteList(in *relation.FavoriteListReq) (*relatio
 			}, nil
 		}
 		List = append(List, &relation.UserInfo{
-			Id:      one.Id,
-			Name:    one.Name,
-			Gender:  one.Gender,
-			Mobile:  one.Mobile,
-			Avatar:  one.Avatar,
-			Dec:     one.Dec,
-			BackImg: one.BackgroundUrl,
+			Id:              one.Id,
+			Name:            one.Name,
+			Gender:          one.Gender,
+			Mobile:          one.Mobile,
+			Avatar:          one.Avatar,
+			Dec:             one.Dec,
+			BackgroundImage: one.BackgroundUrl,
 		})
 	}
 	return &relation.FavoriteListResp{

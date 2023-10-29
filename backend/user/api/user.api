@@ -56,6 +56,7 @@ type (
 		Id              uint32 `json:"id"`
 		Name            string `json:"name"`
 		Avatar          string `json:"avatar"`
+		Gender          uint32 `json:"gender"`
 		Signature       string `json:"signature"`
 		BackgroundImage string `json:"background_image"` //用户个人页顶部大图
 		FollowCount     uint32 `json:"follow_count"`
@@ -74,7 +75,7 @@ type (
 service User {
 	@handler Login
 	post /user/login (LoginRequest) returns (LoginResponse)
-	
+
 	@handler Register
 	post /user/register (RegisterRequest) returns (RegisterResponse)
 }
@@ -88,7 +89,7 @@ service User {
 	)
 	@handler UserInfo
 	post /user/userinfo (UserInfoReq) returns (UserInfoResponse)
-	
+
 	@handler Upload
 	post /user/upload returns (UserUploadResponse)
 }

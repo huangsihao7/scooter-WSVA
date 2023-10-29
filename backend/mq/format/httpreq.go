@@ -41,3 +41,21 @@ func QiNiuPost(url string, data []byte) ([]byte, error) {
 	}
 	return body, nil
 }
+
+func Feedback(feedType string, data []byte) error {
+	baseUrl := "http://172.22.121.54:8088/api/feedback"
+	resp, err := http.Post(baseUrl, "application/json", bytes.NewBuffer(data))
+	if err != nil {
+		fmt.Println("POST请求发送失败:", err)
+		return err
+	}
+	defer resp.Body.Close()
+
+	// 读取响应内容
+	_, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("读取响应内容失败:", err)
+		return err
+	}
+	return nil
+}
