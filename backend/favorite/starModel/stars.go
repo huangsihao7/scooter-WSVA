@@ -46,7 +46,7 @@ func (m *StarModel) IsStarExist(ctx context.Context, userId int64, videoId int64
 		Where("uid = ? AND vid = ?", userId, videoId).
 		First(&result).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return true, err
+		return false, err
 	}
 	if err == gorm.ErrRecordNotFound {
 		return false, nil
@@ -63,6 +63,6 @@ func (m *StarModel) Insert(ctx context.Context, stars *Stars) error {
 
 func (m *StarModel) Delete(ctx context.Context, stars *Stars) error {
 
-	return nil
+	return m.db.WithContext(ctx).Where("uid = ? AND vid = ?", stars.Uid, stars.Vid).Delete(&Stars{}).Error
 
 }
