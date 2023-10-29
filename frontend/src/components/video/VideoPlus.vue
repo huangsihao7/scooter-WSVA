@@ -1,10 +1,10 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
- * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-29 16:55:57
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-10-29 22:05:34
  * @Description: 
- * @FilePath: /scooter-WSVA/frontend/src/components/video/VideoPlus.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
 
 <script lang="ts" setup>
@@ -15,7 +15,7 @@ import { NIcon, NButton } from "naive-ui";
 import { Heart, ArrowRedo, ChatbubbleEllipses, Star } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
 import { ElMessageBox, ElMessage } from "element-plus";
-// import { Action } from 'element-plus';
+import useClipboard from "vue-clipboard3";
 
 interface propsType {
   video: VideoType;
@@ -29,8 +29,7 @@ const emit = defineEmits(["comment-visible-update"]);
 
 const thisVideo = ref<VideoType>();
 
-// const mystart = computed(()=>props.index == props.onplay?true:false)
-// const firstIndex = computed(()=>props.index == 0? true:false)
+const { toClipboard } = useClipboard()
 
 const videoUrls = ref<any>([
   {
@@ -95,6 +94,20 @@ const dplayerObj = reactive({
   ],
 });
 
+const copy = async (msg:any) => {
+  try {
+    // 复制
+    await toClipboard(msg)
+    // 复制成功
+  } catch (e) {
+    // 复制失败
+    ElMessage({
+      type:'error',
+      message:'复制失败'
+    })
+  }
+}
+
 // 喜欢按钮的操作
 const handleLikeBtn = () => {
   if (thisVideo.value) {
@@ -143,10 +156,27 @@ const handleCommentBtn = () => {
 // 分享按钮的操作
 const handleShareBtn = () => {
   shareVisible.value = !shareVisible.value;
-  ElMessageBox.alert("这是分享链接", "分享", {
+  const currentUrl: string = window.location.href;
+  copy(currentUrl)
+  ElMessageBox.alert(currentUrl, "分享", {
     confirmButtonText: "复制",
     center: true,
+    beforeClose: (action, instance, done) => {
+      if (action === 'confirm') {
+        instance.confirmButtonText = '复制中...'
+        instance.confirmButtonLoading = true
+        console.log('action',action)
+        copy(currentUrl)
+        setTimeout(() => {
+          instance.confirmButtonLoading = false
+          done()
+        }, 300)
+      }else {
+        done()
+      }
+    },
     callback: () => {
+      
       ElMessage({
         type: "info",
         message: `复制成功`,
