@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 17:28:33
+ * @LastEditTime: 2023-10-29 20:10:42
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\myHeaderCom.vue
 -->
@@ -18,7 +18,7 @@ import { CashOutline as CashIcon } from "@vicons/ionicons5";
 const avatar = userStore().avatar;
 const user_id = userStore().user_id;
 const userInfo = ref<UserType>();
-const editVisible = ref<boolean>(false)
+const editVisible = ref<boolean>(false);
 
 // 获取用户信息
 const getUserInfoFunc = () => {
@@ -28,14 +28,14 @@ const getUserInfoFunc = () => {
 };
 
 // 编辑资料开启
-const editInfo = () =>{
-    editVisible.value = true
-}
+const editInfo = () => {
+  editVisible.value = true;
+};
 
 // 更新编辑资料是否可见
-const UpdateVisible = () =>{
-    editVisible.value = false
-}
+const UpdateVisible = () => {
+  editVisible.value = false;
+};
 
 onMounted(() => {
   getUserInfoFunc();
@@ -60,7 +60,13 @@ onMounted(() => {
             粉丝 {{ userInfo.follower_count }}
           </NButton>
         </div>
-        <NButton strong round @click="editInfo" class="edit-info" color="#409eff85">
+        <NButton
+          strong
+          round
+          class="edit-info"
+          color="#409eff85"
+          @click="editInfo"
+        >
           <template #icon>
             <NIcon><CashIcon /></NIcon>
           </template>
@@ -68,7 +74,12 @@ onMounted(() => {
         </NButton>
       </ElCol>
     </ElRow>
-    <InfoEditCom :isVisible = "editVisible" @visible-update="UpdateVisible"/>
+    <InfoEditCom
+      v-if="userInfo"
+      :user-info="userInfo"
+      :is-visible="editVisible"
+      @visible-update="UpdateVisible"
+    />
   </div>
 </template>
 

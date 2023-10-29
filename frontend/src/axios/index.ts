@@ -50,7 +50,7 @@ service.interceptors.response.use((response) => {
     userStore().isLoggedIn = false;
     userStore().token = "";
     userStore().avatar = "";
-    userStore().username = "";
+    userStore().phoneNum = "";
     router.push("/");
     return Promise.reject();
   } else {

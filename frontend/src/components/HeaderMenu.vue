@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 13:42:05
+ * @LastEditTime: 2023-10-29 19:26:43
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
@@ -33,7 +33,7 @@ const searchHistory = ref<Array<string>>([
 const loginFormVisible = ref<boolean>(false);
 const formLabelWidth = "50px";
 const form = reactive({
-  username: "",
+  phoneNum: "",
   pwd: "",
 });
 
@@ -56,10 +56,11 @@ const handleSelect = (key: string, keyPath: string[]) => {
 // 用户登录
 const doLogin = () => {
   //发请求
-  login(form.username, form.pwd).then((res: any) => {
+  login(form.phoneNum, form.pwd).then((res: any) => {
     userStore().token = res.accessToken;
     userStore().user_id = res.user_id;
     userStore().isLoggedIn = true;
+    userStore().phoneNum = form.phoneNum;
     userStore().avatar = res.avatar;
     ElMessage({
       message: "登录成功",
@@ -75,7 +76,7 @@ const doLogout = () => {
   userStore().isLoggedIn = false;
   userStore().token = "";
   userStore().avatar = "";
-  userStore().username = "";
+  userStore().phoneNum = "";
   userStore().user_id = -1;
   ElMessage({
     message: "已退出",
@@ -189,7 +190,7 @@ const updateVisible = (flag: boolean) => {
         <ElForm :model="form">
           <ElFormItem label="账号" :label-width="formLabelWidth">
             <ElInput
-              v-model="form.username"
+              v-model="form.phoneNum"
               autocomplete="off"
               placeholder="输入账号"
               clearable

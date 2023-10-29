@@ -14,12 +14,12 @@ module.exports = {
     singleQuote: true,
     semi: false,
     overrides: [
-      {
-        files: '*.json',
-        options: {
-          printWidth: 200,
-        },
-      },
+      {
+        files: '*.json',
+        options: {
+          printWidth: 200,
+        },
+      },
     ],
     arrowParens: 'always',
   }

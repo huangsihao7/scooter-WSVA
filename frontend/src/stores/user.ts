@@ -15,7 +15,7 @@ export const userStore = defineStore({
     user_id: -1,
     avatar:
       "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-    username: "",
+    phoneNum: "",
   }),
   persist: true,
 });

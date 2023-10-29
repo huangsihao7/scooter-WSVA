@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 23:44:28
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 13:51:15
+ * @LastEditTime: 2023-10-29 20:13:40
  * @Description:
  * @FilePath: \scooter-WSVA\frontend\src\apis\interface.ts
  */
@@ -24,16 +24,17 @@ interface VideoType {
 
 interface UserType {
   id: number;
-  name: any;
-  gender?: number;
+  name: string;
+  gender: number;
   avatar: string;
-  signature?: string;
+  signature: string;
   follow_count: number;
   follower_count: number;
   total_favorited: number;
   work_count: number;
   favorite_count: number;
   is_follow: boolean;
+  phoneNum?: string;
 }
 
 export type { VideoType, UserType };

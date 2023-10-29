@@ -169,7 +169,7 @@ onMounted(() => {
 <template>
   <div>
     <div class="video-container">
-      <dplayer
+      <Dplayer
         :video="dplayerObj.video"
         :danmaku="dplayerObj.danmaku"
         :contextmenu="dplayerObj.contextmenu"
