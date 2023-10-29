@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-29 16:56:58
+ * @LastEditTime: 2023-10-29 17:10:55
  * @Description: 视频基础组件
  * @FilePath: /scooter-WSVA/frontend/src/components/video/VideoCom.vue
 -->

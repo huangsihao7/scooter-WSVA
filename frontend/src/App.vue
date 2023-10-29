@@ -1,29 +1,38 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
- * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-27 20:26:10
+ * @LastEditors: huangsihao7 1057434651@qq.com
+ * @LastEditTime: 2023-10-29 19:48:20
  * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\App.vue
+ * @FilePath: /scooter-WSVA/frontend/src/App.vue
 -->
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import SubMenu from "./components/SubMenu.vue";
 import HeaderMenu from "./components/HeaderMenu.vue";
-
+import { NMessageProvider } from "naive-ui";
 // import HomeView from './view/HomeView.vue'
 </script>
 
 <template>
-  <div class="common-layout">
-    <ElContainer class="common-layout">
-      <ElHeader><HeaderMenu /></ElHeader>
-      <ElContainer>
-        <ElAside><SubMenu /></ElAside>
-        <ElMain><RouterView /></ElMain>
+  <!-- App.vue -->
+  <NMessageProvider>
+    <div class="common-layout">
+      <ElContainer class="common-layout">
+        <ElHeader>
+          <HeaderMenu />
+        </ElHeader>
+        <ElContainer>
+          <ElAside>
+            <SubMenu />
+          </ElAside>
+          <ElMain>
+            <RouterView />
+          </ElMain>
+        </ElContainer>
       </ElContainer>
-    </ElContainer>
-  </div>
+    </div>
+  </NMessageProvider>
 </template>
 
 <style scoped>

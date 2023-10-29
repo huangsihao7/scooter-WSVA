@@ -1,10 +1,10 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
- * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 12:27:43
+ * @LastEditors: huangsihao7 1057434651@qq.com
+ * @LastEditTime: 2023-10-29 17:14:09
  * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\myHeaderCom.vue
+ * @FilePath: /scooter-WSVA/frontend/src/components/myinfo/MyHeaderCom.vue
 -->
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
@@ -48,7 +48,9 @@ onMounted(() => {
         </div>
         <NButton strong round class="edit-info" color="#409eff85">
           <template #icon>
-            <NIcon><CashIcon /></NIcon>
+            <NIcon>
+              <CashIcon />
+            </NIcon>
           </template>
           编辑资料
         </NButton>
@@ -71,6 +73,7 @@ onMounted(() => {
       rgba(255, 255, 255, 0)
     ),
     url(http://127.0.0.1:8080/17.jpg);
+
   .el-avatar {
     float: right;
     font-size: 5rem;
@@ -79,29 +82,35 @@ onMounted(() => {
     // height: calc((90vh - 70px) / 5);
     height: calc((80vw - 260px) / 6);
   }
+
   .info-tab {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+
     .edit-info {
       position: absolute;
       top: 0;
       right: 20px;
     }
+
     .el-text,
     .follow {
       margin: 10px 20px;
       display: block;
     }
+
     .el-text {
       width: calc(100% - 40px);
       margin: 10px 20px;
     }
+
     .follow {
       .n-button {
         padding-right: 10px;
       }
     }
+
     .el-text:nth-child(1) {
       color: black;
       font-size: 2.5rem;
@@ -109,6 +118,7 @@ onMounted(() => {
     }
   }
 }
+
 .header > div {
   flex: 1;
 }

@@ -234,7 +234,6 @@ deploy-backend:
       -p 8020:8020 \
       --name scooter-wsva-user-rpc \
       172.22.121.50/ai-evaluation/scooter-wsva-user-rpc:$CI_PIPELINE_IID
-    - sleep 10
     - docker rm -f scooter-wsva-feed-rpc
     - |
       docker run \
@@ -242,7 +241,6 @@ deploy-backend:
       -p 8011:8011 \
       --name scooter-wsva-feed-rpc \
       172.22.121.50/ai-evaluation/scooter-wsva-feed-rpc:$CI_PIPELINE_IID
-    - sleep 10
     - docker rm -f scooter-wsva-favorite-rpc
     - |
       docker run \
@@ -250,7 +248,6 @@ deploy-backend:
       -p 8012:8012 \
       --name scooter-wsva-favorite-rpc \
       172.22.121.50/ai-evaluation/scooter-wsva-favorite-rpc:$CI_PIPELINE_IID
-    - sleep 10
     - docker rm -f scooter-wsva-relation-rpc
     - |
       docker run \
@@ -258,7 +255,6 @@ deploy-backend:
       -p 8013:8013 \
       --name scooter-wsva-relation-rpc \
       172.22.121.50/ai-evaluation/scooter-wsva-relation-rpc:$CI_PIPELINE_IID
-    - sleep 10
     - docker rm -f scooter-wsva-comment-rpc
     - |
       docker run \
@@ -266,7 +262,6 @@ deploy-backend:
       -p 8014:8014 \
       --name scooter-wsva-comment-rpc \
       172.22.121.50/ai-evaluation/scooter-wsva-comment-rpc:$CI_PIPELINE_IID
-    - sleep 10
     - docker rm -f scooter-wsva-label-rpc
     - |
       docker run \
@@ -282,7 +277,6 @@ deploy-backend:
       -p 8890:8890 \
       --name scooter-wsva-user-api \
       172.22.121.50/ai-evaluation/scooter-wsva-user-api:$CI_PIPELINE_IID
-    - sleep 10
     - docker rm -f scooter-wsva-feed-api
     - |
       docker run \
@@ -290,7 +284,6 @@ deploy-backend:
       -p 8891:8891 \
       --name scooter-wsva-feed-api \
       172.22.121.50/ai-evaluation/scooter-wsva-feed-api:$CI_PIPELINE_IID
-    - sleep 10
     - docker rm -f scooter-wsva-favorite-api
     - |
       docker run \
@@ -298,7 +291,6 @@ deploy-backend:
       -p 8892:8892 \
       --name scooter-wsva-favorite-api \
       172.22.121.50/ai-evaluation/scooter-wsva-favorite-api:$CI_PIPELINE_IID
-    - sleep 10
     - docker rm -f scooter-wsva-relation-api
     - |
       docker run \
@@ -306,7 +298,6 @@ deploy-backend:
       -p 8893:8893 \
       --name scooter-wsva-relation-api \
       172.22.121.50/ai-evaluation/scooter-wsva-relation-api:$CI_PIPELINE_IID
-    - sleep 10
     - docker rm -f scooter-wsva-comment-api
     - |
       docker run \
@@ -314,8 +305,6 @@ deploy-backend:
       -p 8894:8894 \
       --name scooter-wsva-comment-api \
       172.22.121.50/ai-evaluation/scooter-wsva-comment-api:$CI_PIPELINE_IID
-    - echo "=======deploy success======="
-    - sleep 10
     - docker rm -f scooter-wsva-mq-api
     - |
       docker run \
