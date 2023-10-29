@@ -28,7 +28,7 @@ install-backend:
     expire_in: 1 day
     paths:
       - backend/output
-      - swagger/api
+      - scripts/swagger/api
 install-frontend:
   image: node:20.9.0-bullseye
   stage: install
