@@ -12,7 +12,7 @@ type ActionResp struct {
 }
 
 type FavoriteListReq struct {
-	Uid int64 `json:"uid"`
+	Uid int64 `path:"uid"`
 }
 
 type UserInfo struct {
@@ -31,7 +31,7 @@ type FavoriteListResp struct {
 }
 
 type FollowerListReq struct {
-	Uid int64 `json:"uid"`
+	Uid int64 `path:"uid"`
 }
 
 type FollowerListResp struct {
@@ -41,7 +41,7 @@ type FollowerListResp struct {
 }
 
 type FriendListReq struct {
-	Uid int64 `json:"uid"`
+	Uid int64 `path:"uid"`
 }
 
 type FriendListResp struct {
