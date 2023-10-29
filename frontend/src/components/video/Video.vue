@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 12:14:34
+ * @LastEditTime: 2023-10-29 12:16:47
  * @Description: 视频基础组件
  * @FilePath: \scooter-WSVA\frontend\src\components\video\Video.vue
 -->
@@ -160,15 +160,6 @@ onMounted(() => {
   if (props.danmaku) {
     player.danmaku = props.danmaku
   }
-  // console.log('mystart',props.onPlayIndex, props.videoIndex)
-  // 第一个视频自动播放
-  // if(props.videoIndex == 0){
-  //   player.autoplay = true
-  //   state.instance = new DPlayer(player)
-  // }
-  // else{
-  //   state.instance = new DPlayer(player)
-  // }
   if(props.videoIndex == 0){
     player.autoplay = true
     state.instance = new DPlayer(player)

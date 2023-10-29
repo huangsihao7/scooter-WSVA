@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-28 19:53:09
+ * @LastEditTime: 2023-10-29 12:27:43
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\myHeaderCom.vue
 -->
@@ -75,8 +75,10 @@ onMounted(() => {
         height: calc((80vw - 260px) / 6);
     }
     .info-tab{
-        // flex-direction: column;
-        // justify-content: space-evenly;
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
         .edit-info{
             position: absolute;
             top: 0;
@@ -85,6 +87,10 @@ onMounted(() => {
         .el-text, .follow{
             margin: 10px 20px;
             display: block;
+        }
+        .el-text{
+            width: calc(100% - 40px);
+            margin: 10px 20px;
         }
         .follow{
             .n-button{
