@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 22:09:40
+ * @LastEditTime: 2023-10-29 22:13:34
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -175,11 +175,13 @@ const handleShareBtn = () => {
           done()
         }, 300)
       }else {
+        copyFlag.value = false
         done()
       }
     },
     callback: () => {
-      if(copyFlag){
+      console.log('cpf',copyFlag.value)
+      if(copyFlag.value){
         ElMessage({
           type: "info",
           message: `复制成功`,

@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 15:26:18
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 13:39:37
+ * @LastEditTime: 2023-10-29 22:27:05
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\PostVideo.vue
 -->
@@ -38,6 +38,9 @@ const videoForm = reactive({
   url: "",
   coverUrl: "",
 });
+// 上传绑定
+const fileUploadRef = ref()
+const titleIptRef = ref()
 
 // 分类下拉框数据
 const classifyList = ref<Array<ClassifyList>>([
@@ -81,6 +84,12 @@ const handlePostVideo = () => {
     videoForm.title,
     videoForm.category,
   ).then((res: any) => {
+    fileUploadRef.value.clear()
+    titleIptRef.value.clear()
+    ElMessage({
+      type:'success',
+      message:'上传成功'
+    })
     console.log(res);
   });
   emit("visible-update", false);
@@ -166,6 +175,7 @@ function uploadHeader() {
     <ElForm label-position="right" :model="videoForm" label-width="50px">
       <ElFormItem label="描述">
         <ElInput
+          ref="titleIptRef"
           v-model="videoForm.title"
           clearable
           autosize
@@ -175,6 +185,7 @@ function uploadHeader() {
       </ElFormItem>
       <ElFormItem label="上传">
         <NUpload
+          ref="fileUploadRef"
           multiple
           directory-dnd
           :action="postBaseURl"
