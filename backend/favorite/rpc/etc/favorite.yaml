@@ -1,5 +1,5 @@
 Name: favorite.rpc
-ListenOn: 0.0.0.0:8022
+ListenOn: 0.0.0.0:8012
 Etcd:
   Hosts:
   - 172.22.121.53:2479

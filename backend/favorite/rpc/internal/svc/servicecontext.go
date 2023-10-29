@@ -22,7 +22,6 @@ type ServiceContext struct {
 	DB             *orm.DB
 	GormFavorModel *gmodel.FavoriteModel
 	StarModel      *starModel.StarModel
-	StarCountModel *starModel.StarCountModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -41,6 +40,5 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		DB:             db,
 		GormFavorModel: gmodel.NewFavoriteModel(db.DB),
 		StarModel:      starModel.NewStarModel(db.DB),
-		StarCountModel: starModel.NewStarCountModel(db.DB),
 	}
 }
