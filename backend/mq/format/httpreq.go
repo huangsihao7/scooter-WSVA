@@ -2,9 +2,12 @@ package format
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 func QiNiuGet(url string) ([]byte, error) {
@@ -42,20 +45,34 @@ func QiNiuPost(url string, data []byte) ([]byte, error) {
 	return body, nil
 }
 
-func Feedback(feedType string, data []byte) error {
+func Feedback(feedType string, vid int, uid int) {
 	baseUrl := "http://172.22.121.54:8088/api/feedback"
-	resp, err := http.Post(baseUrl, "application/json", bytes.NewBuffer(data))
+	req := []map[string]interface{}{
+		{
+			"FeedbackType": feedType,
+			"ItemId":       strconv.Itoa(vid),
+			"Timestamp":    time.Now().Format("2006-01-02T15:04:05.000Z"),
+			"UserId":       strconv.Itoa(uid),
+		},
+	}
+	jsonData, err := json.Marshal(req)
+	if err != nil {
+		fmt.Println("JSON编码失败:", err)
+		return
+	}
+	println(string(jsonData))
+	resp, err := http.Post(baseUrl, "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		fmt.Println("POST请求发送失败:", err)
-		return err
+		return
 	}
 	defer resp.Body.Close()
 
 	// 读取响应内容
-	_, err = ioutil.ReadAll(resp.Body)
+	s, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println("读取响应内容失败:", err)
-		return err
+		return
 	}
-	return nil
+	fmt.Println("上传反馈成功", string(s))
 }
