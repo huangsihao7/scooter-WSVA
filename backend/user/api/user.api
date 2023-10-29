@@ -83,6 +83,9 @@ service User {
 	jwt: Auth
 )
 service User {
+	@doc(
+		summary: "user"
+	)
 	@handler UserInfo
 	post /user/userinfo (UserInfoReq) returns (UserInfoResponse)
 	

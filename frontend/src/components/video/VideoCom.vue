@@ -1,8 +1,13 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
+<<<<<<< HEAD
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 20:14:49
+ * @LastEditTime: 2023-10-29 20:16:56
+=======
+ * @LastEditors: huangsihao7 1057434651@qq.com
+ * @LastEditTime: 2023-10-29 17:10:55
+>>>>>>> 089035e1c344f42cd2d507345963a9e9fbe4810c
  * @Description: 视频基础组件
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCom.vue
 -->
@@ -107,7 +112,7 @@ const props = defineProps({
   // },
   video: {
     type: Object,
-    // eslint-disable-next-line
+    // eslint-disable-next-line vue/require-valid-default-prop
     default: {
       url: "http://s327crbzf.hn-bkt.clouddn.com/4993187b41132025aaaa88063de94727b54d482b203c325a78ce8bf61e41e514.mp4", //视频地址
       type: "mp4",
@@ -124,25 +129,25 @@ const props = defineProps({
   // 外挂字幕
   subtitle: {
     type: Object,
-    // eslint-disable-next-line
+    // eslint-disable-next-line vue/require-valid-default-prop
     default: {},
   },
   // 显示弹幕
   danmaku: {
     type: Object,
-    // eslint-disable-next-line
+    // eslint-disable-next-line vue/require-valid-default-prop
     default: {},
   },
   // 自定义右键菜单
   contextmenu: {
     type: Array,
-    // eslint-disable-next-line
+    // eslint-disable-next-line vue/require-valid-default-prop
     default: [],
   },
   // 自定义进度条提示点
   highlight: {
     type: Array,
-    // eslint-disable-next-line
+    // eslint-disable-next-line vue/require-valid-default-prop
     default: [],
   },
   // 阻止多个播放器同时播放，当前播放器播放时暂停其他播放器

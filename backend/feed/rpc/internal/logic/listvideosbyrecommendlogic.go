@@ -83,6 +83,7 @@ func (l *ListVideosByRecommendLogic) ListVideosByRecommend(in *feed.ListFeedRequ
 			CoverUrl:      video.CoverUrl,
 			FavoriteCount: uint32(video.FavoriteCount),
 			CommentCount:  uint32(video.CommentCount),
+			StarCount:     uint32(video.StarCount),
 			IsFavorite:    IsFavorite,
 			Title:         video.Title,
 			CreateTime:    video.CreatedAt.Unix(),

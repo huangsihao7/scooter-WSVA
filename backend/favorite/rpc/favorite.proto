@@ -35,8 +35,10 @@ message Video {
   string cover_url = 4; // 视频封面地址
   int64 favorite_count = 5; // 视频的点赞总数
   int64 comment_count = 6; // 视频的评论总数
-  bool is_favorite = 7; // true-已点赞，false-未点赞
-  string title = 8; // 视频标题
+  int64 star_count = 7; // 视频的评论总数
+  bool is_favorite = 8; // true-已点赞，false-未点赞
+  bool is_star = 9; // true-已收藏，false-未收藏
+  string title = 10; // 视频标题
 }
 
 // 用户信息
@@ -88,6 +90,8 @@ message star_list_response {
   string status_msg = 2; // 返回状态描述
   repeated Video video_list = 3; // 用户点赞视频列表
 }
+
+
 
 service Favorite {
   rpc FavoriteAction(favorite_action_request) returns(favorite_action_response); //点赞操作

@@ -63,18 +63,23 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 	for i := 0; i < len(favorVideos); i++ {
 
 		videoId := favorVideos[i].Vid
-		videoDetail, err := l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
+		videoDetail, err := l.svcCtx.VideoGModel.FindById(l.ctx, videoId)
 		if err != nil {
 			return nil, err
 		}
 		//这个视频的作者
-		userInfo, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: userId, ActorId: videoDetail.AuthorId})
+		userInfo, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: userId, ActorId: int64(videoDetail.AuthorId)})
 		if err != nil {
 			return nil, err
 		}
 
 		//userID 是否喜欢该视频
 		isFavorited, err := l.svcCtx.Model.IsFavorite(l.ctx, userId, videoId)
+		if err != nil {
+			return nil, err
+		}
+		//userId 是否收藏该视频
+		isStar, err := l.svcCtx.StarModel.IsStarExist(l.ctx, userId, int64(videoId))
 		if err != nil {
 			return nil, err
 		}
@@ -92,13 +97,15 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 		}
 
 		videoInfo := &favorite.Video{
-			Id:            videoDetail.Id,
+			Id:            int64(videoDetail.Id),
 			Author:        userDetail,
 			PlayUrl:       videoDetail.PlayUrl,
 			CoverUrl:      videoDetail.CoverUrl,
-			FavoriteCount: videoDetail.FavoriteCount,
-			CommentCount:  videoDetail.CommentCount,
+			FavoriteCount: int64(videoDetail.FavoriteCount),
+			CommentCount:  int64(videoDetail.CommentCount),
+			StarCount:     int64(videoDetail.StarCount),
 			IsFavorite:    isFavorited,
+			IsStar:        isStar,
 			Title:         videoDetail.Title,
 		}
 

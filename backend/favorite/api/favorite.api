@@ -19,7 +19,7 @@ type (
 	}
 
 	listReq {
-		UserId int64 `form:"user_id"` // 用户id
+		UserId int64 `form:"uid"` // 用户id
 	}
 
 	listResp {
@@ -35,6 +35,8 @@ type (
 		CoverUrl      string `json:"cover_url"`
 		FavoriteCount int64  `json:"favorite_count"`
 		CommentCount  int64  `json:"comment_count"`
+		StarCount     int64  `json:"star_count"`
+		IsStar        bool   `json:"is_star"`
 		IsFavorite    bool   `json:"is_favorite"`
 		Title         string `json:"title"`
 	}
@@ -53,22 +55,19 @@ type (
 	}
 )
 
-type response {
-	// TODO: add members here and delete this comment
-}
 @server(
 	jwt: Auth
 )
 service favorite-api {
-	@handler FavoriteAction // TODO: set handler name and delete this comment
+	@handler FavoriteAction
 	post /favorite/action(actionReq) returns(actionResp)
-	
-	@handler FavoriteList // TODO: set handler name and delete this comment
+
+	@handler FavoriteList
 	get /favorite/list(listReq) returns(listResp)
-	
-	@handler StarAction // TODO: set handler name and delete this comment
+
+	@handler StarAction
 	post /star/action(actionReq) returns(actionResp)
-	
-	@handler StarList // TODO: set handler name and delete this comment
+
+	@handler StarList
 	get /star/list(listReq) returns(listResp)
 }

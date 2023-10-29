@@ -29,12 +29,10 @@ func NewStarModel(db *gorm.DB) *StarModel {
 	}
 }
 
-func (m *StarModel) FindByUserId(ctx context.Context, userId int64, limit int) ([]*Stars, error) {
+func (m *StarModel) FindsByUserId(ctx context.Context, userId int64) ([]*Stars, error) {
 	var result []*Stars
 	err := m.db.WithContext(ctx).
 		Where("uid = ? ", userId).
-		Order("id desc").
-		Limit(limit).
 		Find(&result).Error
 
 	return result, err

@@ -41,6 +41,3 @@ type User struct {
 	FavoriteCount  uint32 `json:"favorite_count"`
 	IsFollow       bool   `json:"is_follow"`
 }
-
-type Response struct {
-}

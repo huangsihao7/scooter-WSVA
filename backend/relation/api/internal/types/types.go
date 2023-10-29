@@ -12,16 +12,17 @@ type ActionResp struct {
 }
 
 type FavoriteListReq struct {
-	Uid int64 `json:"uid"`
+	Uid int64 `form:"uid"`
 }
 
 type UserInfo struct {
-	Id     int64  `json:"id"`
-	Name   string `json:"name"`
-	Gender int64  `json:"gender"`
-	Mobile string `json:"mobile"`
-	Avatar string `json:"avatar"`
-	Dec    string `json:"dec"`
+	Id      int64  `json:"id"`
+	Name    string `json:"name"`
+	Gender  int64  `json:"gender"`
+	Mobile  string `json:"mobile"`
+	Avatar  string `json:"avatar"`
+	Dec     string `json:"dec"`
+	BackImg string `json:"backImg"`
 }
 
 type FavoriteListResp struct {
@@ -31,7 +32,7 @@ type FavoriteListResp struct {
 }
 
 type FollowerListReq struct {
-	Uid int64 `json:"uid"`
+	Uid int64 `form:"uid"`
 }
 
 type FollowerListResp struct {
@@ -41,7 +42,7 @@ type FollowerListResp struct {
 }
 
 type FriendListReq struct {
-	Uid int64 `json:"uid"`
+	Uid int64 `form:"uid"`
 }
 
 type FriendListResp struct {

@@ -45,6 +45,7 @@ type (
 		CoverUrl      string       `db:"cover_url"`      // 封面url
 		PlayUrl       string       `db:"play_url"`       // 视频播放url
 		FavoriteCount int64        `db:"favorite_count"` // 点赞数
+		StarCount     int64        `db:"star_count"`     // 收藏数
 		CommentCount  int64        `db:"comment_count"`  // 评论数目
 		CreatedAt     time.Time    `db:"created_at"`
 		UpdatedAt     sql.NullTime `db:"updated_at"`
@@ -88,21 +89,20 @@ func (m *defaultVideosModel) FindOne(ctx context.Context, id int64) (*Videos, er
 }
 
 func (m *defaultVideosModel) Insert(ctx context.Context, data *Videos) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?)", m.table, videosRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.AuthorId, data.Title, data.CoverUrl, data.PlayUrl, data.FavoriteCount, data.CommentCount, data.DeletedAt, data.Category)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, videosRowsExpectAutoSet)
+	ret, err := m.conn.ExecCtx(ctx, query, data.AuthorId, data.Title, data.CoverUrl, data.PlayUrl, data.FavoriteCount, data.StarCount, data.CommentCount, data.DeletedAt, data.Category)
 	return ret, err
 }
 
 func (m *defaultVideosModel) Update(ctx context.Context, data *Videos) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, videosRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, data.AuthorId, data.Title, data.CoverUrl, data.PlayUrl, data.FavoriteCount, data.CommentCount, data.DeletedAt, data.Category, data.Id)
+	_, err := m.conn.ExecCtx(ctx, query, data.AuthorId, data.Title, data.CoverUrl, data.PlayUrl, data.FavoriteCount, data.StarCount, data.CommentCount, data.DeletedAt, data.Category, data.Id)
 	return err
 }
 
 func (m *defaultVideosModel) tableName() string {
 	return m.table
 }
-
 func (m *defaultVideosModel) FindOwnFeed(ctx context.Context, uid int64) ([]*Videos, error) {
 	query := fmt.Sprintf("select %s from %s where `author_id` = ?", videosRows, m.table)
 	var resp []*Videos

@@ -43,16 +43,14 @@ type (
 	}
 )
 
-type response {
-	// TODO: add members here and delete this comment
-}
+
 @server(
 	jwt: Auth
 )
 service comment-api {
 	@handler CommentAction
 	post /comment/action (actionReq) returns(actionResp)
-	
+
 	@handler GetCommentList
 	get /comment/list (listReq) returns(listResp)
 }
