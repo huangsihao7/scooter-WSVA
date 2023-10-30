@@ -6,6 +6,7 @@ import CommentListCom from "@/components/comment/CommentListCom.vue";
 import { getRecommendVideos } from "@/apis/video";
 import { VideoType } from "@/apis/interface";
 import { getCommentList } from "@/apis/comment";
+import { videoStore } from "@/stores/video";
 
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false);
@@ -40,12 +41,15 @@ const downPage = () => {
   carouselRef.value.next();
 };
 
+// 轮播图切换效果
 const updatePage = (currentIndex: number, lastIndex: number) => {
   currentVideoIndex.value = currentIndex;
   lastVideoIndex.value = lastIndex;
   if (currentIndex > lastIndex) {
     let offset = defaultLoad + currentIndex;
-    getRecommendVideos(offset,0).then((res: any) => {
+    let readedVideo = videoStore().video_id
+    console.log('readedVideo', readedVideo)
+    getRecommendVideos(offset, readedVideo).then((res: any) => {
       videos.value?.push(res.videos[0]);
       console.log(videos.value);
     });

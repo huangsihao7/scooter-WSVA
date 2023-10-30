@@ -2,14 +2,14 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
 <<<<<<< HEAD
- * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 11:00:02
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-10-30 21:23:17
 =======
  * @LastEditors: huangsihao7 1057434651@qq.com
  * @LastEditTime: 2023-10-29 17:10:55
 >>>>>>> 089035e1c344f42cd2d507345963a9e9fbe4810c
  * @Description: 视频基础组件
- * @FilePath: /scooter-WSVA/frontend/src/components/video/VideoCom.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCom.vue
 -->
 
 <template>
@@ -20,6 +20,7 @@
 import DPlayer from "dplayer";
 import Hls from "hls.js";
 import { ref, reactive, onBeforeUnmount, onMounted, onUpdated } from "vue";
+import { videoStore } from "@/stores/video";
 
 const videoRef = ref();
 const state: any = reactive({
@@ -200,6 +201,7 @@ onMounted(() => {
     //自动播放开启
     player.autoplay = true;
     state.instance = new DPlayer(player);
+    videoStore().video_id = props.videoId
     // state.instance.video.play()
     // console.log(state.instance);
   } else {
@@ -222,6 +224,8 @@ onUpdated(() => {
       );
     } else {
       state.instance.video.play();
+      console.log('props.videoId',props.videoId)
+      videoStore().video_id = props.videoId
     }
   }
 });
