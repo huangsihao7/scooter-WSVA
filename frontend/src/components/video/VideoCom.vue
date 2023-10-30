@@ -3,7 +3,7 @@
  * @Date: 2023-10-22 19:33:20
 <<<<<<< HEAD
  * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 09:54:45
+ * @LastEditTime: 2023-10-30 11:00:02
 =======
  * @LastEditors: huangsihao7 1057434651@qq.com
  * @LastEditTime: 2023-10-29 17:10:55
@@ -117,7 +117,7 @@ const props = defineProps({
       url: "http://s327crbzf.hn-bkt.clouddn.com/4993187b41132025aaaa88063de94727b54d482b203c325a78ce8bf61e41e514.mp4", //视频地址
       type: "mp4",
       customType: {
-        customHls: function (video: any, player: any) {
+        customHls: function (video: any, _player: any) {
           // console.log(player);
           const hls = new Hls(); //实例化Hls  用于解析m3u8
           hls.loadSource(video.src);
