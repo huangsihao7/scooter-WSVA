@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 	"github.com/huangsihao7/scooter-WSVA/label/rpc/label"
 	"github.com/huangsihao7/scooter-WSVA/mq/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
@@ -78,6 +79,14 @@ func (l *UploadFile) Consume(key, val string) error {
 	})
 	if !InsertLabelRes.Success {
 		fmt.Println("往数据库插入标签错误", err)
+		return err
+	}
+	duration, err := l.svcCtx.Feeder.VideoDuration(l.ctx, &feed.VideoDurationReq{
+		Duration: uploadRes.Duration,
+		VideoId:  uint32(videoInfo.Id),
+	})
+	if err != nil {
+		fmt.Println(duration.StatusMsg)
 		return err
 	}
 	//调用post请求，将视频id与标签存入推荐系统

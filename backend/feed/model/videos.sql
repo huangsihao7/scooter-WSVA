@@ -11,6 +11,7 @@ CREATE TABLE `videos`  (
                            `updated_at` datetime NULL DEFAULT NULL,
                            `deleted_at` datetime NULL DEFAULT NULL,
                            `category` int NOT NULL COMMENT '视频分类',
+                           `duration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '视频时长',
                            PRIMARY KEY (`id`) USING BTREE,
                            INDEX `author_id`(`author_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 60 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 78 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;

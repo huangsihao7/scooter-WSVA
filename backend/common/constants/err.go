@@ -71,6 +71,8 @@ const (
 	FindUserError                     = "查询用户信息失败"
 	JsonErrorCode                     = 50032
 	JsonError                         = "json解析失败"
+	DurationErrorCode                 = 50033
+	DurationError                     = "更新时长失败"
 )
 
 // Expected Error

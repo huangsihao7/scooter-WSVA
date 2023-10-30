@@ -26,6 +26,7 @@ const (
 	Feed_ListCategoryVideos_FullMethodName    = "/feed.Feed/ListCategoryVideos"
 	Feed_ListPopularVideos_FullMethodName     = "/feed.Feed/ListPopularVideos"
 	Feed_CreateVideoTest_FullMethodName       = "/feed.Feed/CreateVideoTest"
+	Feed_VideoDuration_FullMethodName         = "/feed.Feed/VideoDuration"
 )
 
 // FeedClient is the client API for Feed service.
@@ -40,6 +41,7 @@ type FeedClient interface {
 	ListCategoryVideos(ctx context.Context, in *CategoryFeedRequest, opts ...grpc.CallOption) (*CategoryFeedResponse, error)
 	ListPopularVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 	CreateVideoTest(ctx context.Context, in *CreateVideoRequest, opts ...grpc.CallOption) (*CreateVideoResponse, error)
+	VideoDuration(ctx context.Context, in *VideoDurationReq, opts ...grpc.CallOption) (*VideoDurationResp, error)
 }
 
 type feedClient struct {
@@ -113,6 +115,15 @@ func (c *feedClient) CreateVideoTest(ctx context.Context, in *CreateVideoRequest
 	return out, nil
 }
 
+func (c *feedClient) VideoDuration(ctx context.Context, in *VideoDurationReq, opts ...grpc.CallOption) (*VideoDurationResp, error) {
+	out := new(VideoDurationResp)
+	err := c.cc.Invoke(ctx, Feed_VideoDuration_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FeedServer is the server API for Feed service.
 // All implementations must embed UnimplementedFeedServer
 // for forward compatibility
@@ -125,6 +136,7 @@ type FeedServer interface {
 	ListCategoryVideos(context.Context, *CategoryFeedRequest) (*CategoryFeedResponse, error)
 	ListPopularVideos(context.Context, *ListFeedRequest) (*ListFeedResponse, error)
 	CreateVideoTest(context.Context, *CreateVideoRequest) (*CreateVideoResponse, error)
+	VideoDuration(context.Context, *VideoDurationReq) (*VideoDurationResp, error)
 	mustEmbedUnimplementedFeedServer()
 }
 
@@ -152,6 +164,9 @@ func (UnimplementedFeedServer) ListPopularVideos(context.Context, *ListFeedReque
 }
 func (UnimplementedFeedServer) CreateVideoTest(context.Context, *CreateVideoRequest) (*CreateVideoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateVideoTest not implemented")
+}
+func (UnimplementedFeedServer) VideoDuration(context.Context, *VideoDurationReq) (*VideoDurationResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VideoDuration not implemented")
 }
 func (UnimplementedFeedServer) mustEmbedUnimplementedFeedServer() {}
 
@@ -292,6 +307,24 @@ func _Feed_CreateVideoTest_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Feed_VideoDuration_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VideoDurationReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FeedServer).VideoDuration(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Feed_VideoDuration_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FeedServer).VideoDuration(ctx, req.(*VideoDurationReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Feed_ServiceDesc is the grpc.ServiceDesc for Feed service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -326,6 +359,10 @@ var Feed_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateVideoTest",
 			Handler:    _Feed_CreateVideoTest_Handler,
+		},
+		{
+			MethodName: "VideoDuration",
+			Handler:    _Feed_VideoDuration_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

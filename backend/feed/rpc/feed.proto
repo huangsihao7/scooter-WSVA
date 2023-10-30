@@ -86,6 +86,16 @@ message CategoryFeedResponse {
    repeated VideoInfo video_list = 3;
 }
 
+message VideoDurationReq{
+   string duration=1;
+   uint32 video_id=2;
+}
+message VideoDurationResp {
+   int32 status_code = 1;
+   string status_msg = 2;
+
+}
+
 service Feed {
    rpc CreateVideo(CreateVideoRequest) returns (CreateVideoResponse) {}
    rpc ListVideo(ListVideoRequest) returns (ListVideoResponse) {}
@@ -94,5 +104,7 @@ service Feed {
    rpc ListVideos(ListFeedRequest) returns (ListFeedResponse);
    rpc ListCategoryVideos(CategoryFeedRequest) returns (CategoryFeedResponse);
    rpc ListPopularVideos(ListFeedRequest) returns (ListFeedResponse);
-   rpc CreateVideoTest(CreateVideoRequest) returns (CreateVideoResponse) {}
+   rpc CreateVideoTest(CreateVideoRequest) returns (CreateVideoResponse) ;
+   rpc VideoDuration(VideoDurationReq) returns(VideoDurationResp);
+
 }

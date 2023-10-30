@@ -11,4 +11,5 @@ type Config struct {
 	KqConsumerConf kq.KqConf
 	Comment        zrpc.RpcClientConf
 	Label          zrpc.RpcClientConf
+	Feed           zrpc.RpcClientConf
 }

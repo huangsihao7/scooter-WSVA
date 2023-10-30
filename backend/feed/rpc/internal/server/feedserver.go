@@ -57,3 +57,8 @@ func (s *FeedServer) CreateVideoTest(ctx context.Context, in *feed.CreateVideoRe
 	l := logic.NewCreateVideoTestLogic(ctx, s.svcCtx)
 	return l.CreateVideoTest(in)
 }
+
+func (s *FeedServer) VideoDuration(ctx context.Context, in *feed.VideoDurationReq) (*feed.VideoDurationResp, error) {
+	l := logic.NewVideoDurationLogic(ctx, s.svcCtx)
+	return l.VideoDuration(in)
+}
