@@ -12,11 +12,11 @@ KqConsumerConf:
   Consumers: 8
   Processors: 8
 
-Comment:
-  Etcd:
-    Hosts:
-      - 172.22.121.53:2479
-    Key: comment.rpc
+#Comment:
+#  Etcd:
+#    Hosts:
+#      - 172.22.121.53:2479
+#    Key: comment.rpc
 Label:
   Etcd:
     Hosts:
