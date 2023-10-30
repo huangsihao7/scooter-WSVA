@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 21:16:04
+ * @LastEditTime: 2023-10-31 00:25:56
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -57,39 +57,44 @@ const dplayerObj = reactive({
     },
   },
   danmaku: {
-    // id: '9E2E3368B56CDBB4',
-    // api: 'https://api.prprpr.me/dplayer/',
+    id: '2779e3b7c71be93b8103aef6985fbdd0',
+    api: 'https://angustar.tech/api/dplayer/',
+    // api: 'http://127.0.0.1:8000/aaa',
     // token: 'tokendemo',
-    // maximum: 1000,
+    maximum: 1000,
     // addition: ['https://api.prprpr.me/dplayer/v3/bilibili?aid=4157142'],
-    // user: 'DIYgod',
-    // bottom: '15%',
-    // unlimited: true,
-    // speedRate: 0.5,
+    addition: ['http://127.0.0.1:8000/aaa'],
+    user: 'DIYgod',
+    bottom: '15%',
+    unlimited: true,
+    speedRate: 0.5,
   },
-  contextmenu: [
-    {
-      text: "custom1",
-      link: "https://github.com/DIYgod/DPlayer",
-    },
-    {
-      text: "custom2",
-      click: (player: any) => {
-        console.log(player);
-      },
-    },
-  ],
-  highlight: [
-    {
-      time: 20,
-      text: "这是第 20 秒",
-    },
-    {
-      time: 120,
-      text: "这是 2 分钟",
-    },
-  ],
+  // contextmenu: [
+  //   {
+  //     text: "custom1",
+  //     link: "https://github.com/DIYgod/DPlayer",
+  //   },
+  //   {
+  //     text: "custom2",
+  //     click: (player: any) => {
+  //       console.log(player);
+  //     },
+  //   },
+  // ],
+  // highlight: [
+  //   {
+  //     time: 20,
+  //     text: "这是第 20 秒",
+  //   },
+  //   {
+  //     time: 120,
+  //     text: "这是 2 分钟",
+  //   },
+  // ],
 });
+
+
+
 
 // 复制分享链接
 const copy = async (msg: any) => {

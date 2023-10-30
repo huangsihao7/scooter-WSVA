@@ -3,7 +3,7 @@
  * @Date: 2023-10-22 19:33:20
 <<<<<<< HEAD
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 21:23:17
+ * @LastEditTime: 2023-10-30 23:18:29
 =======
  * @LastEditors: huangsihao7 1057434651@qq.com
  * @LastEditTime: 2023-10-29 17:10:55
@@ -215,13 +215,6 @@ onUpdated(() => {
     // 如果需要播放的不是当前video 则暂停
     if (props.onPlayIndex != props.videoIndex) {
       state.instance.video.pause();
-      console.log(
-        "2222222pause",
-        props.videoIndex,
-        props.onPlayIndex,
-        state.instance,
-        state.instance.pause(),
-      );
     } else {
       state.instance.video.play();
       console.log('props.videoId',props.videoId)

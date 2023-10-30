@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 22:58:33
+ * @LastEditTime: 2023-10-30 23:02:28
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyInteractCom.vue
 -->
@@ -15,15 +15,19 @@
       @update-value="handleUpdate"
     >
       <NTabPane name="work" tab="作品">
-        <n-scrollbar style="max-height: 300px">
+        <n-scrollbar style="max-height: 50vh">
           <VideoCard :is-scroll="false" :videos="videos" />
         </n-scrollbar>
       </NTabPane>
       <NTabPane name="favourite" tab="喜欢">
-        <VideoCard :is-scroll="false" :videos="videos" />
+        <n-scrollbar style="max-height: 50vh">
+          <VideoCard :is-scroll="false" :videos="videos" />
+        </n-scrollbar>
       </NTabPane>
       <NTabPane name="collect" tab="收藏">
-        <VideoCard :is-scroll="false" :videos="videos" />
+        <n-scrollbar style="max-height: 50vh">
+          <VideoCard :is-scroll="false" :videos="videos" />
+        </n-scrollbar>
       </NTabPane>
       <NTabPane name="history" tab="观看历史">
         <n-scrollbar style="max-height: 50vh">
