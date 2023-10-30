@@ -54,16 +54,18 @@ func (l *RecommendVideosLogic) RecommendVideos(req *types.RecommendVideosListReq
 		resList = append(resList, types.VideoInfo{
 			VideoId: int64(item.Id),
 			Author: types.UserInfo{
-				Id:             item.Author.Id,
-				Name:           item.Author.Name,
-				Avatar:         *item.Author.Avatar,
-				Signature:      *item.Author.Signature,
-				FollowCount:    *item.Author.FollowerCount,
-				FollowerCount:  *item.Author.FollowCount,
-				TotalFavorited: *item.Author.TotalFavorited,
-				WorkCount:      *item.Author.WorkCount,
-				FavoriteCount:  *item.Author.FavoriteCount,
-				IsFollow:       item.Author.IsFollow,
+				Id:              item.Author.Id,
+				Name:            item.Author.Name,
+				Avatar:          *item.Author.Avatar,
+				Gender:          item.Author.Gender,
+				Signature:       *item.Author.Signature,
+				BackgroundImage: *item.Author.BackgroundImage,
+				FollowCount:     *item.Author.FollowerCount,
+				FollowerCount:   *item.Author.FollowCount,
+				TotalFavorited:  *item.Author.TotalFavorited,
+				WorkCount:       *item.Author.WorkCount,
+				FavoriteCount:   *item.Author.FavoriteCount,
+				IsFollow:        item.Author.IsFollow,
 			},
 			PlayUrl:       item.PlayUrl,
 			CoverUrl:      item.CoverUrl,
@@ -73,6 +75,7 @@ func (l *RecommendVideosLogic) RecommendVideos(req *types.RecommendVideosListReq
 			IsFavorite:    item.IsFavorite,
 			Title:         item.Title,
 			CreateTime:    item.CreateTime,
+			Duration:      item.Duration,
 		})
 	}
 	return &types.RecommendVideosListResp{

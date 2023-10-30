@@ -52,6 +52,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/feed/duration",
 				Handler: DurationTestHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/feed/history",
+				Handler: HistoryVideosHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/feed/neighbors",
+				Handler: NeighborsVideosHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)

@@ -28,6 +28,7 @@ type (
 		FindOne(ctx context.Context, id int64) (*History, error)
 		Update(ctx context.Context, data *History) error
 		Delete(ctx context.Context, id int64) error
+		FindHistorys(ctx context.Context, uid int64) ([]*History, error)
 	}
 
 	defaultHistoryModel struct {
@@ -91,4 +92,18 @@ func (m *defaultHistoryModel) Update(ctx context.Context, data *History) error {
 
 func (m *defaultHistoryModel) tableName() string {
 	return m.table
+}
+
+func (m *defaultHistoryModel) FindHistorys(ctx context.Context, uid int64) ([]*History, error) {
+	query := fmt.Sprintf("select %s from %s where `uid` = ? ORDER BY `id` DESC", historyRows, m.table)
+	var resp []*History
+	err := m.conn.QueryRowsCtx(ctx, &resp, query, uid)
+	switch err {
+	case nil:
+		return resp, nil
+	case sqlc.ErrNotFound:
+		return nil, nil
+	default:
+		return nil, err
+	}
 }

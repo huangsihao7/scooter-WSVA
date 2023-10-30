@@ -72,6 +72,7 @@ func (l *ListVideosLogic) ListVideos(in *feed.ListFeedRequest) (*feed.ListFeedRe
 			IsStar:        IsStar,
 			Title:         item.Title,
 			CreateTime:    item.CreatedAt.Format(constants.TimeFormat),
+			Duration:      item.Duration.String,
 		})
 	}
 	return &feed.ListFeedResponse{

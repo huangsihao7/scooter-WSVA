@@ -109,6 +109,7 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 			IsStar:        isStar,
 			Title:         videoDetail.Title,
 			CreateTime:    videoDetail.CreatedAt.Time.Format(constants.TimeFormat),
+			Duration:      videoDetail.Duration.String,
 		}
 
 		videoInfoList = append(videoInfoList, videoInfo)

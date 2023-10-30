@@ -121,6 +121,7 @@ func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*f
 			IsStar:        IsStar,
 			Title:         video.Title,
 			CreateTime:    video.CreatedAt.Format(constants.TimeFormat),
+			Duration:      video.Duration.String,
 		})
 	}
 	return &feed.ListFeedResponse{

@@ -35,26 +35,28 @@ type VideoInfo struct {
 	IsFavorite    bool     `json:"is_favorite"`
 	Title         string   `json:"title"`
 	CreateTime    string   `json:"create_time"`
+	Duration      string   `json:"duration"`
 }
 
 type UserInfo struct {
-	Id             uint32 `json:"id"`
-	Name           string `json:"name"`
-	Gender         uint32 `json:"gender"`
-	Avatar         string `json:"avatar"`
-	Signature      string `json:"signature"`
-	FollowCount    uint32 `json:"follow_count"`
-	FollowerCount  uint32 `json:"follower_count"`
-	TotalFavorited uint32 `json:"total_favorited"`
-	WorkCount      uint32 `json:"work_count"`
-	FavoriteCount  uint32 `json:"favorite_count"`
-	IsFollow       bool   `json:"is_follow"`
+	Id              uint32 `json:"id"`
+	Name            string `json:"name"`
+	Avatar          string `json:"avatar"`
+	Gender          uint32 `json:"gender"`
+	Signature       string `json:"signature"`
+	BackgroundImage string `json:"background_image"` //用户个人页顶部大图
+	FollowCount     uint32 `json:"follow_count"`
+	FollowerCount   uint32 `json:"follower_count"`
+	TotalFavorited  uint32 `json:"total_favorited"`
+	WorkCount       uint32 `json:"work_count"`
+	FavoriteCount   uint32 `json:"favorite_count"`
+	IsFollow        bool   `json:"is_follow"`
 }
 
 type VideosListResp struct {
 	StatusCode int         `json:"status_code"`
 	StatusMsg  string      `json:"status_msg"`
-	Videos     []VideoInfo `json:"videos"`
+	Videos     []VideoInfo `json:"video_list"`
 }
 
 type CategoryVideosListReq struct {
@@ -64,7 +66,7 @@ type CategoryVideosListReq struct {
 type CategoryVideosListResp struct {
 	StatusCode int         `json:"status_code"`
 	StatusMsg  string      `json:"status_msg"`
-	Videos     []VideoInfo `json:"videos"`
+	Videos     []VideoInfo `json:"video_list"`
 }
 
 type RecommendVideosListReq struct {
@@ -75,7 +77,7 @@ type RecommendVideosListReq struct {
 type RecommendVideosListResp struct {
 	StatusCode int         `json:"status_code"`
 	StatusMsg  string      `json:"status_msg"`
-	Videos     []VideoInfo `json:"videos"`
+	Videos     []VideoInfo `json:"video_list"`
 }
 
 type PopularVideosListReq struct {
@@ -86,7 +88,7 @@ type PopularVideosListReq struct {
 type PopularVideosListResp struct {
 	StatusCode int         `json:"status_code"`
 	StatusMsg  string      `json:"status_msg"`
-	Videos     []VideoInfo `json:"videos"`
+	Videos     []VideoInfo `json:"video_list"`
 }
 
 type DurationTestReq struct {
@@ -97,4 +99,20 @@ type DurationTestReq struct {
 type DurationTestResp struct {
 	StatusCode int    `json:"status_code"`
 	StatusMsg  string `json:"status_msg"`
+}
+
+type HistoryVideosResp struct {
+	StatusCode int         `json:"status_code"`
+	StatusMsg  string      `json:"status_msg"`
+	VideoList  []VideoInfo `json:"video_list"`
+}
+
+type NeighborsVideoReq struct {
+	Uid int64 `form:"uid"`
+}
+
+type NeighborsVideoResp struct {
+	StatusCode int         `json:"status_code"`
+	StatusMsg  string      `json:"status_msg"`
+	VideoList  []VideoInfo `json:"video_list"`
 }

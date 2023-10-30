@@ -35,25 +35,27 @@ type (
 		IsFavorite    bool     `json:"is_favorite"`
 		Title         string   `json:"title"`
 		CreateTime    string   `json:"create_time"`
+		Duration      string   `json:"duration"`
 	}
 	UserInfo {
-		Id             uint32 `json:"id"`
-		Name           string `json:"name"`
-		Gender         uint32 `json:"gender"`
-		Avatar         string `json:"avatar"`
-		Signature      string `json:"signature"`
-		FollowCount    uint32 `json:"follow_count"`
-		FollowerCount  uint32 `json:"follower_count"`
-		TotalFavorited uint32 `json:"total_favorited"`
-		WorkCount      uint32 `json:"work_count"`
-		FavoriteCount  uint32 `json:"favorite_count"`
-		IsFollow       bool   `json:"is_follow"`
+		Id              uint32 `json:"id"`
+		Name            string `json:"name"`
+		Avatar          string `json:"avatar"`
+		Gender          uint32 `json:"gender"`
+		Signature       string `json:"signature"`
+		BackgroundImage string `json:"background_image"` //用户个人页顶部大图
+		FollowCount     uint32 `json:"follow_count"`
+		FollowerCount   uint32 `json:"follower_count"`
+		TotalFavorited  uint32 `json:"total_favorited"`
+		WorkCount       uint32 `json:"work_count"`
+		FavoriteCount   uint32 `json:"favorite_count"`
+		IsFollow        bool   `json:"is_follow"`
 	}
 
 	VideosListResp {
 		StatusCode int         `json:"status_code"`
 		StatusMsg  string      `json:"status_msg"`
-		Videos     []VideoInfo `json:"videos"`
+		Videos     []VideoInfo `json:"video_list"`
 	}
 	CategoryVideosListReq {
 		Category uint32 `form:"category"`
@@ -61,7 +63,7 @@ type (
 	CategoryVideosListResp {
 		StatusCode int         `json:"status_code"`
 		StatusMsg  string      `json:"status_msg"`
-		Videos     []VideoInfo `json:"videos"`
+		Videos     []VideoInfo `json:"video_list"`
 	}
 
 	RecommendVideosListReq {
@@ -71,7 +73,7 @@ type (
 	RecommendVideosListResp {
 		StatusCode int         `json:"status_code"`
 		StatusMsg  string      `json:"status_msg"`
-		Videos     []VideoInfo `json:"videos"`
+		Videos     []VideoInfo `json:"video_list"`
 	}
 	PopularVideosListReq {
 		Offset        int64 `json:"offset"`
@@ -80,7 +82,7 @@ type (
 	PopularVideosListResp {
 		StatusCode int         `json:"status_code"`
 		StatusMsg  string      `json:"status_msg"`
-		Videos     []VideoInfo `json:"videos"`
+		Videos     []VideoInfo `json:"video_list"`
 	}
 
 	DurationTestReq {
@@ -90,6 +92,20 @@ type (
 	DurationTestResp {
 		StatusCode int    `json:"status_code"`
 		StatusMsg  string `json:"status_msg"`
+	}
+	HistoryVideosResp {
+		StatusCode int         `json:"status_code"`
+		StatusMsg  string      `json:"status_msg"`
+		VideoList  []VideoInfo `json:"video_list"`
+	}
+
+	NeighborsVideoReq {
+		Uid int64 `form:"uid"`
+	}
+	NeighborsVideoResp {
+		StatusCode int         `json:"status_code"`
+		StatusMsg  string      `json:"status_msg"`
+		VideoList  []VideoInfo `json:"video_list"`
 	}
 )
 
@@ -120,4 +136,10 @@ service feed-api {
 
 	@handler DurationTest
 	post /feed/duration(DurationTestReq) returns(DurationTestResp)
+
+	@handler HistoryVideos
+	get /feed/history () returns(HistoryVideosResp)
+
+	@handler NeighborsVideos
+	get /feed/neighbors (NeighborsVideoReq) returns (NeighborsVideoResp)
 }

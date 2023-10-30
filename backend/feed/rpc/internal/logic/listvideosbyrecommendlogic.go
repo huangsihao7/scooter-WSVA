@@ -117,6 +117,7 @@ func (l *ListVideosByRecommendLogic) ListVideosByRecommend(in *feed.ListFeedRequ
 			IsStar:        IsStar,
 			Title:         video.Title,
 			CreateTime:    video.CreatedAt.Format(constants.TimeFormat),
+			Duration:      video.Duration.String,
 		})
 	}
 	return &feed.ListFeedResponse{
