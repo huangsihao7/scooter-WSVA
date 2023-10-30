@@ -22,10 +22,10 @@ interface VideoType {
   shareCount: number;
 }
 
-interface CommentType{
+interface CommentType {
   content: string;
-  createDate:string;
-  user: UserType
+  createDate: string;
+  user: UserType;
 }
 
 interface UserType {

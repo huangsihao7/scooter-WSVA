@@ -24,11 +24,11 @@ onMounted(() => {
 // 更新评论区可见状态
 const updateVisible = (thisVideo: any) => {
   drawerVisible.value = !drawerVisible.value;
-  console.log(thisVideo.value.id)
-  getCommentList(thisVideo.value.id).then((res:any)=>{
-    commentlists.value = res.comment_list
-  })
-}
+  console.log(thisVideo.value.id);
+  getCommentList(thisVideo.value.id).then((res: any) => {
+    commentlists.value = res.comment_list;
+  });
+};
 
 const carouselRef = ref<any>();
 

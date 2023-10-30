@@ -8,17 +8,13 @@
 -->
 <script lang="ts" setup>
 import { ref } from "vue";
-import {
-  Heart,
-  ChatbubbleEllipses,
-} from "@vicons/ionicons5";
+import { Heart, ChatbubbleEllipses } from "@vicons/ionicons5";
 import { NIcon, NButton, NSpace, NThing, NAvatar } from "naive-ui";
-import { CommentType } from '@/apis/interface'
+import { CommentType } from "@/apis/interface";
 
 interface propsType {
   comment: CommentType;
 }
-
 
 const props = defineProps<propsType>();
 
@@ -31,8 +27,7 @@ const action = ref(true);
 <template>
   <NThing content-indented>
     <template v-if="avatar" #avatar>
-      <NAvatar round :src="props.comment.user.avatar">
-      </NAvatar>
+      <NAvatar round :src="props.comment.user.avatar"> </NAvatar>
     </template>
     <template v-if="header" #header>
       <span class="name"> {{ props.comment.user.name }} </span>

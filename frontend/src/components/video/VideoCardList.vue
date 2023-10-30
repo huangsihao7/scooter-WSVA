@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 14:50:34
+ * @LastEditTime: 2023-10-30 15:51:16
  * @FilePath: /scooter-WSVA/frontend/src/components/video/VideoCardList.vue
  * @Description: 
 -->
@@ -37,13 +37,11 @@ onMounted(() => {
       <NImage
         class="image-css"
         object-fit="fill"
-        :src="info.coverUrl"
+        :src="info.cover_url"
         width="100"
         preview-disabled
         @click="handleShowVedio"
       />
-      <!-- <image class="image-css"
-          :src="info.coverUrl"></image> -->
 
       <NTag class="time" round :bordered="false" type="info">
         7：26
@@ -52,7 +50,7 @@ onMounted(() => {
         </template>
       </NTag>
       <NTag class="like" round :bordered="false" type="error">
-        {{ info.favoriteCount }}
+        {{ info.favorite_count }}
         <template #icon>
           <NIcon color="#fff" :component="Heart" />
         </template>
@@ -68,8 +66,8 @@ onMounted(() => {
         </NEllipsis>
       </div>
       <div class="name">
-        <span>@ {{ info != undefined ? "null" : info.author.name }}</span>
-        <span class="date">{{ info.createTime }}</span>
+        <span>{{ info.author == undefined ? "null" : info.author.name }}</span>
+        <span class="date">{{ info.create_time }}</span>
       </div>
     </div>
   </NCard>
