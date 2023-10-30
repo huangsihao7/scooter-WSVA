@@ -108,7 +108,7 @@ type HistoryVideosResp struct {
 }
 
 type NeighborsVideoReq struct {
-	Uid int64 `form:"uid"`
+	Vid int64 `form:"vid"`
 }
 
 type NeighborsVideoResp struct {

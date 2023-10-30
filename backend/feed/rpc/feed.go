@@ -18,6 +18,7 @@ import (
 
 var configFile = flag.String("f", "etc/feed-dev.yaml", "the config file")
 
+// 注释
 func main() {
 	flag.Parse()
 

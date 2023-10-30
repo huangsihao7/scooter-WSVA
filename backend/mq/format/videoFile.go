@@ -31,6 +31,6 @@ type UserGoresBody struct {
 }
 
 type PopularResp struct {
-	Id    string `json:"Id"`
-	Score int    `json:"Score"`
+	Id    string  `json:"Id"`
+	Score float64 `json:"Score"`
 }
