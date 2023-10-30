@@ -3,7 +3,7 @@ import { NCarousel, NDrawer, NDrawerContent, NCarouselItem } from "naive-ui";
 import VideoPlus from "@/components/video/VideoPlus.vue";
 import { onMounted, ref } from "vue";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
-import { getVideosList } from "@/apis/video";
+import { getRecommendVideos } from "@/apis/video";
 
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false);
@@ -12,7 +12,7 @@ const lastVideoIndex = ref<number>(0);
 const videos = ref<any>();
 
 onMounted(() => {
-  getVideosList().then((res: any) => {
+  getRecommendVideos(0).then((res: any) => {
     videos.value = res.videos;
   });
 });

@@ -21,6 +21,14 @@ export function userVideoListReq(toUid: string) {
   });
 }
 
+export function getRecommendVideos(offset: number) {
+  return service({
+    url: "/feed/recommends",
+    method: "post",
+    data: { offset },
+  });
+}
+
 export function getVideosList() {
   return service({
     url: `/feed/VideosList`, // 使用字符串模板来拼接runId

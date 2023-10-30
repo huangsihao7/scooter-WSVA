@@ -197,10 +197,8 @@ onMounted(() => {
     player.autoplay = true;
     state.instance = new DPlayer(player);
     // state.instance.video.play()
-    console.log(state.instance)
-    
-  }
-  else{
+    console.log(state.instance);
+  } else {
     player.autoplay = false;
     state.instance = new DPlayer(player);
   }
@@ -209,7 +207,7 @@ onMounted(() => {
 onUpdated(() => {
   if (state.instance) {
     // 如果需要播放的不是当前video 则暂停
-    if(props.onPlayIndex != props.videoIndex){
+    if (props.onPlayIndex != props.videoIndex) {
       state.instance.video.pause();
       console.log(
         "2222222pause",
@@ -218,11 +216,9 @@ onUpdated(() => {
         state.instance,
         state.instance.pause(),
       );
+    } else {
+      state.instance.video.play();
     }
-    else{
-      state.instance.video.play()
-    }
-    
   }
 });
 

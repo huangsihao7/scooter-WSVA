@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 22:13:34
+ * @LastEditTime: 2023-10-30 10:21:34
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -29,7 +29,7 @@ const emit = defineEmits(["comment-visible-update"]);
 
 const thisVideo = ref<VideoType>();
 
-const { toClipboard } = useClipboard()
+const { toClipboard } = useClipboard();
 
 const videoUrls = ref<any>([
   {
@@ -94,19 +94,19 @@ const dplayerObj = reactive({
   ],
 });
 
-const copy = async (msg:any) => {
+const copy = async (msg: any) => {
   try {
     // 复制
-    await toClipboard(msg)
+    await toClipboard(msg);
     // 复制成功
   } catch (e) {
     // 复制失败
     ElMessage({
-      type:'error',
-      message:'复制失败'
-    })
+      type: "error",
+      message: "复制失败",
+    });
   }
-}
+};
 
 // 喜欢按钮的操作
 const handleLikeBtn = () => {
@@ -129,10 +129,10 @@ const handleLikeBtn = () => {
 // 收藏按钮的操作
 const handleCollectBtn = () => {
   if (thisVideo.value) {
-    if (!thisVideo.value?.isCollect) {
-      thisVideo.value.collectCount++;
+    if (!thisVideo.value?.starCount) {
+      thisVideo.value.starCount++;
     } else {
-      thisVideo.value.collectCount--;
+      thisVideo.value.starCount--;
     }
 
     // TODO: 等待后端返回collect值
@@ -153,35 +153,35 @@ const handleCommentBtn = () => {
   emit("comment-visible-update");
 };
 
-const copyFlag = ref<boolean>(false)
+const copyFlag = ref<boolean>(false);
 
 // 分享按钮的操作
 const handleShareBtn = () => {
   shareVisible.value = !shareVisible.value;
   const currentUrl: string = window.location.href;
-  copy(currentUrl)
+  copy(currentUrl);
   ElMessageBox.alert(currentUrl, "分享", {
     confirmButtonText: "复制",
     center: true,
     beforeClose: (action, instance, done) => {
-      if (action === 'confirm') {
-        instance.confirmButtonText = '复制中...'
-        instance.confirmButtonLoading = true
-        console.log('action',action)
-        copy(currentUrl)
-        copyFlag.value = true
+      if (action === "confirm") {
+        instance.confirmButtonText = "复制中...";
+        instance.confirmButtonLoading = true;
+        console.log("action", action);
+        copy(currentUrl);
+        copyFlag.value = true;
         setTimeout(() => {
-          instance.confirmButtonLoading = false
-          done()
-        }, 300)
-      }else {
-        copyFlag.value = false
-        done()
+          instance.confirmButtonLoading = false;
+          done();
+        }, 300);
+      } else {
+        copyFlag.value = false;
+        done();
       }
     },
     callback: () => {
-      console.log('cpf',copyFlag.value)
-      if(copyFlag.value){
+      console.log("cpf", copyFlag.value);
+      if (copyFlag.value) {
         ElMessage({
           type: "info",
           message: `复制成功`,
@@ -262,7 +262,7 @@ onMounted(() => {
         <div class="collect">
           <div :class="collectAnimateClass">
             <NButton
-              v-if="videoUrls[0].isCollect"
+              v-if="videoUrls[0].isStar"
               class="btn"
               text
               color="#ffb802"
@@ -284,7 +284,7 @@ onMounted(() => {
               </NIcon>
             </NButton>
           </div>
-          <p>{{ props.video.collectCount }}</p>
+          <p>{{ props.video.starCount }}</p>
         </div>
         <div class="share">
           <div :class="shareAnimateClass">
@@ -349,16 +349,17 @@ onMounted(() => {
   }
 
   .video-interaction-box {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 25px;
     display: block;
     height: auto;
     position: absolute;
     z-index: 999;
-    width: 100px;
-    bottom: 150px;
+    width: 4vw;
+    bottom: calc((100vh - 360px) / 2);
     right: 0;
-    height: 400px;
+    height: 300px;
     padding: 0 20px;
-
     .like,
     .collect,
     .comment,
