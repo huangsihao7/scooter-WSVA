@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 10:21:34
+ * @LastEditTime: 2023-10-30 11:14:57
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -11,8 +11,8 @@
 import Dplayer from "@/components/video/VideoCom.vue";
 import Hls from "hls.js";
 import { ref, reactive, onMounted } from "vue";
-import { NIcon, NButton } from "naive-ui";
-import { Heart, ArrowRedo, ChatbubbleEllipses, Star } from "@vicons/ionicons5";
+import { NIcon, NButton, NAvatar } from "naive-ui";
+import { Heart, ArrowRedo, ChatbubbleEllipses, Star, Add, Checkmark } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
 import { ElMessageBox, ElMessage } from "element-plus";
 import useClipboard from "vue-clipboard3";
@@ -136,12 +136,12 @@ const handleCollectBtn = () => {
     }
 
     // TODO: 等待后端返回collect值
-    if (!videoUrls.value[0].isCollect) {
+    if (!thisVideo.value?.isStar) {
       collectAnimateClass.value = "animate__heartBeat";
     } else {
       collectAnimateClass.value = "";
     }
-    videoUrls.value[0].isCollect = !videoUrls.value[0].isCollect;
+    thisVideo.value.isStar = !thisVideo.value.isStar;
   }
 
   // TODO: 发请求
@@ -192,6 +192,19 @@ const handleShareBtn = () => {
   });
 };
 
+// 关注的操作 
+const updateFollow = (flag:boolean) =>{
+  if(flag && thisVideo.value){
+    thisVideo.value.author.is_follow = flag
+  }
+  else if(!flag && thisVideo.value){
+    thisVideo.value.author.is_follow = flag
+  }
+  else{
+    ElMessage({type:'error', message:'关注失败'})
+  }
+}
+
 const likeAnimateClass = ref<String>("");
 const collectAnimateClass = ref<String>("");
 const commentAnimateClass = ref<String>("");
@@ -222,6 +235,25 @@ onMounted(() => {
         <div class="content">{{ props.video.title }}</div>
       </div>
       <div class="video-interaction-box">
+        <div class="avatar">
+          <div >
+            <n-avatar
+              round
+              size="medium"
+              :src="thisVideo?.author.avatar"
+            />
+          </div>
+          <n-button color="#ffa51d8f" @click="updateFollow(true)" v-if="!thisVideo?.author.is_follow" class="avatar-btn animate__bounceIn" size="tiny" circle type="warning">
+            <template #icon>
+              <n-icon><Add /></n-icon>
+            </template>
+          </n-button>
+          <n-button color="#ffa51d8f" @click="updateFollow(false)" v-else class="avatar-btn animate__bounceIn" size="tiny" circle type="warning">
+            <template #icon>
+              <n-icon><Checkmark /></n-icon>
+            </template>
+          </n-button>
+        </div>
         <div class="like">
           <div :class="likeAnimateClass">
             <NButton
@@ -262,7 +294,7 @@ onMounted(() => {
         <div class="collect">
           <div :class="collectAnimateClass">
             <NButton
-              v-if="videoUrls[0].isStar"
+              v-if="thisVideo?.isStar"
               class="btn"
               text
               color="#ffb802"
@@ -276,7 +308,7 @@ onMounted(() => {
               v-else
               class="btn"
               text
-              color="#ffffff"
+              color="#fff"
               @click="handleCollectBtn"
             >
               <NIcon>
@@ -356,10 +388,20 @@ onMounted(() => {
     position: absolute;
     z-index: 999;
     width: 4vw;
-    bottom: calc((100vh - 360px) / 2);
+    bottom: calc((100vh - 420px) / 2);
     right: 0;
-    height: 300px;
+    height: 360px;
     padding: 0 20px;
+    
+    .avatar{
+      margin-bottom: -18px;
+      .avatar-btn{
+        position: relative;
+        bottom: 18px;
+      }
+    }
+
+    .avatar,
     .like,
     .collect,
     .comment,

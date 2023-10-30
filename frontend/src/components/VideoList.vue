@@ -4,12 +4,14 @@ import VideoPlus from "@/components/video/VideoPlus.vue";
 import { onMounted, ref } from "vue";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
 import { getRecommendVideos } from "@/apis/video";
+import { VideoType } from "@/apis/interface";
 
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false);
 const currentVideoIndex = ref<number>(0);
 const lastVideoIndex = ref<number>(0);
-const videos = ref<any>();
+const videos = ref<Array<VideoType>>();
+const defaultLoad:number = 4
 
 onMounted(() => {
   getRecommendVideos(0).then((res: any) => {
@@ -30,13 +32,23 @@ const upPage = () => {
 
 const downPage = () => {
   carouselRef.value.next();
+
 };
 
 const updatePage = (currentIndex: number, lastIndex: number) => {
   console.log("hello", currentIndex, lastIndex);
   currentVideoIndex.value = currentIndex;
   lastVideoIndex.value = lastIndex;
+  if(currentIndex>lastIndex){
+    let offset = defaultLoad + currentIndex
+    getRecommendVideos(offset).then((res: any) => {
+      
+      videos.value?.push(res.videos[0])
+      console.log(videos.value)
+    });
+  }
 };
+
 </script>
 
 <template>
