@@ -16,7 +16,7 @@ const defaultLoad: number = 4;
 const commentlists = ref<any>();
 
 onMounted(() => {
-  getRecommendVideos(0).then((res: any) => {
+  getRecommendVideos(0, 0).then((res: any) => {
     videos.value = res.videos;
   });
 });
@@ -24,8 +24,8 @@ onMounted(() => {
 // 更新评论区可见状态
 const updateVisible = (thisVideo: any) => {
   drawerVisible.value = !drawerVisible.value;
-  console.log(thisVideo.value.id);
-  getCommentList(thisVideo.value.id).then((res: any) => {
+  console.log(thisVideo.value.video_id);
+  getCommentList(thisVideo.value.video_id).then((res: any) => {
     commentlists.value = res.comment_list;
   });
 };
@@ -41,12 +41,11 @@ const downPage = () => {
 };
 
 const updatePage = (currentIndex: number, lastIndex: number) => {
-  console.log("hello", currentIndex, lastIndex);
   currentVideoIndex.value = currentIndex;
   lastVideoIndex.value = lastIndex;
   if (currentIndex > lastIndex) {
     let offset = defaultLoad + currentIndex;
-    getRecommendVideos(offset).then((res: any) => {
+    getRecommendVideos(offset,0).then((res: any) => {
       videos.value?.push(res.videos[0]);
       console.log(videos.value);
     });
@@ -73,7 +72,7 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
     >
       <NCarouselItem v-for="(video, index) in videos" :key="index">
         <VideoPlus
-          :onplay="currentVideoIndex"
+          :onplay="currentVideoIndex" 
           :index="index"
           :video="video"
           @comment-visible-update="updateVisible"

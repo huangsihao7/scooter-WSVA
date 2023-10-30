@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 20:10:40
+ * @LastEditTime: 2023-10-30 20:42:27
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -93,36 +93,6 @@ const cancleFollow = (item: any, _index: any) => {
       </NCard>
     </NGi>
   </NGrid>
-
-  <!-- <ElCard
-      v-for="(info, index) in folllowList"
-      :key="index"
-      class="box-card"
-      style="width: calc((100vw - 260px) / 4)"
-    >
-      <template #header>
-        <div class="card-header">
-          <div class="avatar">
-            <ElAvatar :size="60" :src="info.avatar" />
-          </div>
-          <div>
-            <span>{{ info.name }}</span>
-            <ElButton @click="cancleFollow(info, index)">{{
-              info.isfollowed == true ? "已关注" : "关注"
-            }}</ElButton>
-            <p>{{ info.dec }}</p>
-          </div>
-        </div>
-      </template>
-      <div>
-        <ElImage
-          :src="info.background_image"
-          fit="fill"
-          @click="handleShowVedio"
-        />
-      </div>
-    </ElCard> -->
-  <!-- </ElSpace> -->
 </template>
 
 <style lang="scss" scoped>

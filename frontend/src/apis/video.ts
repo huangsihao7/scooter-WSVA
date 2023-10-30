@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-29 13:04:21
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 16:25:04
+ * @LastEditTime: 2023-10-30 20:49:37
  * @FilePath: \scooter-WSVA\frontend\src\apis\video.ts
  * @Description: 视频接口
  */
@@ -29,11 +29,11 @@ export function userVideoListReq(toUid: number) {
   });
 }
 
-export function getRecommendVideos(offset: number) {
+export function getRecommendVideos(offset: number, readed_videoId:number) {
   return service({
     url: "/feed/recommends",
     method: "post",
-    data: { offset },
+    data: { offset, readed_videoId },
   });
 }
 

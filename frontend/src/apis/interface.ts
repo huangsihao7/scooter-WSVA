@@ -2,24 +2,24 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 23:44:28
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 20:13:40
+ * @LastEditTime: 2023-10-30 20:59:53
  * @Description:
  * @FilePath: \scooter-WSVA\frontend\src\apis\interface.ts
  */
 
 interface VideoType {
-  id: number;
+  video_id: number;
   author: UserType;
-  playUrl: string;
-  coverUrl: string;
-  favoriteCount: number;
-  commentCount: number;
-  isFavorite: boolean;
+  play_url: string;
+  cover_url: string;
+  favorite_count: number;
+  comment_count: number;
+  is_favorite: boolean;
   title: number;
-  createTime: number;
-  isStar: boolean;
-  starCount: number;
-  shareCount: number;
+  create_time: number;
+  is_star: boolean;
+  star_count: number;
+  share_count: number;
 }
 
 interface CommentType {

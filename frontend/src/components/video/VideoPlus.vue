@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 13:58:46
+ * @LastEditTime: 2023-10-30 21:01:18
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -43,9 +43,9 @@ const userId = computed(() => userStore().user_id);
 const { toClipboard } = useClipboard();
 
 const dplayerObj = reactive({
-  videoId: props.video.id,
+  videoId: props.video.video_id,
   video: {
-    url: props.video.playUrl, //视频地址
+    url: props.video.play_url, //视频地址
     type: "mp4",
     customType: {
       customHls: function (video: any, player: any) {
@@ -107,22 +107,22 @@ const copy = async (msg: any) => {
 const handleLikeBtn = () => {
   let action_type = -1;
   if (thisVideo.value) {
-    if (!thisVideo.value?.isFavorite) {
-      thisVideo.value.favoriteCount++;
+    if (!thisVideo.value?.is_favorite) {
+      thisVideo.value.favorite_count++;
       action_type = 1;
     } else {
-      thisVideo.value.favoriteCount--;
+      thisVideo.value.favorite_count--;
       action_type = 2;
     }
-    if (!thisVideo.value?.isFavorite) {
+    if (!thisVideo.value?.is_favorite) {
       likeAnimateClass.value = "animate__heartBeat";
     } else {
       likeAnimateClass.value = "";
     }
-    thisVideo.value.isFavorite = !thisVideo.value.isFavorite;
+    thisVideo.value.is_favorite = !thisVideo.value.is_favorite;
   }
   // TODO: 发请求
-  doFavourite(props.video.id, action_type).then((res: any) => {
+  doFavourite(props.video.video_id, action_type).then((res: any) => {
     console.log(res);
   });
 };
@@ -131,21 +131,21 @@ const handleLikeBtn = () => {
 const handleCollectBtn = () => {
   let action_type = -1;
   if (thisVideo.value) {
-    if (!thisVideo.value?.starCount) {
-      thisVideo.value.starCount++;
+    if (!thisVideo.value?.star_count) {
+      thisVideo.value.star_count++;
       action_type = 1;
     } else {
-      thisVideo.value.starCount--;
+      thisVideo.value.star_count--;
       action_type = 2;
     }
-    if (!thisVideo.value?.isStar) {
+    if (!thisVideo.value?.is_star) {
       collectAnimateClass.value = "animate__heartBeat";
     } else {
       collectAnimateClass.value = "";
     }
-    thisVideo.value.isStar = !thisVideo.value.isStar;
+    thisVideo.value.is_star = !thisVideo.value.is_star;
   }
-  doStar(props.video.id, action_type).then((res: any) => {
+  doStar(props.video.video_id, action_type).then((res: any) => {
     console.log(res);
   });
 };
@@ -234,7 +234,7 @@ onMounted(() => {
       <div class="video-info-box">
         <div class="header">
           <p class="title">@{{ props.video.author.name }}</p>
-          <p class="time">{{ props.video.createTime }}</p>
+          <p class="time">{{ props.video.create_time }}</p>
         </div>
         <div class="content">{{ props.video.title }}</div>
       </div>
@@ -282,7 +282,7 @@ onMounted(() => {
         <div class="like">
           <div :class="likeAnimateClass">
             <NButton
-              v-if="thisVideo?.isFavorite"
+              v-if="thisVideo?.is_favorite"
               class="btn"
               text
               color="rgb(254, 44, 85)"
@@ -304,7 +304,7 @@ onMounted(() => {
               </NIcon>
             </NButton>
           </div>
-          <p>{{ thisVideo?.favoriteCount }}</p>
+          <p>{{ thisVideo?.favorite_count }}</p>
         </div>
         <div class="comment">
           <div :class="commentAnimateClass">
@@ -314,12 +314,12 @@ onMounted(() => {
               </NIcon>
             </NButton>
           </div>
-          <p>{{ props.video.commentCount }}</p>
+          <p>{{ props.video.comment_count }}</p>
         </div>
         <div class="collect">
           <div :class="collectAnimateClass">
             <NButton
-              v-if="thisVideo?.isStar"
+              v-if="thisVideo?.is_star"
               class="btn"
               text
               color="#ffb802"
@@ -341,7 +341,7 @@ onMounted(() => {
               </NIcon>
             </NButton>
           </div>
-          <p>{{ props.video.starCount }}</p>
+          <p>{{ props.video.star_count }}</p>
         </div>
         <div class="share">
           <div :class="shareAnimateClass">
@@ -351,7 +351,7 @@ onMounted(() => {
               </NIcon>
             </NButton>
           </div>
-          <p>{{ thisVideo?.shareCount }}</p>
+          <p>{{ thisVideo?.share_count }}</p>
         </div>
       </div>
     </div>
