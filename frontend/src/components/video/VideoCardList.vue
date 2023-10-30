@@ -1,9 +1,9 @@
 <!--
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
- * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 11:21:08
- * @FilePath: /scooter-WSVA/frontend/src/components/video/VideoCardList.vue
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-10-30 12:51:54
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardList.vue
  * @Description: 
 -->
 <script lang="ts" setup>
@@ -34,13 +34,18 @@ onMounted(() => {
     class="box-card"
     style="width: calc((100vw - 260px) / 4)"
   >
-    <div style="position: relative" @click="GetVideoLink">
-      <NImage
-        :src="info.coverUrl"
-        width="100"
-        preview-disabled
-        @click="handleShowVedio"
-      />
+    <div class="video-space" style="position: relative" @click="GetVideoLink">
+        <NImage
+          class="image-css"
+          object-fit="fill"
+          :src="info.coverUrl"
+          width="100"
+          preview-disabled
+          @click="handleShowVedio"
+        />
+        <!-- <image class="image-css"
+          :src="info.coverUrl"></image> -->
+      
       <NTag class="time" round :bordered="false" type="info">
         7：26
         <template #icon>
@@ -83,6 +88,24 @@ onMounted(() => {
 .box-card {
   margin-top: 15px;
   margin-left: 10px;
+  display: inline-block;
+  
+  .n-card__content{
+    height: 200px;
+    width: 100%;
+  }
+  .video-space{
+    height: 100%;
+    width: 100%;
+    .image-css{
+      height: 100%;
+      width: 100%;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
 
   .time {
     position: absolute;
@@ -98,25 +121,6 @@ onMounted(() => {
     bottom: 10px;
     right: 10px;
     color: white;
-  }
-
-  .el-card__body {
-    margin-top: -15px;
-
-    .el-image {
-      width: 100%;
-      height: 30vh;
-    }
-
-    .play-btn {
-      width: 100%;
-      text-align: center;
-      position: relative;
-      bottom: 125px;
-      top: 35.5%;
-      z-index: 2;
-      font-size: 50px;
-    }
   }
 
   .card-footer {

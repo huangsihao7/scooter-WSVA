@@ -1,10 +1,10 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
- * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 10:48:50
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-10-30 11:41:56
  * @Description: 
- * @FilePath: /scooter-WSVA/frontend/src/App.vue
+ * @FilePath: \scooter-WSVA\frontend\src\App.vue
 -->
 <script setup lang="ts">
 import { RouterView } from "vue-router";
@@ -23,14 +23,14 @@ import {
   <NMessageProvider>
     <div class="common-layout">
       <NLayout class="common-layout">
-        <NLayoutHeader>
+        <NLayoutHeader class="header">
           <HeaderMenu />
         </NLayoutHeader>
-        <NLayout has-sider>
-          <NLayoutSider>
+        <NLayout has-sider class="sider">
+          <NLayoutSider width="160">
             <SubMenu />
           </NLayoutSider>
-          <NLayout>
+          <NLayout class="main">
             <RouterView />
           </NLayout>
         </NLayout>
@@ -45,21 +45,19 @@ import {
   height: 100vh;
 }
 
-.el-header {
+.header {
   padding: 0;
   z-index: 10;
 }
 
-.el-aside {
-  height: 100%;
-  width: 160px;
-}
 
-.el-aside {
+
+.sider {
   z-index: 2;
+  height: calc(100vh - 60px);
 }
 
-.el-main {
+.main {
   padding: 0;
   background-color: #ffffff;
   background-image: linear-gradient(133deg, #ffffff 12%, #d6e4ff 100%);

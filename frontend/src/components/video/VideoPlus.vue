@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 11:14:57
+ * @LastEditTime: 2023-10-30 13:00:15
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -30,21 +30,6 @@ const emit = defineEmits(["comment-visible-update"]);
 const thisVideo = ref<VideoType>();
 
 const { toClipboard } = useClipboard();
-
-const videoUrls = ref<any>([
-  {
-    url: "http://127.0.0.1:8080/3.mp4",
-    cover: "",
-    username: "我是一个粉刷匠",
-    createTime: "3天前",
-    likes: "12",
-    isLike: true,
-    collect: "22",
-    isCollect: true,
-    isFollowed: false,
-    title: "你好哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
-  },
-]);
 
 const dplayerObj = reactive({
   video: {
@@ -415,6 +400,7 @@ onMounted(() => {
       p {
         display: block;
         margin: 0;
+        color:#fff;
       }
     }
   }
