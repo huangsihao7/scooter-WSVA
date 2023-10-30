@@ -100,7 +100,7 @@ type (
 	}
 
 	NeighborsVideoReq {
-		Uid int64 `form:"uid"`
+		Vid int64 `form:"vid"`
 	}
 	NeighborsVideoResp {
 		StatusCode int         `json:"status_code"`
