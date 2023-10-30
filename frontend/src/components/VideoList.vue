@@ -26,7 +26,7 @@ const updateVisible = ((thisVideo:any) => {
   drawerVisible.value = !drawerVisible.value;
   console.log(thisVideo.value.id)
   getCommentList(thisVideo.value.id).then((res:any)=>{
-    commentlists.value = res
+    commentlists.value = res.comment_list
   })
 });
 
