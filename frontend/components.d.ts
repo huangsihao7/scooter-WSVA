@@ -42,6 +42,7 @@ declare module 'vue' {
     SubMenu: typeof import('./src/components/SubMenu.vue')['default']
     UserCard: typeof import('./src/components/UserCard.vue')['default']
     VideoCard: typeof import('./src/components/VideoCard.vue')['default']
+    VideoCardList: typeof import('./src/components/video/VideoCardList.vue')['default']
     VideoCom: typeof import('./src/components/video/VideoCom.vue')['default']
     VideoList: typeof import('./src/components/VideoList.vue')['default']
     VideoPlus: typeof import('./src/components/video/VideoPlus.vue')['default']

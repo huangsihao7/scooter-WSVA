@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:41
  * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 10:42:03
+ * @LastEditTime: 2023-10-30 11:10:58
  * @Description: 
  * @FilePath: /scooter-WSVA/frontend/src/components/myinfo/MyInteractCom.vue
 -->
@@ -32,13 +32,7 @@ const videos = ref<any>();
 onMounted(() => {
   userVideoListReq(userStore().user_id).then((res: any) => {
     videos.value = res.videos;
-    videos.value.push(res.videos[0]);
-    videos.value.push(res.videos[0]);
-    videos.value.push(res.videos[0]);
-    videos.value.push(res.videos[0]);
-    videos.value.push(res.videos[0]);
-    videos.value.push(res.videos[0]);
-    videos.value.push(res.videos[0]);
+    // videos.value.push(res.videos[0]);
   });
 });
 </script>
