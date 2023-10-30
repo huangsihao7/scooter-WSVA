@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 16:28:35
+ * @LastEditTime: 2023-10-30 21:33:39
  * @Description: 各个视频分类的视频卡片渲染
  * @FilePath: \scooter-WSVA\frontend\src\components\VideoCard.vue
 -->

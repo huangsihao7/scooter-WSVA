@@ -18,7 +18,7 @@ const commentlists = ref<any>();
 
 onMounted(() => {
   getRecommendVideos(0, 0).then((res: any) => {
-    videos.value = res.videos;
+    videos.value = res.video_list;
   });
 });
 
@@ -50,8 +50,7 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
     let readedVideo = videoStore().video_id
     console.log('readedVideo', readedVideo)
     getRecommendVideos(offset, readedVideo).then((res: any) => {
-      videos.value?.push(res.videos[0]);
-      console.log(videos.value);
+      videos.value?.push(res.video_list[0]);
     });
   }
 };

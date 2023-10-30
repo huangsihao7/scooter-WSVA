@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 20:05:39
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 18:39:43
+ * @LastEditTime: 2023-10-30 22:09:12
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\view\ClassifiedView.vue
 -->
@@ -31,12 +31,11 @@ const VideoTypeMap: any = {
 // 挂载首次打开页面的视频流
 onMounted(() => {
   let typeCode = VideoTypeMap[videoType.value];
-  console.log(typeCode);
   if (typeCode == 0) {
     console.log("TODO");
   } else {
     getCategoryVideosList(typeCode).then((res: any) => {
-      videos.value = res.videos;
+      videos.value = res.video_list;
     });
   }
 });
@@ -44,11 +43,10 @@ onMounted(() => {
 // 更新切换页面后的视频流数据
 watch(
   () => videoType.value,
-  (newValue: any) => {
-    console.log("videoType", newValue, VideoTypeMap["hot"]);
+  () => {
     let typeCode = VideoTypeMap[videoType.value];
     getCategoryVideosList(typeCode).then((res: any) => {
-      videos.value = res.videos;
+      videos.value = res.video_list;
     });
   },
 );

@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 18:48:45
+ * @LastEditTime: 2023-10-30 22:09:50
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardList.vue
  * @Description: 
 -->
@@ -10,8 +10,9 @@
 import { onMounted } from "vue";
 import { NTag, NIcon, NCard, NImage, NEllipsis } from "naive-ui";
 import { Play, Heart } from "@vicons/ionicons5";
+import { VideoType } from '@/apis/interface'
 interface propsType {
-  videos: any;
+  videos: Array<VideoType>;
 }
 const props = defineProps<propsType>();
 
@@ -44,7 +45,7 @@ onMounted(() => {
       />
 
       <NTag class="time" round :bordered="false" type="info">
-        {{ info.spendtime }}
+        {{ info.duration }}
         <template #icon>
           <NIcon color="#fff" :component="Play" />
         </template>

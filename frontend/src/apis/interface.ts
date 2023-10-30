@@ -20,6 +20,7 @@ interface VideoType {
   is_star: boolean;
   star_count: number;
   share_count: number;
+  duration:string;
 }
 
 interface CommentType {
