@@ -1,7 +1,7 @@
 package svc
 
 import (
-	"beyond/application/like/mq/internal/config"
+	"github.com/huangsihao7/scooter-WSVA/feed/video-mq/internal/config"
 )
 
 type ServiceContext struct {

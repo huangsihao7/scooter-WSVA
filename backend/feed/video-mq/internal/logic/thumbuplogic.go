@@ -3,8 +3,7 @@ package logic
 import (
 	"context"
 	"fmt"
-
-	"beyond/application/like/mq/internal/svc"
+	"github.com/huangsihao7/scooter-WSVA/feed/video-mq/internal/svc"
 
 	"github.com/zeromicro/go-queue/kq"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -26,6 +25,7 @@ func NewThumbupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ThumbupLo
 }
 
 func (l *ThumbupLogic) Consume(key, val string) error {
+
 	fmt.Printf("get key: %s val: %s\n", key, val)
 	return nil
 }
