@@ -1,107 +1,197 @@
 <template>
-  <ElRow class="tac">
-    <ElCol>
-      <ElMenu
-        :default-active="active"
-        class="el-menu-vertical-demo"
-        :router="true"
-        @open="handleOpen"
-        @close="handleClose"
-      >
-        <ElMenuItem index="rec">
-          <div class="submenu-text">
-            <ElIcon>
-              <Star />
-            </ElIcon>
-            <span>推荐</span>
-          </div>
-        </ElMenuItem>
-        <ElMenuItem index="follow">
-          <div class="submenu-text">
-            <ElIcon>
-              <Connection />
-            </ElIcon>
-            <span>关注</span>
-          </div>
-        </ElMenuItem>
-        <ElMenuItem index="user">
-          <div class="submenu-text">
-            <ElIcon>
-              <House />
-            </ElIcon>
-            <span>我的</span>
-          </div>
-        </ElMenuItem>
-        <ElDivider content-position="center">分类</ElDivider>
-        <ElMenuItem index="hot">
-          <div class="submenu-text">
-            <ElIcon>
-              <Medal />
-            </ElIcon>
-            <span>热门</span>
-          </div>
-        </ElMenuItem>
-        <ElMenuItem index="recreation">
-          <div class="submenu-text">
-            <ElIcon>
-              <Goblet />
-            </ElIcon>
-            <span>娱乐</span>
-          </div>
-        </ElMenuItem>
-        <ElMenuItem index="sports">
-          <div class="submenu-text">
-            <ElIcon>
-              <Basketball />
-            </ElIcon>
-            <span>体育</span>
-          </div>
-        </ElMenuItem>
-        <ElMenuItem index="food">
-          <div class="submenu-text">
-            <ElIcon>
-              <KnifeFork />
-            </ElIcon>
-            <span>美食</span>
-          </div>
-        </ElMenuItem>
-        <ElMenuItem index="cartoon">
-          <div class="submenu-text">
-            <ElIcon>
-              <Lollipop />
-            </ElIcon>
-            <span>二次元</span>
-          </div>
-        </ElMenuItem>
-        <ElMenuItem index="knowledge">
-          <div class="submenu-text">
-            <ElIcon>
-              <Reading />
-            </ElIcon>
-            <span>知识</span>
-          </div>
-        </ElMenuItem>
-      </ElMenu>
-    </ElCol>
-  </ElRow>
+  <n-menu class="tac" :options="menuOptions" :default-value="defaultActive" @update:value="handleUpdateValue" />
 </template>
 
 <script lang="ts" setup>
 import { routeStore } from "@/stores/route";
-import { onMounted, ref } from "vue";
-import {
-  KnifeFork,
-  Goblet,
-  Lollipop,
-  Connection,
-  Medal,
-  Reading,
-  House,
-  Basketball,
-  Star,
-} from "@element-plus/icons-vue";
+import {  ref, onBeforeMount,  h, Component } from "vue";
 
-const active = ref<String>("");
+import { NMenu } from 'naive-ui'
+import { NIcon } from 'naive-ui'
+import type { MenuOption } from 'naive-ui'
+import { RouterLink } from 'vue-router'
+import {
+  Diamond as RecIcon,
+  Person as FollowIcon,
+  Home as UserIcon,
+  Rocket as HotIcon,
+  GameController as RecreationIcon,
+  Basketball as SportsIcon,
+  FastFood as FoodIcon,
+  PlanetSharp as CartoonIcon,
+  Book as KnowledgeIcon,
+} from '@vicons/ionicons5'
+
+function renderIcon (icon: Component) {
+  return () => h(NIcon, null, { default: () => h(icon) })
+}
+
+const menuOptions: MenuOption[] = [
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            name: 'rec',
+            params: {
+              lang: 'zh-CN'
+            }
+          }
+        },
+        { default: () => '推荐' }
+      ),
+    key: 'rec',
+    icon: renderIcon(RecIcon)
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            name: 'follow',
+            params: {
+              lang: 'zh-CN'
+            }
+          }
+        },
+        { default: () => '关注' }
+      ),
+    key: 'follow',
+    icon: renderIcon(FollowIcon)
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            name: 'user',
+            params: {
+              lang: 'zh-CN'
+            }
+          }
+        },
+        { default: () => '我的' }
+      ),
+    key: 'user',
+    icon: renderIcon(UserIcon)
+  },
+  {
+    key: 'divider-1',
+    type: 'divider',
+    props: {
+      style: {
+        marginLeft: '32px'
+      }
+    }
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            name: 'hot',
+            params: {
+              lang: 'zh-CN'
+            }
+          }
+        },
+        { default: () => '热门' }
+      ),
+    key: 'hot',
+    icon: renderIcon(HotIcon)
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            name: 'recreation',
+            params: {
+              lang: 'zh-CN'
+            }
+          }
+        },
+        { default: () => '娱乐' }
+      ),
+    key: 'recreation',
+    icon: renderIcon(RecreationIcon)
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            name: 'sports',
+            params: {
+              lang: 'zh-CN'
+            }
+          }
+        },
+        { default: () => '体育' }
+      ),
+    key: 'sports',
+    icon: renderIcon(SportsIcon)
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            name: 'food',
+            params: {
+              lang: 'zh-CN'
+            }
+          }
+        },
+        { default: () => '食物' }
+      ),
+    key: 'food',
+    icon: renderIcon(FoodIcon)
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            name: 'cartoon',
+            params: {
+              lang: 'zh-CN'
+            }
+          }
+        },
+        { default: () => '二次元' }
+      ),
+    key: 'cartoon',
+    icon: renderIcon(CartoonIcon)
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            name: 'knowledge',
+            params: {
+              lang: 'zh-CN'
+            }
+          }
+        },
+        { default: () => '知识' }
+      ),
+    key: 'knowledge',
+    icon: renderIcon(KnowledgeIcon)
+  },
+]
+
+const defaultActive = ref<any>("");
 
 // 获取当前页面的末尾路由
 function getLastSegmentFromRoute(route: string): string {
@@ -109,25 +199,20 @@ function getLastSegmentFromRoute(route: string): string {
   return segments[segments.length - 1];
 }
 
-// 通过url确定menu的activekey
-onMounted(() => {
-  if (active.value == "") {
-    const currentPath = window.location.pathname;
-    let path = getLastSegmentFromRoute(currentPath);
-    active.value = path;
-    routeStore().name = path;
-    console.log("path", path, active.value, routeStore().name);
-  }
-});
 
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-  active.value = key;
-  routeStore().name = key;
-};
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
+const handleUpdateValue = (key: string) => {
+    let keyStr = JSON.stringify(key)
+    const withoutQuotes = keyStr.replace(/"/g, '');
+    routeStore().name = withoutQuotes
+  }
+
+
+onBeforeMount(() => {
+  let path = window.location.href
+  defaultActive.value = getLastSegmentFromRoute(path)
+  routeStore().name = defaultActive.value
+})
+
 </script>
 
 <style scoped>

@@ -1,10 +1,10 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
- * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 10:52:38
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-10-30 18:45:44
  * @Description: 
- * @FilePath: /scooter-WSVA/frontend/src/components/HeaderMenu.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
@@ -13,6 +13,7 @@ import { login } from "@/apis/login";
 import router from "@/router";
 import { VideoCameraFilled, CirclePlus, Search } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
+import { NAffix } from "naive-ui";
 import PostVedio from "@/components/video/PostVideo.vue";
 
 // 路由数据
@@ -119,7 +120,6 @@ const updateVisible = (flag: boolean) => {
 </script>
 
 <template>
-  <ElAffix :offset="0">
     <ElMenu
       :default-active="activeIndex"
       class="el-menu-demo"
@@ -223,7 +223,6 @@ const updateVisible = (flag: boolean) => {
         @visible-update="updateVisible"
       />
     </ElMenu>
-  </ElAffix>
 </template>
 
 <style scoped>
@@ -247,6 +246,7 @@ const updateVisible = (flag: boolean) => {
 #search-tab {
   text-align: left;
   z-index: 3000;
+  background: red;
 }
 
 .el-text {
