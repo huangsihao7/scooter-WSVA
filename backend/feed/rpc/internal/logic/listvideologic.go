@@ -57,6 +57,8 @@ func (l *ListVideoLogic) ListVideo(in *feed.ListVideoRequest) (*feed.ListVideoRe
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range Feeds {
 		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.Uid), item.Id)
+		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.Uid), item.Id)
+
 		VideoList = append(VideoList, &feed.VideoInfo{
 			Id:            uint32(item.Id),
 			Author:        userInfo,
@@ -67,7 +69,8 @@ func (l *ListVideoLogic) ListVideo(in *feed.ListVideoRequest) (*feed.ListVideoRe
 			StarCount:     uint32(item.StarCount),
 			IsFavorite:    IsFavorite,
 			Title:         item.Title,
-			CreateTime:    item.CreatedAt.Unix(),
+			IsStar:        IsStar,
+			CreateTime:    item.CreatedAt.Format(constants.TimeFormat),
 		})
 	}
 	return &feed.ListVideoResponse{
