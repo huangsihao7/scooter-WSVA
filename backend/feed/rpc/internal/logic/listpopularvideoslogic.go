@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/feed/historyModel"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 	"strconv"
@@ -52,6 +53,34 @@ func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*f
 			VideoList:  nil,
 		}, err
 	}
+	//向数据库插入浏览记录
+	if in.Offset == 0 {
+		id, _ := strconv.Atoi(result[0].Id)
+		_, err = l.svcCtx.HistoryModel.Insert(l.ctx, &historyModel.History{
+			Uid: int64(in.ActorId),
+			Vid: int64(id),
+		})
+		if err != nil {
+			return &feed.ListFeedResponse{
+				StatusCode: constants.InsertDbErrorCode,
+				StatusMsg:  constants.InsertDbError,
+				VideoList:  nil,
+			}, err
+		}
+	} else {
+		_, err = l.svcCtx.HistoryModel.Insert(l.ctx, &historyModel.History{
+			Uid: int64(in.ActorId),
+			Vid: in.ReadVid,
+		})
+		if err != nil {
+			return &feed.ListFeedResponse{
+				StatusCode: constants.InsertDbErrorCode,
+				StatusMsg:  constants.InsertDbError,
+				VideoList:  nil,
+			}, err
+		}
+	}
+
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range result {
 		id, err := strconv.Atoi(item.Id)

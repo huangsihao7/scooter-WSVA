@@ -32,12 +32,14 @@ func (l *RecommendVideosLogic) RecommendVideos(req *types.RecommendVideosListReq
 			ActorId: uint32(uid),
 			Num:     5,
 			Offset:  req.Offset,
+			ReadVid: req.ReadedVideoId,
 		})
 	} else {
 		recommend, err = l.svcCtx.FeedRpc.ListVideosByRecommend(l.ctx, &feed.ListFeedRequest{
 			ActorId: uint32(uid),
 			Num:     1,
 			Offset:  req.Offset,
+			ReadVid: req.ReadedVideoId,
 		})
 	}
 	if err != nil {

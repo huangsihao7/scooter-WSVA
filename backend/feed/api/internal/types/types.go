@@ -68,7 +68,8 @@ type CategoryVideosListResp struct {
 }
 
 type RecommendVideosListReq struct {
-	Offset int64 `json:"offset"`
+	Offset        int64 `json:"offset"`
+	ReadedVideoId int64 `json:"readed_videoId"`
 }
 
 type RecommendVideosListResp struct {
@@ -78,7 +79,8 @@ type RecommendVideosListResp struct {
 }
 
 type PopularVideosListReq struct {
-	Offset int64 `json:"offset"`
+	Offset        int64 `json:"offset"`
+	ReadedVideoId int64 `json:"readed_videoId"`
 }
 
 type PopularVideosListResp struct {

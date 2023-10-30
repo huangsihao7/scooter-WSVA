@@ -65,7 +65,8 @@ type (
 	}
 
 	RecommendVideosListReq {
-		Offset int64 `json:"offset"`
+		Offset        int64 `json:"offset"`
+		ReadedVideoId int64 `json:"readed_videoId"`
 	}
 	RecommendVideosListResp {
 		StatusCode int         `json:"status_code"`
@@ -73,7 +74,8 @@ type (
 		Videos     []VideoInfo `json:"videos"`
 	}
 	PopularVideosListReq {
-		Offset int64 `json:"offset"`
+		Offset        int64 `json:"offset"`
+		ReadedVideoId int64 `json:"readed_videoId"`
 	}
 	PopularVideosListResp {
 		StatusCode int         `json:"status_code"`
