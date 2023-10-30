@@ -64,7 +64,7 @@ func (l *UploadFile) Consume(key, val string) error {
 	fmt.Println(string(body))
 	//调用评论rpc接口，将摘要存进评论
 	commentRes, err := l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
-		UserId:      videoInfo.Uid,
+		UserId:      12,
 		ActionType:  1,
 		VideoId:     videoInfo.Id,
 		CommentText: uploadRes.Data.Summary,
