@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"log"
 
 	"github.com/huangsihao7/scooter-WSVA/feed/video-mq/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/feed/video-mq/internal/logic"
@@ -28,6 +29,6 @@ func main() {
 	for _, mq := range logic.Consumers(ctx, svcCtx) {
 		serviceGroup.Add(mq)
 	}
-
+	log.Println("video queue running")
 	serviceGroup.Start()
 }
