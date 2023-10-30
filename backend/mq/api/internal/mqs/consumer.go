@@ -82,8 +82,18 @@ func (l *UploadFile) Consume(key, val string) error {
 		fmt.Println("往数据库插入标签错误", err)
 		return err
 	}
+	totalSeconds := int(uploadRes.Data.Duration) // 将总秒数转换为整数
+
+	minutes := totalSeconds / 60
+	remainingSeconds := totalSeconds % 60
+
+	// 格式化分钟和秒的字符串
+	minutesStr := strconv.Itoa(minutes)
+	secondsStr := strconv.Itoa(remainingSeconds)
+
+	durationFormat := minutesStr + ":" + secondsStr
 	duration, err := l.svcCtx.Feeder.VideoDuration(l.ctx, &feed.VideoDurationReq{
-		Duration: strconv.FormatFloat(uploadRes.Data.Duration, 'f', 2, 64),
+		Duration: durationFormat,
 		VideoId:  uint32(videoInfo.Id),
 	})
 	if err != nil {
