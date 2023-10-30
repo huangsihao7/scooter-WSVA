@@ -12,6 +12,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/zeromicro/go-zero/core/logx"
 	"net/url"
+	"strconv"
 	"time"
 )
 
@@ -82,7 +83,7 @@ func (l *UploadFile) Consume(key, val string) error {
 		return err
 	}
 	duration, err := l.svcCtx.Feeder.VideoDuration(l.ctx, &feed.VideoDurationReq{
-		Duration: uploadRes.Duration,
+		Duration: strconv.FormatFloat(uploadRes.Duration, 'f', 2, 64),
 		VideoId:  uint32(videoInfo.Id),
 	})
 	if err != nil {

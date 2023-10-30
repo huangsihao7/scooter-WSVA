@@ -17,7 +17,7 @@ type UploadResponse struct {
 		Summary  string   `json:"summary"`
 		Text     string   `json:"text"`
 	} `json:"data"`
-	Duration string `json:"duration"`
+	Duration float64 `json:"duration"`
 }
 
 type VideosGoresBody struct {
