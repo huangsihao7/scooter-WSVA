@@ -28,3 +28,8 @@ type VideosGoresBody struct {
 type UserGoresBody struct {
 	UserId string `json:"UserId"`
 }
+
+type PopularResp struct {
+	Id    string `json:"Id"`
+	Score int    `json:"Score"`
+}

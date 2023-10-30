@@ -1,23 +1,24 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
- * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 20:17:23
+ * @LastEditors: huangsihao7 1057434651@qq.com
+ * @LastEditTime: 2023-10-30 09:27:51
  * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\myHeaderCom.vue
+ * @FilePath: /scooter-WSVA/frontend/src/components/myinfo/MyHeaderCom.vue
 -->
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { userStore } from "@/stores/user";
 import { getUserInfo } from "@/apis/user";
-import { UserType } from "@/apis/interface";
 import { NButton, NIcon } from "naive-ui";
 import InfoEditCom from "./InfoEditCom.vue";
 import { CashOutline as CashIcon } from "@vicons/ionicons5";
 
 const avatar = userStore().avatar;
 const user_id = userStore().user_id;
-const userInfo = ref<UserType>();
+const userInfo = ref<any>({
+  background_image: userStore().avatar,
+});
 const editVisible = ref<boolean>(false);
 
 // 获取用户信息
@@ -43,7 +44,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="header">
+  <div
+    class="header"
+    :style="{ 'background-image': 'url(' + userInfo.background_image + ')' }"
+  >
     <ElRow>
       <ElCol :span="4">
         <ElAvatar :src="avatar" />
@@ -58,6 +62,10 @@ onMounted(() => {
           <ElDivider direction="vertical" />
           <NButton color="#606266" text>
             粉丝 {{ userInfo.follower_count }}
+          </NButton>
+          <ElDivider direction="vertical" />
+          <NButton color="#606266" text>
+            获赞 {{ userInfo.favorite_count }}
           </NButton>
         </div>
         <NButton
@@ -93,12 +101,6 @@ onMounted(() => {
   padding: 3vh 0;
   border-radius: 25px;
   background: no-repeat center top / 100% 100%;
-  background-image: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 1),
-      rgba(255, 255, 255, 0)
-    ),
-    url(http://127.0.0.1:8080/17.jpg);
 
   .el-avatar {
     float: right;

@@ -75,3 +75,13 @@ type RecommendVideosListResp struct {
 	StatusMsg  string      `json:"status_msg"`
 	Videos     []VideoInfo `json:"videos"`
 }
+
+type PopularVideosListReq struct {
+	Offset int64 `json:"offset"`
+}
+
+type PopularVideosListResp struct {
+	StatusCode int         `json:"status_code"`
+	StatusMsg  string      `json:"status_msg"`
+	Videos     []VideoInfo `json:"videos"`
+}

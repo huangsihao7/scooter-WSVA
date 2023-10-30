@@ -33,6 +33,7 @@ type (
 		ListVideosByRecommend(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 		ListVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 		ListCategoryVideos(ctx context.Context, in *CategoryFeedRequest, opts ...grpc.CallOption) (*CategoryFeedResponse, error)
+		ListPopularVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 	}
 
 	defaultFeed struct {
@@ -70,4 +71,9 @@ func (m *defaultFeed) ListVideos(ctx context.Context, in *ListFeedRequest, opts 
 func (m *defaultFeed) ListCategoryVideos(ctx context.Context, in *CategoryFeedRequest, opts ...grpc.CallOption) (*CategoryFeedResponse, error) {
 	client := feed.NewFeedClient(m.cli.Conn())
 	return client.ListCategoryVideos(ctx, in, opts...)
+}
+
+func (m *defaultFeed) ListPopularVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error) {
+	client := feed.NewFeedClient(m.cli.Conn())
+	return client.ListPopularVideos(ctx, in, opts...)
 }
