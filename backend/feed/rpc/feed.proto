@@ -106,6 +106,7 @@ message HistoryResp{
 }
 message NeighborsReq{
    int32 vid=1;
+   int32 uid=2;
 }
 message NeighborsResp{
    int32 status_code = 1;

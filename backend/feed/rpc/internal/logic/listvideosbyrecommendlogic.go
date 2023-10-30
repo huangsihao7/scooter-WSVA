@@ -91,16 +91,18 @@ func (l *ListVideosByRecommendLogic) ListVideosByRecommend(in *feed.ListFeedRequ
 		video, err := l.svcCtx.FeedModel.FindOne(l.ctx, int64(id))
 		userRpcRes, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.ActorId), ActorId: video.AuthorId})
 		userInfo := &feed.User{
-			Id:             userRpcRes.User.Id,
-			Name:           userRpcRes.User.Name,
-			FollowCount:    userRpcRes.User.FollowCount,
-			FollowerCount:  userRpcRes.User.FollowCount,
-			IsFollow:       userRpcRes.User.IsFollow,
-			Avatar:         userRpcRes.User.Avatar,
-			Signature:      userRpcRes.User.Signature,
-			TotalFavorited: userRpcRes.User.TotalFavorited,
-			WorkCount:      userRpcRes.User.WorkCount,
-			FavoriteCount:  userRpcRes.User.FavoriteCount,
+			Id:              userRpcRes.User.Id,
+			Name:            userRpcRes.User.Name,
+			FollowCount:     userRpcRes.User.FollowCount,
+			FollowerCount:   userRpcRes.User.FollowCount,
+			IsFollow:        userRpcRes.User.IsFollow,
+			Avatar:          userRpcRes.User.Avatar,
+			BackgroundImage: userRpcRes.User.BackgroundImage,
+			Signature:       userRpcRes.User.Signature,
+			TotalFavorited:  userRpcRes.User.TotalFavorited,
+			WorkCount:       userRpcRes.User.WorkCount,
+			FavoriteCount:   userRpcRes.User.FavoriteCount,
+			Gender:          userRpcRes.User.Gender,
 		}
 		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.ActorId), video.Id)
 		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.ActorId), video.Id)
