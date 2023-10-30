@@ -65,6 +65,7 @@ func (l *ListCategoryVideosLogic) ListCategoryVideos(in *feed.CategoryFeedReques
 			FavoriteCount:  userRpcRes.User.FavoriteCount,
 		}
 		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.ActorId), item.Id)
+		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.ActorId), item.Id)
 		VideoList = append(VideoList, &feed.VideoInfo{
 			Id:            uint32(item.Id),
 			Author:        userInfo,
@@ -74,8 +75,9 @@ func (l *ListCategoryVideosLogic) ListCategoryVideos(in *feed.CategoryFeedReques
 			CommentCount:  uint32(item.CommentCount),
 			StarCount:     uint32(item.StarCount),
 			IsFavorite:    IsFavorite,
+			IsStar:        IsStar,
 			Title:         item.Title,
-			CreateTime:    item.CreatedAt.Unix(),
+			CreateTime:    item.CreatedAt.Format(constants.TimeFormat),
 		})
 	}
 	return &feed.CategoryFeedResponse{

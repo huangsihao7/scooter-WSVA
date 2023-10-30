@@ -33,7 +33,7 @@ func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *type
 		return &types.FavoriteListResp{
 			StatusCode: int(list.StatusCode),
 			StatusMsg:  list.StatusMsg,
-		}, err
+		}, nil
 	}
 	resList := make([]types.UserInfo, 0)
 	for _, item := range list.List {

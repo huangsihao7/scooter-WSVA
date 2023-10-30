@@ -31,12 +31,12 @@ func (l *FavoriteListLogic) FavoriteList(in *relation.FavoriteListReq) (*relatio
 			return &relation.FavoriteListResp{
 				StatusCode: constants.UserDoNotExistedCode,
 				StatusMsg:  constants.UserDoNotExisted,
-			}, nil
+			}, err
 		} else {
 			return &relation.FavoriteListResp{
 				StatusCode: constants.UnableToGetFollowListErrorCode,
 				StatusMsg:  constants.UnableToGetFollowListError,
-			}, nil
+			}, err
 		}
 	}
 
@@ -47,7 +47,7 @@ func (l *FavoriteListLogic) FavoriteList(in *relation.FavoriteListReq) (*relatio
 			return &relation.FavoriteListResp{
 				StatusCode: constants.UnableToGetFollowListErrorCode,
 				StatusMsg:  constants.UnableToGetFollowListError,
-			}, nil
+			}, err
 		}
 		List = append(List, &relation.UserInfo{
 			Id:              one.Id,

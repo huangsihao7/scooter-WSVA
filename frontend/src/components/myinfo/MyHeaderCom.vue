@@ -46,7 +46,12 @@ onMounted(() => {
 <template>
   <div
     class="header"
-    :style="{ 'background-image': 'url(' + userInfo.background_image + ')' }"
+    :style="{
+      'background-image':
+        'linear-gradient( to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)), url(' +
+        userInfo.background_image +
+        ')',
+    }"
   >
     <ElRow>
       <ElCol :span="4">

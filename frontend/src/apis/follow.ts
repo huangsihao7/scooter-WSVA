@@ -16,7 +16,7 @@ export function getFollowList(uid: number) {
 }
 export function followOne(to_user_id: number) {
   return service({
-    url: `/relation/action`,
+    url: "/relation/action",
     method: "post",
     data: {
       to_user_id: to_user_id,
@@ -26,7 +26,7 @@ export function followOne(to_user_id: number) {
 }
 export function canclefollowOne(to_user_id: number) {
   return service({
-    url: `/relation/action`,
+    url: "/relation/action",
     method: "post",
     data: {
       to_user_id: to_user_id,

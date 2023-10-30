@@ -1,14 +1,14 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-26 15:26:18
- * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 22:27:05
+ * @LastEditors: huangsihao7 1057434651@qq.com
+ * @LastEditTime: 2023-10-30 14:26:58
  * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\video\PostVideo.vue
+ * @FilePath: /scooter-WSVA/frontend/src/components/video/PostVideo.vue
 -->
 <script setup lang="ts">
 import { reactive, onMounted, ref, computed } from "vue";
-import { NUpload, NUploadDragger, NIcon } from "naive-ui";
+import { NUpload, NUploadDragger, NIcon, NText } from "naive-ui";
 import { baseURl } from "@/axios";
 import type { UploadFileInfo } from "naive-ui";
 import { ElMessage } from "element-plus";

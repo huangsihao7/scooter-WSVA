@@ -32,8 +32,9 @@ type VideoInfo struct {
 	StarCount     int64    `json:"starCount"`
 	CommentCount  int64    `json:"commentCount"`
 	IsFavorite    bool     `json:"isFavorite"`
+	IsStar        bool     `json:"isStar"`
 	Title         string   `json:"title"`
-	CreateTime    int64    `json:"createTime"`
+	CreateTime    string   `json:"createTime"`
 }
 
 type UserInfo struct {

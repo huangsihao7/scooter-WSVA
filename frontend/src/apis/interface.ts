@@ -17,8 +17,8 @@ interface VideoType {
   isFavorite: boolean;
   title: number;
   createTime: number;
-  isCollect: boolean;
-  collectCount: number;
+  isStar: boolean;
+  starCount: number;
   shareCount: number;
 }
 

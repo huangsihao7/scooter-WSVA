@@ -1,10 +1,10 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
- * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 19:26:43
+ * @LastEditors: huangsihao7 1057434651@qq.com
+ * @LastEditTime: 2023-10-30 10:52:38
  * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
+ * @FilePath: /scooter-WSVA/frontend/src/components/HeaderMenu.vue
 -->
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
@@ -41,8 +41,8 @@ const form = reactive({
 const isVideoFormVisible = ref<boolean>(false);
 
 // 路由选择index标志
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
+const handleSelect = (key: string, _keyPath: string[]) => {
+  // console.log(key, keyPath);
   switch (key) {
     case "login":
       loginFormVisible.value = true;
@@ -128,7 +128,9 @@ const updateVisible = (flag: boolean) => {
       @select="handleSelect"
     >
       <ElMenuItem>
-        <ElIcon><VideoCameraFilled /></ElIcon>
+        <ElIcon>
+          <VideoCameraFilled />
+        </ElIcon>
         See World
       </ElMenuItem>
       <div class="menu-search">
@@ -151,7 +153,9 @@ const updateVisible = (flag: boolean) => {
           </template>
         </ElInput>
         <ElCard v-if="isSearch" id="search-tab" shadow="always">
-          <div><ElText class="mx-1" size="small">历史记录</ElText></div>
+          <div>
+            <ElText class="mx-1" size="small">历史记录</ElText>
+          </div>
           <ElTag
             v-for="history in searchHistory"
             :key="history"

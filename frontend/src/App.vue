@@ -1,36 +1,40 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
- * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-29 19:48:20
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-10-30 11:41:56
  * @Description: 
- * @FilePath: /scooter-WSVA/frontend/src/App.vue
+ * @FilePath: \scooter-WSVA\frontend\src\App.vue
 -->
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import SubMenu from "./components/SubMenu.vue";
 import HeaderMenu from "./components/HeaderMenu.vue";
-import { NMessageProvider } from "naive-ui";
-// import HomeView from './view/HomeView.vue'
+import {
+  NLayout,
+  NLayoutHeader,
+  NLayoutSider,
+  NMessageProvider,
+} from "naive-ui";
 </script>
 
 <template>
   <!-- App.vue -->
   <NMessageProvider>
     <div class="common-layout">
-      <ElContainer class="common-layout">
-        <ElHeader>
+      <NLayout class="common-layout">
+        <NLayoutHeader class="header">
           <HeaderMenu />
-        </ElHeader>
-        <ElContainer>
-          <ElAside>
+        </NLayoutHeader>
+        <NLayout has-sider class="sider">
+          <NLayoutSider width="160">
             <SubMenu />
-          </ElAside>
-          <ElMain>
+          </NLayoutSider>
+          <NLayout class="main">
             <RouterView />
-          </ElMain>
-        </ElContainer>
-      </ElContainer>
+          </NLayout>
+        </NLayout>
+      </NLayout>
     </div>
   </NMessageProvider>
 </template>
@@ -41,21 +45,17 @@ import { NMessageProvider } from "naive-ui";
   height: 100vh;
 }
 
-.el-header {
+.header {
   padding: 0;
   z-index: 10;
 }
 
-.el-aside {
-  height: 100%;
-  width: 160px;
-}
-
-.el-aside {
+.sider {
   z-index: 2;
+  height: calc(100vh - 60px);
 }
 
-.el-main {
+.main {
   padding: 0;
   background-color: #ffffff;
   background-image: linear-gradient(133deg, #ffffff 12%, #d6e4ff 100%);
