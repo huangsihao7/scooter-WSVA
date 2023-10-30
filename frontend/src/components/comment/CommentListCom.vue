@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import CommentCom from "./CommentCom.vue";
+import { CommentType } from '@/apis/interface'
 
-interface propsType {
-  commentlists: Array<any>;
+interface propsType{
+  commentlists: Array<CommentType>
 }
 
 const props = defineProps<propsType>();
