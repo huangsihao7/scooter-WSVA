@@ -22,6 +22,12 @@ interface VideoType {
   shareCount: number;
 }
 
+interface CommentType{
+  content: string;
+  createDate:string;
+  user: UserType
+}
+
 interface UserType {
   id: number;
   name: string;
@@ -38,4 +44,4 @@ interface UserType {
   background_image: string;
 }
 
-export type { VideoType, UserType };
+export type { VideoType, UserType, CommentType };
