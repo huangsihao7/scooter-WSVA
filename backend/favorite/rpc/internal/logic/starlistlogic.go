@@ -113,7 +113,7 @@ func (l *StarListLogic) StarList(in *favorite.StarListRequest) (*favorite.StarLi
 			Title:         videoDetail.Title,
 			CreateTime:    videoDetail.CreatedAt.Time.Format(constants.TimeFormat),
 		}
-
+		//
 		videoInfoList = append(videoInfoList, videoInfo)
 	}
 
