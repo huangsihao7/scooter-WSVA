@@ -2,6 +2,12 @@
 import { ref } from "vue";
 import CommentCom from "./CommentCom.vue";
 
+interface propsType{
+  commentlists: Array<any>
+}
+
+const props = defineProps<propsType>();
+
 const commentlist = ref<Array<any>>([
   {
     avatar: "",
@@ -40,7 +46,7 @@ const commentlist = ref<Array<any>>([
 
 <template>
   <div
-    v-for="(comment, index) in commentlist"
+    v-for="(comment, index) in props.commentlists"
     :key="index"
     class="comment-lists"
   >

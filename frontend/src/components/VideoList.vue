@@ -5,12 +5,14 @@ import { onMounted, ref } from "vue";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
 import { getRecommendVideos } from "@/apis/video";
 import { VideoType } from "@/apis/interface";
+import { getCommentList } from "@/apis/comment";
 
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false);
 const currentVideoIndex = ref<number>(0);
 const lastVideoIndex = ref<number>(0);
 const videos = ref<Array<VideoType>>();
+const commentlists = ref<Array<any>>()
 const defaultLoad:number = 4
 
 onMounted(() => {
@@ -20,9 +22,13 @@ onMounted(() => {
 });
 
 // 更新评论区可见状态
-const updateVisible = () => {
+const updateVisible = ((thisVideo:any) => {
   drawerVisible.value = !drawerVisible.value;
-};
+  console.log(thisVideo.value.id)
+  getCommentList(thisVideo.value.id).then((res:any)=>{
+    commentlists.value = res
+  })
+});
 
 const carouselRef = ref<any>();
 
@@ -32,7 +38,6 @@ const upPage = () => {
 
 const downPage = () => {
   carouselRef.value.next();
-
 };
 
 const updatePage = (currentIndex: number, lastIndex: number) => {
@@ -42,7 +47,6 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
   if(currentIndex>lastIndex){
     let offset = defaultLoad + currentIndex
     getRecommendVideos(offset).then((res: any) => {
-      
       videos.value?.push(res.videos[0])
       console.log(videos.value)
     });
@@ -88,7 +92,7 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
     to="#drawer-target"
   >
     <NDrawerContent title="评论" :native-scrollbar="false">
-      <CommentListCom />
+      <CommentListCom :commentlists="commentlists"/>
     </NDrawerContent>
   </NDrawer>
 </template>

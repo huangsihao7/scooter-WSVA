@@ -8,7 +8,7 @@
  */
 import { service } from "@/axios";
 
-export function getFollowList(video_id: number) {
+export function getCommentList(video_id: number) {
   return service({
     url: `/comment/list?video_id=${video_id}`,
     method: "get",

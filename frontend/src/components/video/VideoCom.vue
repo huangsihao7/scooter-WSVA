@@ -32,6 +32,10 @@ const props = defineProps({
   //   type: Boolean,
   //   default: false
   // },
+  videoId:{
+    type: Number,
+    default: -1,
+  },
   videoIndex: {
     type: Number,
     default: -1,

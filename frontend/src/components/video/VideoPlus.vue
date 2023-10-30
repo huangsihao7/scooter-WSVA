@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 13:00:15
+ * @LastEditTime: 2023-10-30 13:58:46
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -10,12 +10,15 @@
 <script lang="ts" setup>
 import Dplayer from "@/components/video/VideoCom.vue";
 import Hls from "hls.js";
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { NIcon, NButton, NAvatar } from "naive-ui";
 import { Heart, ArrowRedo, ChatbubbleEllipses, Star, Add, Checkmark } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
 import { ElMessageBox, ElMessage } from "element-plus";
 import useClipboard from "vue-clipboard3";
+import { doFavourite, doStar } from "@/apis/favourite";
+import { doFollow } from "@/apis/relation";
+import { userStore } from "@/stores/user";
 
 interface propsType {
   video: VideoType;
@@ -28,10 +31,11 @@ const props = defineProps<propsType>();
 const emit = defineEmits(["comment-visible-update"]);
 
 const thisVideo = ref<VideoType>();
-
+const userId = computed(()=>userStore().user_id)
 const { toClipboard } = useClipboard();
 
 const dplayerObj = reactive({
+  videoId: props.video.id,
   video: {
     url: props.video.playUrl, //视频地址
     type: "mp4",
@@ -79,6 +83,7 @@ const dplayerObj = reactive({
   ],
 });
 
+// 复制分享链接
 const copy = async (msg: any) => {
   try {
     // 复制
@@ -95,11 +100,14 @@ const copy = async (msg: any) => {
 
 // 喜欢按钮的操作
 const handleLikeBtn = () => {
+  let action_type = -1
   if (thisVideo.value) {
     if (!thisVideo.value?.isFavorite) {
       thisVideo.value.favoriteCount++;
+      action_type = 1
     } else {
       thisVideo.value.favoriteCount--;
+      action_type = 2
     }
     if (!thisVideo.value?.isFavorite) {
       likeAnimateClass.value = "animate__heartBeat";
@@ -109,18 +117,22 @@ const handleLikeBtn = () => {
     thisVideo.value.isFavorite = !thisVideo.value.isFavorite;
   }
   // TODO: 发请求
+  doFavourite(props.video.id, action_type).then((res:any)=>{
+    console.log(res)
+  })
 };
 
 // 收藏按钮的操作
 const handleCollectBtn = () => {
+  let action_type = -1
   if (thisVideo.value) {
     if (!thisVideo.value?.starCount) {
       thisVideo.value.starCount++;
+      action_type = 1
     } else {
       thisVideo.value.starCount--;
+      action_type = 2
     }
-
-    // TODO: 等待后端返回collect值
     if (!thisVideo.value?.isStar) {
       collectAnimateClass.value = "animate__heartBeat";
     } else {
@@ -128,14 +140,16 @@ const handleCollectBtn = () => {
     }
     thisVideo.value.isStar = !thisVideo.value.isStar;
   }
-
-  // TODO: 发请求
+  doStar(props.video.id, action_type).then((res:any)=>{
+    console.log(res)
+  })
 };
 
 // 评论按钮的操作
 const handleCommentBtn = () => {
   commentVisible.value = !commentVisible.value;
-  emit("comment-visible-update");
+  
+  emit("comment-visible-update",thisVideo);
 };
 
 const copyFlag = ref<boolean>(false);
@@ -179,6 +193,7 @@ const handleShareBtn = () => {
 
 // 关注的操作 
 const updateFollow = (flag:boolean) =>{
+  let action = (flag?1:2)
   if(flag && thisVideo.value){
     thisVideo.value.author.is_follow = flag
   }
@@ -188,6 +203,9 @@ const updateFollow = (flag:boolean) =>{
   else{
     ElMessage({type:'error', message:'关注失败'})
   }
+  doFollow(props.video.author.id, action).then((res:any)=>{
+    console.log(res)
+  })
 }
 
 const likeAnimateClass = ref<String>("");
@@ -205,6 +223,7 @@ onMounted(() => {
   <div>
     <div class="video-container">
       <Dplayer
+        :videoId = "dplayerObj.videoId"
         :video="dplayerObj.video"
         :danmaku="dplayerObj.danmaku"
         :contextmenu="dplayerObj.contextmenu"
@@ -228,16 +247,17 @@ onMounted(() => {
               :src="thisVideo?.author.avatar"
             />
           </div>
-          <n-button color="#ffa51d8f" @click="updateFollow(true)" v-if="!thisVideo?.author.is_follow" class="avatar-btn animate__bounceIn" size="tiny" circle type="warning">
+          <n-button color="#ffa51d8f" @click="updateFollow(true)" v-if="!thisVideo?.author.is_follow && thisVideo?.author.id != userId " class="avatar-btn animate__bounceIn" size="tiny" circle type="warning">
             <template #icon>
               <n-icon><Add /></n-icon>
             </template>
           </n-button>
-          <n-button color="#ffa51d8f" @click="updateFollow(false)" v-else class="avatar-btn animate__bounceIn" size="tiny" circle type="warning">
+          <n-button color="#ffa51d8f" @click="updateFollow(false)" v-else-if="thisVideo?.author.is_follow && thisVideo?.author.id != userId" class="avatar-btn animate__bounceIn" size="tiny" circle type="warning">
             <template #icon>
               <n-icon><Checkmark /></n-icon>
             </template>
           </n-button>
+          <div style="height:20px" v-else></div>
         </div>
         <div class="like">
           <div :class="likeAnimateClass">
