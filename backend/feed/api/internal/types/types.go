@@ -86,3 +86,13 @@ type PopularVideosListResp struct {
 	StatusMsg  string      `json:"status_msg"`
 	Videos     []VideoInfo `json:"videos"`
 }
+
+type DurationTestReq struct {
+	Duration string `json:"duration"`
+	Vid      int64  `json:"vid"`
+}
+
+type DurationTestResp struct {
+	StatusCode int    `json:"status_code"`
+	StatusMsg  string `json:"status_msg"`
+}

@@ -80,6 +80,15 @@ type (
 		StatusMsg  string      `json:"status_msg"`
 		Videos     []VideoInfo `json:"videos"`
 	}
+
+	DurationTestReq {
+		Duration string `json:"duration"`
+		Vid      int64  `json:"vid"`
+	}
+	DurationTestResp {
+		StatusCode int    `json:"status_code"`
+		StatusMsg  string `json:"status_msg"`
+	}
 )
 
 @server(
@@ -106,4 +115,7 @@ service feed-api {
 
 	@handler CreateVideoTest
 	post /feed/createst (CreateVideoReq) returns(CreateVideoResp)
+
+	@handler DurationTest
+	post /feed/duration(DurationTestReq) returns(DurationTestResp)
 }
