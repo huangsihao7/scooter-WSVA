@@ -102,7 +102,9 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 			CoverUrl:      videoDetail.CoverUrl,
 			PlayUrl:       videoDetail.PlayUrl,
 			FavoriteCount: videoDetail.FavoriteCount + 1,
+			StarCount:     videoDetail.StarCount,
 			CommentCount:  videoDetail.CommentCount,
+			CreatedAt:     videoDetail.CreatedAt,
 			Category:      videoDetail.Category,
 		})
 
@@ -150,7 +152,9 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 			CoverUrl:      videoDetail.CoverUrl,
 			PlayUrl:       videoDetail.PlayUrl,
 			FavoriteCount: videoDetail.FavoriteCount - 1,
+			StarCount:     videoDetail.StarCount,
 			CommentCount:  videoDetail.CommentCount,
+			CreatedAt:     videoDetail.CreatedAt,
 			Category:      videoDetail.Category,
 		})
 		if err != nil {

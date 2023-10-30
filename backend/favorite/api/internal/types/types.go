@@ -23,7 +23,7 @@ type ListResp struct {
 
 type VideoInfo struct {
 	VideoId       int64  `json:"video_id"`
-	User          User   `json:"user"`
+	User          User   `json:"author"`
 	PlayUrl       string `json:"play_url"`
 	CoverUrl      string `json:"cover_url"`
 	FavoriteCount int64  `json:"favorite_count"`
@@ -32,11 +32,13 @@ type VideoInfo struct {
 	IsStar        bool   `json:"is_star"`
 	IsFavorite    bool   `json:"is_favorite"`
 	Title         string `json:"title"`
+	CreateTime    string `json:"create_time"`
 }
 
 type User struct {
 	Id             uint32 `json:"id"`
 	Name           string `json:"name"`
+	Gender         uint32 `json:"gender"`
 	Avatar         string `json:"avatar"`
 	Signature      string `json:"signature"`
 	FollowCount    uint32 `json:"follow_count"`

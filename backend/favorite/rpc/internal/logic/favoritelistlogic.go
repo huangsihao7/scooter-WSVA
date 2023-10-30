@@ -86,6 +86,7 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 		userDetail := &favorite.User{
 			Id:             userInfo.User.Id,
 			Name:           userInfo.User.Name,
+			Gender:         userInfo.User.Gender,
 			FollowCount:    userInfo.User.FollowCount,
 			FollowerCount:  userInfo.User.FollowerCount,
 			IsFollow:       userInfo.User.IsFollow,
@@ -107,6 +108,7 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 			IsFavorite:    isFavorited,
 			IsStar:        isStar,
 			Title:         videoDetail.Title,
+			CreateTime:    videoDetail.CreatedAt.Time.Format(constants.TimeFormat),
 		}
 
 		videoInfoList = append(videoInfoList, videoInfo)

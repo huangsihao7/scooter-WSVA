@@ -81,6 +81,7 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 		Scope: bucket,
 	}
 	upToken := putPolicy.UploadToken(mac)
+
 	// 配置参数
 	cfg := storage.Config{
 		Zone:          &storage.ZoneHuanan, // 华南区

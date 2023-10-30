@@ -39,6 +39,7 @@ message Video {
   bool is_favorite = 8; // true-已点赞，false-未点赞
   bool is_star = 9; // true-已收藏，false-未收藏
   string title = 10; // 视频标题
+  string create_time=11;
 }
 
 // 用户信息
@@ -54,6 +55,7 @@ message User {
   optional uint32 total_favorited = 9; //获赞数量
   optional uint32 work_count = 10; //作品数量
   optional uint32 favorite_count = 11; //点赞数量
+  uint32 gender=12;
 }
 
 

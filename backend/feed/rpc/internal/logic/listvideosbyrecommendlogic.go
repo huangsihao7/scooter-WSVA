@@ -5,13 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/feed/historyModel"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
-	"strconv"
-
 	"github.com/zeromicro/go-zero/core/logx"
+	"strconv"
 )
 
 type ListVideosByRecommendLogic struct {
@@ -32,6 +32,7 @@ func (l *ListVideosByRecommendLogic) ListVideosByRecommend(in *feed.ListFeedRequ
 	baseurl := "http://172.22.121.54:8088/api/recommend"
 	url := fmt.Sprintf("%s/%d?n=%d&offset=%d", baseurl, in.ActorId, in.Num, in.Offset)
 	println(url)
+	//向推荐系统请求推荐视频id
 	getresponse, err := format.QiNiuGet(url)
 	if err != nil {
 		return &feed.ListFeedResponse{
@@ -50,6 +51,32 @@ func (l *ListVideosByRecommendLogic) ListVideosByRecommend(in *feed.ListFeedRequ
 			StatusMsg:  constants.JsonError,
 			VideoList:  nil,
 		}, err
+	}
+	if in.Offset == 0 {
+		id, _ := strconv.Atoi(result[0])
+		_, err = l.svcCtx.HistoryModel.Insert(l.ctx, &historyModel.History{
+			Uid: int64(in.ActorId),
+			Vid: int64(id),
+		})
+		if err != nil {
+			return &feed.ListFeedResponse{
+				StatusCode: constants.InsertDbErrorCode,
+				StatusMsg:  constants.InsertDbError,
+				VideoList:  nil,
+			}, err
+		}
+	} else {
+		_, err = l.svcCtx.HistoryModel.Insert(l.ctx, &historyModel.History{
+			Uid: int64(in.ActorId),
+			Vid: in.ReadVid,
+		})
+		if err != nil {
+			return &feed.ListFeedResponse{
+				StatusCode: constants.InsertDbErrorCode,
+				StatusMsg:  constants.InsertDbError,
+				VideoList:  nil,
+			}, err
+		}
 	}
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range result {

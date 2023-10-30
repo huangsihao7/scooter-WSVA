@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 16:29:08
+ * @LastEditTime: 2023-10-30 18:48:45
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardList.vue
  * @Description: 
 -->
@@ -66,7 +66,7 @@ onMounted(() => {
         </NEllipsis>
       </div>
       <div class="name">
-        <span>@ {{ info != undefined ? "null" : info.author.name }}</span>
+        <span>{{ info.author == undefined ? "null" : info.author.name }}</span>
         <span class="date">{{ info.create_time }}</span>
       </div>
     </div>

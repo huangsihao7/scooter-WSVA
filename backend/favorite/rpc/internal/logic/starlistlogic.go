@@ -88,6 +88,7 @@ func (l *StarListLogic) StarList(in *favorite.StarListRequest) (*favorite.StarLi
 		userDetail := &favorite.User{
 			Id:              userInfo.User.Id,
 			Name:            userInfo.User.Name,
+			Gender:          userInfo.User.Gender,
 			FollowCount:     userInfo.User.FollowCount,
 			FollowerCount:   userInfo.User.FollowerCount,
 			BackgroundImage: userInfo.User.BackgroundImage,
@@ -110,8 +111,9 @@ func (l *StarListLogic) StarList(in *favorite.StarListRequest) (*favorite.StarLi
 			IsFavorite:    isFavorited,
 			IsStar:        isStar,
 			Title:         videoDetail.Title,
+			CreateTime:    videoDetail.CreatedAt.Time.Format(constants.TimeFormat),
 		}
-
+		//
 		videoInfoList = append(videoInfoList, videoInfo)
 	}
 

@@ -16,6 +16,7 @@ type UploadResponse struct {
 		Keywords []string `json:"keywords"`
 		Summary  string   `json:"summary"`
 		Text     string   `json:"text"`
+		Duration float64  `json:"duration"`
 	} `json:"data"`
 }
 

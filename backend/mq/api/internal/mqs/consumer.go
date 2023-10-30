@@ -6,11 +6,13 @@ import (
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 	"github.com/huangsihao7/scooter-WSVA/label/rpc/label"
 	"github.com/huangsihao7/scooter-WSVA/mq/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/zeromicro/go-zero/core/logx"
 	"net/url"
+	"strconv"
 	"time"
 )
 
@@ -78,6 +80,24 @@ func (l *UploadFile) Consume(key, val string) error {
 	})
 	if !InsertLabelRes.Success {
 		fmt.Println("往数据库插入标签错误", err)
+		return err
+	}
+	totalSeconds := int(uploadRes.Data.Duration) // 将总秒数转换为整数
+
+	minutes := totalSeconds / 60
+	remainingSeconds := totalSeconds % 60
+
+	// 格式化分钟和秒的字符串
+	minutesStr := strconv.Itoa(minutes)
+	secondsStr := strconv.Itoa(remainingSeconds)
+
+	durationFormat := minutesStr + ":" + secondsStr
+	duration, err := l.svcCtx.Feeder.VideoDuration(l.ctx, &feed.VideoDurationReq{
+		Duration: durationFormat,
+		VideoId:  uint32(videoInfo.Id),
+	})
+	if err != nil {
+		fmt.Println(duration.StatusMsg)
 		return err
 	}
 	//调用post请求，将视频id与标签存入推荐系统

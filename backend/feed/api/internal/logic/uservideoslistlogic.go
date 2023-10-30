@@ -36,13 +36,13 @@ func (l *UserVideosListLogic) UserVideosList(req *types.UserVideoListReq) (resp 
 		return &types.UserVideoListResp{
 			StatusCode: int(videos.StatusCode),
 			StatusMsg:  videos.StatusMsg,
-			Videos:     nil,
+			VideoList:  nil,
 		}, nil
 	}
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range videos.VideoList {
 		resList = append(resList, types.VideoInfo{
-			Id: int64(item.Id),
+			VideoId: int64(item.Id),
 			Author: types.UserInfo{
 				Id:             item.Author.Id,
 				Name:           item.Author.Name,
@@ -68,7 +68,7 @@ func (l *UserVideosListLogic) UserVideosList(req *types.UserVideoListReq) (resp 
 	return &types.UserVideoListResp{
 		StatusCode: constants.ServiceOKCode,
 		StatusMsg:  constants.ServiceOK,
-		Videos:     resList,
+		VideoList:  resList,
 	}, nil
 
 }

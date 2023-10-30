@@ -37,6 +37,7 @@ func (l *StarListLogic) StarList(req *types.ListReq) (resp *types.ListResp, err 
 		newUser := types.User{
 			Id:             res.VideoList[i].Author.Id,
 			Name:           res.VideoList[i].Author.Name,
+			Gender:         res.VideoList[i].Author.Gender,
 			FollowCount:    *res.VideoList[i].Author.FollowCount,
 			FollowerCount:  *res.VideoList[i].Author.FollowerCount,
 			IsFollow:       res.VideoList[i].Author.IsFollow,
@@ -57,6 +58,7 @@ func (l *StarListLogic) StarList(req *types.ListReq) (resp *types.ListResp, err 
 			IsFavorite:    res.VideoList[i].IsFavorite,
 			IsStar:        res.VideoList[i].IsStar,
 			Title:         res.VideoList[i].Title,
+			CreateTime:    res.VideoList[i].CreateTime,
 		}
 		resLists = append(resLists, videoDetail)
 

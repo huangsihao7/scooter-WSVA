@@ -34,12 +34,14 @@ func (l *PopularVideosLogic) PopularVideos(req *types.PopularVideosListReq) (res
 			ActorId: uint32(uid),
 			Num:     5,
 			Offset:  req.Offset,
+			ReadVid: req.ReadedVideoId,
 		})
 	} else {
 		popular, err = l.svcCtx.FeedRpc.ListPopularVideos(l.ctx, &feed.ListFeedRequest{
 			ActorId: uint32(uid),
 			Num:     1,
 			Offset:  req.Offset,
+			ReadVid: req.ReadedVideoId,
 		})
 	}
 	if err != nil {
@@ -52,7 +54,7 @@ func (l *PopularVideosLogic) PopularVideos(req *types.PopularVideosListReq) (res
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range popular.VideoList {
 		resList = append(resList, types.VideoInfo{
-			Id: int64(item.Id),
+			VideoId: int64(item.Id),
 			Author: types.UserInfo{
 				Id:             item.Author.Id,
 				Name:           item.Author.Name,

@@ -31,6 +31,7 @@ type (
 		FindOwnFeed(ctx context.Context, uid int64) ([]*Videos, error)
 		FindFeeds(ctx context.Context) ([]*Videos, error)
 		FindCategoryFeeds(ctx context.Context, category int64) ([]*Videos, error)
+		UpdateDuration(ctx context.Context, id int64, duration string) error
 	}
 
 	defaultVideosModel struct {
@@ -39,18 +40,19 @@ type (
 	}
 
 	Videos struct {
-		Id            int64        `db:"id"`             // 主键
-		AuthorId      int64        `db:"author_id"`      // 上传用户Id
-		Title         string       `db:"title"`          // 视频标题
-		CoverUrl      string       `db:"cover_url"`      // 封面url
-		PlayUrl       string       `db:"play_url"`       // 视频播放url
-		FavoriteCount int64        `db:"favorite_count"` // 点赞数
-		StarCount     int64        `db:"star_count"`     // 收藏数
-		CommentCount  int64        `db:"comment_count"`  // 评论数目
-		CreatedAt     time.Time    `db:"created_at"`
-		UpdatedAt     sql.NullTime `db:"updated_at"`
-		DeletedAt     sql.NullTime `db:"deleted_at"`
-		Category      int64        `db:"category"` // 视频分类
+		Id            int64          `db:"id"`             // 主键
+		AuthorId      int64          `db:"author_id"`      // 上传用户Id
+		Title         string         `db:"title"`          // 视频标题
+		CoverUrl      string         `db:"cover_url"`      // 封面url
+		PlayUrl       string         `db:"play_url"`       // 视频播放url
+		FavoriteCount int64          `db:"favorite_count"` // 点赞数
+		StarCount     int64          `db:"star_count"`     // 收藏数
+		CommentCount  int64          `db:"comment_count"`  // 评论数目
+		CreatedAt     time.Time      `db:"created_at"`
+		UpdatedAt     sql.NullTime   `db:"updated_at"`
+		DeletedAt     sql.NullTime   `db:"deleted_at"`
+		Category      int64          `db:"category"` // 视频分类
+		Duration      sql.NullString `db:"duration"` // 视频时长
 	}
 )
 
@@ -89,14 +91,14 @@ func (m *defaultVideosModel) FindOne(ctx context.Context, id int64) (*Videos, er
 }
 
 func (m *defaultVideosModel) Insert(ctx context.Context, data *Videos) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, videosRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.AuthorId, data.Title, data.CoverUrl, data.PlayUrl, data.FavoriteCount, data.StarCount, data.CommentCount, data.DeletedAt, data.Category)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, videosRowsExpectAutoSet)
+	ret, err := m.conn.ExecCtx(ctx, query, data.AuthorId, data.Title, data.CoverUrl, data.PlayUrl, data.FavoriteCount, data.StarCount, data.CommentCount, data.DeletedAt, data.Category, data.Duration)
 	return ret, err
 }
 
 func (m *defaultVideosModel) Update(ctx context.Context, data *Videos) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, videosRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, data.AuthorId, data.Title, data.CoverUrl, data.PlayUrl, data.FavoriteCount, data.StarCount, data.CommentCount, data.DeletedAt, data.Category, data.Id)
+	_, err := m.conn.ExecCtx(ctx, query, data.AuthorId, data.Title, data.CoverUrl, data.PlayUrl, data.FavoriteCount, data.StarCount, data.CommentCount, data.DeletedAt, data.Category, data.Duration, data.Id)
 	return err
 }
 
@@ -141,4 +143,10 @@ func (m *defaultVideosModel) FindCategoryFeeds(ctx context.Context, category int
 	default:
 		return nil, err
 	}
+}
+
+func (m *defaultVideosModel) UpdateDuration(ctx context.Context, id int64, duration string) error {
+	query := fmt.Sprintf("update %s set `duration` = ? where `id` = ?", m.table)
+	_, err := m.conn.ExecCtx(ctx, query, duration, id)
+	return err
 }

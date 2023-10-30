@@ -24,6 +24,8 @@ type (
 	ListVideoRequest     = feed.ListVideoRequest
 	ListVideoResponse    = feed.ListVideoResponse
 	User                 = feed.User
+	VideoDurationReq     = feed.VideoDurationReq
+	VideoDurationResp    = feed.VideoDurationResp
 	VideoInfo            = feed.VideoInfo
 
 	Feed interface {
@@ -35,6 +37,7 @@ type (
 		ListCategoryVideos(ctx context.Context, in *CategoryFeedRequest, opts ...grpc.CallOption) (*CategoryFeedResponse, error)
 		ListPopularVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 		CreateVideoTest(ctx context.Context, in *CreateVideoRequest, opts ...grpc.CallOption) (*CreateVideoResponse, error)
+		VideoDuration(ctx context.Context, in *VideoDurationReq, opts ...grpc.CallOption) (*VideoDurationResp, error)
 	}
 
 	defaultFeed struct {
@@ -82,4 +85,9 @@ func (m *defaultFeed) ListPopularVideos(ctx context.Context, in *ListFeedRequest
 func (m *defaultFeed) CreateVideoTest(ctx context.Context, in *CreateVideoRequest, opts ...grpc.CallOption) (*CreateVideoResponse, error) {
 	client := feed.NewFeedClient(m.cli.Conn())
 	return client.CreateVideoTest(ctx, in, opts...)
+}
+
+func (m *defaultFeed) VideoDuration(ctx context.Context, in *VideoDurationReq, opts ...grpc.CallOption) (*VideoDurationResp, error) {
+	client := feed.NewFeedClient(m.cli.Conn())
+	return client.VideoDuration(ctx, in, opts...)
 }

@@ -15,15 +15,10 @@ KqConsumerConf:
 Comment:
   Etcd:
     Hosts:
-      - 172.22.121.53:2479
+      - 172.22.110.66:2444
     Key: comment.rpc
 Label:
   Etcd:
     Hosts:
-      - 172.22.121.53:2479
+      - 172.22.110.66:2444
     Key: label.rpc
-Feed:
-  Etcd:
-    Hosts:
-      - 172.22.121.53:2479
-    Key: feed.rpc

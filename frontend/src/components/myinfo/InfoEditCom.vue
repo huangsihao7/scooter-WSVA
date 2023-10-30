@@ -23,7 +23,9 @@
           :before-upload="beforeAvatarUpload"
         >
           <img v-if="form.avatar" :src="userInfo.avatar" class="avatar" />
-          <ElIcon v-else class="avatar-uploader-icon"><Plus /></ElIcon>
+          <ElIcon v-else class="avatar-uploader-icon">
+            <Plus />
+          </ElIcon>
         </ElUpload>
       </ElFormItem>
       <ElFormItem label="昵称" :label-width="formLabelWidth">
@@ -55,11 +57,11 @@
 
 <script lang="ts" setup>
 import { reactive, computed, onMounted } from "vue";
-import { ElMessage } from "element-plus";
+import { useMessage } from "naive-ui";
 import { UploadProps } from "element-plus";
 import { UserType } from "@/apis/interface";
 import { userStore } from "@/stores/user";
-
+const message = useMessage();
 interface propsType {
   isVisible: boolean;
   userInfo: UserType;
@@ -90,10 +92,10 @@ onMounted(() => {
 
 const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
   if (rawFile.type !== "image/jpeg") {
-    ElMessage.error("Avatar picture must be JPG format!");
+    message.error("Avatar picture must be JPG format!");
     return false;
   } else if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error("Avatar picture size can not exceed 2MB!");
+    message.error("Avatar picture size can not exceed 2MB!");
     return false;
   }
   console.log("rawFile", rawFile);
@@ -110,12 +112,15 @@ const updateUserInfo = () => {};
 .el-input {
   width: 90%;
 }
+
 .el-button--text {
   margin-right: 15px;
 }
+
 .el-select {
   width: 90%;
 }
+
 .dialog-footer button:first-child {
   margin-right: 10px;
 }
@@ -125,6 +130,7 @@ const updateUserInfo = () => {};
   height: 178px;
   display: block;
 }
+
 .avatar-uploader .el-upload {
   border: 1px dashed var(--el-border-color);
   border-radius: 6px;
