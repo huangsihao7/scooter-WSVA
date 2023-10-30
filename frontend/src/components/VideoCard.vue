@@ -2,12 +2,13 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 11:22:31
+ * @LastEditTime: 2023-10-30 13:55:05
  * @Description: 各个视频分类的视频卡片渲染
  * @FilePath: /scooter-WSVA/frontend/src/components/VideoCard.vue
 -->
 <script lang="ts" setup>
 import { onMounted } from "vue";
+import { NScrollbar, NSpace } from "naive-ui";
 import VideoCardList from "@/components/video/VideoCardList.vue";
 interface propsType {
   isScroll: boolean;

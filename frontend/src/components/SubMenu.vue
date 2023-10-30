@@ -4,62 +4,80 @@
       <ElMenu
         :default-active="active"
         class="el-menu-vertical-demo"
-        router="true"
+        :router="true"
         @open="handleOpen"
         @close="handleClose"
       >
         <ElMenuItem index="rec">
           <div class="submenu-text">
-            <ElIcon><Star /></ElIcon>
+            <ElIcon>
+              <Star />
+            </ElIcon>
             <span>推荐</span>
           </div>
         </ElMenuItem>
         <ElMenuItem index="follow">
           <div class="submenu-text">
-            <ElIcon><Connection /></ElIcon>
+            <ElIcon>
+              <Connection />
+            </ElIcon>
             <span>关注</span>
           </div>
         </ElMenuItem>
         <ElMenuItem index="user">
           <div class="submenu-text">
-            <ElIcon><House /></ElIcon>
+            <ElIcon>
+              <House />
+            </ElIcon>
             <span>我的</span>
           </div>
         </ElMenuItem>
         <ElDivider content-position="center">分类</ElDivider>
         <ElMenuItem index="hot">
           <div class="submenu-text">
-            <ElIcon><Medal /></ElIcon>
+            <ElIcon>
+              <Medal />
+            </ElIcon>
             <span>热门</span>
           </div>
         </ElMenuItem>
         <ElMenuItem index="recreation">
           <div class="submenu-text">
-            <ElIcon><Goblet /></ElIcon>
+            <ElIcon>
+              <Goblet />
+            </ElIcon>
             <span>娱乐</span>
           </div>
         </ElMenuItem>
         <ElMenuItem index="sports">
           <div class="submenu-text">
-            <ElIcon><Basketball /></ElIcon>
+            <ElIcon>
+              <Basketball />
+            </ElIcon>
             <span>体育</span>
           </div>
         </ElMenuItem>
         <ElMenuItem index="food">
           <div class="submenu-text">
-            <ElIcon><KnifeFork /></ElIcon>
+            <ElIcon>
+              <KnifeFork />
+            </ElIcon>
             <span>美食</span>
           </div>
         </ElMenuItem>
         <ElMenuItem index="cartoon">
           <div class="submenu-text">
-            <ElIcon><Lollipop /></ElIcon>
+            <ElIcon>
+              <Lollipop />
+            </ElIcon>
             <span>二次元</span>
           </div>
         </ElMenuItem>
         <ElMenuItem index="knowledge">
           <div class="submenu-text">
-            <ElIcon><Reading /></ElIcon>
+            <ElIcon>
+              <Reading />
+            </ElIcon>
             <span>知识</span>
           </div>
         </ElMenuItem>
@@ -116,6 +134,7 @@ const handleClose = (key: string, keyPath: string[]) => {
 .tac {
   height: 100%;
 }
+
 .el-menu-vertical-demo {
   height: 100%;
 }

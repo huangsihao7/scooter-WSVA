@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import CommentCom from "./CommentCom.vue";
 
-interface propsType{
-  commentlists: Array<any>
+interface propsType {
+  commentlists: Array<any>;
 }
 
 const props = defineProps<propsType>();
-
 </script>
 
 <template>
