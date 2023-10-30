@@ -83,7 +83,7 @@ func (l *UploadFile) Consume(key, val string) error {
 		return err
 	}
 	duration, err := l.svcCtx.Feeder.VideoDuration(l.ctx, &feed.VideoDurationReq{
-		Duration: strconv.FormatFloat(uploadRes.Duration, 'f', 2, 64),
+		Duration: strconv.FormatFloat(uploadRes.Data.Duration, 'f', 2, 64),
 		VideoId:  uint32(videoInfo.Id),
 	})
 	if err != nil {
