@@ -44,7 +44,7 @@ func (l *CommentListLogic) CommentList(in *comment.CommentListRequest) (*comment
 		return nil, err
 	}
 
-	// 检查视频id 是否存在
+	// 检查视频id 是否存在 ddd
 	_, err = l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
 		if err == model.ErrNotFound {
