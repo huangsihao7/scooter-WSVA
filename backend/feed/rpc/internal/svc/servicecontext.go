@@ -2,6 +2,7 @@ package svc
 
 import (
 	model2 "github.com/huangsihao7/scooter-WSVA/favorite/model"
+	"github.com/huangsihao7/scooter-WSVA/favorite/starModel"
 	"github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/feed/model"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/config"
@@ -20,6 +21,7 @@ type ServiceContext struct {
 	KqPusherClient *kq.Pusher
 	DB             *orm.DB
 	VideoModel     *gmodel.VideoModel
+	StarModel      *starModel.StarModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -36,5 +38,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		UserRpc:        usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
 		KqPusherClient: kq.NewPusher(c.KqPusherConf.Brokers, c.KqPusherConf.Topic),
 		VideoModel:     gmodel.NewFavoriteModel(db.DB),
+		StarModel:      starModel.NewStarModel(db.DB),
 	}
 }

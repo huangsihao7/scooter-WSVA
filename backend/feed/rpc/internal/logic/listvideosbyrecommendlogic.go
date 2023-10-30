@@ -76,6 +76,8 @@ func (l *ListVideosByRecommendLogic) ListVideosByRecommend(in *feed.ListFeedRequ
 			FavoriteCount:  userRpcRes.User.FavoriteCount,
 		}
 		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.ActorId), video.Id)
+		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.ActorId), video.Id)
+
 		VideoList = append(VideoList, &feed.VideoInfo{
 			Id:            uint32(video.Id),
 			Author:        userInfo,
@@ -85,8 +87,9 @@ func (l *ListVideosByRecommendLogic) ListVideosByRecommend(in *feed.ListFeedRequ
 			CommentCount:  uint32(video.CommentCount),
 			StarCount:     uint32(video.StarCount),
 			IsFavorite:    IsFavorite,
+			IsStar:        IsStar,
 			Title:         video.Title,
-			CreateTime:    video.CreatedAt.Unix(),
+			CreateTime:    video.CreatedAt.Format(constants.TimeFormat),
 		})
 	}
 	return &feed.ListFeedResponse{

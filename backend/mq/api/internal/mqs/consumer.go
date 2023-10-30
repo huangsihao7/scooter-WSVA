@@ -14,19 +14,19 @@ import (
 	"time"
 )
 
-type PaymentSuccess struct {
+type UploadFile struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewPaymentSuccess(ctx context.Context, svcCtx *svc.ServiceContext) *PaymentSuccess {
-	return &PaymentSuccess{
+func NewUploadFile(ctx context.Context, svcCtx *svc.ServiceContext) *UploadFile {
+	return &UploadFile{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *PaymentSuccess) Consume(key, val string) error {
+func (l *UploadFile) Consume(key, val string) error {
 	logx.Infof("PaymentSuccess key :%s , val :%s", key, val)
 
 	var videoInfo format.UploadFile

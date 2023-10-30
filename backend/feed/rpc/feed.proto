@@ -45,8 +45,9 @@ message VideoInfo {
    uint32 comment_count = 6;
    bool is_favorite = 7;
    string title = 8;
-   int64 create_time=9;
+   string create_time=9;
    uint32 star_count = 10;
+   bool is_star = 11;
 }
 
 message User {
