@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 19:35:46
+ * @LastEditTime: 2023-10-30 20:10:40
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -10,11 +10,14 @@
 import { ref, onMounted } from "vue";
 import { userStore } from "@/stores/user";
 import { getFollowList, canclefollowOne, followOne } from "@/apis/follow";
-import console from "console";
+import { useRouter } from "vue-router";
 import { useMessage, NCard, NAvatar, NButton, NGrid, NGi } from "naive-ui";
-const folllowList: any = ref([]);
-const message = useMessage();
 
+const message = useMessage();
+const router = useRouter();
+const folllowList: any = ref([]);
+
+// 获取关注的人的信息卡片
 onMounted(() => {
   getFollowList(userStore().user_id).then((res: any) => {
     folllowList.value = res.list;
@@ -26,6 +29,11 @@ onMounted(() => {
 
 const handleShowVedio = () => {
   console.log("show");
+};
+
+// 跳转到关注人的页面
+const handleShowUser = (userId: number) => {
+  router.push({ name: "following", params: { id: userId } });
 };
 
 const cancleFollow = (item: any, _index: any) => {
@@ -56,32 +64,37 @@ const cancleFollow = (item: any, _index: any) => {
 
 <template>
   <!-- <ElSpace wrap> -->
-    <n-grid class="space" x-gap="12" :cols="4">
-      <n-gi v-for="(info, index) in folllowList" :key="index">
-        <n-card class="card"  style="padding: 0;" >
-          <template #cover class="cover">
-            <img  class="img" :src="info.background_image"  @click="handleShowVedio">
-          </template>
-          <div class="header-info">
-            <n-avatar class="avatar"
-              round
-              :size="60"
-              :src="info.avatar"
-            />
-            <div class="other-info">
-              <span class="name">{{ info.name }}</span>
-              <n-button class="btn" @click="cancleFollow(info, index)">
-                {{ info.isfollowed == true ? "已关注" : "关注" }}
-              </n-button>
-              <p class="sig">{{ info.dec }}</p>
-            </div>
+  <NGrid class="space" x-gap="12" :cols="4">
+    <NGi v-for="(info, index) in folllowList" :key="index">
+      <NCard class="card" style="padding: 0" :hoverable="true">
+        <template #cover>
+          <img
+            class="img"
+            :src="info.background_image"
+            @click="handleShowVedio"
+          />
+        </template>
+        <div class="header-info">
+          <NAvatar
+            class="avatar"
+            round
+            :size="60"
+            :src="info.avatar"
+            @click="handleShowUser(info.id)"
+          />
+          <div class="other-info">
+            <span class="name">{{ info.name }}</span>
+            <NButton class="btn" @click="cancleFollow(info, index)">
+              {{ info.isfollowed == true ? "已关注" : "关注" }}
+            </NButton>
+            <p class="sig">{{ info.dec }}</p>
           </div>
-          
-        </n-card>
-      </n-gi>
-  </n-grid>
-    
-    <!-- <ElCard
+        </div>
+      </NCard>
+    </NGi>
+  </NGrid>
+
+  <!-- <ElCard
       v-for="(info, index) in folllowList"
       :key="index"
       class="box-card"
@@ -113,36 +126,33 @@ const cancleFollow = (item: any, _index: any) => {
 </template>
 
 <style lang="scss" scoped>
-.space{
-  margin:2vh 2vw;
+.space {
+  margin: 2vh 2vw;
 }
-.card{
+.card {
   height: 30vh;
   width: 100%;
 
-  .header-info{
+  .header-info {
     display: flex;
     margin-top: 20px;
     height: 8vh;
-    .other-info{
+    .other-info {
       margin-left: 16px;
-      .name{
+      .name {
         font-weight: bold;
         font-size: 1.2rem;
       }
-      .btn{
+      .btn {
         margin-left: 16px;
       }
-      .sig{
+      .sig {
         text-align: left;
       }
     }
   }
 
-  .cover{
-    
-  }
-  .img{
+  .img {
     width: 100%;
     height: calc(22vh - 40px);
     object-fit: fill;

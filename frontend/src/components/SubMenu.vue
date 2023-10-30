@@ -1,15 +1,20 @@
 <template>
-  <n-menu class="tac" :options="menuOptions" :default-value="defaultActive" @update:value="handleUpdateValue" />
+  <NMenu
+    class="tac"
+    :options="menuOptions"
+    :default-value="defaultActive"
+    @update:value="handleUpdateValue"
+  />
 </template>
 
 <script lang="ts" setup>
 import { routeStore } from "@/stores/route";
-import {  ref, onBeforeMount,  h, Component } from "vue";
+import { ref, onBeforeMount, h, Component } from "vue";
 
-import { NMenu } from 'naive-ui'
-import { NIcon } from 'naive-ui'
-import type { MenuOption } from 'naive-ui'
-import { RouterLink } from 'vue-router'
+import { NMenu } from "naive-ui";
+import { NIcon } from "naive-ui";
+import type { MenuOption } from "naive-ui";
+import { RouterLink } from "vue-router";
 import {
   Diamond as RecIcon,
   Person as FollowIcon,
@@ -20,10 +25,10 @@ import {
   FastFood as FoodIcon,
   PlanetSharp as CartoonIcon,
   Book as KnowledgeIcon,
-} from '@vicons/ionicons5'
+} from "@vicons/ionicons5";
 
-function renderIcon (icon: Component) {
-  return () => h(NIcon, null, { default: () => h(icon) })
+function renderIcon(icon: Component) {
+  return () => h(NIcon, null, { default: () => h(icon) });
 }
 
 const menuOptions: MenuOption[] = [
@@ -33,16 +38,16 @@ const menuOptions: MenuOption[] = [
         RouterLink,
         {
           to: {
-            name: 'rec',
+            name: "rec",
             params: {
-              lang: 'zh-CN'
-            }
-          }
+              lang: "zh-CN",
+            },
+          },
         },
-        { default: () => '推荐' }
+        { default: () => "推荐" },
       ),
-    key: 'rec',
-    icon: renderIcon(RecIcon)
+    key: "rec",
+    icon: renderIcon(RecIcon),
   },
   {
     label: () =>
@@ -50,16 +55,16 @@ const menuOptions: MenuOption[] = [
         RouterLink,
         {
           to: {
-            name: 'follow',
+            name: "follow",
             params: {
-              lang: 'zh-CN'
-            }
-          }
+              lang: "zh-CN",
+            },
+          },
         },
-        { default: () => '关注' }
+        { default: () => "关注" },
       ),
-    key: 'follow',
-    icon: renderIcon(FollowIcon)
+    key: "follow",
+    icon: renderIcon(FollowIcon),
   },
   {
     label: () =>
@@ -67,25 +72,25 @@ const menuOptions: MenuOption[] = [
         RouterLink,
         {
           to: {
-            name: 'user',
+            name: "user",
             params: {
-              lang: 'zh-CN'
-            }
-          }
+              lang: "zh-CN",
+            },
+          },
         },
-        { default: () => '我的' }
+        { default: () => "我的" },
       ),
-    key: 'user',
-    icon: renderIcon(UserIcon)
+    key: "user",
+    icon: renderIcon(UserIcon),
   },
   {
-    key: 'divider-1',
-    type: 'divider',
+    key: "divider-1",
+    type: "divider",
     props: {
       style: {
-        marginLeft: '32px'
-      }
-    }
+        marginLeft: "32px",
+      },
+    },
   },
   {
     label: () =>
@@ -93,16 +98,16 @@ const menuOptions: MenuOption[] = [
         RouterLink,
         {
           to: {
-            name: 'hot',
+            name: "hot",
             params: {
-              lang: 'zh-CN'
-            }
-          }
+              lang: "zh-CN",
+            },
+          },
         },
-        { default: () => '热门' }
+        { default: () => "热门" },
       ),
-    key: 'hot',
-    icon: renderIcon(HotIcon)
+    key: "hot",
+    icon: renderIcon(HotIcon),
   },
   {
     label: () =>
@@ -110,16 +115,16 @@ const menuOptions: MenuOption[] = [
         RouterLink,
         {
           to: {
-            name: 'recreation',
+            name: "recreation",
             params: {
-              lang: 'zh-CN'
-            }
-          }
+              lang: "zh-CN",
+            },
+          },
         },
-        { default: () => '娱乐' }
+        { default: () => "娱乐" },
       ),
-    key: 'recreation',
-    icon: renderIcon(RecreationIcon)
+    key: "recreation",
+    icon: renderIcon(RecreationIcon),
   },
   {
     label: () =>
@@ -127,16 +132,16 @@ const menuOptions: MenuOption[] = [
         RouterLink,
         {
           to: {
-            name: 'sports',
+            name: "sports",
             params: {
-              lang: 'zh-CN'
-            }
-          }
+              lang: "zh-CN",
+            },
+          },
         },
-        { default: () => '体育' }
+        { default: () => "体育" },
       ),
-    key: 'sports',
-    icon: renderIcon(SportsIcon)
+    key: "sports",
+    icon: renderIcon(SportsIcon),
   },
   {
     label: () =>
@@ -144,16 +149,16 @@ const menuOptions: MenuOption[] = [
         RouterLink,
         {
           to: {
-            name: 'food',
+            name: "food",
             params: {
-              lang: 'zh-CN'
-            }
-          }
+              lang: "zh-CN",
+            },
+          },
         },
-        { default: () => '食物' }
+        { default: () => "食物" },
       ),
-    key: 'food',
-    icon: renderIcon(FoodIcon)
+    key: "food",
+    icon: renderIcon(FoodIcon),
   },
   {
     label: () =>
@@ -161,16 +166,16 @@ const menuOptions: MenuOption[] = [
         RouterLink,
         {
           to: {
-            name: 'cartoon',
+            name: "cartoon",
             params: {
-              lang: 'zh-CN'
-            }
-          }
+              lang: "zh-CN",
+            },
+          },
         },
-        { default: () => '二次元' }
+        { default: () => "二次元" },
       ),
-    key: 'cartoon',
-    icon: renderIcon(CartoonIcon)
+    key: "cartoon",
+    icon: renderIcon(CartoonIcon),
   },
   {
     label: () =>
@@ -178,18 +183,18 @@ const menuOptions: MenuOption[] = [
         RouterLink,
         {
           to: {
-            name: 'knowledge',
+            name: "knowledge",
             params: {
-              lang: 'zh-CN'
-            }
-          }
+              lang: "zh-CN",
+            },
+          },
         },
-        { default: () => '知识' }
+        { default: () => "知识" },
       ),
-    key: 'knowledge',
-    icon: renderIcon(KnowledgeIcon)
+    key: "knowledge",
+    icon: renderIcon(KnowledgeIcon),
   },
-]
+];
 
 const defaultActive = ref<any>("");
 
@@ -199,20 +204,17 @@ function getLastSegmentFromRoute(route: string): string {
   return segments[segments.length - 1];
 }
 
-
 const handleUpdateValue = (key: string) => {
-    let keyStr = JSON.stringify(key)
-    const withoutQuotes = keyStr.replace(/"/g, '');
-    routeStore().name = withoutQuotes
-  }
-
+  let keyStr = JSON.stringify(key);
+  const withoutQuotes = keyStr.replace(/"/g, "");
+  routeStore().name = withoutQuotes;
+};
 
 onBeforeMount(() => {
-  let path = window.location.href
-  defaultActive.value = getLastSegmentFromRoute(path)
-  routeStore().name = defaultActive.value
-})
-
+  let path = window.location.href;
+  defaultActive.value = getLastSegmentFromRoute(path);
+  routeStore().name = defaultActive.value;
+});
 </script>
 
 <style scoped>

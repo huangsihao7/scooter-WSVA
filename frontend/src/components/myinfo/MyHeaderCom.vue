@@ -1,10 +1,10 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
- * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 09:27:51
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-10-30 20:29:49
  * @Description: 
- * @FilePath: /scooter-WSVA/frontend/src/components/myinfo/MyHeaderCom.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\myHeaderCom.vue
 -->
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
@@ -14,8 +14,12 @@ import { NButton, NIcon } from "naive-ui";
 import InfoEditCom from "./InfoEditCom.vue";
 import { CashOutline as CashIcon } from "@vicons/ionicons5";
 
+interface propsType {
+  userId: number;
+}
+
+const props = defineProps<propsType>();
 const avatar = userStore().avatar;
-const user_id = userStore().user_id;
 const userInfo = ref<any>({
   background_image: userStore().avatar,
 });
@@ -23,7 +27,7 @@ const editVisible = ref<boolean>(false);
 
 // 获取用户信息
 const getUserInfoFunc = () => {
-  getUserInfo(user_id).then((res: any) => {
+  getUserInfo(props.userId).then((res: any) => {
     userInfo.value = res.user;
   });
 };
@@ -39,6 +43,7 @@ const UpdateVisible = () => {
 };
 
 onMounted(() => {
+  console.log(props.userId);
   getUserInfoFunc();
 });
 </script>

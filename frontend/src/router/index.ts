@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:49:44
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-26 12:13:18
+ * @LastEditTime: 2023-10-30 20:06:05
  * @Description:
- * @FilePath: \scooter-wsva\frontend\src\router\index.ts
+ * @FilePath: \scooter-WSVA\frontend\src\router\index.ts
  */
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../view/HomeView.vue";
@@ -56,6 +56,12 @@ const router = createRouter({
       path: "/knowledge",
       name: "knowledge",
       component: () => import("../view/ClassifiedView.vue"),
+    },
+    {
+      path: "/following/:id",
+      name: "following",
+      props: true,
+      component: () => import("../view/UserView.vue"),
     },
     {
       path: "/",

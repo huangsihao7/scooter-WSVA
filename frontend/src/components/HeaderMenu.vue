@@ -113,109 +113,105 @@ const updateVisible = (flag: boolean) => {
 </script>
 
 <template>
-    <ElMenu
-      :default-active="activeIndex"
-      class="el-menu-demo"
-      mode="horizontal"
-      :ellipsis="false"
-      @select="handleSelect"
-    >
-      <ElMenuItem>
-        <ElIcon>
-          <VideoCameraFilled />
-        </ElIcon>
-        See World
-      </ElMenuItem>
-      <div class="menu-search">
-        <ElInput
-          v-model="searchText"
-          placeholder="搜索"
-          class="search-input"
-          @keyup.enter="SearchFunc"
-          @focus="getFocus"
-          @blur="getBlur"
+  <ElMenu
+    :default-active="activeIndex"
+    class="el-menu-demo"
+    mode="horizontal"
+    :ellipsis="false"
+    @select="handleSelect"
+  >
+    <ElMenuItem>
+      <ElIcon>
+        <VideoCameraFilled />
+      </ElIcon>
+      See World
+    </ElMenuItem>
+    <div class="menu-search">
+      <ElInput
+        v-model="searchText"
+        placeholder="搜索"
+        class="search-input"
+        @keyup.enter="SearchFunc"
+        @focus="getFocus"
+        @blur="getBlur"
+      >
+        <template #append>
+          <ElButton :icon="Search" class="menu-search-btn" @click="SearchFunc">
+            搜索
+          </ElButton>
+        </template>
+      </ElInput>
+      <ElCard v-if="isSearch" id="search-tab" shadow="always">
+        <div>
+          <ElText class="mx-1" size="small">历史记录</ElText>
+        </div>
+        <ElTag
+          v-for="history in searchHistory"
+          :key="history"
+          class="mx-1"
+          effect="light"
+          type="info"
+          closable
+          @close="handleClose(history)"
         >
-          <template #append>
-            <ElButton
-              :icon="Search"
-              class="menu-search-btn"
-              @click="SearchFunc"
-            >
-              搜索
-            </ElButton>
-          </template>
-        </ElInput>
-        <ElCard v-if="isSearch" id="search-tab" shadow="always">
-          <div>
-            <ElText class="mx-1" size="small">历史记录</ElText>
-          </div>
-          <ElTag
-            v-for="history in searchHistory"
-            :key="history"
-            class="mx-1"
-            effect="light"
-            type="info"
-            closable
-            @close="handleClose(history)"
-          >
-            {{ history }}
-          </ElTag>
-        </ElCard>
-      </div>
+          {{ history }}
+        </ElTag>
+      </ElCard>
+    </div>
 
-      <div class="flex-grow" />
+    <div class="flex-grow" />
 
-      <ElMenuItem> </ElMenuItem>
-      <div class="post-btn">
-        <ElButton @click="getPostVideoForm">
-          <ElIcon>
-            <CirclePlus />
-          </ElIcon>
-          投稿
-        </ElButton>
-      </div>
+    <ElMenuItem> </ElMenuItem>
+    <div class="post-btn">
+      <ElButton @click="getPostVideoForm">
+        <ElIcon>
+          <CirclePlus />
+        </ElIcon>
+        投稿
+      </ElButton>
+    </div>
 
-      <ElSubMenu v-if="userStore().isLoggedIn" index="logout">
-        <template #title>
-          <ElAvatar :src="userStore().avatar" />
-        </template>
-        <ElMenuItem index="logout">退出登录</ElMenuItem>
-      </ElSubMenu>
-      <ElMenuItem v-else index="login"> 登录 </ElMenuItem>
+    <ElSubMenu v-if="userStore().isLoggedIn" index="logout">
+      <template #title>
+        <ElAvatar :src="userStore().avatar" />
+      </template>
+      <ElMenuItem index="logout">退出登录</ElMenuItem>
+    </ElSubMenu>
+    <ElMenuItem v-else index="login"> 登录 </ElMenuItem>
 
-      <ElDialog v-model="loginFormVisible" title="登录" width="30%">
-        <ElForm :model="form">
-          <ElFormItem label="账号" :label-width="formLabelWidth">
-            <ElInput
-              v-model="form.phoneNum"
-              autocomplete="off"
-              placeholder="输入账号"
-              clearable
-            />
-          </ElFormItem>
-          <ElFormItem label="密码" :label-width="formLabelWidth">
-            <ElInput
-              v-model="form.pwd"
-              autocomplete="off"
-              type="password"
-              placeholder="输入密码"
-              show-password
-              clearable
-            />
-          </ElFormItem>
-        </ElForm>
-        <template #footer>
-          <span class="dialog-footer">
-            <ElButton type="primary" @click="doLogin"> 登录 </ElButton>
-          </span>
-        </template>
-      </ElDialog>
+    <ElDialog v-model="loginFormVisible" title="登录" width="30%">
+      <ElForm :model="form">
+        <ElFormItem label="账号" :label-width="formLabelWidth">
+          <ElInput
+            v-model="form.phoneNum"
+            autocomplete="off"
+            placeholder="输入账号"
+            clearable
+          />
+        </ElFormItem>
+        <ElFormItem label="密码" :label-width="formLabelWidth">
+          <ElInput
+            v-model="form.pwd"
+            autocomplete="off"
+            type="password"
+            placeholder="输入密码"
+            show-password
+            clearable
+          />
+        </ElFormItem>
+      </ElForm>
+      <template #footer>
+        <span class="dialog-footer">
+          <ElButton type="primary" @click="doLogin"> 登录 </ElButton>
+        </span>
+      </template>
+    </ElDialog>
 
-      <PostVedio
-        :video-form-visible="isVideoFormVisible"
-        @visible-update="updateVisible"
-      />
-    </ElMenu>
+    <PostVedio
+      :video-form-visible="isVideoFormVisible"
+      @visible-update="updateVisible"
+    />
+  </ElMenu>
 </template>
 
 <style scoped>
