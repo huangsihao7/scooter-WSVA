@@ -21,7 +21,8 @@ import {
   Checkmark,
 } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
-import { ElMessageBox, ElMessage } from "element-plus";
+import { useMessage } from "naive-ui";
+import { ElMessageBox } from "element-plus";
 import useClipboard from "vue-clipboard3";
 import { doFavourite, doStar } from "@/apis/favourite";
 import { doFollow } from "@/apis/relation";
@@ -32,7 +33,7 @@ interface propsType {
   index: number;
   onplay: number;
 }
-
+const message = useMessage();
 const props = defineProps<propsType>();
 
 const emit = defineEmits(["comment-visible-update"]);
@@ -98,10 +99,7 @@ const copy = async (msg: any) => {
     // 复制成功
   } catch (e) {
     // 复制失败
-    ElMessage({
-      type: "error",
-      message: "复制失败",
-    });
+    message.error("复制失败");
   }
 };
 
@@ -188,10 +186,7 @@ const handleShareBtn = () => {
     callback: () => {
       console.log("cpf", copyFlag.value);
       if (copyFlag.value) {
-        ElMessage({
-          type: "info",
-          message: `复制成功`,
-        });
+        message.success("复制成功");
         copyFlag.value = false;
       }
     },
@@ -206,7 +201,7 @@ const updateFollow = (flag: boolean) => {
   } else if (!flag && thisVideo.value) {
     thisVideo.value.author.is_follow = flag;
   } else {
-    ElMessage({ type: "error", message: "关注失败" });
+    message.error("关注失败");
   }
   doFollow(props.video.author.id, action).then((res: any) => {
     console.log(res);
@@ -260,7 +255,9 @@ onMounted(() => {
             @click="updateFollow(true)"
           >
             <template #icon>
-              <NIcon><Add /></NIcon>
+              <NIcon>
+                <Add />
+              </NIcon>
             </template>
           </NButton>
           <NButton
@@ -275,7 +272,9 @@ onMounted(() => {
             @click="updateFollow(false)"
           >
             <template #icon>
-              <NIcon><Checkmark /></NIcon>
+              <NIcon>
+                <Checkmark />
+              </NIcon>
             </template>
           </NButton>
           <div v-else style="height: 20px"></div>
@@ -421,6 +420,7 @@ onMounted(() => {
 
     .avatar {
       margin-bottom: -18px;
+
       .avatar-btn {
         position: relative;
         bottom: 18px;

@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-29 20:25:04
+ * @LastEditTime: 2023-10-30 16:12:37
  * @Description: 
  * @FilePath: /scooter-WSVA/frontend/src/components/UserCard.vue
 -->

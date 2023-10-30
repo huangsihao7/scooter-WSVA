@@ -11,11 +11,11 @@ import { reactive, onMounted, ref, computed } from "vue";
 import { NUpload, NUploadDragger, NIcon, NText } from "naive-ui";
 import { baseURl } from "@/axios";
 import type { UploadFileInfo } from "naive-ui";
-import { ElMessage } from "element-plus";
 import { CloudUpload } from "@vicons/ionicons5";
 import { userStore } from "@/stores/user";
 import { postVideo } from "@/apis/video";
-
+import { useMessage } from "naive-ui";
+const message = useMessage();
 interface propsType {
   videoFormVisible: boolean;
 }
@@ -86,10 +86,7 @@ const handlePostVideo = () => {
   ).then((res: any) => {
     fileUploadRef.value.clear();
     titleIptRef.value.clear();
-    ElMessage({
-      type: "success",
-      message: "上传成功",
-    });
+    message.success("上传成功");
     console.log(res);
   });
   emit("visible-update", false);
@@ -118,17 +115,11 @@ const beforeUpload = (data: {
         "video/mov",
       ].indexOf(data.file.file.type) == -1
     ) {
-      ElMessage({
-        message: "请上传正确的视频格式",
-        type: "error",
-      });
+      message.error("请上传正确的视频格式");
       return false;
     }
     if (!fileSize) {
-      ElMessage({
-        message: "视频大小不能超过100MB",
-        type: "error",
-      });
+      message.error("视频大小不能超过100MB");
       return false;
     }
   }

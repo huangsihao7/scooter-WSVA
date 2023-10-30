@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 10:52:38
+ * @LastEditTime: 2023-10-30 16:16:21
  * @Description: 
  * @FilePath: /scooter-WSVA/frontend/src/components/HeaderMenu.vue
 -->
@@ -12,9 +12,9 @@ import { userStore } from "@/stores/user";
 import { login } from "@/apis/login";
 import router from "@/router";
 import { VideoCameraFilled, CirclePlus, Search } from "@element-plus/icons-vue";
-import { ElMessage } from "element-plus";
+import { useMessage } from "naive-ui";
 import PostVedio from "@/components/video/PostVideo.vue";
-
+const message = useMessage();
 // 路由数据
 const activeIndex = ref("");
 
@@ -62,10 +62,7 @@ const doLogin = () => {
     userStore().isLoggedIn = true;
     userStore().phoneNum = form.phoneNum;
     userStore().avatar = res.avatar;
-    ElMessage({
-      message: "登录成功",
-      type: "success",
-    });
+    message.success("登录成功");
     router.push("/");
   });
   loginFormVisible.value = false;
@@ -78,10 +75,7 @@ const doLogout = () => {
   userStore().avatar = "";
   userStore().phoneNum = "";
   userStore().user_id = -1;
-  ElMessage({
-    message: "已退出",
-    type: "success",
-  });
+  message.success("已退出");
 };
 
 // 搜索
