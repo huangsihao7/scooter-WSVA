@@ -7,7 +7,6 @@ interface propsType{
 }
 
 const props = defineProps<propsType>();
-
 </script>
 
 <template>

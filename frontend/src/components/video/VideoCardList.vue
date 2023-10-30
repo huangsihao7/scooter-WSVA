@@ -1,16 +1,15 @@
 <!--
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
- * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 12:51:54
- * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardList.vue
+ * @LastEditors: huangsihao7 1057434651@qq.com
+ * @LastEditTime: 2023-10-30 14:50:34
+ * @FilePath: /scooter-WSVA/frontend/src/components/video/VideoCardList.vue
  * @Description: 
 -->
 <script lang="ts" setup>
 import { onMounted } from "vue";
-import { NTag, NIcon, NCard, NImage } from "naive-ui";
+import { NTag, NIcon, NCard, NImage, NEllipsis } from "naive-ui";
 import { Play, Heart } from "@vicons/ionicons5";
-import { NEllipsis } from "naive-ui";
 interface propsType {
   videos: any;
 }
@@ -35,17 +34,17 @@ onMounted(() => {
     style="width: calc((100vw - 260px) / 4)"
   >
     <div class="video-space" style="position: relative" @click="GetVideoLink">
-        <NImage
-          class="image-css"
-          object-fit="fill"
-          :src="info.coverUrl"
-          width="100"
-          preview-disabled
-          @click="handleShowVedio"
-        />
-        <!-- <image class="image-css"
+      <NImage
+        class="image-css"
+        object-fit="fill"
+        :src="info.coverUrl"
+        width="100"
+        preview-disabled
+        @click="handleShowVedio"
+      />
+      <!-- <image class="image-css"
           :src="info.coverUrl"></image> -->
-      
+
       <NTag class="time" round :bordered="false" type="info">
         7：26
         <template #icon>
@@ -69,7 +68,7 @@ onMounted(() => {
         </NEllipsis>
       </div>
       <div class="name">
-        <span>@ {{ info.author.name }}</span>
+        <span>@ {{ info != undefined ? "null" : info.author.name }}</span>
         <span class="date">{{ info.createTime }}</span>
       </div>
     </div>
@@ -89,18 +88,21 @@ onMounted(() => {
   margin-top: 15px;
   margin-left: 10px;
   display: inline-block;
-  
-  .n-card__content{
+
+  .n-card__content {
     height: 200px;
     width: 100%;
   }
-  .video-space{
+
+  .video-space {
     height: 100%;
     width: 100%;
-    .image-css{
+
+    .image-css {
       height: 100%;
       width: 100%;
-      img{
+
+      img {
         width: 100%;
         height: 100%;
       }

@@ -12,7 +12,14 @@ import Dplayer from "@/components/video/VideoCom.vue";
 import Hls from "hls.js";
 import { ref, reactive, onMounted, computed } from "vue";
 import { NIcon, NButton, NAvatar } from "naive-ui";
-import { Heart, ArrowRedo, ChatbubbleEllipses, Star, Add, Checkmark } from "@vicons/ionicons5";
+import {
+  Heart,
+  ArrowRedo,
+  ChatbubbleEllipses,
+  Star,
+  Add,
+  Checkmark,
+} from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
 import { ElMessageBox, ElMessage } from "element-plus";
 import useClipboard from "vue-clipboard3";
@@ -31,7 +38,7 @@ const props = defineProps<propsType>();
 const emit = defineEmits(["comment-visible-update"]);
 
 const thisVideo = ref<VideoType>();
-const userId = computed(()=>userStore().user_id)
+const userId = computed(() => userStore().user_id);
 const { toClipboard } = useClipboard();
 
 const dplayerObj = reactive({
@@ -100,14 +107,14 @@ const copy = async (msg: any) => {
 
 // 喜欢按钮的操作
 const handleLikeBtn = () => {
-  let action_type = -1
+  let action_type = -1;
   if (thisVideo.value) {
     if (!thisVideo.value?.isFavorite) {
       thisVideo.value.favoriteCount++;
-      action_type = 1
+      action_type = 1;
     } else {
       thisVideo.value.favoriteCount--;
-      action_type = 2
+      action_type = 2;
     }
     if (!thisVideo.value?.isFavorite) {
       likeAnimateClass.value = "animate__heartBeat";
@@ -117,21 +124,21 @@ const handleLikeBtn = () => {
     thisVideo.value.isFavorite = !thisVideo.value.isFavorite;
   }
   // TODO: 发请求
-  doFavourite(props.video.id, action_type).then((res:any)=>{
-    console.log(res)
-  })
+  doFavourite(props.video.id, action_type).then((res: any) => {
+    console.log(res);
+  });
 };
 
 // 收藏按钮的操作
 const handleCollectBtn = () => {
-  let action_type = -1
+  let action_type = -1;
   if (thisVideo.value) {
     if (!thisVideo.value?.starCount) {
       thisVideo.value.starCount++;
-      action_type = 1
+      action_type = 1;
     } else {
       thisVideo.value.starCount--;
-      action_type = 2
+      action_type = 2;
     }
     if (!thisVideo.value?.isStar) {
       collectAnimateClass.value = "animate__heartBeat";
@@ -140,16 +147,16 @@ const handleCollectBtn = () => {
     }
     thisVideo.value.isStar = !thisVideo.value.isStar;
   }
-  doStar(props.video.id, action_type).then((res:any)=>{
-    console.log(res)
-  })
+  doStar(props.video.id, action_type).then((res: any) => {
+    console.log(res);
+  });
 };
 
 // 评论按钮的操作
 const handleCommentBtn = () => {
   commentVisible.value = !commentVisible.value;
-  
-  emit("comment-visible-update",thisVideo);
+
+  emit("comment-visible-update", thisVideo);
 };
 
 const copyFlag = ref<boolean>(false);
@@ -191,22 +198,20 @@ const handleShareBtn = () => {
   });
 };
 
-// 关注的操作 
-const updateFollow = (flag:boolean) =>{
-  let action = (flag?1:2)
-  if(flag && thisVideo.value){
-    thisVideo.value.author.is_follow = flag
+// 关注的操作
+const updateFollow = (flag: boolean) => {
+  let action = flag ? 1 : 2;
+  if (flag && thisVideo.value) {
+    thisVideo.value.author.is_follow = flag;
+  } else if (!flag && thisVideo.value) {
+    thisVideo.value.author.is_follow = flag;
+  } else {
+    ElMessage({ type: "error", message: "关注失败" });
   }
-  else if(!flag && thisVideo.value){
-    thisVideo.value.author.is_follow = flag
-  }
-  else{
-    ElMessage({type:'error', message:'关注失败'})
-  }
-  doFollow(props.video.author.id, action).then((res:any)=>{
-    console.log(res)
-  })
-}
+  doFollow(props.video.author.id, action).then((res: any) => {
+    console.log(res);
+  });
+};
 
 const likeAnimateClass = ref<String>("");
 const collectAnimateClass = ref<String>("");
@@ -223,7 +228,7 @@ onMounted(() => {
   <div>
     <div class="video-container">
       <Dplayer
-        :videoId = "dplayerObj.videoId"
+        :video-id="dplayerObj.videoId"
         :video="dplayerObj.video"
         :danmaku="dplayerObj.danmaku"
         :contextmenu="dplayerObj.contextmenu"
@@ -240,24 +245,40 @@ onMounted(() => {
       </div>
       <div class="video-interaction-box">
         <div class="avatar">
-          <div >
-            <n-avatar
-              round
-              size="medium"
-              :src="thisVideo?.author.avatar"
-            />
+          <div>
+            <NAvatar round size="medium" :src="thisVideo?.author.avatar" />
           </div>
-          <n-button color="#ffa51d8f" @click="updateFollow(true)" v-if="!thisVideo?.author.is_follow && thisVideo?.author.id != userId " class="avatar-btn animate__bounceIn" size="tiny" circle type="warning">
+          <NButton
+            v-if="
+              !thisVideo?.author.is_follow && thisVideo?.author.id != userId
+            "
+            color="#ffa51d8f"
+            class="avatar-btn animate__bounceIn"
+            size="tiny"
+            circle
+            type="warning"
+            @click="updateFollow(true)"
+          >
             <template #icon>
-              <n-icon><Add /></n-icon>
+              <NIcon><Add /></NIcon>
             </template>
-          </n-button>
-          <n-button color="#ffa51d8f" @click="updateFollow(false)" v-else-if="thisVideo?.author.is_follow && thisVideo?.author.id != userId" class="avatar-btn animate__bounceIn" size="tiny" circle type="warning">
+          </NButton>
+          <NButton
+            v-else-if="
+              thisVideo?.author.is_follow && thisVideo?.author.id != userId
+            "
+            color="#ffa51d8f"
+            class="avatar-btn animate__bounceIn"
+            size="tiny"
+            circle
+            type="warning"
+            @click="updateFollow(false)"
+          >
             <template #icon>
-              <n-icon><Checkmark /></n-icon>
+              <NIcon><Checkmark /></NIcon>
             </template>
-          </n-button>
-          <div style="height:20px" v-else></div>
+          </NButton>
+          <div v-else style="height: 20px"></div>
         </div>
         <div class="like">
           <div :class="likeAnimateClass">
@@ -397,10 +418,10 @@ onMounted(() => {
     right: 0;
     height: 360px;
     padding: 0 20px;
-    
-    .avatar{
+
+    .avatar {
       margin-bottom: -18px;
-      .avatar-btn{
+      .avatar-btn {
         position: relative;
         bottom: 18px;
       }
@@ -420,7 +441,7 @@ onMounted(() => {
       p {
         display: block;
         margin: 0;
-        color:#fff;
+        color: #fff;
       }
     }
   }

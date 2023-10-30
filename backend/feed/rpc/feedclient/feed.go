@@ -34,6 +34,7 @@ type (
 		ListVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 		ListCategoryVideos(ctx context.Context, in *CategoryFeedRequest, opts ...grpc.CallOption) (*CategoryFeedResponse, error)
 		ListPopularVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
+		CreateVideoTest(ctx context.Context, in *CreateVideoRequest, opts ...grpc.CallOption) (*CreateVideoResponse, error)
 	}
 
 	defaultFeed struct {
@@ -76,4 +77,9 @@ func (m *defaultFeed) ListCategoryVideos(ctx context.Context, in *CategoryFeedRe
 func (m *defaultFeed) ListPopularVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error) {
 	client := feed.NewFeedClient(m.cli.Conn())
 	return client.ListPopularVideos(ctx, in, opts...)
+}
+
+func (m *defaultFeed) CreateVideoTest(ctx context.Context, in *CreateVideoRequest, opts ...grpc.CallOption) (*CreateVideoResponse, error) {
+	client := feed.NewFeedClient(m.cli.Conn())
+	return client.CreateVideoTest(ctx, in, opts...)
 }

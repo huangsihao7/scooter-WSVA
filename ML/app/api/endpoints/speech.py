@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import List, Tuple
 
 import ffmpeg
 import numpy as np
@@ -27,25 +27,29 @@ whisper_model = WhisperForConditionalGeneration.from_pretrained(
 ).to(settings.DEVICE)
 
 
-def load_audio(file: str, sr: int = 16000) -> np.ndarray:
+def load_audio(file: str, sr: int = 16000) -> Tuple[np.ndarray, float]:
     try:
         out, _ = (
             ffmpeg.input(file, threads=0)
             .output("-", format="s16le", acodec="pcm_s16le", ac=1, ar=sr)
             .run(cmd=["ffmpeg", "-nostdin"], capture_stdout=True, capture_stderr=True)
         )
+        probe = ffmpeg.probe(
+            file, v="quiet", select_streams="v:0", show_entries="format=duration"
+        )
+        duration = float(probe["format"]["duration"])
     except ffmpeg.Error as e:
         raise RuntimeError(f"Failed to load audio: {e.stderr.decode()}") from e
 
-    return np.frombuffer(out, np.int16).flatten().astype(np.float32) / 32768.0
+    return np.frombuffer(out, np.int16).flatten().astype(np.float32) / 32768.0, duration
 
 
-def _video2text(filename: str, url: str, sampling_rate=16000) -> str:
+def _video2text(filename: str, url: str, sampling_rate=16000) -> Tuple[str, float]:
     """
     视频语音识别文字提取
     """
     download_url(url, settings.CACHE_ROOT_DIR, filename)
-    audio = load_audio(f"{settings.CACHE_ROOT_DIR}/{filename}")
+    audio, duration = load_audio(f"{settings.CACHE_ROOT_DIR}/{filename}")
     input_features = whisper_processor(
         audio,
         sampling_rate=sampling_rate,
@@ -67,7 +71,7 @@ def _video2text(filename: str, url: str, sampling_rate=16000) -> str:
     except Exception:
         pass
     logger.info(f"视频文字:{split}")
-    return split
+    return split, duration
 
 
 def _textsummary(text: str) -> str:
@@ -116,7 +120,7 @@ async def video2text(
     """
     filename = video_url.__str__().split("/")[-1]
     url = video_url.__str__()
-    return _video2text(filename, url)
+    return _video2text(filename, url)[0]
 
 
 @router.get("/video2summary", response_model=str)
@@ -129,7 +133,7 @@ async def video2summary(
     """
     filename = video_url.__str__().split("/")[-1]
     url = video_url.__str__()
-    text = _video2text(filename, url)
+    text, _ = _video2text(filename, url)
     return _textsummary(text)
 
 
@@ -143,7 +147,7 @@ async def video2keyword(
     """
     filename = video_url.__str__().split("/")[-1]
     url = video_url.__str__()
-    text = _video2text(filename, url)
+    text, _ = _video2text(filename, url)
     return _textkeyword(text)
 
 
@@ -157,7 +161,9 @@ async def video2keywordAndSummary(
     """
     filename = video_url.__str__().split("/")[-1]
     url = video_url.__str__()
-    text = _video2text(filename, url)
+    text, duration = _video2text(filename, url)
     keywords = _textkeyword(text)
     summary = _textsummary(text)
-    return VideoSummaryKeyword(keywords=keywords, summary=summary, text=text)
+    return VideoSummaryKeyword(
+        keywords=keywords, summary=summary, text=text, duration=duration
+    )

@@ -10,6 +10,10 @@ type Config struct {
 		Brokers []string
 		Topic   string
 	}
+	KqPusherTesTConf struct {
+		Brokers []string
+		Topic   string
+	}
 	DB struct {
 		DataSource   string
 		MaxOpenConns int `json:",default=10"`

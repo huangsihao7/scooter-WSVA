@@ -93,4 +93,5 @@ service Feed {
    rpc ListVideos(ListFeedRequest) returns (ListFeedResponse);
    rpc ListCategoryVideos(CategoryFeedRequest) returns (CategoryFeedResponse);
    rpc ListPopularVideos(ListFeedRequest) returns (ListFeedResponse);
+   rpc CreateVideoTest(CreateVideoRequest) returns (CreateVideoResponse) {}
 }

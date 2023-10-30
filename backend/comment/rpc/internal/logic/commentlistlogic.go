@@ -44,12 +44,15 @@ func (l *CommentListLogic) CommentList(in *comment.CommentListRequest) (*comment
 		return nil, err
 	}
 
-	// 检查视频id 是否存在
+	// 检查视频id 是否存在 ddd
 	_, err = l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
 		if err == model.ErrNotFound {
 			log.Println("视频不存在")
-			return nil, errors.New("评论视频不存在")
+			return &comment.CommentListResponse{
+				StatusCode: constants.UnableToQueryCommentErrorCode,
+				StatusMsg:  constants.UnableToQueryVideoError,
+			}, nil
 		}
 		return nil, err
 	}

@@ -12,8 +12,8 @@ const drawerVisible = ref<boolean>(false);
 const currentVideoIndex = ref<number>(0);
 const lastVideoIndex = ref<number>(0);
 const videos = ref<Array<VideoType>>();
-const commentlists = ref<any>()
-const defaultLoad:number = 4
+const defaultLoad: number = 4;
+const commentlists = ref<any>();
 
 onMounted(() => {
   getRecommendVideos(0).then((res: any) => {
@@ -22,13 +22,13 @@ onMounted(() => {
 });
 
 // 更新评论区可见状态
-const updateVisible = ((thisVideo:any) => {
+const updateVisible = (thisVideo: any) => {
   drawerVisible.value = !drawerVisible.value;
   console.log(thisVideo.value.id)
   getCommentList(thisVideo.value.id).then((res:any)=>{
     commentlists.value = res.comment_list
   })
-});
+}
 
 const carouselRef = ref<any>();
 
@@ -44,15 +44,14 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
   console.log("hello", currentIndex, lastIndex);
   currentVideoIndex.value = currentIndex;
   lastVideoIndex.value = lastIndex;
-  if(currentIndex>lastIndex){
-    let offset = defaultLoad + currentIndex
+  if (currentIndex > lastIndex) {
+    let offset = defaultLoad + currentIndex;
     getRecommendVideos(offset).then((res: any) => {
-      videos.value?.push(res.videos[0])
-      console.log(videos.value)
+      videos.value?.push(res.videos[0]);
+      console.log(videos.value);
     });
   }
 };
-
 </script>
 
 <template>
@@ -92,7 +91,7 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
     to="#drawer-target"
   >
     <NDrawerContent title="评论" :native-scrollbar="false">
-      <CommentListCom :commentlists="commentlists"/>
+      <CommentListCom :commentlists="commentlists" />
     </NDrawerContent>
   </NDrawer>
 </template>

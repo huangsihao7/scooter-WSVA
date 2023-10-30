@@ -22,6 +22,7 @@ type ServiceContext struct {
 	DB             *orm.DB
 	VideoModel     *gmodel.VideoModel
 	StarModel      *starModel.StarModel
+	KqPusherTestClient *kq.Pusher
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -39,5 +40,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		KqPusherClient: kq.NewPusher(c.KqPusherConf.Brokers, c.KqPusherConf.Topic),
 		VideoModel:     gmodel.NewFavoriteModel(db.DB),
 		StarModel:      starModel.NewStarModel(db.DB),
+		KqPusherTestClient: kq.NewPusher(c.KqPusherTesTConf.Brokers, c.KqPusherTesTConf.Topic),
 	}
 }

@@ -13,11 +13,11 @@ import (
 	"github.com/zeromicro/go-zero/rest"
 )
 
-var configFile = flag.String("f", "etc/feed-api.yaml", "the config file")
+var configFile = flag.String("f", "etc/feed-api-dev.yaml", "the config file")
 
 func main() {
 	flag.Parse()
-	//dfwsffeffsw
+
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
