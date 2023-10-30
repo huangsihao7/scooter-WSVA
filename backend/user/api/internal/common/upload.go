@@ -13,8 +13,6 @@ func UserUpload(accessKey, secretKey, bucket string, filepath string) (string, e
 	fileURL := ""
 	mac := qbox.NewMac(accessKey, secretKey)
 
-	//path := filepath.Join("./", fileName)
-
 	putPolicy := storage.PutPolicy{
 		Scope: bucket,
 	}
@@ -44,6 +42,7 @@ func UserUpload(accessKey, secretKey, bucket string, filepath string) (string, e
 
 	baseURL := "http://s327crbzf.hn-bkt.clouddn.com"
 	fileURL = baseURL + "/" + key
+	fmt.Println(upToken)
 
 	return fileURL, nil
 }

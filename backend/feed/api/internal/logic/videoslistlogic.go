@@ -40,7 +40,7 @@ func (l *VideosListLogic) VideosList() (resp *types.VideosListResp, err error) {
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range videos.VideoList {
 		resList = append(resList, types.VideoInfo{
-			Id: int64(item.Id),
+			VideoId: int64(item.Id),
 			Author: types.UserInfo{
 				Id:             item.Author.Id,
 				Name:           item.Author.Name,

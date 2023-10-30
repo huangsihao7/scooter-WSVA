@@ -32,6 +32,7 @@ type CommentInfo struct {
 type User struct {
 	Id             uint32 `json:"id"`
 	Name           string `json:"name"`
+	Gender         uint32 `json:"gender"`
 	Avatar         string `json:"avatar"`
 	Signature      string `json:"signature"`
 	FollowCount    uint32 `json:"follow_count"`

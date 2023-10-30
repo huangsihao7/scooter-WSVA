@@ -20,21 +20,21 @@ type UserVideoListReq struct {
 type UserVideoListResp struct {
 	StatusCode int         `json:"status_code"`
 	StatusMsg  string      `json:"status_msg"`
-	Videos     []VideoInfo `json:"videos"`
+	VideoList  []VideoInfo `json:"video_list"`
 }
 
 type VideoInfo struct {
-	Id            int64    `json:"id"`
+	VideoId       int64    `json:"video_id"`
 	Author        UserInfo `json:"author"`
-	PlayUrl       string   `json:"playUrl"`
-	CoverUrl      string   `json:"coverUrl"`
-	FavoriteCount int64    `json:"favoriteCount"`
-	StarCount     int64    `json:"starCount"`
-	CommentCount  int64    `json:"commentCount"`
-	IsFavorite    bool     `json:"isFavorite"`
-	IsStar        bool     `json:"isStar"`
+	PlayUrl       string   `json:"play_url"`
+	CoverUrl      string   `json:"cover_url"`
+	FavoriteCount int64    `json:"favorite_count"`
+	CommentCount  int64    `json:"comment_count"`
+	StarCount     int64    `json:"star_count"`
+	IsStar        bool     `json:"is_star"`
+	IsFavorite    bool     `json:"is_favorite"`
 	Title         string   `json:"title"`
-	CreateTime    string   `json:"createTime"`
+	CreateTime    string   `json:"create_time"`
 }
 
 type UserInfo struct {

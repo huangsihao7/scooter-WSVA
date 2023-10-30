@@ -39,6 +39,7 @@ func (l *GetCommentListLogic) GetCommentList(req *types.ListReq) (resp *types.Li
 			Name:           res.CommentList[i].User.Name,
 			FollowCount:    *res.CommentList[i].User.FollowCount,
 			FollowerCount:  *res.CommentList[i].User.FollowerCount,
+			Gender:         res.CommentList[i].User.Gender,
 			IsFollow:       res.CommentList[i].User.IsFollow,
 			Avatar:         *res.CommentList[i].User.Avatar,
 			Signature:      *res.CommentList[i].User.Signature,

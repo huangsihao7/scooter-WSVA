@@ -73,6 +73,7 @@ func (l *CommentListLogic) CommentList(in *comment.CommentListRequest) (*comment
 			Id:             userInfo.User.Id,
 			Name:           userInfo.User.Name,
 			FollowCount:    userInfo.User.FollowCount,
+			Gender:         userInfo.User.Gender,
 			FollowerCount:  userInfo.User.FollowerCount,
 			IsFollow:       userInfo.User.IsFollow,
 			Avatar:         userInfo.User.Avatar,

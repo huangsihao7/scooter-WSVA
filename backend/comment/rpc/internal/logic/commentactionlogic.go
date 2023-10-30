@@ -77,6 +77,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 			FavoriteCount: videoDetail.FavoriteCount,
 			CommentCount:  videoDetail.CommentCount + 1,
 			Category:      videoDetail.Category,
+			CreatedAt:     videoDetail.CreatedAt,
 		})
 		if err != nil {
 			log.Println(err.Error())
@@ -106,6 +107,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 			FavoriteCount: videoDetail.FavoriteCount,
 			CommentCount:  videoDetail.CommentCount - 1,
 			Category:      videoDetail.Category,
+			CreatedAt:     videoDetail.CreatedAt,
 		})
 		if err != nil {
 			log.Println(err.Error())

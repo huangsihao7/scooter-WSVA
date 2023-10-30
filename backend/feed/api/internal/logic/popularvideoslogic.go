@@ -52,7 +52,7 @@ func (l *PopularVideosLogic) PopularVideos(req *types.PopularVideosListReq) (res
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range popular.VideoList {
 		resList = append(resList, types.VideoInfo{
-			Id: int64(item.Id),
+			VideoId: int64(item.Id),
 			Author: types.UserInfo{
 				Id:             item.Author.Id,
 				Name:           item.Author.Name,

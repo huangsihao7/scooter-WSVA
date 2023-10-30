@@ -50,7 +50,7 @@ func (l *RecommendVideosLogic) RecommendVideos(req *types.RecommendVideosListReq
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range recommend.VideoList {
 		resList = append(resList, types.VideoInfo{
-			Id: int64(item.Id),
+			VideoId: int64(item.Id),
 			Author: types.UserInfo{
 				Id:             item.Author.Id,
 				Name:           item.Author.Name,
