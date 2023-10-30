@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 20:29:49
+ * @LastEditTime: 2023-10-30 22:41:37
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\myHeaderCom.vue
 -->
@@ -27,7 +27,10 @@ const editVisible = ref<boolean>(false);
 
 // 获取用户信息
 const getUserInfoFunc = () => {
-  getUserInfo(props.userId).then((res: any) => {
+  // 别删 很诡异的错误 userId会显示string，必须转两下才能变成int
+  let uid = props.userId.toString()
+  let uid_num = parseInt(uid)
+  getUserInfo(uid_num).then((res: any) => {
     userInfo.value = res.user;
   });
 };

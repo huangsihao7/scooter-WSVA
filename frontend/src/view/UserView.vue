@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-05-08 15:29:52
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 20:36:04
+ * @LastEditTime: 2023-10-30 22:35:45
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\view\UserView.vue
 -->
@@ -29,10 +29,10 @@ onMounted(() => {
 <template>
   <div class="user">
     <div class="header">
-      <MyHeaderCom v-if="passUserId" :user-id="passUserId" />
+      <MyHeaderCom v-if="passUserId" :userId="passUserId" />
     </div>
     <div class="interaction">
-      <MyInteractCom />
+      <MyInteractCom v-if="passUserId" :userId="passUserId"  />
     </div>
   </div>
 </template>

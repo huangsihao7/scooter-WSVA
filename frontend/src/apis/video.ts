@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-29 13:04:21
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 20:49:37
+ * @LastEditTime: 2023-10-30 22:50:26
  * @FilePath: \scooter-WSVA\frontend\src\apis\video.ts
  * @Description: 视频接口
  */
@@ -55,6 +55,13 @@ export function getVideosList() {
 export function getCategoryVideosList(category: number) {
   return service({
     url: `/feed/CategoryVideosList?category=${category}`, // 使用字符串模板来拼接runId
+    method: "get",
+  });
+}
+
+export function getHistoryVideosListReq() {
+  return service({
+    url: `/feed/history`, 
     method: "get",
   });
 }
