@@ -3,6 +3,7 @@ module github.com/huangsihao7/scooter-WSVA
 go 1.19
 
 require (
+	github.com/elastic/go-elasticsearch/v8 v8.10.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/qiniu/go-sdk/v7 v7.18.2
@@ -26,6 +27,7 @@ require (
 	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
+	github.com/elastic/elastic-transport-go/v8 v8.3.0 // indirect
 	github.com/emicklei/go-restful/v3 v3.9.0 // indirect
 	github.com/fatih/color v1.15.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
