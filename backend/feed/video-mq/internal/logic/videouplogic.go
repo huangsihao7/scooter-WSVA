@@ -30,9 +30,30 @@ func NewThumbupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ThumbupLo
 
 func (l *ThumbupLogic) Consume(key, val string) error {
 
-	logx.Infof("Consume msg val: %s", val)
+	var data map[string]interface{}
+	err := json.Unmarshal([]byte(val), &data)
+	if err != nil {
+		fmt.Println("解析JSON失败:", err)
+		return err
+	}
+
+	keywords := []string{"title", "content", "name", "dec"}
+
+	flag := true
+	for _, keyword := range keywords {
+		if strings.Contains(val, keyword) {
+			flag = false
+			break
+		}
+	}
+
+	if flag {
+		logx.Infof("未满足条件消费")
+		return nil
+	}
+
 	var msg *types.CanalArticleMsg
-	err := json.Unmarshal([]byte(val), &msg)
+	err = json.Unmarshal([]byte(val), &msg)
 	if err != nil {
 		logx.Errorf("Consume val: %s error: %v", val, err)
 		return err
@@ -55,7 +76,7 @@ func (l *ThumbupLogic) BatchUpSertToEs(ctx context.Context, data []*types.VideoE
 
 	bi, err := esutil.NewBulkIndexer(esutil.BulkIndexerConfig{
 		Client: l.svcCtx.Es.Client,
-		Index:  "article-index",
+		Index:  "video-index",
 	})
 	if err != nil {
 		return err
@@ -151,11 +172,14 @@ func (l *ThumbupLogic) articleOperate(msg *types.CanalArticleMsg) error {
 			StarCount:     int(starCount),
 			CommentCount:  uint(commentCount),
 			Category:      int(category),
+			Content:       d.Content,
+			Name:          d.Name,
+			Dec:           d.Dec,
 		})
 	}
 	err := l.BatchUpSertToEs(l.ctx, esData)
 	if err != nil {
-		l.Logger.Errorf("BatchUpSertToEs data: %v error: %v", esData, err)
+		l.Logger.Errorf("BatchUpToEs data: %v error: %v", esData, err)
 	}
 	logx.Info("上传成功")
 	return err

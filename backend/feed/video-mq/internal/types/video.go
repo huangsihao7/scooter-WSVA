@@ -12,7 +12,10 @@ type VideoEsMsg struct {
 	//CreatedAt     sql.NullTime   `gorm:"column:created_at;type:datetime;default:CURRENT_TIMESTAMP" json:"created_at"`
 	//UpdatedAt     sql.NullTime   `gorm:"column:updated_at;type:datetime" json:"updated_at"`
 	//DeletedAt     sql.NullTime   `gorm:"column:deleted_at;type:datetime" json:"deleted_at"`
-	Category int `json:"category"`
+	Category int    `json:"category"`
+	Content  string `json:"content"`
+	Name     string `json:"name"`
+	Dec      string `json:"dec"`
 	//Duration      sql.NullString `gorm:"column:duration;type:varchar(255);comment:视频时长" json:"duration"`
 }
 
@@ -27,9 +30,12 @@ type CanalArticleMsg struct {
 		StarCount     string `json:"star_count"`
 		CommentCount  string `json:"comment_count"`
 		CreatedAt     string `json:"created_at"`
+		Category      string `json:"category"`
+		Content       string `json:"content"`
+		Name          string `json:"name"`
+		Dec           string `json:"dec"`
 		//UpdatedAt     sql.NullTime   `gorm:"column:updated_at;type:datetime" json:"updated_at"`
 		//DeletedAt     sql.NullTime   `gorm:"column:deleted_at;type:datetime" json:"deleted_at"`
-		Category string `json:"category"`
 		//Duration      sql.NullString `gorm:"column:duration;type:varchar(255);comment:视频时长" json:"duration"`
 	}
 }
