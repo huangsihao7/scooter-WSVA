@@ -1,3 +1,11 @@
+/*
+ * @Author: huangsihao7
+ * @Date: 2023-10-29 13:04:21
+ * @LastEditors: huangsihao7 1057434651@qq.com
+ * @LastEditTime: 2023-10-30 09:48:38
+ * @FilePath: /scooter-WSVA/frontend/src/apis/video.ts
+ * @Description: 视频接口
+ */
 import { service } from "@/axios";
 
 export function postVideo(
@@ -13,7 +21,7 @@ export function postVideo(
   });
 }
 
-export function userVideoListReq(toUid: string) {
+export function userVideoListReq(toUid: number) {
   return service({
     url: "/feed/UserVideosList",
     method: "post",

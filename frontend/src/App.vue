@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-29 19:48:20
+ * @LastEditTime: 2023-10-30 10:48:50
  * @Description: 
  * @FilePath: /scooter-WSVA/frontend/src/App.vue
 -->
@@ -10,27 +10,31 @@
 import { RouterView } from "vue-router";
 import SubMenu from "./components/SubMenu.vue";
 import HeaderMenu from "./components/HeaderMenu.vue";
-import { NMessageProvider } from "naive-ui";
-// import HomeView from './view/HomeView.vue'
+import {
+  NLayout,
+  NLayoutHeader,
+  NLayoutSider,
+  NMessageProvider,
+} from "naive-ui";
 </script>
 
 <template>
   <!-- App.vue -->
   <NMessageProvider>
     <div class="common-layout">
-      <ElContainer class="common-layout">
-        <ElHeader>
+      <NLayout class="common-layout">
+        <NLayoutHeader>
           <HeaderMenu />
-        </ElHeader>
-        <ElContainer>
-          <ElAside>
+        </NLayoutHeader>
+        <NLayout has-sider>
+          <NLayoutSider>
             <SubMenu />
-          </ElAside>
-          <ElMain>
+          </NLayoutSider>
+          <NLayout>
             <RouterView />
-          </ElMain>
-        </ElContainer>
-      </ElContainer>
+          </NLayout>
+        </NLayout>
+      </NLayout>
     </div>
   </NMessageProvider>
 </template>

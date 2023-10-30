@@ -2,14 +2,14 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
 <<<<<<< HEAD
- * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 21:39:27
+ * @LastEditors: huangsihao7 1057434651@qq.com
+ * @LastEditTime: 2023-10-30 09:54:45
 =======
  * @LastEditors: huangsihao7 1057434651@qq.com
  * @LastEditTime: 2023-10-29 17:10:55
 >>>>>>> 089035e1c344f42cd2d507345963a9e9fbe4810c
  * @Description: 视频基础组件
- * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCom.vue
+ * @FilePath: /scooter-WSVA/frontend/src/components/video/VideoCom.vue
 -->
 
 <template>
@@ -118,7 +118,7 @@ const props = defineProps({
       type: "mp4",
       customType: {
         customHls: function (video: any, player: any) {
-          console.log(player);
+          // console.log(player);
           const hls = new Hls(); //实例化Hls  用于解析m3u8
           hls.loadSource(video.src);
           hls.attachMedia(video);
@@ -197,7 +197,7 @@ onMounted(() => {
     player.autoplay = true;
     state.instance = new DPlayer(player);
     // state.instance.video.play()
-    console.log(state.instance);
+    // console.log(state.instance);
   } else {
     player.autoplay = false;
     state.instance = new DPlayer(player);
