@@ -3,11 +3,9 @@ package logic
 import (
 	"context"
 	"encoding/json"
-	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
-	"log"
-
 	"github.com/huangsihao7/scooter-WSVA/comment/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/comment/api/internal/types"
+	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -33,7 +31,6 @@ func (l *GetCommentListLogic) GetCommentList(req *types.ListReq) (resp *types.Li
 	usrId, _ := l.ctx.Value("uid").(json.Number).Int64()
 
 	res, err := l.svcCtx.Commenter.CommentList(l.ctx, &comment.CommentListRequest{UserId: usrId, VideoId: req.VideoId})
-	log.Println(res)
 	resLists := make([]types.CommentInfo, 0)
 
 	for i := 0; i < len(res.CommentList); i++ {

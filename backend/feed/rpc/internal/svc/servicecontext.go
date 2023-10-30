@@ -13,13 +13,14 @@ import (
 )
 
 type ServiceContext struct {
-	Config         config.Config
-	FeedModel      model.VideosModel
-	FavorModel     model2.FavoritesModel
-	UserRpc        usesrv.UseSrv
-	KqPusherClient *kq.Pusher
-	DB             *orm.DB
-	VideoModel     *gmodel.VideoModel
+	Config             config.Config
+	FeedModel          model.VideosModel
+	FavorModel         model2.FavoritesModel
+	UserRpc            usesrv.UseSrv
+	KqPusherClient     *kq.Pusher
+	DB                 *orm.DB
+	VideoModel         *gmodel.VideoModel
+	KqPusherTestClient *kq.Pusher
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -30,11 +31,12 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		MaxLifetime:  c.DB.MaxLifetime,
 	})
 	return &ServiceContext{
-		Config:         c,
-		FeedModel:      model.NewVideosModel(sqlx.NewMysql(c.DataSource)),
-		FavorModel:     model2.NewFavoritesModel(sqlx.NewMysql(c.DataSource)),
-		UserRpc:        usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
-		KqPusherClient: kq.NewPusher(c.KqPusherConf.Brokers, c.KqPusherConf.Topic),
-		VideoModel:     gmodel.NewFavoriteModel(db.DB),
+		Config:             c,
+		FeedModel:          model.NewVideosModel(sqlx.NewMysql(c.DataSource)),
+		FavorModel:         model2.NewFavoritesModel(sqlx.NewMysql(c.DataSource)),
+		UserRpc:            usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
+		KqPusherClient:     kq.NewPusher(c.KqPusherConf.Brokers, c.KqPusherConf.Topic),
+		VideoModel:         gmodel.NewFavoriteModel(db.DB),
+		KqPusherTestClient: kq.NewPusher(c.KqPusherTesTConf.Brokers, c.KqPusherTesTConf.Topic),
 	}
 }

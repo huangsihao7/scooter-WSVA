@@ -1,0 +1,21 @@
+Name: user.rpc
+ListenOn: 0.0.0.0:8010
+Etcd:
+  Hosts:
+  - 172.22.110.66:2444
+  Key: user.rpc
+DataSource: root:8691136f0fc946ffb141307209d3143f@tcp(172.22.110.66:3310)/qiniu?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+
+Cache:
+  - Host: 172.22.110.66:6388
+Salt: HWVOFkGgPTryzICwd7qnJaZR9KQ2i8xe
+#FavoriteRpc:
+#  Etcd:
+#    Hosts:
+#      - 172.22.121.53:2479
+#    Key: favorite.rpc
+#RelationRpc:
+#  Etcd:
+#    Hosts:
+#      - 172.22.121.53:2479
+#    Key: relation.rpc

@@ -1,0 +1,10 @@
+Name: mq
+KqConsumerConf:
+  Name: like-kq-consumer
+  Brokers:
+    - 172.22.121.54:9092
+  Group: kqConsumer
+  Topic: testVideos
+  Offset: last
+  Consumers: 1
+  Processors: 1

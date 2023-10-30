@@ -52,3 +52,8 @@ func (s *FeedServer) ListPopularVideos(ctx context.Context, in *feed.ListFeedReq
 	l := logic.NewListPopularVideosLogic(ctx, s.svcCtx)
 	return l.ListPopularVideos(in)
 }
+
+func (s *FeedServer) CreateVideoTest(ctx context.Context, in *feed.CreateVideoRequest) (*feed.CreateVideoResponse, error) {
+	l := logic.NewCreateVideoTestLogic(ctx, s.svcCtx)
+	return l.CreateVideoTest(in)
+}
