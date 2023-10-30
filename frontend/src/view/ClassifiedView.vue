@@ -33,7 +33,7 @@ onMounted(() => {
   let typeCode = VideoTypeMap[videoType.value]
   console.log(typeCode)
   if(typeCode == 0){
-
+    console.log('TODO')
   }else{
     getCategoryVideosList(typeCode).then((res:any)=>{
       videos.value = res.videos
