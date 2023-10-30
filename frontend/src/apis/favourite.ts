@@ -21,3 +21,10 @@ export function doFavourite(video_id: number, action_type: number) {
     },
   });
 }
+
+export function userFavouriteListReq(uid: number) {
+  return service({
+    url: `/favorite/list?uid=${uid}`,
+    method: "get",
+  });
+}

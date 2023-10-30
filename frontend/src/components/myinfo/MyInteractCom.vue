@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:41
  * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 13:28:02
+ * @LastEditTime: 2023-10-30 14:47:58
  * @Description: 
  * @FilePath: /scooter-WSVA/frontend/src/components/myinfo/MyInteractCom.vue
 -->
@@ -32,17 +32,28 @@ import { NTabs, NTabPane } from "naive-ui";
 import VideoCard from "../VideoCard.vue";
 import { userStore } from "@/stores/user";
 import { userVideoListReq } from "@/apis/video";
+import { userFavouriteListReq } from "@/apis/favourite";
 import { onMounted, ref } from "vue";
 const videos = ref<any>();
 onMounted(() => {
+  getMyWork();
+});
+const getMyWork = () => {
   userVideoListReq(userStore().user_id).then((res: any) => {
     videos.value = res.videos;
-    // videos.value.push(res.videos[0]);
   });
-});
-
-const handleUpdate = (_a: any) => {
-  console.log(_a);
+};
+const getMyFavourite = () => {
+  userFavouriteListReq(userStore().user_id).then((res: any) => {
+    videos.value = res.video_list;
+  });
+};
+const handleUpdate = (paneName: string) => {
+  if (paneName === "work") {
+    getMyWork();
+  } else if (paneName === "favourite") {
+    getMyFavourite();
+  }
 };
 </script>
 <style>
