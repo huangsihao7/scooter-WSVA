@@ -72,3 +72,8 @@ func (s *FeedServer) ListNeighborVideos(ctx context.Context, in *feed.NeighborsR
 	l := logic.NewListNeighborVideosLogic(ctx, s.svcCtx)
 	return l.ListNeighborVideos(in)
 }
+
+func (s *FeedServer) DeleteVideo(ctx context.Context, in *feed.DeleteVideoReq) (*feed.DeleteVideoResp, error) {
+	l := logic.NewDeleteVideoLogic(ctx, s.svcCtx)
+	return l.DeleteVideo(in)
+}

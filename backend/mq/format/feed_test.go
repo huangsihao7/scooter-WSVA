@@ -4,11 +4,10 @@ import (
 	"testing"
 )
 
-func TestFeedback(t *testing.T) {
-	feedType := "like"
-	vid := 60
-	uid := 5
+func TestDeleteHttp(t *testing.T) {
+	url := "http://172.22.121.54:8088/api/item/80"
 
-	Feedback(feedType, vid, uid)
+	err := DeleteHttp(url)
+	println(err)
 
 }

@@ -62,6 +62,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/feed/neighbors",
 				Handler: NeighborsVideosHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/feed/deleteViedo",
+				Handler: DeleteVideoHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)

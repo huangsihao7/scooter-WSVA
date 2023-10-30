@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -75,4 +76,25 @@ func Feedback(feedType string, vid int, uid int) {
 		return
 	}
 	fmt.Println("上传反馈成功", string(s))
+}
+
+func DeleteHttp(url string) error {
+	req, err := http.NewRequest(http.MethodDelete, url, nil)
+	if err != nil {
+		return err
+	}
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusOK {
+		fmt.Println("删除成功")
+		return nil
+	} else {
+		fmt.Println("删除失败")
+		return errors.New("删除失败")
+	}
 }

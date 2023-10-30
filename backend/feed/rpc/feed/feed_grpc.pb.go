@@ -29,6 +29,7 @@ const (
 	Feed_VideoDuration_FullMethodName         = "/feed.Feed/VideoDuration"
 	Feed_ListHistoryVideos_FullMethodName     = "/feed.Feed/ListHistoryVideos"
 	Feed_ListNeighborVideos_FullMethodName    = "/feed.Feed/ListNeighborVideos"
+	Feed_DeleteVideo_FullMethodName           = "/feed.Feed/DeleteVideo"
 )
 
 // FeedClient is the client API for Feed service.
@@ -46,6 +47,7 @@ type FeedClient interface {
 	VideoDuration(ctx context.Context, in *VideoDurationReq, opts ...grpc.CallOption) (*VideoDurationResp, error)
 	ListHistoryVideos(ctx context.Context, in *HistoryReq, opts ...grpc.CallOption) (*HistoryResp, error)
 	ListNeighborVideos(ctx context.Context, in *NeighborsReq, opts ...grpc.CallOption) (*NeighborsResp, error)
+	DeleteVideo(ctx context.Context, in *DeleteVideoReq, opts ...grpc.CallOption) (*DeleteVideoResp, error)
 }
 
 type feedClient struct {
@@ -146,6 +148,15 @@ func (c *feedClient) ListNeighborVideos(ctx context.Context, in *NeighborsReq, o
 	return out, nil
 }
 
+func (c *feedClient) DeleteVideo(ctx context.Context, in *DeleteVideoReq, opts ...grpc.CallOption) (*DeleteVideoResp, error) {
+	out := new(DeleteVideoResp)
+	err := c.cc.Invoke(ctx, Feed_DeleteVideo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FeedServer is the server API for Feed service.
 // All implementations must embed UnimplementedFeedServer
 // for forward compatibility
@@ -161,6 +172,7 @@ type FeedServer interface {
 	VideoDuration(context.Context, *VideoDurationReq) (*VideoDurationResp, error)
 	ListHistoryVideos(context.Context, *HistoryReq) (*HistoryResp, error)
 	ListNeighborVideos(context.Context, *NeighborsReq) (*NeighborsResp, error)
+	DeleteVideo(context.Context, *DeleteVideoReq) (*DeleteVideoResp, error)
 	mustEmbedUnimplementedFeedServer()
 }
 
@@ -197,6 +209,9 @@ func (UnimplementedFeedServer) ListHistoryVideos(context.Context, *HistoryReq) (
 }
 func (UnimplementedFeedServer) ListNeighborVideos(context.Context, *NeighborsReq) (*NeighborsResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListNeighborVideos not implemented")
+}
+func (UnimplementedFeedServer) DeleteVideo(context.Context, *DeleteVideoReq) (*DeleteVideoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteVideo not implemented")
 }
 func (UnimplementedFeedServer) mustEmbedUnimplementedFeedServer() {}
 
@@ -391,6 +406,24 @@ func _Feed_ListNeighborVideos_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Feed_DeleteVideo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteVideoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FeedServer).DeleteVideo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Feed_DeleteVideo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FeedServer).DeleteVideo(ctx, req.(*DeleteVideoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Feed_ServiceDesc is the grpc.ServiceDesc for Feed service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -437,6 +470,10 @@ var Feed_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListNeighborVideos",
 			Handler:    _Feed_ListNeighborVideos_Handler,
+		},
+		{
+			MethodName: "DeleteVideo",
+			Handler:    _Feed_DeleteVideo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

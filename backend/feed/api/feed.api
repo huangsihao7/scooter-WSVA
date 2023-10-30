@@ -107,6 +107,14 @@ type (
 		StatusMsg  string      `json:"status_msg"`
 		VideoList  []VideoInfo `json:"video_list"`
 	}
+
+	DeleteVideoReq {
+		Vid int64 `json:"vid"`
+	}
+	DeleteVideoResp {
+		StatusCode int    `json:"status_code"`
+		StatusMsg  string `json:"status_msg"`
+	}
 )
 
 @server(
@@ -142,4 +150,7 @@ service feed-api {
 
 	@handler NeighborsVideos
 	get /feed/neighbors (NeighborsVideoReq) returns (NeighborsVideoResp)
+
+	@handler DeleteVideo
+	post /feed/deleteViedo (DeleteVideoReq) returns (DeleteVideoResp)
 }

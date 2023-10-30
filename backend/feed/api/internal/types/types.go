@@ -116,3 +116,12 @@ type NeighborsVideoResp struct {
 	StatusMsg  string      `json:"status_msg"`
 	VideoList  []VideoInfo `json:"video_list"`
 }
+
+type DeleteVideoReq struct {
+	Vid int64 `json:"vid"`
+}
+
+type DeleteVideoResp struct {
+	StatusCode int    `json:"status_code"`
+	StatusMsg  string `json:"status_msg"`
+}

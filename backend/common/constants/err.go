@@ -77,6 +77,8 @@ const (
 	InsertDbError                     = "插入数据库失败"
 	FindDbErrorCode                   = 50035
 	FindDbError                       = "查找数据库失败"
+	DeleteVideoDbErrorCode            = 50036
+	DeleteVideoDbError                = "删除视频数据库失败"
 )
 
 // Expected Error

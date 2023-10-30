@@ -19,6 +19,8 @@ type (
 	CountVideoResponse   = feed.CountVideoResponse
 	CreateVideoRequest   = feed.CreateVideoRequest
 	CreateVideoResponse  = feed.CreateVideoResponse
+	DeleteVideoReq       = feed.DeleteVideoReq
+	DeleteVideoResp      = feed.DeleteVideoResp
 	HistoryReq           = feed.HistoryReq
 	HistoryResp          = feed.HistoryResp
 	ListFeedRequest      = feed.ListFeedRequest
@@ -44,6 +46,7 @@ type (
 		VideoDuration(ctx context.Context, in *VideoDurationReq, opts ...grpc.CallOption) (*VideoDurationResp, error)
 		ListHistoryVideos(ctx context.Context, in *HistoryReq, opts ...grpc.CallOption) (*HistoryResp, error)
 		ListNeighborVideos(ctx context.Context, in *NeighborsReq, opts ...grpc.CallOption) (*NeighborsResp, error)
+		DeleteVideo(ctx context.Context, in *DeleteVideoReq, opts ...grpc.CallOption) (*DeleteVideoResp, error)
 	}
 
 	defaultFeed struct {
@@ -106,4 +109,9 @@ func (m *defaultFeed) ListHistoryVideos(ctx context.Context, in *HistoryReq, opt
 func (m *defaultFeed) ListNeighborVideos(ctx context.Context, in *NeighborsReq, opts ...grpc.CallOption) (*NeighborsResp, error) {
 	client := feed.NewFeedClient(m.cli.Conn())
 	return client.ListNeighborVideos(ctx, in, opts...)
+}
+
+func (m *defaultFeed) DeleteVideo(ctx context.Context, in *DeleteVideoReq, opts ...grpc.CallOption) (*DeleteVideoResp, error) {
+	client := feed.NewFeedClient(m.cli.Conn())
+	return client.DeleteVideo(ctx, in, opts...)
 }
