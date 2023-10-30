@@ -39,8 +39,8 @@ const videoForm = reactive({
   coverUrl: "",
 });
 // 上传绑定
-const fileUploadRef = ref()
-const titleIptRef = ref()
+const fileUploadRef = ref();
+const titleIptRef = ref();
 
 // 分类下拉框数据
 const classifyList = ref<Array<ClassifyList>>([
@@ -84,12 +84,12 @@ const handlePostVideo = () => {
     videoForm.title,
     videoForm.category,
   ).then((res: any) => {
-    fileUploadRef.value.clear()
-    titleIptRef.value.clear()
+    fileUploadRef.value.clear();
+    titleIptRef.value.clear();
     ElMessage({
-      type:'success',
-      message:'上传成功'
-    })
+      type: "success",
+      message: "上传成功",
+    });
     console.log(res);
   });
   emit("visible-update", false);

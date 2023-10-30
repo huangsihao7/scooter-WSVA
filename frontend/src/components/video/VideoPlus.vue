@@ -29,7 +29,7 @@ const emit = defineEmits(["comment-visible-update"]);
 
 const thisVideo = ref<VideoType>();
 
-const { toClipboard } = useClipboard()
+const { toClipboard } = useClipboard();
 
 const videoUrls = ref<any>([
   {
@@ -94,19 +94,19 @@ const dplayerObj = reactive({
   ],
 });
 
-const copy = async (msg:any) => {
+const copy = async (msg: any) => {
   try {
     // 复制
-    await toClipboard(msg)
+    await toClipboard(msg);
     // 复制成功
   } catch (e) {
     // 复制失败
     ElMessage({
-      type:'error',
-      message:'复制失败'
-    })
+      type: "error",
+      message: "复制失败",
+    });
   }
-}
+};
 
 // 喜欢按钮的操作
 const handleLikeBtn = () => {
@@ -153,35 +153,35 @@ const handleCommentBtn = () => {
   emit("comment-visible-update");
 };
 
-const copyFlag = ref<boolean>(false)
+const copyFlag = ref<boolean>(false);
 
 // 分享按钮的操作
 const handleShareBtn = () => {
   shareVisible.value = !shareVisible.value;
   const currentUrl: string = window.location.href;
-  copy(currentUrl)
+  copy(currentUrl);
   ElMessageBox.alert(currentUrl, "分享", {
     confirmButtonText: "复制",
     center: true,
     beforeClose: (action, instance, done) => {
-      if (action === 'confirm') {
-        instance.confirmButtonText = '复制中...'
-        instance.confirmButtonLoading = true
-        console.log('action',action)
-        copy(currentUrl)
-        copyFlag.value = true
+      if (action === "confirm") {
+        instance.confirmButtonText = "复制中...";
+        instance.confirmButtonLoading = true;
+        console.log("action", action);
+        copy(currentUrl);
+        copyFlag.value = true;
         setTimeout(() => {
-          instance.confirmButtonLoading = false
-          done()
-        }, 300)
-      }else {
-        copyFlag.value = false
-        done()
+          instance.confirmButtonLoading = false;
+          done();
+        }, 300);
+      } else {
+        copyFlag.value = false;
+        done();
       }
     },
     callback: () => {
-      console.log('cpf',copyFlag.value)
-      if(copyFlag.value){
+      console.log("cpf", copyFlag.value);
+      if (copyFlag.value) {
         ElMessage({
           type: "info",
           message: `复制成功`,
