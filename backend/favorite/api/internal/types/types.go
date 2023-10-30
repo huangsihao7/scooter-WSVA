@@ -33,6 +33,7 @@ type VideoInfo struct {
 	IsFavorite    bool   `json:"is_favorite"`
 	Title         string `json:"title"`
 	CreateTime    string `json:"create_time"`
+	Duration      string `json:"duration"`
 }
 
 type User struct {

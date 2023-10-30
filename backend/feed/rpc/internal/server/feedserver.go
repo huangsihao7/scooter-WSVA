@@ -62,3 +62,13 @@ func (s *FeedServer) VideoDuration(ctx context.Context, in *feed.VideoDurationRe
 	l := logic.NewVideoDurationLogic(ctx, s.svcCtx)
 	return l.VideoDuration(in)
 }
+
+func (s *FeedServer) ListHistoryVideos(ctx context.Context, in *feed.HistoryReq) (*feed.HistoryResp, error) {
+	l := logic.NewListHistoryVideosLogic(ctx, s.svcCtx)
+	return l.ListHistoryVideos(in)
+}
+
+func (s *FeedServer) ListNeighborVideos(ctx context.Context, in *feed.NeighborsReq) (*feed.NeighborsResp, error) {
+	l := logic.NewListNeighborVideosLogic(ctx, s.svcCtx)
+	return l.ListNeighborVideos(in)
+}

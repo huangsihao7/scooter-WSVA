@@ -53,16 +53,18 @@ func (l *ListCategoryVideosLogic) ListCategoryVideos(in *feed.CategoryFeedReques
 		}
 
 		userInfo := &feed.User{
-			Id:             userRpcRes.User.Id,
-			Name:           userRpcRes.User.Name,
-			FollowCount:    userRpcRes.User.FollowCount,
-			FollowerCount:  userRpcRes.User.FollowCount,
-			IsFollow:       userRpcRes.User.IsFollow,
-			Avatar:         userRpcRes.User.Avatar,
-			Signature:      userRpcRes.User.Signature,
-			TotalFavorited: userRpcRes.User.TotalFavorited,
-			WorkCount:      userRpcRes.User.WorkCount,
-			FavoriteCount:  userRpcRes.User.FavoriteCount,
+			Id:              userRpcRes.User.Id,
+			Name:            userRpcRes.User.Name,
+			FollowCount:     userRpcRes.User.FollowCount,
+			FollowerCount:   userRpcRes.User.FollowCount,
+			IsFollow:        userRpcRes.User.IsFollow,
+			Avatar:          userRpcRes.User.Avatar,
+			BackgroundImage: userRpcRes.User.BackgroundImage,
+			Signature:       userRpcRes.User.Signature,
+			TotalFavorited:  userRpcRes.User.TotalFavorited,
+			WorkCount:       userRpcRes.User.WorkCount,
+			FavoriteCount:   userRpcRes.User.FavoriteCount,
+			Gender:          userRpcRes.User.Gender,
 		}
 		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.ActorId), item.Id)
 		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.ActorId), item.Id)
@@ -78,6 +80,7 @@ func (l *ListCategoryVideosLogic) ListCategoryVideos(in *feed.CategoryFeedReques
 			IsStar:        IsStar,
 			Title:         item.Title,
 			CreateTime:    item.CreatedAt.Format(constants.TimeFormat),
+			Duration:      item.Duration.String,
 		})
 	}
 	return &feed.CategoryFeedResponse{

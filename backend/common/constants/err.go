@@ -75,6 +75,8 @@ const (
 	DurationError                     = "更新时长失败"
 	InsertDbErrorCode                 = 50034
 	InsertDbError                     = "插入数据库失败"
+	FindDbErrorCode                   = 50035
+	FindDbError                       = "查找数据库失败"
 )
 
 // Expected Error

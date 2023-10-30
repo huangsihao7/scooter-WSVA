@@ -32,27 +32,29 @@ func (l *ListVideoLogic) ListVideo(in *feed.ListVideoRequest) (*feed.ListVideoRe
 			return &feed.ListVideoResponse{
 				StatusCode: constants.UserVideosDoNotExistedCode,
 				StatusMsg:  constants.UserVideosDoNotExisted,
-			}, nil
+			}, err
 		} else {
 			return &feed.ListVideoResponse{
 				StatusCode: constants.FindUserVideosErrorCode,
 				StatusMsg:  constants.FindUserVideosError,
-			}, nil
+			}, err
 		}
 	}
 	userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.Uid), ActorId: int64(in.ToUid)})
 
 	userInfo := &feed.User{
-		Id:             userRpcRes.User.Id,
-		Name:           userRpcRes.User.Name,
-		FollowCount:    userRpcRes.User.FollowCount,
-		FollowerCount:  userRpcRes.User.FollowCount,
-		IsFollow:       userRpcRes.User.IsFollow,
-		Avatar:         userRpcRes.User.Avatar,
-		Signature:      userRpcRes.User.Signature,
-		TotalFavorited: userRpcRes.User.TotalFavorited,
-		WorkCount:      userRpcRes.User.WorkCount,
-		FavoriteCount:  userRpcRes.User.FavoriteCount,
+		Id:              userRpcRes.User.Id,
+		Name:            userRpcRes.User.Name,
+		FollowCount:     userRpcRes.User.FollowCount,
+		FollowerCount:   userRpcRes.User.FollowCount,
+		IsFollow:        userRpcRes.User.IsFollow,
+		Avatar:          userRpcRes.User.Avatar,
+		BackgroundImage: userRpcRes.User.BackgroundImage,
+		Signature:       userRpcRes.User.Signature,
+		TotalFavorited:  userRpcRes.User.TotalFavorited,
+		WorkCount:       userRpcRes.User.WorkCount,
+		FavoriteCount:   userRpcRes.User.FavoriteCount,
+		Gender:          userRpcRes.User.Gender,
 	}
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range Feeds {
@@ -71,6 +73,7 @@ func (l *ListVideoLogic) ListVideo(in *feed.ListVideoRequest) (*feed.ListVideoRe
 			Title:         item.Title,
 			IsStar:        IsStar,
 			CreateTime:    item.CreatedAt.Format(constants.TimeFormat),
+			Duration:      item.Duration.String,
 		})
 	}
 	return &feed.ListVideoResponse{

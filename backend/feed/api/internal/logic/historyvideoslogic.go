@@ -3,7 +3,6 @@ package logic
 import (
 	"context"
 	"encoding/json"
-	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 
 	"github.com/huangsihao7/scooter-WSVA/feed/api/internal/svc"
@@ -12,28 +11,25 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type UserVideosListLogic struct {
+type HistoryVideosLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewUserVideosListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserVideosListLogic {
-	return &UserVideosListLogic{
+func NewHistoryVideosLogic(ctx context.Context, svcCtx *svc.ServiceContext) *HistoryVideosLogic {
+	return &HistoryVideosLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *UserVideosListLogic) UserVideosList(req *types.UserVideoListReq) (resp *types.UserVideoListResp, err error) {
+func (l *HistoryVideosLogic) HistoryVideos() (resp *types.HistoryVideosResp, err error) {
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
-	videos, err := l.svcCtx.FeedRpc.ListVideo(l.ctx, &feed.ListVideoRequest{
-		Uid:   uint32(uid),
-		ToUid: uint32(req.ToUid),
-	})
+	videos, err := l.svcCtx.FeedRpc.ListHistoryVideos(l.ctx, &feed.HistoryReq{Uid: int32(uid)})
 	if err != nil {
-		return &types.UserVideoListResp{
+		return &types.HistoryVideosResp{
 			StatusCode: int(videos.StatusCode),
 			StatusMsg:  videos.StatusMsg,
 			VideoList:  nil,
@@ -68,10 +64,9 @@ func (l *UserVideosListLogic) UserVideosList(req *types.UserVideoListReq) (resp 
 			Duration:      item.Duration,
 		})
 	}
-	return &types.UserVideoListResp{
-		StatusCode: constants.ServiceOKCode,
-		StatusMsg:  constants.ServiceOK,
+	return &types.HistoryVideosResp{
+		StatusCode: int(videos.StatusCode),
+		StatusMsg:  videos.StatusMsg,
 		VideoList:  resList,
 	}, nil
-
 }

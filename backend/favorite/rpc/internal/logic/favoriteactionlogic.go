@@ -106,6 +106,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 			CommentCount:  videoDetail.CommentCount,
 			CreatedAt:     videoDetail.CreatedAt,
 			Category:      videoDetail.Category,
+			Duration:      videoDetail.Duration,
 		})
 
 		if err != nil {
@@ -156,6 +157,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 			CommentCount:  videoDetail.CommentCount,
 			CreatedAt:     videoDetail.CreatedAt,
 			Category:      videoDetail.Category,
+			Duration:      videoDetail.Duration,
 		})
 		if err != nil {
 			log.Println(err.Error())

@@ -48,6 +48,7 @@ message VideoInfo {
    string create_time=9;
    uint32 star_count = 10;
    bool is_star = 11;
+   string duration=12;
 }
 
 message User {
@@ -62,7 +63,7 @@ message User {
    optional uint32 total_favorited = 9; //获赞数量
    optional uint32 work_count = 10; //作品数量
    optional uint32 favorite_count = 11; //点赞数量
-   uint32 gender=12;
+   uint32 gender = 12; // 用户名称
 }
 message ListFeedRequest {
     uint32 actor_id = 1;
@@ -94,9 +95,23 @@ message VideoDurationReq{
 message VideoDurationResp {
    int32 status_code = 1;
    string status_msg = 2;
-
 }
-
+message HistoryReq{
+   int32 uid=1;
+}
+message HistoryResp{
+   int32 status_code = 1;
+   string status_msg = 2;
+   repeated VideoInfo video_list = 3;
+}
+message NeighborsReq{
+   int32 vid=1;
+}
+message NeighborsResp{
+   int32 status_code = 1;
+   string status_msg = 2;
+   repeated VideoInfo video_list = 3;
+}
 service Feed {
    rpc CreateVideo(CreateVideoRequest) returns (CreateVideoResponse) {}
    rpc ListVideo(ListVideoRequest) returns (ListVideoResponse) {}
@@ -107,5 +122,6 @@ service Feed {
    rpc ListPopularVideos(ListFeedRequest) returns (ListFeedResponse);
    rpc CreateVideoTest(CreateVideoRequest) returns (CreateVideoResponse) ;
    rpc VideoDuration(VideoDurationReq) returns(VideoDurationResp);
-
+   rpc ListHistoryVideos(HistoryReq)returns(HistoryResp);
+   rpc ListNeighborVideos(NeighborsReq)returns(NeighborsResp);
 }

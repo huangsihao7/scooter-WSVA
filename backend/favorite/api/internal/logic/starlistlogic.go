@@ -59,6 +59,7 @@ func (l *StarListLogic) StarList(req *types.ListReq) (resp *types.ListResp, err 
 			IsStar:        res.VideoList[i].IsStar,
 			Title:         res.VideoList[i].Title,
 			CreateTime:    res.VideoList[i].CreateTime,
+			Duration:      res.VideoList[i].Duration,
 		}
 		resLists = append(resLists, videoDetail)
 

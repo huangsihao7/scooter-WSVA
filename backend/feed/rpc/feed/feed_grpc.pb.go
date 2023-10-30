@@ -27,6 +27,8 @@ const (
 	Feed_ListPopularVideos_FullMethodName     = "/feed.Feed/ListPopularVideos"
 	Feed_CreateVideoTest_FullMethodName       = "/feed.Feed/CreateVideoTest"
 	Feed_VideoDuration_FullMethodName         = "/feed.Feed/VideoDuration"
+	Feed_ListHistoryVideos_FullMethodName     = "/feed.Feed/ListHistoryVideos"
+	Feed_ListNeighborVideos_FullMethodName    = "/feed.Feed/ListNeighborVideos"
 )
 
 // FeedClient is the client API for Feed service.
@@ -42,6 +44,8 @@ type FeedClient interface {
 	ListPopularVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 	CreateVideoTest(ctx context.Context, in *CreateVideoRequest, opts ...grpc.CallOption) (*CreateVideoResponse, error)
 	VideoDuration(ctx context.Context, in *VideoDurationReq, opts ...grpc.CallOption) (*VideoDurationResp, error)
+	ListHistoryVideos(ctx context.Context, in *HistoryReq, opts ...grpc.CallOption) (*HistoryResp, error)
+	ListNeighborVideos(ctx context.Context, in *NeighborsReq, opts ...grpc.CallOption) (*NeighborsResp, error)
 }
 
 type feedClient struct {
@@ -124,6 +128,24 @@ func (c *feedClient) VideoDuration(ctx context.Context, in *VideoDurationReq, op
 	return out, nil
 }
 
+func (c *feedClient) ListHistoryVideos(ctx context.Context, in *HistoryReq, opts ...grpc.CallOption) (*HistoryResp, error) {
+	out := new(HistoryResp)
+	err := c.cc.Invoke(ctx, Feed_ListHistoryVideos_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *feedClient) ListNeighborVideos(ctx context.Context, in *NeighborsReq, opts ...grpc.CallOption) (*NeighborsResp, error) {
+	out := new(NeighborsResp)
+	err := c.cc.Invoke(ctx, Feed_ListNeighborVideos_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FeedServer is the server API for Feed service.
 // All implementations must embed UnimplementedFeedServer
 // for forward compatibility
@@ -137,6 +159,8 @@ type FeedServer interface {
 	ListPopularVideos(context.Context, *ListFeedRequest) (*ListFeedResponse, error)
 	CreateVideoTest(context.Context, *CreateVideoRequest) (*CreateVideoResponse, error)
 	VideoDuration(context.Context, *VideoDurationReq) (*VideoDurationResp, error)
+	ListHistoryVideos(context.Context, *HistoryReq) (*HistoryResp, error)
+	ListNeighborVideos(context.Context, *NeighborsReq) (*NeighborsResp, error)
 	mustEmbedUnimplementedFeedServer()
 }
 
@@ -167,6 +191,12 @@ func (UnimplementedFeedServer) CreateVideoTest(context.Context, *CreateVideoRequ
 }
 func (UnimplementedFeedServer) VideoDuration(context.Context, *VideoDurationReq) (*VideoDurationResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VideoDuration not implemented")
+}
+func (UnimplementedFeedServer) ListHistoryVideos(context.Context, *HistoryReq) (*HistoryResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListHistoryVideos not implemented")
+}
+func (UnimplementedFeedServer) ListNeighborVideos(context.Context, *NeighborsReq) (*NeighborsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListNeighborVideos not implemented")
 }
 func (UnimplementedFeedServer) mustEmbedUnimplementedFeedServer() {}
 
@@ -325,6 +355,42 @@ func _Feed_VideoDuration_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Feed_ListHistoryVideos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HistoryReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FeedServer).ListHistoryVideos(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Feed_ListHistoryVideos_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FeedServer).ListHistoryVideos(ctx, req.(*HistoryReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Feed_ListNeighborVideos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NeighborsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FeedServer).ListNeighborVideos(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Feed_ListNeighborVideos_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FeedServer).ListNeighborVideos(ctx, req.(*NeighborsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Feed_ServiceDesc is the grpc.ServiceDesc for Feed service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -363,6 +429,14 @@ var Feed_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "VideoDuration",
 			Handler:    _Feed_VideoDuration_Handler,
+		},
+		{
+			MethodName: "ListHistoryVideos",
+			Handler:    _Feed_ListHistoryVideos_Handler,
+		},
+		{
+			MethodName: "ListNeighborVideos",
+			Handler:    _Feed_ListNeighborVideos_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

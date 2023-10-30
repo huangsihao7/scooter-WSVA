@@ -40,6 +40,7 @@ message Video {
   bool is_star = 9; // true-已收藏，false-未收藏
   string title = 10; // 视频标题
   string create_time=11;
+  string duration=12;
 }
 
 // 用户信息

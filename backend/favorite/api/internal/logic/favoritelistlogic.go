@@ -62,6 +62,7 @@ func (l *FavoriteListLogic) FavoriteList(req *types.ListReq) (resp *types.ListRe
 			IsStar:        res.VideoList[i].IsStar,
 			Title:         res.VideoList[i].Title,
 			CreateTime:    res.VideoList[i].CreateTime,
+			Duration:      res.VideoList[i].Duration,
 		}
 		resLists = append(resLists, videoDetail)
 

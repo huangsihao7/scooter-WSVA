@@ -19,10 +19,14 @@ type (
 	CountVideoResponse   = feed.CountVideoResponse
 	CreateVideoRequest   = feed.CreateVideoRequest
 	CreateVideoResponse  = feed.CreateVideoResponse
+	HistoryReq           = feed.HistoryReq
+	HistoryResp          = feed.HistoryResp
 	ListFeedRequest      = feed.ListFeedRequest
 	ListFeedResponse     = feed.ListFeedResponse
 	ListVideoRequest     = feed.ListVideoRequest
 	ListVideoResponse    = feed.ListVideoResponse
+	NeighborsReq         = feed.NeighborsReq
+	NeighborsResp        = feed.NeighborsResp
 	User                 = feed.User
 	VideoDurationReq     = feed.VideoDurationReq
 	VideoDurationResp    = feed.VideoDurationResp
@@ -38,6 +42,8 @@ type (
 		ListPopularVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 		CreateVideoTest(ctx context.Context, in *CreateVideoRequest, opts ...grpc.CallOption) (*CreateVideoResponse, error)
 		VideoDuration(ctx context.Context, in *VideoDurationReq, opts ...grpc.CallOption) (*VideoDurationResp, error)
+		ListHistoryVideos(ctx context.Context, in *HistoryReq, opts ...grpc.CallOption) (*HistoryResp, error)
+		ListNeighborVideos(ctx context.Context, in *NeighborsReq, opts ...grpc.CallOption) (*NeighborsResp, error)
 	}
 
 	defaultFeed struct {
@@ -90,4 +96,14 @@ func (m *defaultFeed) CreateVideoTest(ctx context.Context, in *CreateVideoReques
 func (m *defaultFeed) VideoDuration(ctx context.Context, in *VideoDurationReq, opts ...grpc.CallOption) (*VideoDurationResp, error) {
 	client := feed.NewFeedClient(m.cli.Conn())
 	return client.VideoDuration(ctx, in, opts...)
+}
+
+func (m *defaultFeed) ListHistoryVideos(ctx context.Context, in *HistoryReq, opts ...grpc.CallOption) (*HistoryResp, error) {
+	client := feed.NewFeedClient(m.cli.Conn())
+	return client.ListHistoryVideos(ctx, in, opts...)
+}
+
+func (m *defaultFeed) ListNeighborVideos(ctx context.Context, in *NeighborsReq, opts ...grpc.CallOption) (*NeighborsResp, error) {
+	client := feed.NewFeedClient(m.cli.Conn())
+	return client.ListNeighborVideos(ctx, in, opts...)
 }
