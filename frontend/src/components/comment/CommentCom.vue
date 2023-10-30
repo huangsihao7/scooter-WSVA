@@ -9,7 +9,6 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import {
-  CashOutline as CashIcon,
   Heart,
   ChatbubbleEllipses,
 } from "@vicons/ionicons5";
