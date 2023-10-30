@@ -12,7 +12,7 @@ const drawerVisible = ref<boolean>(false);
 const currentVideoIndex = ref<number>(0);
 const lastVideoIndex = ref<number>(0);
 const videos = ref<Array<VideoType>>();
-const commentlists = ref<Array<any>>()
+const commentlists = ref<any>()
 const defaultLoad:number = 4
 
 onMounted(() => {
