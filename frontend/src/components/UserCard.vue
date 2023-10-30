@@ -1,17 +1,17 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
- * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 16:12:37
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-10-30 19:35:46
  * @Description: 
- * @FilePath: /scooter-WSVA/frontend/src/components/UserCard.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
 import { userStore } from "@/stores/user";
 import { getFollowList, canclefollowOne, followOne } from "@/apis/follow";
 import console from "console";
-import { useMessage } from "naive-ui";
+import { useMessage, NCard, NAvatar, NButton, NGrid, NGi } from "naive-ui";
 const folllowList: any = ref([]);
 const message = useMessage();
 
@@ -55,8 +55,33 @@ const cancleFollow = (item: any, _index: any) => {
 </script>
 
 <template>
-  <ElSpace wrap>
-    <ElCard
+  <!-- <ElSpace wrap> -->
+    <n-grid class="space" x-gap="12" :cols="4">
+      <n-gi v-for="(info, index) in folllowList" :key="index">
+        <n-card class="card"  style="padding: 0;" >
+          <template #cover class="cover">
+            <img  class="img" :src="info.background_image"  @click="handleShowVedio">
+          </template>
+          <div class="header-info">
+            <n-avatar class="avatar"
+              round
+              :size="60"
+              :src="info.avatar"
+            />
+            <div class="other-info">
+              <span class="name">{{ info.name }}</span>
+              <n-button class="btn" @click="cancleFollow(info, index)">
+                {{ info.isfollowed == true ? "已关注" : "关注" }}
+              </n-button>
+              <p class="sig">{{ info.dec }}</p>
+            </div>
+          </div>
+          
+        </n-card>
+      </n-gi>
+  </n-grid>
+    
+    <!-- <ElCard
       v-for="(info, index) in folllowList"
       :key="index"
       class="box-card"
@@ -83,13 +108,45 @@ const cancleFollow = (item: any, _index: any) => {
           @click="handleShowVedio"
         />
       </div>
-    </ElCard>
-  </ElSpace>
+    </ElCard> -->
+  <!-- </ElSpace> -->
 </template>
 
 <style lang="scss" scoped>
-.el-card {
-  --el-card-padding: 0;
+.space{
+  margin:2vh 2vw;
+}
+.card{
+  height: 30vh;
+  width: 100%;
+
+  .header-info{
+    display: flex;
+    margin-top: 20px;
+    height: 8vh;
+    .other-info{
+      margin-left: 16px;
+      .name{
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+      .btn{
+        margin-left: 16px;
+      }
+      .sig{
+        text-align: left;
+      }
+    }
+  }
+
+  .cover{
+    
+  }
+  .img{
+    width: 100%;
+    height: calc(22vh - 40px);
+    object-fit: fill;
+  }
 }
 
 .box-card {
