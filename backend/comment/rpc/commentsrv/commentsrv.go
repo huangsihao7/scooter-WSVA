@@ -18,11 +18,18 @@ type (
 	CommentActionResponse = comment.CommentActionResponse
 	CommentListRequest    = comment.CommentListRequest
 	CommentListResponse   = comment.CommentListResponse
+	DanMu                 = comment.DanMu
+	DanmuActionRequest    = comment.DanmuActionRequest
+	DanmuActionResponse   = comment.DanmuActionResponse
+	DanmuListRequest      = comment.DanmuListRequest
+	DanmuListResponse     = comment.DanmuListResponse
 	User                  = comment.User
 
 	CommentSrv interface {
 		CommentAction(ctx context.Context, in *CommentActionRequest, opts ...grpc.CallOption) (*CommentActionResponse, error)
 		CommentList(ctx context.Context, in *CommentListRequest, opts ...grpc.CallOption) (*CommentListResponse, error)
+		DanMuAction(ctx context.Context, in *DanmuActionRequest, opts ...grpc.CallOption) (*DanmuActionResponse, error)
+		DanMuList(ctx context.Context, in *DanmuListRequest, opts ...grpc.CallOption) (*DanmuListResponse, error)
 	}
 
 	defaultCommentSrv struct {
@@ -44,4 +51,14 @@ func (m *defaultCommentSrv) CommentAction(ctx context.Context, in *CommentAction
 func (m *defaultCommentSrv) CommentList(ctx context.Context, in *CommentListRequest, opts ...grpc.CallOption) (*CommentListResponse, error) {
 	client := comment.NewCommentSrvClient(m.cli.Conn())
 	return client.CommentList(ctx, in, opts...)
+}
+
+func (m *defaultCommentSrv) DanMuAction(ctx context.Context, in *DanmuActionRequest, opts ...grpc.CallOption) (*DanmuActionResponse, error) {
+	client := comment.NewCommentSrvClient(m.cli.Conn())
+	return client.DanMuAction(ctx, in, opts...)
+}
+
+func (m *defaultCommentSrv) DanMuList(ctx context.Context, in *DanmuListRequest, opts ...grpc.CallOption) (*DanmuListResponse, error) {
+	client := comment.NewCommentSrvClient(m.cli.Conn())
+	return client.DanMuList(ctx, in, opts...)
 }

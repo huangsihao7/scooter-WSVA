@@ -28,8 +28,6 @@ message Comment {
 
 
 
-
-
 // 得到评论列表
 message comment_list_request {
    int64 user_id = 1; // 视频id
@@ -58,7 +56,44 @@ message User {
    uint32 gender=12;
 }
 
+
+//弹幕添加
+message danmu_action_request {
+   int64 user_id = 1; // 用户id
+   int64 video_id = 2; // 视频id
+//   int32 action_type = 3; // 1-发布评论，2-删除评论
+   string danmu_text = 3; // 用户填写的评论内容，在action_type=1的时候使用
+   string send_time = 4; // 用户填写的评论内容，在action_type=1的时候使用
+}
+
+message danmu_action_response {
+   int32 status_code = 1; // 状态码，0-成功，其他值-失败
+   string status_msg = 2; // 返回状态描述
+}
+
+
+//弹幕列表
+message danmu_list_request {
+   int64 video_id = 1; // 视频id
+}
+
+message danmu_list_response {
+   int32 status_code = 1; // 状态码，0-成功，其他值-失败
+   string status_msg = 2; // 返回状态描述
+   repeated DanMu danmu_list = 3; // 评论列表
+}
+
+message DanMu {
+   int64 user_id = 1; // 用户id
+   int64 video_id = 2; // 视频id
+   string danmu_text = 4; // 用户填写的评论内容，在action_type=1的时候使用
+   string send_time = 5; // 用户填写的评论内容，在action_type=1的时候使用
+
+}
+
 service CommentSrv {
   rpc CommentAction(comment_action_request) returns(comment_action_response);
   rpc CommentList(comment_list_request) returns(comment_list_response);
+  rpc DanMuAction(danmu_action_request) returns(danmu_action_response);
+  rpc DanMuList(danmu_list_request) returns(danmu_list_response);
 }

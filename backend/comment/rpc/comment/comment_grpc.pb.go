@@ -21,6 +21,8 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	CommentSrv_CommentAction_FullMethodName = "/comment.CommentSrv/CommentAction"
 	CommentSrv_CommentList_FullMethodName   = "/comment.CommentSrv/CommentList"
+	CommentSrv_DanMuAction_FullMethodName   = "/comment.CommentSrv/DanMuAction"
+	CommentSrv_DanMuList_FullMethodName     = "/comment.CommentSrv/DanMuList"
 )
 
 // CommentSrvClient is the client API for CommentSrv service.
@@ -29,6 +31,8 @@ const (
 type CommentSrvClient interface {
 	CommentAction(ctx context.Context, in *CommentActionRequest, opts ...grpc.CallOption) (*CommentActionResponse, error)
 	CommentList(ctx context.Context, in *CommentListRequest, opts ...grpc.CallOption) (*CommentListResponse, error)
+	DanMuAction(ctx context.Context, in *DanmuActionRequest, opts ...grpc.CallOption) (*DanmuActionResponse, error)
+	DanMuList(ctx context.Context, in *DanmuListRequest, opts ...grpc.CallOption) (*DanmuListResponse, error)
 }
 
 type commentSrvClient struct {
@@ -57,12 +61,32 @@ func (c *commentSrvClient) CommentList(ctx context.Context, in *CommentListReque
 	return out, nil
 }
 
+func (c *commentSrvClient) DanMuAction(ctx context.Context, in *DanmuActionRequest, opts ...grpc.CallOption) (*DanmuActionResponse, error) {
+	out := new(DanmuActionResponse)
+	err := c.cc.Invoke(ctx, CommentSrv_DanMuAction_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *commentSrvClient) DanMuList(ctx context.Context, in *DanmuListRequest, opts ...grpc.CallOption) (*DanmuListResponse, error) {
+	out := new(DanmuListResponse)
+	err := c.cc.Invoke(ctx, CommentSrv_DanMuList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CommentSrvServer is the server API for CommentSrv service.
 // All implementations must embed UnimplementedCommentSrvServer
 // for forward compatibility
 type CommentSrvServer interface {
 	CommentAction(context.Context, *CommentActionRequest) (*CommentActionResponse, error)
 	CommentList(context.Context, *CommentListRequest) (*CommentListResponse, error)
+	DanMuAction(context.Context, *DanmuActionRequest) (*DanmuActionResponse, error)
+	DanMuList(context.Context, *DanmuListRequest) (*DanmuListResponse, error)
 	mustEmbedUnimplementedCommentSrvServer()
 }
 
@@ -75,6 +99,12 @@ func (UnimplementedCommentSrvServer) CommentAction(context.Context, *CommentActi
 }
 func (UnimplementedCommentSrvServer) CommentList(context.Context, *CommentListRequest) (*CommentListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CommentList not implemented")
+}
+func (UnimplementedCommentSrvServer) DanMuAction(context.Context, *DanmuActionRequest) (*DanmuActionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DanMuAction not implemented")
+}
+func (UnimplementedCommentSrvServer) DanMuList(context.Context, *DanmuListRequest) (*DanmuListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DanMuList not implemented")
 }
 func (UnimplementedCommentSrvServer) mustEmbedUnimplementedCommentSrvServer() {}
 
@@ -125,6 +155,42 @@ func _CommentSrv_CommentList_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CommentSrv_DanMuAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DanmuActionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommentSrvServer).DanMuAction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CommentSrv_DanMuAction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommentSrvServer).DanMuAction(ctx, req.(*DanmuActionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CommentSrv_DanMuList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DanmuListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommentSrvServer).DanMuList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CommentSrv_DanMuList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommentSrvServer).DanMuList(ctx, req.(*DanmuListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CommentSrv_ServiceDesc is the grpc.ServiceDesc for CommentSrv service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +205,14 @@ var CommentSrv_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CommentList",
 			Handler:    _CommentSrv_CommentList_Handler,
+		},
+		{
+			MethodName: "DanMuAction",
+			Handler:    _CommentSrv_DanMuAction_Handler,
+		},
+		{
+			MethodName: "DanMuList",
+			Handler:    _CommentSrv_DanMuList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
