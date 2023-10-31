@@ -13,7 +13,7 @@ import (
 	"github.com/zeromicro/go-zero/rest"
 )
 
-// gefe
+// fit fit
 var configFile = flag.String("f", "etc/comment-api-dev.yaml", "the config file")
 
 func main() {
