@@ -43,6 +43,9 @@ onMounted(() => {
       videos.value = res.video_list;
     });
   }
+  visitedIndex.value = 0
+  console.log(visitedIndex.value)
+
 });
 
 // 更新评论区可见状态
@@ -65,19 +68,21 @@ const upPage = () => {
 const downPage = () => {
   carouselRef.value.next();
 };
-
+const visitedIndex = ref<number>(-1)
 // 轮播图切换效果
 const updatePage = (currentIndex: number, lastIndex: number) => {
   currentVideoIndex.value = currentIndex;
   lastVideoIndex.value = lastIndex;
-  if (currentIndex > lastIndex) {
+  console.log(visitedIndex.value)
+  if (currentIndex > lastIndex && currentIndex > visitedIndex.value) {
     let offset = defaultLoad + currentIndex;
     let readedVideo = videoStore().video_id;
+    visitedIndex.value = currentIndex
     console.log("readedVideo", readedVideo);
     if(props.videoListType == 0){
-    getRecommendVideos(offset, readedVideo).then((res: any) => {
-      videos.value?.push(res.video_list[0]);
-    });
+      getRecommendVideos(offset, readedVideo).then((res: any) => {
+        videos.value?.push(res.video_list[0]);
+      });
     }else{
       getPopularVideos(offset, readedVideo).then((res: any) => {
         videos.value?.push(res.video_list[0]);
