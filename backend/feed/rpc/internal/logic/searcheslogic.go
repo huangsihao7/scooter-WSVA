@@ -20,7 +20,6 @@ type SearchESLogic struct {
 	logx.Logger
 }
 
-// 123
 func NewSearchESLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SearchESLogic {
 	return &SearchESLogic{
 		ctx:    ctx,
