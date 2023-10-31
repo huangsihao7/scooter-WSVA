@@ -33,3 +33,9 @@ KqPusherJobConf:
   Brokers:
     - 172.22.121.54:9092
   Topic: job
+
+Es:
+  Addresses:
+    - http://172.22.121.54:9200/
+  Username: elastic
+  Password: changeme
