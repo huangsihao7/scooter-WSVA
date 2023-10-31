@@ -5,7 +5,7 @@ const (
 	GateWayErrorMsg = "暂时不能处理您的请求，请稍后重试!"
 )
 
-// Server Inner Error
+// Server Inner Error l
 const (
 	AuthServiceInnerErrorCode         = 50001
 	AuthServiceInnerError             = "登录服务出现内部错误，请稍后重试！"
