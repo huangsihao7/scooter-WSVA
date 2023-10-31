@@ -122,8 +122,8 @@ message DeleteVideoResp {
 }
 
 message Es_search_req {
-   int32 vid = 1;
-   string content = 2;
+   int32 userId = 1;
+   string content = 3;
 }
 
 message Es_search_resp {

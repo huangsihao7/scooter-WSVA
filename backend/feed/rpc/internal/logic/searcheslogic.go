@@ -8,6 +8,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/svc"
+	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 	"io"
 	"log"
 
@@ -73,14 +74,67 @@ func (l *SearchESLogic) SearchES(in *feed.EsSearchReq) (*feed.EsSearchResp, erro
 	log.Println("Timed Out:", timedOut)
 	log.Println("Total Hits:", totalHits)
 
+	reslists := make([]*feed.VideoInfo, 0)
+
 	videoIds := []int{}
+
 	for i := 0; i < totalHits; i++ {
 		videoIds = append(videoIds, responses.Hits.Hits[i].Source.VideoID)
+		curVideoID := responses.Hits.Hits[i].Source.VideoID
+		video, err := l.svcCtx.FeedModel.FindOne(l.ctx, int64(curVideoID))
+		if err != nil {
+			return &feed.EsSearchResp{
+				StatusCode: constants.UnableToQueryVideoErrorCode,
+				StatusMsg:  constants.UnableToQueryVideoError,
+			}, err
+		}
+		userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
+			UserId:  int64(in.UserId),
+			ActorId: video.AuthorId,
+		})
+		if err != nil {
+			return &feed.EsSearchResp{
+				StatusCode: constants.UnableToQueryUserErrorCode,
+				StatusMsg:  constants.UnableToQueryUserError,
+			}, err
+		}
+		IsFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.UserId), int64(curVideoID))
+		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.UserId), int64(curVideoID))
+		userInfo := &feed.User{
+			Id:              userRpcRes.User.Id,
+			Name:            userRpcRes.User.Name,
+			FollowCount:     userRpcRes.User.FollowCount,
+			FollowerCount:   userRpcRes.User.FollowCount,
+			IsFollow:        userRpcRes.User.IsFollow,
+			Avatar:          userRpcRes.User.Avatar,
+			BackgroundImage: userRpcRes.User.BackgroundImage,
+			Signature:       userRpcRes.User.Signature,
+			TotalFavorited:  userRpcRes.User.TotalFavorited,
+			WorkCount:       userRpcRes.User.WorkCount,
+			FavoriteCount:   userRpcRes.User.FavoriteCount,
+			Gender:          userRpcRes.User.Gender,
+		}
+		videoInfo := &feed.VideoInfo{
+			Id:            uint32(curVideoID),
+			Author:        userInfo,
+			PlayUrl:       video.PlayUrl,
+			CoverUrl:      video.CoverUrl,
+			FavoriteCount: uint32(video.FavoriteCount),
+			CommentCount:  uint32(video.CommentCount),
+			IsFavorite:    IsFavorite,
+			Title:         video.Title,
+			CreateTime:    video.CreatedAt.Format(constants.TimeFormat),
+			StarCount:     uint32(video.StarCount),
+			IsStar:        IsStar,
+			Duration:      video.Duration.String,
+		}
+		reslists = append(reslists, videoInfo)
 	}
 
 	return &feed.EsSearchResp{
 		StatusCode: constants.ServiceOKCode,
 		StatusMsg:  constants.ServiceOK,
+		VideoList:  reslists,
 	}, nil
 }
 
