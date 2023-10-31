@@ -13,6 +13,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
+				Method:  http.MethodGet,
+				Path:    "/feed/VideosList",
+				Handler: VideosListHandler(serverCtx),
+			},
+		},
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
 				Method:  http.MethodPost,
 				Path:    "/feed/create",
 				Handler: CreateVideoHandler(serverCtx),
@@ -21,11 +31,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/feed/UserVideosList",
 				Handler: UserVideosListHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/feed/VideosList",
-				Handler: VideosListHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,

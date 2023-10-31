@@ -134,6 +134,11 @@ type (
 	}
 )
 
+service feed-api {
+	@handler VideosList
+	get /feed/VideosList () returns(VideosListResp)
+}
+
 @server(
 	jwt: Auth
 )
@@ -143,9 +148,6 @@ service feed-api {
 
 	@handler UserVideosList
 	post /feed/UserVideosList (UserVideoListReq) returns(UserVideoListResp)
-
-	@handler VideosList
-	get /feed/VideosList () returns(VideosListResp)
 
 	@handler CategoryVideosList
 	get /feed/CategoryVideosList (CategoryVideosListReq) returns(CategoryVideosListResp)
