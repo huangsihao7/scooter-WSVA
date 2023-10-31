@@ -44,13 +44,13 @@ type User struct {
 }
 
 type DanmuActionReq struct {
-	Author    int64  `json:"author"`
-	Color     int64  `json:"color"`
-	VideoId   int64  `json:"id"`   // 视频id
-	DanmuText string `json:"text"` // 用户填写的弹幕内容
-	SendTime  int64  `json:"time"` // 用户发送弹幕的时间段
-	Token     string `json:"token"`
-	Type      int64  `json:"type"`
+	Author    int64   `json:"author"`
+	Color     int64   `json:"color"`
+	VideoId   int64   `json:"id"`   // 视频id
+	DanmuText string  `json:"text"` // 用户填写的弹幕内容
+	SendTime  float64 `json:"time"` // 用户发送弹幕的时间段
+	Token     string  `json:"token"`
+	Type      int64   `json:"type"`
 }
 
 type DanmuActionResp struct {

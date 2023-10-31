@@ -36,7 +36,7 @@ func (l *DanmuActionLogic) DanmuAction(req *types.DanmuActionReq) (resp *types.D
 		UserId:    userId,
 		VideoId:   req.VideoId,
 		DanmuText: req.DanmuText,
-		SendTime:  strconv.FormatInt(req.SendTime, 10),
+		SendTime:  strconv.FormatFloat(req.SendTime, 'f', -1, 64),
 	})
 	if err != nil {
 		return &types.DanmuActionResp{
