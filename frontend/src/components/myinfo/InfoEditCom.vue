@@ -12,12 +12,15 @@
     width="30vw"
     preset="dialog"
     title="修改资料"
+    :show-icon = "false"
     positive-text="确认"
     negative-text="取消"
+    :closable="false"
     @positive-click="submitCallback"
     @negative-click="cancelCallback"
   >
     <NForm
+    class="form-area"
       ref="formRef"
       :model="formValue"
       label-placement="left"
@@ -137,6 +140,10 @@ const submitCallback = () => {};
 <style scoped>
 .dialog-footer button:first-child {
   margin-right: 10px;
+}
+
+.form-area{
+  margin-top: 30px;
 }
 
 .avatar-uploader .avatar {
