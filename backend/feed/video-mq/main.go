@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"github.com/zeromicro/go-zero/core/logx"
 	"log"
 
 	"github.com/huangsihao7/scooter-WSVA/feed/video-mq/internal/config"
@@ -17,7 +18,7 @@ var configFile = flag.String("f", "etc/video-mq-dev.yaml", "the config file")
 
 func main() {
 	flag.Parse()
-
+	logx.DisableStat()
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 

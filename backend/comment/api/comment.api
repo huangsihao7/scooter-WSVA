@@ -92,6 +92,6 @@ service comment-api {
 	get /comment/list (listReq) returns(listResp)
 	
 	@handler DanmuAction
-	post /danmu/action (DanmuActionReq) returns (DanmuActionResp)
+	post /danmu/listv3 (DanmuActionReq) returns (DanmuActionResp)
 	
 }
