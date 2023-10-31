@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/common/crypt"
 	"github.com/huangsihao7/scooter-WSVA/user/api/internal/svc"
@@ -74,11 +75,19 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 	fileURL := ""
 
 	file, handler, err := req.FormFile("file")
+	//key为上传的文件名
+	filename := crypt.PasswordEncrypt(time.Now().String(), handler.Filename)
+	key := filename + ".mp4"
+	seveas := filename + "-1.mp4"
+	seveasstr := l.svcCtx.Config.Bucket + ":" + seveas
+	saceas := base64.StdEncoding.EncodeToString([]byte(seveasstr))
 	mac := qbox.NewMac(accessKey, secretKey)
 	//path := filepath.Join("./", fileName)
 
 	putPolicy := storage.PutPolicy{
-		Scope: bucket,
+		Scope:               bucket,
+		PersistentOps:       "avthumb/mp4/wmImage/aHR0cDovL3Rlc3QtMi5xaW5pdWRuLmNvbS9sb2dvLnBuZw==/wmGravity/NorthWest|saveas/" + saceas,
+		PersistentNotifyURL: "http://fake.com/qiniu/notify",
 	}
 	upToken := putPolicy.UploadToken(mac)
 
@@ -92,10 +101,6 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 
 	ret := storage.PutRet{}           // 上传后返回的结果
 	putExtra := storage.RputV2Extra{} // 额外参数
-
-	//key为上传的文件名
-	key := handler.Filename // 上传路径，如果当前目录中已存在相同文件，则返回上传失败错误
-	key = crypt.PasswordEncrypt(time.Now().String(), key) + ".mp4"
 
 	err = resumeUploader.Put(context.Background(), &ret, upToken, key, file, handler.Size, &putExtra)
 	if err != nil {
@@ -116,6 +121,7 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 	baseURL := "http://s327crbzf.hn-bkt.clouddn.com"
 	fileURL = baseURL + "/" + key
 	coverUrl := baseURL + "/" + strings.TrimSuffix(key, filepath.Ext(key)) + ".jpg"
+	println(ret.PersistentID)
 
 	return &types.UserUploadResponse{
 		CoverUrl: coverUrl,
