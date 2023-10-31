@@ -1,9 +1,9 @@
 import { service } from "@/axios";
 
-export function getUserInfo(user_id: number) {
+export function getUserInfo(uid: number) {
   return service({
     url: "/user/userinfo",
     method: "post",
-    data: { user_id },
+    data: { uid },
   });
 }

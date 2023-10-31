@@ -21,6 +21,7 @@ const currentVideoIndex = ref<number>(0);
 const lastVideoIndex = ref<number>(0);
 // 视频队列
 const videos = ref<Array<VideoType>>();
+// const videos = reactive<VideoType[]>([]);
 // 默认预加载数
 const defaultLoad: number = 4;
 // 评论列表

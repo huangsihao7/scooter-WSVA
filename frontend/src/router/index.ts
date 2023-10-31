@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:49:44
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 19:29:03
+ * @LastEditTime: 2023-10-31 20:22:36
  * @Description: 路由表
  * @FilePath: \scooter-WSVA\frontend\src\router\index.ts
  */
@@ -30,7 +30,7 @@ const router = createRouter({
     {
       path: "/hot",
       name: "hot",
-      component: () => import("../view/HomeView.vue"),
+      component: () => import("../view/HotView.vue"),
     },
     {
       path: "/recreation",

@@ -8,22 +8,10 @@
 -->
 <script setup lang="ts">
 import VideoList from "@/components/VideoList.vue";
-import { routeStore } from "@/stores/route";
-import { ref, onMounted} from 'vue'
-// 视频队列类别 推荐0 热门1
-const videoListType = ref<number>(0)
-// 根据路由判断视频队列类别
-onMounted(() => {
-  if(routeStore().name == 'rec'){
-    videoListType.value = 0
-  }else{
-    videoListType.value = 1
-  }
-})
 </script>
 
 <template>
-  <VideoList :videoListType="videoListType"/>
+  <VideoList :videoListType=0 />
 </template>
 
 <style scoped></style>
