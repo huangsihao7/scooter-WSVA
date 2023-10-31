@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/relation/model"
+	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
@@ -26,7 +27,7 @@ func NewFriendListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Friend
 }
 
 func (l *FriendListLogic) FriendList(in *relation.FriendListReq) (*relation.FriendListResp, error) {
-	friend, err := l.svcCtx.RelationModel.FindFriend(l.ctx, in.Uid)
+	friend, err := l.svcCtx.RelationModel.FindFriend(l.ctx, in.ActUser)
 	if err != nil {
 		if err == model.ErrNotFound {
 			return &relation.FriendListResp{
@@ -43,21 +44,41 @@ func (l *FriendListLogic) FriendList(in *relation.FriendListReq) (*relation.Frie
 
 	List := make([]*relation.UserInfo, 0)
 	for _, item := range friend {
-		one, err := l.svcCtx.UserModel.FindOne(l.ctx, item.FollowingId)
+		one, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
+			UserId:  in.Uid,
+			ActorId: item.FollowerId,
+		})
 		if err != nil {
 			return &relation.FriendListResp{
 				StatusCode: constants.UnableToGetFriendListErrorCode,
 				StatusMsg:  constants.UnableToGetFriendListError,
 			}, nil
 		}
+		var coverUrl string
+		var vid int64
+		video, err := l.svcCtx.VideoModel.FindLastByUId(l.ctx, int64(one.User.Id))
+		if err != nil {
+			coverUrl = ""
+			vid = 0
+		} else {
+			coverUrl = video.CoverUrl
+			vid = int64(video.Id)
+		}
 		List = append(List, &relation.UserInfo{
-			Id:              one.Id,
-			Name:            one.Name,
-			Gender:          one.Gender,
-			Mobile:          one.Mobile,
-			Avatar:          one.Avatar,
-			Dec:             one.Dec,
-			BackgroundImage: one.BackgroundUrl,
+			Id:              int64(one.User.Id),
+			Name:            one.User.Name,
+			Gender:          int64(one.User.Gender),
+			Avatar:          *one.User.Avatar,
+			Dec:             *one.User.Signature,
+			BackgroundImage: *one.User.BackgroundImage,
+			VideoId:         vid,
+			CoverUrl:        coverUrl,
+			FollowCount:     *one.User.FollowCount,
+			FollowerCount:   *one.User.FollowerCount,
+			IsFollow:        one.User.IsFollow,
+			TotalFavorited:  *one.User.TotalFavorited,
+			WorkCount:       *one.User.WorkCount,
+			FavoriteCount:   *one.User.FavoriteCount,
 		})
 	}
 	return &relation.FriendListResp{
