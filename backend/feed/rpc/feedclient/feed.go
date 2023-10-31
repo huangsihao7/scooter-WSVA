@@ -23,6 +23,8 @@ type (
 	DeleteVideoResp      = feed.DeleteVideoResp
 	EsSearchReq          = feed.EsSearchReq
 	EsSearchResp         = feed.EsSearchResp
+	FindVideoReq         = feed.FindVideoReq
+	FindVideoResp        = feed.FindVideoResp
 	HistoryReq           = feed.HistoryReq
 	HistoryResp          = feed.HistoryResp
 	ListFeedRequest      = feed.ListFeedRequest
@@ -50,6 +52,7 @@ type (
 		ListNeighborVideos(ctx context.Context, in *NeighborsReq, opts ...grpc.CallOption) (*NeighborsResp, error)
 		DeleteVideo(ctx context.Context, in *DeleteVideoReq, opts ...grpc.CallOption) (*DeleteVideoResp, error)
 		SearchES(ctx context.Context, in *EsSearchReq, opts ...grpc.CallOption) (*EsSearchResp, error)
+		FindVideo(ctx context.Context, in *FindVideoReq, opts ...grpc.CallOption) (*FindVideoResp, error)
 	}
 
 	defaultFeed struct {
@@ -122,4 +125,9 @@ func (m *defaultFeed) DeleteVideo(ctx context.Context, in *DeleteVideoReq, opts 
 func (m *defaultFeed) SearchES(ctx context.Context, in *EsSearchReq, opts ...grpc.CallOption) (*EsSearchResp, error) {
 	client := feed.NewFeedClient(m.cli.Conn())
 	return client.SearchES(ctx, in, opts...)
+}
+
+func (m *defaultFeed) FindVideo(ctx context.Context, in *FindVideoReq, opts ...grpc.CallOption) (*FindVideoResp, error) {
+	client := feed.NewFeedClient(m.cli.Conn())
+	return client.FindVideo(ctx, in, opts...)
 }

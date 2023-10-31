@@ -82,3 +82,8 @@ func (s *FeedServer) SearchES(ctx context.Context, in *feed.EsSearchReq) (*feed.
 	l := logic.NewSearchESLogic(ctx, s.svcCtx)
 	return l.SearchES(in)
 }
+
+func (s *FeedServer) FindVideo(ctx context.Context, in *feed.FindVideoReq) (*feed.FindVideoResp, error) {
+	l := logic.NewFindVideoLogic(ctx, s.svcCtx)
+	return l.FindVideo(in)
+}

@@ -23,6 +23,14 @@ type UserInfo struct {
 	Avatar          string `json:"avatar"`
 	Dec             string `json:"dec"`
 	BackgroundImage string `json:"background_image"`
+	FollowCount     uint32 `json:"follow_count"`
+	FollowerCount   uint32 `json:"follower_count"`
+	TotalFavorited  uint32 `json:"total_favorited"`
+	WorkCount       uint32 `json:"work_count"`
+	FavoriteCount   uint32 `json:"favorite_count"`
+	IsFollow        bool   `json:"is_follow"`
+	CoverUrl        string `json:"cover_url"`
+	VideoId         int64  `json:"video_id"`
 }
 
 type FavoriteListResp struct {

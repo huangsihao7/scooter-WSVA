@@ -1,22 +1,24 @@
 package types
 
+//type VideoEsMsg struct {
+//	VideoId       uint   `json:"id"`
+//	AuthorId      uint   `json:"author_id"`
+//	Title         string `json:"title"`
+//	CoverUrl      string `json:"cover_url"`
+//	PlayUrl       string `json:"play_url"`
+//	FavoriteCount uint   `json:"favorite_count"`
+//	StarCount     int    `json:"star_count"`
+//	CommentCount  uint   `json:"comment_count"`
+//	Category      int    `json:"category"`
+//	//Duration      sql.NullString `gorm:"column:duration;type:varchar(255);comment:视频时长" json:"duration"`
+//}
+
 type VideoEsMsg struct {
-	Id            uint   `json:"id"`
-	AuthorId      uint   `json:"author_id"`
-	Title         string `json:"title"`
-	CoverUrl      string `json:"cover_url"`
-	PlayUrl       string `json:"play_url"`
-	FavoriteCount uint   `json:"favorite_count"`
-	StarCount     int    `json:"star_count"`
-	CommentCount  uint   `json:"comment_count"`
-	//CreatedAt     sql.NullTime   `gorm:"column:created_at;type:datetime;default:CURRENT_TIMESTAMP" json:"created_at"`
-	//UpdatedAt     sql.NullTime   `gorm:"column:updated_at;type:datetime" json:"updated_at"`
-	//DeletedAt     sql.NullTime   `gorm:"column:deleted_at;type:datetime" json:"deleted_at"`
-	Category int    `json:"category"`
-	Content  string `json:"content"`
-	Name     string `json:"name"`
-	Dec      string `json:"dec"`
-	//Duration      sql.NullString `gorm:"column:duration;type:varchar(255);comment:视频时长" json:"duration"`
+	VideoId int64  `json:"video_id"`
+	Title   string `json:"title"`
+	//Name      string `json:"name"`
+	//Signature string `json:"signature"`
+	Content string `json:"content"`
 }
 
 type CanalArticleMsg struct {
@@ -34,6 +36,7 @@ type CanalArticleMsg struct {
 		Content       string `json:"content"`
 		Name          string `json:"name"`
 		Dec           string `json:"dec"`
+		Vid           string `json:"vid"`
 		//UpdatedAt     sql.NullTime   `gorm:"column:updated_at;type:datetime" json:"updated_at"`
 		//DeletedAt     sql.NullTime   `gorm:"column:deleted_at;type:datetime" json:"deleted_at"`
 		//Duration      sql.NullString `gorm:"column:duration;type:varchar(255);comment:视频时长" json:"duration"`

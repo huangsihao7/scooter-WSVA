@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 
@@ -27,9 +26,7 @@ func NewVideosListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Videos
 }
 
 func (l *VideosListLogic) VideosList() (resp *types.VideosListResp, err error) {
-	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
-
-	videos, err := l.svcCtx.FeedRpc.ListVideos(l.ctx, &feed.ListFeedRequest{ActorId: uint32(uid)})
+	videos, err := l.svcCtx.FeedRpc.ListVideos(l.ctx, &feed.ListFeedRequest{ActorId: uint32(10)})
 	if err != nil {
 		return &types.VideosListResp{
 			StatusCode: int(videos.StatusCode),

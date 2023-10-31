@@ -6,7 +6,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/relation/model"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
-	model2 "github.com/huangsihao7/scooter-WSVA/user/model"
+	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -26,14 +26,7 @@ func NewFollowerListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Foll
 }
 
 func (l *FollowerListLogic) FollowerList(in *relation.FollowerListReq) (*relation.FollowerListResp, error) {
-	_, err2 := l.svcCtx.UserModel.FindOne(l.ctx, in.Uid)
-	if err2 == model2.ErrNotFound {
-		return &relation.FollowerListResp{
-			StatusCode: constants.UserDoNotExistedCode,
-			StatusMsg:  constants.UserDoNotExisted,
-		}, nil
-	}
-	follower, err := l.svcCtx.RelationModel.FindFollower(l.ctx, in.Uid)
+	follower, err := l.svcCtx.RelationModel.FindFollower(l.ctx, in.ActUser)
 	if err != nil {
 		if err == model.ErrNotFound {
 			return &relation.FollowerListResp{
@@ -50,21 +43,41 @@ func (l *FollowerListLogic) FollowerList(in *relation.FollowerListReq) (*relatio
 
 	List := make([]*relation.UserInfo, 0)
 	for _, item := range follower {
-		one, err := l.svcCtx.UserModel.FindOne(l.ctx, item.FollowerId)
+		one, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
+			UserId:  in.Uid,
+			ActorId: item.FollowerId,
+		})
 		if err != nil {
 			return &relation.FollowerListResp{
 				StatusCode: constants.UnableToGetFollowerListErrorCode,
 				StatusMsg:  constants.UnableToGetFollowerListError,
 			}, nil
 		}
+		var coverUrl string
+		var vid int64
+		video, err := l.svcCtx.VideoModel.FindLastByUId(l.ctx, int64(one.User.Id))
+		if err != nil {
+			coverUrl = ""
+			vid = 0
+		} else {
+			coverUrl = video.CoverUrl
+			vid = int64(video.Id)
+		}
 		List = append(List, &relation.UserInfo{
-			Id:              one.Id,
-			Name:            one.Name,
-			Gender:          one.Gender,
-			Mobile:          one.Mobile,
-			Avatar:          one.Avatar,
-			Dec:             one.Dec,
-			BackgroundImage: one.BackgroundUrl,
+			Id:              int64(one.User.Id),
+			Name:            one.User.Name,
+			Gender:          int64(one.User.Gender),
+			Avatar:          *one.User.Avatar,
+			Dec:             *one.User.Signature,
+			BackgroundImage: *one.User.BackgroundImage,
+			VideoId:         vid,
+			CoverUrl:        coverUrl,
+			FollowCount:     *one.User.FollowCount,
+			FollowerCount:   *one.User.FollowerCount,
+			IsFollow:        one.User.IsFollow,
+			TotalFavorited:  *one.User.TotalFavorited,
+			WorkCount:       *one.User.WorkCount,
+			FavoriteCount:   *one.User.FavoriteCount,
 		})
 	}
 	return &relation.FollowerListResp{

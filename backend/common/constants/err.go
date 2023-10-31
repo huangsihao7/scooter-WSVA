@@ -5,7 +5,7 @@ const (
 	GateWayErrorMsg = "暂时不能处理您的请求，请稍后重试!"
 )
 
-// Server Inner Error
+// Server Inner Error l
 const (
 	AuthServiceInnerErrorCode         = 50001
 	AuthServiceInnerError             = "登录服务出现内部错误，请稍后重试！"
@@ -79,6 +79,8 @@ const (
 	FindDbError                       = "查找数据库失败"
 	DeleteVideoDbErrorCode            = 50036
 	DeleteVideoDbError                = "删除视频数据库失败"
+	SearchServiceErrorCode            = 50037
+	SearchServiceError                = "搜索服务内部错误"
 )
 
 // Expected Error

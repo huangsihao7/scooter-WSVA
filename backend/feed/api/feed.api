@@ -124,7 +124,20 @@ type (
 		StatusMsg  string      `json:"status_msg"`
 		VideoList  []VideoInfo `json:"video_list"`
 	}
+	FindVideoByIdReq {
+		Vid int64 `form:"video_id"`
+	}
+	FindVideoByIdResp {
+		StatusCode int       `json:"status_code"`
+		StatusMsg  string    `json:"status_msg"`
+		Video      VideoInfo `json:"video_info"`
+	}
 )
+
+service feed-api {
+	@handler VideosList
+	get /feed/VideosList () returns(VideosListResp)
+}
 
 @server(
 	jwt: Auth
@@ -132,37 +145,37 @@ type (
 service feed-api {
 	@handler CreateVideo
 	post /feed/create (CreateVideoReq) returns(CreateVideoResp)
-	
+
 	@handler UserVideosList
 	post /feed/UserVideosList (UserVideoListReq) returns(UserVideoListResp)
-	
-	@handler VideosList
-	get /feed/VideosList () returns(VideosListResp)
-	
+
 	@handler CategoryVideosList
 	get /feed/CategoryVideosList (CategoryVideosListReq) returns(CategoryVideosListResp)
-	
+
 	@handler RecommendVideos
 	post /feed/recommends (RecommendVideosListReq) returns(RecommendVideosListResp)
-	
+
 	@handler PopularVideos
 	post /feed/populars (PopularVideosListReq) returns(PopularVideosListResp)
-	
+
 	@handler CreateVideoTest
 	post /feed/createst (CreateVideoReq) returns(CreateVideoResp)
-	
+
 	@handler DurationTest
 	post /feed/duration(DurationTestReq) returns(DurationTestResp)
-	
+
 	@handler HistoryVideos
 	get /feed/history () returns(HistoryVideosResp)
-	
+
 	@handler NeighborsVideos
 	get /feed/neighbors (NeighborsVideoReq) returns (NeighborsVideoResp)
-	
+
 	@handler DeleteVideo
 	post /feed/deleteViedo (DeleteVideoReq) returns (DeleteVideoResp)
-	
+
 	@handler SearchEs
 	post /feed/searcheEs (SearchEsReq) returns (SearchEsResp)
+
+	@handler FindVideo
+	get /feed/videoinfo (FindVideoByIdReq)returns(FindVideoByIdResp)
 }

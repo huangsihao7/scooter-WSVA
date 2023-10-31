@@ -31,6 +31,7 @@ const (
 	Feed_ListNeighborVideos_FullMethodName    = "/feed.Feed/ListNeighborVideos"
 	Feed_DeleteVideo_FullMethodName           = "/feed.Feed/DeleteVideo"
 	Feed_SearchES_FullMethodName              = "/feed.Feed/SearchES"
+	Feed_FindVideo_FullMethodName             = "/feed.Feed/FindVideo"
 )
 
 // FeedClient is the client API for Feed service.
@@ -50,6 +51,7 @@ type FeedClient interface {
 	ListNeighborVideos(ctx context.Context, in *NeighborsReq, opts ...grpc.CallOption) (*NeighborsResp, error)
 	DeleteVideo(ctx context.Context, in *DeleteVideoReq, opts ...grpc.CallOption) (*DeleteVideoResp, error)
 	SearchES(ctx context.Context, in *EsSearchReq, opts ...grpc.CallOption) (*EsSearchResp, error)
+	FindVideo(ctx context.Context, in *FindVideoReq, opts ...grpc.CallOption) (*FindVideoResp, error)
 }
 
 type feedClient struct {
@@ -168,6 +170,15 @@ func (c *feedClient) SearchES(ctx context.Context, in *EsSearchReq, opts ...grpc
 	return out, nil
 }
 
+func (c *feedClient) FindVideo(ctx context.Context, in *FindVideoReq, opts ...grpc.CallOption) (*FindVideoResp, error) {
+	out := new(FindVideoResp)
+	err := c.cc.Invoke(ctx, Feed_FindVideo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FeedServer is the server API for Feed service.
 // All implementations must embed UnimplementedFeedServer
 // for forward compatibility
@@ -185,6 +196,7 @@ type FeedServer interface {
 	ListNeighborVideos(context.Context, *NeighborsReq) (*NeighborsResp, error)
 	DeleteVideo(context.Context, *DeleteVideoReq) (*DeleteVideoResp, error)
 	SearchES(context.Context, *EsSearchReq) (*EsSearchResp, error)
+	FindVideo(context.Context, *FindVideoReq) (*FindVideoResp, error)
 	mustEmbedUnimplementedFeedServer()
 }
 
@@ -227,6 +239,9 @@ func (UnimplementedFeedServer) DeleteVideo(context.Context, *DeleteVideoReq) (*D
 }
 func (UnimplementedFeedServer) SearchES(context.Context, *EsSearchReq) (*EsSearchResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchES not implemented")
+}
+func (UnimplementedFeedServer) FindVideo(context.Context, *FindVideoReq) (*FindVideoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindVideo not implemented")
 }
 func (UnimplementedFeedServer) mustEmbedUnimplementedFeedServer() {}
 
@@ -457,6 +472,24 @@ func _Feed_SearchES_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Feed_FindVideo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindVideoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FeedServer).FindVideo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Feed_FindVideo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FeedServer).FindVideo(ctx, req.(*FindVideoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Feed_ServiceDesc is the grpc.ServiceDesc for Feed service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -511,6 +544,10 @@ var Feed_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SearchES",
 			Handler:    _Feed_SearchES_Handler,
+		},
+		{
+			MethodName: "FindVideo",
+			Handler:    _Feed_FindVideo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

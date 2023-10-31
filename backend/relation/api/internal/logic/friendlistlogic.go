@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
 
 	"github.com/huangsihao7/scooter-WSVA/relation/api/internal/svc"
@@ -25,8 +26,10 @@ func NewFriendListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Friend
 }
 
 func (l *FriendListLogic) FriendList(req *types.FriendListReq) (resp *types.FriendListResp, err error) {
+	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
 	list, err := l.svcCtx.RelationRpc.FriendList(l.ctx, &relation.FriendListReq{
-		Uid: req.Uid,
+		Uid:     uid,
+		ActUser: req.Uid,
 	})
 
 	if err != nil {
@@ -41,10 +44,17 @@ func (l *FriendListLogic) FriendList(req *types.FriendListReq) (resp *types.Frie
 			Id:              item.Id,
 			Name:            item.Name,
 			Gender:          item.Gender,
-			Mobile:          item.Mobile,
 			Avatar:          item.Avatar,
 			Dec:             item.Dec,
 			BackgroundImage: item.BackgroundImage,
+			FollowCount:     item.FollowCount,
+			FollowerCount:   item.FollowerCount,
+			TotalFavorited:  item.TotalFavorited,
+			WorkCount:       item.WorkCount,
+			FavoriteCount:   item.FavoriteCount,
+			IsFollow:        item.IsFollow,
+			CoverUrl:        item.CoverUrl,
+			VideoId:         item.VideoId,
 		})
 	}
 	return &types.FriendListResp{

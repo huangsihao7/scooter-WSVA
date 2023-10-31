@@ -122,8 +122,8 @@ message DeleteVideoResp {
 }
 
 message Es_search_req {
-   int32 vid = 1;
-   string content = 2;
+   int32 userId = 1;
+   string content = 3;
 }
 
 message Es_search_resp {
@@ -131,7 +131,15 @@ message Es_search_resp {
    string status_msg = 2;
    repeated VideoInfo video_list = 3;
 }
-
+message FindVideoReq{
+   int32 uid=1;
+   int32 vid=2;
+}
+message FindVideoResp {
+   int32 status_code = 1;
+   string status_msg = 2;
+   VideoInfo video = 3;
+}
 service Feed {
    rpc CreateVideo(CreateVideoRequest) returns (CreateVideoResponse) {}
    rpc ListVideo(ListVideoRequest) returns (ListVideoResponse) {}
@@ -146,4 +154,5 @@ service Feed {
    rpc ListNeighborVideos(NeighborsReq)returns(NeighborsResp);
    rpc DeleteVideo(DeleteVideoReq) returns(DeleteVideoResp);
    rpc SearchES(Es_search_req) returns(Es_search_resp);
+   rpc FindVideo(FindVideoReq)returns(FindVideoResp);
 }
