@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 23:12:00
+ * @LastEditTime: 2023-10-31 20:51:51
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardList.vue
  * @Description: 
 -->
@@ -34,7 +34,7 @@ onMounted(() => {
     v-for="(info, index) in props.videos"
     :key="index"
     class="box-card"
-    style="width: calc((100vw - 260px) / 6)"
+    style="width: calc((100vw - 260px) / 8)"
   >
     <template #cover>
       <img

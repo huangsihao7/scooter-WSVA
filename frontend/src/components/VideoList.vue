@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { NCarousel, NDrawer, NDrawerContent, NCarouselItem } from "naive-ui";
+import { NCarousel, NDrawer, NDrawerContent, NCarouselItem, NTabs, NTabPane } from "naive-ui";
 import VideoPlus from "@/components/video/VideoPlus.vue";
 import { onMounted, ref } from "vue";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
-import { getRecommendVideos, getPopularVideos } from "@/apis/video";
+import { getRecommendVideos, getPopularVideos, getRecommendVideosList } from "@/apis/video";
 import { VideoType } from "@/apis/interface";
 import { getCommentList } from "@/apis/comment";
 import { videoStore } from "@/stores/video";
+import VideoRecommendCard from '@/components/video/VideoRecommendCard.vue'
 
 interface propsType{
   videoListType: number
@@ -26,6 +27,8 @@ const videos = ref<Array<VideoType>>();
 const defaultLoad: number = 4;
 // 评论列表
 const commentlists = ref<any>();
+// 相关推荐列表
+const recommendlists = ref<any>();
 // 绑定轮播器
 const carouselRef = ref<any>();
 
@@ -45,10 +48,12 @@ onMounted(() => {
 // 更新评论区可见状态
 const updateVisible = (thisVideo: any) => {
   drawerVisible.value = !drawerVisible.value;
-  console.log(thisVideo.value.video_id);
   getCommentList(thisVideo.value.video_id).then((res: any) => {
     commentlists.value = res.comment_list;
   });
+  getRecommendVideosList(thisVideo.value.video_id).then((res:any) => {
+    recommendlists.value = res.video_list
+  })
 };
 
 // 向上翻视频
@@ -77,6 +82,14 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
       getPopularVideos(offset, readedVideo).then((res: any) => {
         videos.value?.push(res.video_list[0]);
       });
+    }
+    if(videos.value){
+      getCommentList(videos.value[currentIndex].video_id).then((res: any) => {
+        commentlists.value = res.comment_list;
+      });
+      getRecommendVideosList(videos.value[currentIndex].video_id).then((res:any) => {
+        recommendlists.value = res.video_list
+      })
     }
   }
 };
@@ -118,8 +131,16 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
     :block-scroll="false"
     to="#drawer-target"
   >
-    <NDrawerContent title="评论" :native-scrollbar="false">
-      <CommentListCom :commentlists="commentlists" />
+    
+    <NDrawerContent :native-scrollbar="false">
+      <NTabs type="line" animated>
+        <NTabPane name="comment" tab="评论">
+          <CommentListCom :commentlists="commentlists" />
+        </NTabPane>
+        <NTabPane name="recommend" tab="相关推荐">
+          <VideoRecommendCard :recommendlists="recommendlists"/>
+        </NTabPane>
+      </NTabs>
     </NDrawerContent>
   </NDrawer>
 </template>

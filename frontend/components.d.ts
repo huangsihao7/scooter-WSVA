@@ -51,5 +51,6 @@ declare module 'vue' {
     VideoCom: typeof import('./src/components/video/VideoCom.vue')['default']
     VideoList: typeof import('./src/components/VideoList.vue')['default']
     VideoPlus: typeof import('./src/components/video/VideoPlus.vue')['default']
+    VideoRecommendCard: typeof import('./src/components/video/VideoRecommendCard.vue')['default']
   }
 }

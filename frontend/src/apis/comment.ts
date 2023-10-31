@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-29 22:43:26
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 22:51:39
+ * @LastEditTime: 2023-10-31 20:37:40
  * @Description:
  * @FilePath: \scooter-WSVA\frontend\src\apis\comment.ts
  */
@@ -11,6 +11,13 @@ import { service } from "@/axios";
 export function getCommentList(video_id: number) {
   return service({
     url: `/comment/list?video_id=${video_id}`,
+    method: "get",
+  });
+}
+
+export function getDanmuList(video_id: number) {
+  return service({
+    url: `/danmu/list?video_id=${video_id}`,
     method: "get",
   });
 }
