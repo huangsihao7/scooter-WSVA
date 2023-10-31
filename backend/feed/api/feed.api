@@ -14,7 +14,7 @@ type (
 	}
 
 	UserVideoListReq {
-		ToUid int `json:"to_video_id"`
+		ToUid int `json:"to_user_id"`
 	}
 
 	UserVideoListResp {

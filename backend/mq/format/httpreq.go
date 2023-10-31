@@ -2,6 +2,9 @@ package format
 
 import (
 	"bytes"
+	"crypto/hmac"
+	"crypto/sha1"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"github.com/pkg/errors"
@@ -97,4 +100,48 @@ func DeleteHttp(url string) error {
 		fmt.Println("删除失败")
 		return errors.New("删除失败")
 	}
+}
+
+func GetJobBack(job string) (status, vid, suggestion string, err error) {
+	secretKey := "4hf0lBad0AFg_IaShAN14JD3IbcEg8Xn4DPSX3fY"
+	method := "GET"
+	path := "/v3/jobs/video/" + job
+	host := "ai.qiniuapi.com"
+	requestStr := fmt.Sprintf("%s %s\nHost: %s\n\n", method, path, host)
+	h := hmac.New(sha1.New, []byte(secretKey))
+	h.Write([]byte(requestStr))
+	sign := h.Sum(nil)
+
+	// Base64 编码签名
+	key := base64.URLEncoding.EncodeToString(sign)
+	// 添加 Authorization 头部
+	url := "http://" + host + path
+	token := "Qiniu cipx2awPLz7XNduXeJPtbWoTEQj7PWnV_2O727ew:" + key
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return
+	}
+	req.Header.Set("Authorization", token)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response:", err)
+		return
+	}
+	var safeInfo SafeResponse
+	err = json.Unmarshal(body, &safeInfo)
+	if err != nil {
+		fmt.Println("Error decoding response:", err)
+		return
+	}
+	return safeInfo.Status, safeInfo.Request.Data.Id, safeInfo.Result.Result.Suggestion, nil
 }

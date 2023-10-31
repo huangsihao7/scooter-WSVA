@@ -14,7 +14,7 @@ type CreateVideoResp struct {
 }
 
 type UserVideoListReq struct {
-	ToUid int `json:"to_video_id"`
+	ToUid int `json:"to_user_id"`
 }
 
 type UserVideoListResp struct {
