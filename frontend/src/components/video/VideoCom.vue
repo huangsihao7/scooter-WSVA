@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import DPlayer from "dplayer";
 import Hls from "hls.js";
-import { ref, reactive, onBeforeUnmount, onMounted, onUpdated } from "vue";
+import { onBeforeUnmount, onMounted, onUpdated, reactive, ref } from "vue";
 import { videoStore } from "@/stores/video";
 
 const videoRef = ref();
@@ -195,13 +195,23 @@ onMounted(() => {
     player.subtitle = props.subtitle;
   }
   if (props.danmaku) {
-    player.danmaku = props.danmaku;
+    player.danmaku = {
+      id: "2779e3b7c71be93b8103aef6985fbdd0",
+      api: "https://angustar.tech/api/dplayer/",
+      token: "tokendemo",
+      maximum: 1000,
+      user: "DIYgod",
+      bottom: "15%",
+      unlimited: true,
+      speedRate: 0.5,
+    };
+    console.log(player.danmaku);
   }
   if (props.videoIndex == 0) {
     //自动播放开启
     player.autoplay = true;
     state.instance = new DPlayer(player);
-    videoStore().video_id = props.videoId
+    videoStore().video_id = props.videoId;
     // state.instance.video.play()
     // console.log(state.instance);
   } else {
@@ -217,8 +227,8 @@ onUpdated(() => {
       state.instance.video.pause();
     } else {
       state.instance.video.play();
-      console.log('props.videoId',props.videoId)
-      videoStore().video_id = props.videoId
+      console.log("props.videoId", props.videoId);
+      videoStore().video_id = props.videoId;
     }
   }
 });

@@ -47,8 +47,8 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
   lastVideoIndex.value = lastIndex;
   if (currentIndex > lastIndex) {
     let offset = defaultLoad + currentIndex;
-    let readedVideo = videoStore().video_id
-    console.log('readedVideo', readedVideo)
+    let readedVideo = videoStore().video_id;
+    console.log("readedVideo", readedVideo);
     getRecommendVideos(offset, readedVideo).then((res: any) => {
       videos.value?.push(res.video_list[0]);
     });
@@ -75,7 +75,7 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
     >
       <NCarouselItem v-for="(video, index) in videos" :key="index">
         <VideoPlus
-          :onplay="currentVideoIndex" 
+          :onplay="currentVideoIndex"
           :index="index"
           :video="video"
           @comment-visible-update="updateVisible"

@@ -29,10 +29,10 @@ onMounted(() => {
 <template>
   <div class="user">
     <div class="header">
-      <MyHeaderCom v-if="passUserId" :userId="passUserId" />
+      <MyHeaderCom v-if="passUserId" :user-id="passUserId" />
     </div>
     <div class="interaction">
-      <MyInteractCom v-if="passUserId" :userId="passUserId"  />
+      <MyInteractCom v-if="passUserId" :user-id="passUserId" />
     </div>
   </div>
 </template>

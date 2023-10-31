@@ -7,34 +7,33 @@
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyInteractCom.vue
 -->
 <template>
-  
-    <NTabs
-      default-value="work"
-      justify-content="space-evenly"
-      type="line"
-      @update-value="handleUpdate"
-    >
-      <NTabPane name="work" tab="作品">
-        <n-scrollbar style="max-height: 50vh">
-          <VideoCard :is-scroll="false" :videos="videos" />
-        </n-scrollbar>
-      </NTabPane>
-      <NTabPane name="favourite" tab="喜欢">
-        <n-scrollbar style="max-height: 50vh">
-          <VideoCard :is-scroll="false" :videos="videos" />
-        </n-scrollbar>
-      </NTabPane>
-      <NTabPane name="collect" tab="收藏">
-        <n-scrollbar style="max-height: 50vh">
-          <VideoCard :is-scroll="false" :videos="videos" />
-        </n-scrollbar>
-      </NTabPane>
-      <NTabPane name="history" tab="观看历史">
-        <n-scrollbar style="max-height: 50vh">
-          <VideoCard :is-scroll="false" :videos="videos" />
-        </n-scrollbar>
-      </NTabPane>
-    </NTabs>
+  <NTabs
+    default-value="work"
+    justify-content="space-evenly"
+    type="line"
+    @update-value="handleUpdate"
+  >
+    <NTabPane name="work" tab="作品">
+      <NScrollbar style="max-height: 50vh">
+        <VideoCard :is-scroll="false" :videos="videos" />
+      </NScrollbar>
+    </NTabPane>
+    <NTabPane name="favourite" tab="喜欢">
+      <NScrollbar style="max-height: 50vh">
+        <VideoCard :is-scroll="false" :videos="videos" />
+      </NScrollbar>
+    </NTabPane>
+    <NTabPane name="collect" tab="收藏">
+      <NScrollbar style="max-height: 50vh">
+        <VideoCard :is-scroll="false" :videos="videos" />
+      </NScrollbar>
+    </NTabPane>
+    <NTabPane name="history" tab="观看历史">
+      <NScrollbar style="max-height: 50vh">
+        <VideoCard :is-scroll="false" :videos="videos" />
+      </NScrollbar>
+    </NTabPane>
+  </NTabs>
 </template>
 <script lang="ts" setup>
 import { NTabs, NTabPane, NScrollbar } from "naive-ui";
@@ -49,14 +48,14 @@ interface propsType {
 }
 
 const props = defineProps<propsType>();
-const myid = ref<number>(-1)
+const myid = ref<number>(-1);
 onMounted(() => {
   getMyWork();
 });
 const getMyWork = () => {
-  let uid = props.userId.toString()
-  let uid_num = parseInt(uid)
-  myid.value = uid_num
+  let uid = props.userId.toString();
+  let uid_num = parseInt(uid);
+  myid.value = uid_num;
   userVideoListReq(myid.value).then((res: any) => {
     videos.value = res.video_list;
   });

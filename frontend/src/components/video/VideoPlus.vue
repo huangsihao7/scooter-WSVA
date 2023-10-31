@@ -10,18 +10,17 @@
 <script lang="ts" setup>
 import Dplayer from "@/components/video/VideoCom.vue";
 import Hls from "hls.js";
-import { ref, reactive, onMounted, computed } from "vue";
-import { NIcon, NButton, NAvatar } from "naive-ui";
+import { computed, onMounted, reactive, ref } from "vue";
+import { NAvatar, NButton, NIcon, useMessage } from "naive-ui";
 import {
-  Heart,
+  Add,
   ArrowRedo,
   ChatbubbleEllipses,
-  Star,
-  Add,
   Checkmark,
+  Heart,
+  Star,
 } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
-import { useMessage } from "naive-ui";
 import { ElMessageBox } from "element-plus";
 import useClipboard from "vue-clipboard3";
 import { doFavourite, doStar } from "@/apis/favourite";
@@ -33,6 +32,7 @@ interface propsType {
   index: number;
   onplay: number;
 }
+
 const message = useMessage();
 const props = defineProps<propsType>();
 
@@ -57,44 +57,41 @@ const dplayerObj = reactive({
     },
   },
   danmaku: {
-    id: '2779e3b7c71be93b8103aef6985fbdd0',
-    api: 'https://angustar.tech/api/dplayer/',
+    id: "2779e3b7c71be93b8103aef6985fbdd0",
+    api: "https://angustar.tech/api/dplayer/",
     // api: 'http://127.0.0.1:8000/aaa',
     // token: 'tokendemo',
     maximum: 1000,
     // addition: ['https://api.prprpr.me/dplayer/v3/bilibili?aid=4157142'],
-    addition: ['http://127.0.0.1:8000/aaa'],
-    user: 'DIYgod',
-    bottom: '15%',
+    addition: ["http://127.0.0.1:8000/aaa"],
+    user: "DIYgod",
+    bottom: "15%",
     unlimited: true,
     speedRate: 0.5,
   },
-  // contextmenu: [
-  //   {
-  //     text: "custom1",
-  //     link: "https://github.com/DIYgod/DPlayer",
-  //   },
-  //   {
-  //     text: "custom2",
-  //     click: (player: any) => {
-  //       console.log(player);
-  //     },
-  //   },
-  // ],
-  // highlight: [
-  //   {
-  //     time: 20,
-  //     text: "这是第 20 秒",
-  //   },
-  //   {
-  //     time: 120,
-  //     text: "这是 2 分钟",
-  //   },
-  // ],
+  contextmenu: [
+    {
+      text: "custom1",
+      link: "https://github.com/DIYgod/DPlayer",
+    },
+    {
+      text: "custom2",
+      click: (player: any) => {
+        console.log(player);
+      },
+    },
+  ],
+  highlight: [
+    {
+      time: 20,
+      text: "这是第 20 秒",
+    },
+    {
+      time: 120,
+      text: "这是 2 分钟",
+    },
+  ],
 });
-
-
-
 
 // 复制分享链接
 const copy = async (msg: any) => {

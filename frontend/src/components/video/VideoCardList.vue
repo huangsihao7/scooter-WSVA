@@ -10,7 +10,7 @@
 import { onMounted } from "vue";
 import { NTag, NIcon, NCard, NEllipsis } from "naive-ui";
 import { Play, Heart } from "@vicons/ionicons5";
-import { VideoType } from '@/apis/interface'
+import { VideoType } from "@/apis/interface";
 interface propsType {
   videos: Array<VideoType>;
 }
@@ -35,10 +35,9 @@ onMounted(() => {
     style="width: calc((100vw - 260px) / 6)"
   >
     <template #cover>
-        <img class="image-css" :src="info.cover_url" @click="handleShowVedio">
-      </template>
+      <img class="image-css" :src="info.cover_url" @click="handleShowVedio" />
+    </template>
     <div class="video-space" style="position: relative" @click="GetVideoLink">
-
       <NTag class="time" round :bordered="false" type="info">
         {{ info.duration }}
         <template #icon>
@@ -69,7 +68,6 @@ onMounted(() => {
   </NCard>
 </template>
 <style lang="scss" scoped>
-
 .card-space {
   overflow: scroll-y;
   max-height: calc(100vh - 60px);
@@ -92,7 +90,7 @@ onMounted(() => {
     height: 30vh;
   }
 
-  .n-card .n-card-cover img{
+  .n-card .n-card-cover img {
     height: 30vh;
   }
 

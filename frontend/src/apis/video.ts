@@ -29,7 +29,7 @@ export function userVideoListReq(toUid: number) {
   });
 }
 
-export function getRecommendVideos(offset: number, readed_videoId:number) {
+export function getRecommendVideos(offset: number, readed_videoId: number) {
   return service({
     url: "/feed/recommends",
     method: "post",
@@ -61,7 +61,7 @@ export function getCategoryVideosList(category: number) {
 
 export function getHistoryVideosListReq() {
   return service({
-    url: `/feed/history`, 
+    url: `/feed/history`,
     method: "get",
   });
 }
