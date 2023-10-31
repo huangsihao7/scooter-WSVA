@@ -1,13 +1,8 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
-<<<<<<< HEAD
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 23:18:29
-=======
- * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-29 17:10:55
->>>>>>> 089035e1c344f42cd2d507345963a9e9fbe4810c
+ * @LastEditTime: 2023-10-31 22:23:49
  * @Description: 视频基础组件
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCom.vue
 -->
@@ -195,16 +190,7 @@ onMounted(() => {
     player.subtitle = props.subtitle;
   }
   if (props.danmaku) {
-    player.danmaku = {
-      id: "2779e3b7c71be93b8103aef6985fbdd0",
-      api: "https://angustar.tech/api/dplayer/",
-      token: "tokendemo",
-      maximum: 1000,
-      user: "DIYgod",
-      bottom: "15%",
-      unlimited: true,
-      speedRate: 0.5,
-    };
+    player.danmaku = props.danmaku
     console.log(player.danmaku);
   }
   if (props.videoIndex == 0) {

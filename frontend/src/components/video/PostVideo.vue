@@ -1,15 +1,15 @@
 <!--
  * @Author: Xu Ning
  * @Date: 2023-10-26 15:26:18
- * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 14:26:58
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-10-31 22:13:18
  * @Description: 
- * @FilePath: /scooter-WSVA/frontend/src/components/video/PostVideo.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\PostVideo.vue
 -->
 <script setup lang="ts">
 import { reactive, onMounted, ref, computed } from "vue";
 import { NUpload, NUploadDragger, NIcon, NText } from "naive-ui";
-import { baseURl } from "@/axios";
+import { baseURL } from "@/axios";
 import type { UploadFileInfo } from "naive-ui";
 import { CloudUpload } from "@vicons/ionicons5";
 import { userStore } from "@/stores/user";
@@ -67,7 +67,7 @@ const classifyList = ref<Array<ClassifyList>>([
 ]);
 
 // 上传video的URL
-const postBaseURl = baseURl + "/user/upload";
+const postBaseURL = baseURL + "/user/upload";
 
 onMounted(() => {
   getClassifyList();
@@ -179,7 +179,7 @@ function uploadHeader() {
           ref="fileUploadRef"
           multiple
           directory-dnd
-          :action="postBaseURl"
+          :action="postBaseURL"
           :headers="uploadHeader"
           @before-upload="beforeUpload"
           @finish="handleFinish"

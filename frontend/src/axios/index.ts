@@ -13,10 +13,10 @@ import { userStore } from "@/stores/user";
 import { useMessage } from "naive-ui";
 
 // const baseURl = 'http://127.0.0.1:8080';
-const baseURl = "http://172.22.121.53:7070";
+const baseURL = "http://172.22.121.53:7070";
 const message = useMessage();
 const service = axios.create({
-  baseURL: baseURl,
+  baseURL: baseURL,
   timeout: 15000, // 请求超时时间
 });
 
@@ -55,4 +55,4 @@ service.interceptors.response.use((response) => {
     return Promise.reject();
   }
 });
-export { service, baseURl };
+export { service, baseURL };

@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 20:51:44
+ * @LastEditTime: 2023-10-31 23:53:03
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\myHeaderCom.vue
 -->
@@ -74,8 +74,8 @@ onMounted(() => {
         <NAvatar :src="avatar" round />
       </NGridItem>
       <NGridItem v-if="userInfo" :span="20" class="info-tab">
-        <NText tag="b">{{ userInfo.name }}</NText>
-        <NText tag="p">{{ userInfo.signature }}</NText>
+        <p class="name">{{ userInfo.name }}</p>
+        <p class="signature">{{ userInfo.signature }}</p>
         <div class="follow">
           <NButton color="#606266" text>
             关注 {{ userInfo.follow_count }}
@@ -137,17 +137,17 @@ onMounted(() => {
 
     .edit-info {
       position: absolute;
-      top: 0;
-      right: 20px;
+      top: 70px;
+      right: calc(10vw + 20px);
     }
 
-    .el-text,
+    p,
     .follow {
       margin: 10px 20px;
       display: block;
     }
 
-    .el-text {
+    p {
       width: calc(100% - 40px);
       margin: 10px 20px;
     }
@@ -158,7 +158,7 @@ onMounted(() => {
       }
     }
 
-    .el-text:nth-child(1) {
+    p:nth-child(1) {
       color: black;
       font-size: 2.5rem;
       font-weight: bold;

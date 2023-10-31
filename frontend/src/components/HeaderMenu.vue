@@ -2,14 +2,14 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 19:53:23
+ * @LastEditTime: 2023-10-31 23:22:48
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
 <script lang="ts" setup>
 import { watch, h, ref, Component, reactive, onBeforeMount } from 'vue'
-import { NIcon, NMenu, NInput, NButton, NAvatar, NPopover, NTag, NImage } from 'naive-ui'
-import type { MenuOption } from 'naive-ui'
+import { NDialogProvider, NIcon, NMenu, NInput, NButton, NAvatar, NPopover, NTag, NImage } from 'naive-ui'
+import type { MenuOption, NForm, NFormItem } from 'naive-ui'
 import { Search,Add } from '@vicons/ionicons5'
 import { userStore } from "@/stores/user";
 import { login } from "@/apis/login";
@@ -275,6 +275,31 @@ watch(()=>loginFormVisible.value,
           </span>
         </template>
     </ElDialog>
+    <!-- <NDialogProvider v-model="loginFormVisible" title="登录" width="30%">
+      <NForm :model="form">
+        <NFormItem label="账号" :label-width="formLabelWidth">
+          <NInput 
+              v-model="form.phoneNum"
+              autocomplete="off"
+              placeholder="输入账号"
+              clearable></NInput>
+        </NFormItem>
+        <NFormItem label="密码" :label-width="formLabelWidth">
+          <NInput 
+              v-model="form.pwd"
+              autocomplete="off"
+              type="password"
+              placeholder="输入密码"
+              show-password
+              clearable></NInput>
+        </NFormItem>
+        <div style="display: flex; justify-content: flex-end">
+          <n-button round type="primary" @click="doLogin">
+            登录
+          </n-button>
+        </div>
+      </NForm>
+    </NDialogProvider> -->
     <PostVedio
       :video-form-visible="isVideoFormVisible"
       @visible-update="updateVisible"

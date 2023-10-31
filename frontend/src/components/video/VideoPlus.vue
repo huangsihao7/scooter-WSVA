@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 00:25:56
+ * @LastEditTime: 2023-10-31 23:28:00
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -26,6 +26,7 @@ import useClipboard from "vue-clipboard3";
 import { doFavourite, doStar } from "@/apis/favourite";
 import { doFollow } from "@/apis/relation";
 import { userStore } from "@/stores/user";
+import { baseURL } from "@/axios";
 
 interface propsType {
   video: VideoType;
@@ -57,14 +58,14 @@ const dplayerObj = reactive({
     },
   },
   danmaku: {
-    id: "2779e3b7c71be93b8103aef6985fbdd0",
-    api: "https://angustar.tech/api/dplayer/",
-    // api: 'http://127.0.0.1:8000/aaa',
-    // token: 'tokendemo',
-    maximum: 1000,
+    id: props.video.video_id,
+    // api: "https://angustar.tech/api/dplayer/",
+    api: baseURL + '/danmu/list',
+    token: userStore().token,
+    // maximum: 1000,
     // addition: ['https://api.prprpr.me/dplayer/v3/bilibili?aid=4157142'],
-    addition: ["http://127.0.0.1:8000/aaa"],
-    user: "DIYgod",
+    // addition: [baseURL + '/danmu/listv3?/video_id=' + props.video.video_id],
+    user: userStore().user_id,
     bottom: "15%",
     unlimited: true,
     speedRate: 0.5,
