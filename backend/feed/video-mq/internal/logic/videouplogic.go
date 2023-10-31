@@ -91,7 +91,7 @@ func (l *ThumbupLogic) BatchUpSertToEs(ctx context.Context, data []*types.VideoE
 		payload := fmt.Sprintf(`{"doc":%s,"doc_as_upsert":true}`, string(v))
 		err = bi.Add(ctx, esutil.BulkIndexerItem{
 			Action:     "update",
-			DocumentID: fmt.Sprintf("%d", d.Id),
+			DocumentID: fmt.Sprintf("%d", d.VideoId),
 			Body:       strings.NewReader(payload),
 			OnSuccess: func(ctx context.Context, item esutil.BulkIndexerItem, item2 esutil.BulkIndexerResponseItem) {
 			},
@@ -123,6 +123,7 @@ func (l *ThumbupLogic) articleOperate(msg *types.CanalArticleMsg) error {
 		articleId, _ := strconv.ParseInt(d.Id, 10, 64)
 		authorId, _ := strconv.ParseInt(d.AuthorId, 10, 64)
 
+		//redis 代码
 		//t, err := time.ParseInLocation("2006-01-02 15:04:05", d.CreatedAt, time.Local)
 		//publishTimeKey := articlesKey(d.AuthorId, 0)
 		//likeNumKey := articlesKey(d.AuthorId, 1)
@@ -163,7 +164,7 @@ func (l *ThumbupLogic) articleOperate(msg *types.CanalArticleMsg) error {
 		//}
 
 		esData = append(esData, &types.VideoEsMsg{
-			Id:            uint(articleId),
+			VideoId:       uint(articleId),
 			AuthorId:      uint(authorId),
 			Title:         d.Title,
 			CoverUrl:      d.CoverUrl,
@@ -172,9 +173,6 @@ func (l *ThumbupLogic) articleOperate(msg *types.CanalArticleMsg) error {
 			StarCount:     int(starCount),
 			CommentCount:  uint(commentCount),
 			Category:      int(category),
-			Content:       d.Content,
-			Name:          d.Name,
-			Dec:           d.Dec,
 		})
 	}
 	err := l.BatchUpSertToEs(l.ctx, esData)

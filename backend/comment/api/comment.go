@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"
 
 	"github.com/huangsihao7/scooter-WSVA/comment/api/internal/config"
@@ -18,7 +19,7 @@ var configFile = flag.String("f", "etc/comment-api-dev.yaml", "the config file")
 
 func main() {
 	flag.Parse()
-
+	logx.DisableStat()
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
