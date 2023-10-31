@@ -153,12 +153,13 @@ func (l *ThumbupLogic) articleOperate(msg *types.CanalArticleMsg) error {
 		//		l.Logger.Errorf("ZremCtx key: %s req: %v error: %v", likeNumKey, d, err)
 		//	}
 		//}
+		if len(d.Content) > 0 {
+			videoId, _ = strconv.ParseInt(d.Vid, 10, 64)
+		}
 		esData = append(esData, &types.VideoEsMsg{
-			VideoId:   videoId,
-			Title:     d.Title,
-			Name:      d.Name,
-			Signature: d.Dec,
-			Content:   d.Content,
+			VideoId: videoId,
+			Title:   d.Title,
+			Content: d.Content,
 		})
 	}
 
