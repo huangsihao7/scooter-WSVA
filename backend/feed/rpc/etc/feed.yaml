@@ -28,3 +28,8 @@ KqPusherTesTConf:
   Brokers:
     - 172.22.121.54:9092
   Topic: testVideos
+
+KqPusherJobConf:
+  Brokers:
+    - 172.22.121.54:9092
+  Topic: job

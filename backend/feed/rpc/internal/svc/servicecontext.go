@@ -25,6 +25,7 @@ type ServiceContext struct {
 	VideoModel         *gmodel.VideoModel
 	StarModel          *starModel.StarModel
 	KqPusherTestClient *kq.Pusher
+	KqPusherJobClient  *kq.Pusher
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -44,5 +45,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		StarModel:          starModel.NewStarModel(db.DB),
 		KqPusherTestClient: kq.NewPusher(c.KqPusherTesTConf.Brokers, c.KqPusherTesTConf.Topic),
 		HistoryModel:       historyModel.NewHistoryModel(sqlx.NewMysql(c.DataSource)),
+		KqPusherJobClient:  kq.NewPusher(c.KqPusherJobConf.Brokers, c.KqPusherJobConf.Topic),
 	}
 }

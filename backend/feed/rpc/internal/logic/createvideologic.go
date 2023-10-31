@@ -6,10 +6,12 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/feed/model"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
+	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/common"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/threading"
+	"strconv"
 )
 
 type CreateVideoLogic struct {
@@ -47,11 +49,17 @@ func (l *CreateVideoLogic) CreateVideo(in *feed.CreateVideoRequest) (*feed.Creat
 	}
 	newVideo.Id, err = res.LastInsertId()
 
+	JobId := common.IsSafeJobId(in.Url, strconv.Itoa(int(newVideo.Id)))
+
 	//将文件信息传入mq
 	messagekq := format.UploadFile{
 		Id:  newVideo.Id,
 		Url: in.Url,
 		Uid: newVideo.AuthorId,
+	}
+	jobKq := format.JobBody{
+		Vid: newVideo.Id,
+		Job: JobId,
 	}
 
 	// 发送kafka消息，异步
@@ -65,7 +73,17 @@ func (l *CreateVideoLogic) CreateVideo(in *feed.CreateVideoRequest) (*feed.Creat
 		if err != nil {
 			l.Logger.Errorf("[Video] kq push data: %s error: %v", data, err)
 		}
-
+	})
+	threading.GoSafe(func() {
+		data, err := json.Marshal(jobKq)
+		if err != nil {
+			l.Logger.Errorf("[Video] marshal msg: %v error: %v", jobKq, err)
+			return
+		}
+		err = l.svcCtx.KqPusherJobClient.Push(string(data))
+		if err != nil {
+			l.Logger.Errorf("[Video] kq push data: %s error: %v", data, err)
+		}
 	})
 	return &feed.CreateVideoResponse{
 		StatusCode: constants.ServiceOKCode,
