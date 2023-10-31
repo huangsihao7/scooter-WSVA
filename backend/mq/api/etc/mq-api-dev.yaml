@@ -22,3 +22,8 @@ Label:
     Hosts:
       - 172.22.110.66:2444
     Key: label.rpc
+Feed:
+  Etcd:
+    Hosts:
+      - 172.22.110.66:2444
+    Key: feed.rpc

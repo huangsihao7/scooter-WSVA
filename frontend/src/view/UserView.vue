@@ -17,7 +17,6 @@ const route = useRoute();
 const userId = computed(() => route.params.id);
 const passUserId = ref<any>();
 onMounted(() => {
-  console.log("fffffffff", userId, userId.value);
   if (userId.value) {
     passUserId.value = userId.value;
   } else {

@@ -7,61 +7,78 @@
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\InfoEditCom.vue
 -->
 <template>
-  <!-- Form -->
-  <ElDialog
-    v-model="visibel"
+  <NModal
+    v-model:show="visibel"
     width="30vw"
+    preset="dialog"
     title="修改资料"
-    :before-close="closeFunc"
+    positive-text="确认"
+    negative-text="取消"
+    @positive-click="submitCallback"
+    @negative-click="cancelCallback"
   >
-    <ElForm :model="form">
-      <ElFormItem label="头像" :label-width="formLabelWidth">
-        <ElUpload
-          class="avatar-uploader"
-          action="#"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
+    <NForm
+      ref="formRef"
+      :model="formValue"
+      label-placement="left"
+      label-width="auto"
+    >
+      <NFormItem label="头像">
+        <NUpload
+          action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
+          :default-file-list="[
+            {
+              id: '1',
+              name: '头像',
+              status: 'finished',
+              url: formValue.avatar,
+            },
+          ]"
+          list-type="image-card"
+          :max="1"
+          @before-upload="beforeAvatarUpload"
         >
-          <img v-if="form.avatar" :src="userInfo.avatar" class="avatar" />
-          <ElIcon v-else class="avatar-uploader-icon">
-            <Plus />
-          </ElIcon>
-        </ElUpload>
-      </ElFormItem>
-      <ElFormItem label="昵称" :label-width="formLabelWidth">
-        <ElInput v-model="form.name" />
-      </ElFormItem>
-      <ElFormItem label="手机号" :label-width="formLabelWidth">
-        <ElInput v-model="form.phoneNum" />
-      </ElFormItem>
-
-      <ElFormItem label="性别" :label-width="formLabelWidth">
-        <ElSelect v-model="form.gender" :placeholder="userInfo.gender">
-          <ElOption label="女" value="0" />
-          <ElOption label="男" value="1" />
-        </ElSelect>
-      </ElFormItem>
-
-      <ElFormItem label="自我介绍" :label-width="formLabelWidth">
-        <ElInput v-model="form.signature" />
-      </ElFormItem>
-    </ElForm>
-    <template #footer>
-      <span class="dialog-footer">
-        <ElButton @click="emit('visible-update', false)">取消</ElButton>
-        <ElButton type="primary" @click="updateUserInfo"> 修改 </ElButton>
-      </span>
-    </template>
-  </ElDialog>
+          点击上传
+        </NUpload>
+      </NFormItem>
+      <NFormItem label="昵称">
+        <NInput v-model:value="formValue.name" placeholder="请输入姓名" />
+      </NFormItem>
+      <NFormItem label="手机号">
+        <NInput v-model:value="formValue.phoneNum" placeholder="请输入手机号" />
+      </NFormItem>
+      <NFormItem label="性别">
+        <NSelect
+          v-model:value="formValue.gender"
+          placeholder="请输入性别"
+          :options="genderOptions"
+        />
+      </NFormItem>
+      <NFormItem label="简介">
+        <NInput v-model:value="formValue.signature" placeholder="请输入简介" />
+      </NFormItem>
+    </NForm>
+  </NModal>
 </template>
 
 <script lang="ts" setup>
-import { reactive, computed, onMounted } from "vue";
-import { useMessage } from "naive-ui";
-import { UploadProps } from "element-plus";
+import { computed, onMounted, ref } from "vue";
+import {
+  FormInst,
+  NForm,
+  NFormItem,
+  NInput,
+  NModal,
+  NSelect,
+  NUpload,
+  UploadFileInfo,
+  useMessage,
+} from "naive-ui";
 import { UserType } from "@/apis/interface";
 import { userStore } from "@/stores/user";
+
 const message = useMessage();
+
 interface propsType {
   isVisible: boolean;
   userInfo: UserType;
@@ -69,58 +86,55 @@ interface propsType {
 
 const props = defineProps<propsType>();
 const emit = defineEmits(["visible-update"]);
-
+const formRef = ref<FormInst | null>(null);
 const visibel = computed(() => props.isVisible);
-const userInfo = computed(() => props.userInfo);
-const formLabelWidth = "20%";
-
-const form = reactive({
+const formValue = ref({
   name: "",
   phoneNum: "",
   gender: 0,
   signature: "",
   avatar: "",
 });
-
+const genderOptions = [
+  {
+    label: "男",
+    value: 1,
+  },
+  {
+    label: "女",
+    value: 0,
+  },
+];
 onMounted(() => {
-  form.name = userInfo.value.name;
-  form.phoneNum = userStore().phoneNum;
-  form.gender = userInfo.value.gender;
-  form.signature = userInfo.value.signature;
-  form.avatar = userInfo.value.avatar;
+  formValue.value.name = userStore().name;
+  formValue.value.phoneNum = userStore().phoneNum;
+  formValue.value.gender = userStore().gender;
+  formValue.value.signature = userStore().signature;
+  formValue.value.avatar = userStore().avatar;
+  console.log(formValue.value);
 });
 
-const beforeAvatarUpload: UploadProps["beforeUpload"] = (rawFile) => {
-  if (rawFile.type !== "image/jpeg") {
+const beforeAvatarUpload = (data: {
+  file: UploadFileInfo;
+  fileList: UploadFileInfo[];
+}) => {
+  if (data.file.file?.type !== "image/jpeg") {
     message.error("Avatar picture must be JPG format!");
     return false;
-  } else if (rawFile.size / 1024 / 1024 > 2) {
+  } else if (data.file.file.size / 1024 / 1024 > 2) {
     message.error("Avatar picture size can not exceed 2MB!");
     return false;
   }
-  console.log("rawFile", rawFile);
 };
 
-const closeFunc = () => {
+const cancelCallback = () => {
   emit("visible-update", false);
 };
 
-const updateUserInfo = () => {};
+const submitCallback = () => {};
 </script>
 
 <style scoped>
-.el-input {
-  width: 90%;
-}
-
-.el-button--text {
-  margin-right: 15px;
-}
-
-.el-select {
-  width: 90%;
-}
-
 .dialog-footer button:first-child {
   margin-right: 10px;
 }

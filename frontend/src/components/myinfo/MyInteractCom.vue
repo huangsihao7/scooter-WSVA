@@ -36,13 +36,14 @@
   </NTabs>
 </template>
 <script lang="ts" setup>
-import { NTabs, NTabPane, NScrollbar } from "naive-ui";
+import { NScrollbar, NTabPane, NTabs } from "naive-ui";
 import VideoCard from "../VideoCard.vue";
-// import { userStore } from "@/stores/user";
-import { userVideoListReq, getHistoryVideosListReq } from "@/apis/video";
+import { getHistoryVideosListReq, userVideoListReq } from "@/apis/video";
 import { userFavouriteListReq, userStarListReq } from "@/apis/favourite";
 import { onMounted, ref } from "vue";
-const videos = ref<any>();
+
+const videos = ref<Array<any>>([]);
+
 interface propsType {
   userId: number;
 }

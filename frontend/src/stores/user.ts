@@ -7,14 +7,18 @@
  * @Description:
  */
 import { defineStore } from "pinia";
+
 export const userStore = defineStore({
   id: "user",
   state: () => ({
     isLoggedIn: false,
     token: "",
     user_id: -1,
-    avatar:
-      "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
+    name: "",
+    avatar: "",
+    gender: 1,
+    signature: "",
+    background_image: "",
     phoneNum: "",
   }),
   persist: true,
