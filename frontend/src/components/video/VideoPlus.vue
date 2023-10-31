@@ -69,28 +69,28 @@ const dplayerObj = reactive({
     unlimited: true,
     speedRate: 0.5,
   },
-  // contextmenu: [
-  //   {
-  //     text: "custom1",
-  //     link: "https://github.com/DIYgod/DPlayer",
-  //   },
-  //   {
-  //     text: "custom2",
-  //     click: (player: any) => {
-  //       console.log(player);
-  //     },
-  //   },
-  // ],
-  // highlight: [
-  //   {
-  //     time: 20,
-  //     text: "这是第 20 秒",
-  //   },
-  //   {
-  //     time: 120,
-  //     text: "这是 2 分钟",
-  //   },
-  // ],
+  contextmenu: [
+    {
+      text: "custom1",
+      link: "https://github.com/DIYgod/DPlayer",
+    },
+    {
+      text: "custom2",
+      click: (player: any) => {
+        console.log(player);
+      },
+    },
+  ],
+  highlight: [
+    {
+      time: 20,
+      text: "这是第 20 秒",
+    },
+    {
+      time: 120,
+      text: "这是 2 分钟",
+    },
+  ],
 });
 
 
