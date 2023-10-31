@@ -58,7 +58,6 @@ func (l *CreateVideoLogic) CreateVideo(in *feed.CreateVideoRequest) (*feed.Creat
 		Uid: newVideo.AuthorId,
 	}
 	jobKq := format.JobBody{
-		Vid: newVideo.Id,
 		Job: JobId,
 	}
 

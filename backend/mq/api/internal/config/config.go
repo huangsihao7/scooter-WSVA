@@ -8,8 +8,13 @@ import (
 
 type Config struct {
 	rest.RestConf
-	KqConsumerConf kq.KqConf
-	Comment        zrpc.RpcClientConf
-	Label          zrpc.RpcClientConf
-	Feed           zrpc.RpcClientConf
+	KqConsumerConf    kq.KqConf
+	Comment           zrpc.RpcClientConf
+	Label             zrpc.RpcClientConf
+	Feed              zrpc.RpcClientConf
+	KqConsumerJobConf kq.KqConf
+	KqPusherJobConf   struct {
+		Brokers []string
+		Topic   string
+	}
 }

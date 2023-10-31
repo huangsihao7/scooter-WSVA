@@ -47,10 +47,10 @@ func (l *UploadFile) Consume(key, val string) error {
 	queryParams.Set("video_url", encodedURL)
 
 	// 构建带有查询参数的 URL
-	url := fmt.Sprintf("%s?%s", baseurl, queryParams.Encode())
-	println(url)
+	Url := fmt.Sprintf("%s?%s", baseurl, queryParams.Encode())
+	println(Url)
 	// 发起 GET 请求
-	body, err := format.QiNiuGet(url)
+	body, err := format.QiNiuGet(Url)
 	if err != nil {
 		return err
 	}

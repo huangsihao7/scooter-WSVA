@@ -14,6 +14,7 @@ func Consumers(c config.Config, ctx context.Context, svcContext *svc.ServiceCont
 	return []service.Service{
 		//Listening for changes in consumption flow status
 		kq.MustNewQueue(c.KqConsumerConf, NewUploadFile(ctx, svcContext)),
+		kq.MustNewQueue(c.KqConsumerJobConf, NewParseJob(ctx, svcContext)),
 		//.....
 	}
 

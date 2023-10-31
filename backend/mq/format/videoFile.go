@@ -36,6 +36,19 @@ type PopularResp struct {
 }
 
 type JobBody struct {
-	Vid int64  `json:"vid"`
 	Job string `json:"job"`
+}
+
+type SafeResponse struct {
+	Status  string `json:"status"`
+	Request struct {
+		Data struct {
+			Id string `json:"id"`
+		} `json:"data"`
+	} `json:"request"`
+	Result struct {
+		Result struct {
+			Suggestion string `json:"suggestion"`
+		} `json:"result"`
+	} `json:"result"`
 }

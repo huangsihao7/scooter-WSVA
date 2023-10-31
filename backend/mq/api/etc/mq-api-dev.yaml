@@ -27,3 +27,18 @@ Feed:
     Hosts:
       - 172.22.110.66:2444
     Key: feed.rpc
+
+KqConsumerJobConf:
+  Name: kqJobConsumer
+  Brokers:
+    - 172.22.121.54:9092
+  Group: jobConsumer
+  Topic: job
+  Offset: first
+  Consumers: 8
+  Processors: 8
+
+KqPusherJobConf:
+  Brokers:
+    - 172.22.121.54:9092
+  Topic: job

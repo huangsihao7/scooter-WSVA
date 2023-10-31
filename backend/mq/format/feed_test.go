@@ -80,24 +80,37 @@ func TestSafe(t *testing.T) {
 		fmt.Println("Error reading response:", err)
 		return
 	}
-
-	var result map[string]interface{}
+	type Response struct {
+		Status  string `json:"status"`
+		Request struct {
+			Data struct {
+				Id string `json:"id"`
+			} `json:"data"`
+		} `json:"request"`
+		Result struct {
+			Result struct {
+				Suggestion string `json:"suggestion"`
+			} `json:"result"`
+		} `json:"result"`
+	}
+	var result Response
 	err = json.Unmarshal(body, &result)
 	if err != nil {
 		fmt.Println("Error decoding response:", err)
 		return
 	}
+	println(result.Status, result.Request.Data.Id, result.Result.Result.Suggestion)
 
-	prettyJSON, err := json.MarshalIndent(result, "", "    ")
-	if err != nil {
-		fmt.Println("Error encoding JSON:", err)
-		return
-	}
-
-	fmt.Println(string(prettyJSON))
+	//prettyJSON, err := json.MarshalIndent(result, "", "    ")
+	//if err != nil {
+	//	fmt.Println("Error encoding JSON:", err)
+	//	return
+	//}
+	//
+	//fmt.Println(string(prettyJSON))
 }
 
 func TestFun(t *testing.T) {
-	s := fmt.Sprintf("{\"data\": {\"uri\": \"%s\",\"id\": \"%s\"},\"params\": {\"scenes\": [\"pulp\",\"terror\",\"politician\"],\"cut_param\": {\"interval_msecs\": 5000}}}", "http.kk", "1")
-	println(s)
+	s := "65409c11a2cfbcaec1d62dfd"
+	println(GetJobBack(s))
 }
