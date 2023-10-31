@@ -7,6 +7,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/comment/api/internal/types"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"strconv"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -35,7 +36,7 @@ func (l *DanmuActionLogic) DanmuAction(req *types.DanmuActionReq) (resp *types.D
 		UserId:    userId,
 		VideoId:   req.VideoId,
 		DanmuText: req.DanmuText,
-		SendTime:  req.SendTime,
+		SendTime:  strconv.FormatInt(req.SendTime, 10),
 	})
 	if err != nil {
 		return &types.DanmuActionResp{

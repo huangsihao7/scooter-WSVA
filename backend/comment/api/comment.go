@@ -16,6 +16,7 @@ import (
 
 var configFile = flag.String("f", "etc/comment-api-dev.yaml", "the config file")
 
+// SSS
 func main() {
 	flag.Parse()
 	logx.DisableStat()

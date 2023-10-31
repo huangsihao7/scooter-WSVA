@@ -31,7 +31,8 @@ func NewSearchESLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SearchES
 func (l *SearchESLogic) SearchES(in *feed.EsSearchReq) (*feed.EsSearchResp, error) {
 	// 创建ES client用于后续操作ES
 
-	content := "孙子" // 替换为您的变量值
+	//查找的内容
+	content := in.Content
 
 	query := fmt.Sprintf(`
 	{
@@ -71,8 +72,11 @@ func (l *SearchESLogic) SearchES(in *feed.EsSearchReq) (*feed.EsSearchResp, erro
 	log.Println("Took:", took)
 	log.Println("Timed Out:", timedOut)
 	log.Println("Total Hits:", totalHits)
-	log.Println("hit 1:", responses.Hits.Hits[0].ID)
-	log.Println("hit 2:", responses.Hits.Hits[1].ID)
+
+	videoIds := []int{}
+	for i := 0; i < totalHits; i++ {
+		videoIds = append(videoIds, responses.Hits.Hits[i].Source.VideoID)
+	}
 
 	return &feed.EsSearchResp{
 		StatusCode: constants.ServiceOKCode,
@@ -102,18 +106,9 @@ type Response struct {
 			ID     string  `json:"_id"`
 			Score  float64 `json:"_score"`
 			Source struct {
-				ID            int    `json:"id"`
-				AuthorID      int    `json:"author_id"`
-				Title         string `json:"title"`
-				CoverURL      string `json:"cover_url"`
-				PlayURL       string `json:"play_url"`
-				FavoriteCount int    `json:"favorite_count"`
-				StarCount     int    `json:"star_count"`
-				CommentCount  int    `json:"comment_count"`
-				Category      int    `json:"category"`
-				Content       string `json:"content"`
-				Name          string `json:"name"`
-				Dec           string `json:"dec"`
+				VideoID int    `json:"video_id"`
+				Title   string `json:"title"`
+				Content string `json:"content"`
 			} `json:"_source"`
 		} `json:"hits"`
 	} `json:"hits"`
