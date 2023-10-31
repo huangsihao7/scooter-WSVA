@@ -27,6 +27,7 @@ func NewDanMuListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DanMuLi
 }
 
 func (l *DanMuListLogic) DanMuList(in *comment.DanmuListRequest) (*comment.DanmuListResponse, error) {
+	logx.DisableStat()
 	// todo: add your logic here and delete this line
 	videoId := in.VideoId
 

@@ -14,7 +14,7 @@ type (
 	}
 
 	UserVideoListReq {
-		ToUid int `json:"toUid"`
+		ToUid int `json:"to_video_id"`
 	}
 
 	UserVideoListResp {
@@ -87,7 +87,7 @@ type (
 
 	DurationTestReq {
 		Duration string `json:"duration"`
-		Vid      int64  `json:"vid"`
+		Vid      int64  `json:"video_id"`
 	}
 	DurationTestResp {
 		StatusCode int    `json:"status_code"`
@@ -100,7 +100,7 @@ type (
 	}
 
 	NeighborsVideoReq {
-		Vid int64 `form:"vid"`
+		Vid int64 `form:"video_id"`
 	}
 	NeighborsVideoResp {
 		StatusCode int         `json:"status_code"`
@@ -109,11 +109,20 @@ type (
 	}
 
 	DeleteVideoReq {
-		Vid int64 `json:"vid"`
+		Vid int64 `json:"video_id"`
 	}
 	DeleteVideoResp {
 		StatusCode int    `json:"status_code"`
 		StatusMsg  string `json:"status_msg"`
+	}
+
+	SearchEsReq {
+		Content string `json:"content"`
+	}
+	SearchEsResp {
+		StatusCode int         `json:"status_code"`
+		StatusMsg  string      `json:"status_msg"`
+		VideoList  []VideoInfo `json:"video_list"`
 	}
 )
 
@@ -123,34 +132,37 @@ type (
 service feed-api {
 	@handler CreateVideo
 	post /feed/create (CreateVideoReq) returns(CreateVideoResp)
-
+	
 	@handler UserVideosList
 	post /feed/UserVideosList (UserVideoListReq) returns(UserVideoListResp)
-
+	
 	@handler VideosList
 	get /feed/VideosList () returns(VideosListResp)
-
+	
 	@handler CategoryVideosList
 	get /feed/CategoryVideosList (CategoryVideosListReq) returns(CategoryVideosListResp)
-
+	
 	@handler RecommendVideos
 	post /feed/recommends (RecommendVideosListReq) returns(RecommendVideosListResp)
-
+	
 	@handler PopularVideos
 	post /feed/populars (PopularVideosListReq) returns(PopularVideosListResp)
-
+	
 	@handler CreateVideoTest
 	post /feed/createst (CreateVideoReq) returns(CreateVideoResp)
-
+	
 	@handler DurationTest
 	post /feed/duration(DurationTestReq) returns(DurationTestResp)
-
+	
 	@handler HistoryVideos
 	get /feed/history () returns(HistoryVideosResp)
-
+	
 	@handler NeighborsVideos
 	get /feed/neighbors (NeighborsVideoReq) returns (NeighborsVideoResp)
-
+	
 	@handler DeleteVideo
 	post /feed/deleteViedo (DeleteVideoReq) returns (DeleteVideoResp)
+	
+	@handler SearchEs
+	post /feed/searcheEs (SearchEsReq) returns (SearchEsResp)
 }

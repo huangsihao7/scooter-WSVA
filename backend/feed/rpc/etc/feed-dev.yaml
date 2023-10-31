@@ -23,8 +23,18 @@ DB:
   MaxOpenConns: 100
   ConnMaxLifetime: 3600
 
-
 KqPusherTesTConf:
   Brokers:
     - 172.22.121.54:9092
   Topic: testVideos
+
+KqPusherJobConf:
+  Brokers:
+    - 172.22.121.54:9092
+  Topic: job
+
+Es:
+  Addresses:
+      - http://172.22.121.54:9200/
+  Username: elastic
+  Password: changeme

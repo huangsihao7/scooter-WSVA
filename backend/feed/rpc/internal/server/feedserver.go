@@ -77,3 +77,8 @@ func (s *FeedServer) DeleteVideo(ctx context.Context, in *feed.DeleteVideoReq) (
 	l := logic.NewDeleteVideoLogic(ctx, s.svcCtx)
 	return l.DeleteVideo(in)
 }
+
+func (s *FeedServer) SearchES(ctx context.Context, in *feed.EsSearchReq) (*feed.EsSearchResp, error) {
+	l := logic.NewSearchESLogic(ctx, s.svcCtx)
+	return l.SearchES(in)
+}

@@ -20,4 +20,14 @@ type Config struct {
 		MaxIdleConns int `json:",default=100"`
 		MaxLifetime  int `json:",default=3600"`
 	}
+	KqPusherJobConf struct {
+		Brokers []string
+		Topic   string
+	}
+
+	Es struct {
+		Addresses []string
+		Username  string
+		Password  string
+	}
 }

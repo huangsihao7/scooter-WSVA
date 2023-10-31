@@ -121,6 +121,17 @@ message DeleteVideoResp {
    string status_msg = 2; // 返回状态描述
 }
 
+message Es_search_req {
+   int32 vid = 1;
+   string content = 2;
+}
+
+message Es_search_resp {
+   int32 status_code = 1;
+   string status_msg = 2;
+   repeated VideoInfo video_list = 3;
+}
+
 service Feed {
    rpc CreateVideo(CreateVideoRequest) returns (CreateVideoResponse) {}
    rpc ListVideo(ListVideoRequest) returns (ListVideoResponse) {}
@@ -134,4 +145,5 @@ service Feed {
    rpc ListHistoryVideos(HistoryReq)returns(HistoryResp);
    rpc ListNeighborVideos(NeighborsReq)returns(NeighborsResp);
    rpc DeleteVideo(DeleteVideoReq) returns(DeleteVideoResp);
+   rpc SearchES(Es_search_req) returns(Es_search_resp);
 }

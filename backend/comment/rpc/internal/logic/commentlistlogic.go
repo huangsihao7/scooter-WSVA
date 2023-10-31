@@ -30,6 +30,7 @@ func NewCommentListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Comme
 }
 
 func (l *CommentListLogic) CommentList(in *comment.CommentListRequest) (*comment.CommentListResponse, error) {
+	logx.DisableStat()
 	// todo: add your logic here and delete this line
 	userId := in.UserId
 	videoId := in.VideoId

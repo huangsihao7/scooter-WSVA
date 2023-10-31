@@ -34,3 +34,8 @@ type PopularResp struct {
 	Id    string  `json:"Id"`
 	Score float64 `json:"Score"`
 }
+
+type JobBody struct {
+	Vid int64  `json:"vid"`
+	Job string `json:"job"`
+}

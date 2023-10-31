@@ -28,6 +28,7 @@ func NewCommentActionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Com
 }
 
 func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*comment.CommentActionResponse, error) {
+	logx.DisableStat()
 	// todo: add your logic here and delete this line
 	userId := in.UserId
 	videoId := in.VideoId
