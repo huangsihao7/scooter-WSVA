@@ -29,7 +29,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/danmu/list",
+				Path:    "/danmu/listv3",
 				Handler: GetDanmuListHandler(serverCtx),
 			},
 		},

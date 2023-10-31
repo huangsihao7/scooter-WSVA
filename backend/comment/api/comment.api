@@ -88,5 +88,5 @@ service comment-api {
 	post /danmu/action (DanmuActionReq) returns (DanmuActionResp)
 	
 	@handler GetDanmuList
-	get /danmu/list (DanmulistReq) returns (DanmulistResp)
+	get /danmu/listv3 (DanmulistReq) returns (DanmulistResp)
 }
