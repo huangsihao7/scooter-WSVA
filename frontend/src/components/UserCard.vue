@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 20:42:27
+ * @LastEditTime: 2023-10-31 18:45:20
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -27,8 +27,10 @@ onMounted(() => {
   });
 });
 
+// 跳转视频
 const handleShowVedio = () => {
-  console.log("show");
+  const video_id = 80;
+  router.push({ name: "video", params: { id: video_id } });
 };
 
 // 跳转到关注人的页面

@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 15:28:04
+ * @LastEditTime: 2023-10-31 19:56:31
  * @Description:
  * @FilePath: \scooter-WSVA\frontend\src\main.ts
  */
@@ -16,6 +16,7 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import "element-plus/dist/index.css";
 import "./style.css";
 import "animate.css";
+
 
 const pinia = createPinia();
 const app = createApp(App);

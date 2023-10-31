@@ -2,24 +2,21 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 18:16:14
+ * @LastEditTime: 2023-10-31 19:53:23
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
 <script lang="ts" setup>
 import { watch, h, ref, Component, reactive, onBeforeMount } from 'vue'
-import { NIcon, NMenu, NInput, NButton, NAvatar, NPopover, NTag } from 'naive-ui'
+import { NIcon, NMenu, NInput, NButton, NAvatar, NPopover, NTag, NImage } from 'naive-ui'
 import type { MenuOption } from 'naive-ui'
-import {
-  Search,
-  Add,
-  Bicycle
-} from '@vicons/ionicons5'
+import { Search,Add } from '@vicons/ionicons5'
 import { userStore } from "@/stores/user";
 import { login } from "@/apis/login";
 import router from "@/router";
 import { useMessage } from "naive-ui";
 import PostVedio from "@/components/video/PostVideo.vue";
+
 
 // 消息弹窗
 const message = useMessage();
@@ -126,19 +123,18 @@ function renderTags (historyStr:string) {
 
 // 菜单数据
 const loggedMenuOptions: MenuOption[] = [
-  {
+{
     label: () =>
       h(
-        'div',
+        NImage,
         {
-          href: 'https://baike.baidu.com/item/%E4%B8%94%E5%90%AC%E9%A3%8E%E5%90%9F',
-          target: '_blank',
-          rel: 'noopenner noreferrer'
+          src:'public/logo-svg.svg',
+          width: 100,
+          previewDisabled: true
         },
-        'Scooter'
+        ''
       ),
     key: 'logo',
-    icon: renderIcon(Bicycle)
   },
   {
     // label: renderSearch(inputstr.value),renderSearch2
@@ -165,16 +161,15 @@ const notLogmenuOptions: MenuOption[] = [
   {
     label: () =>
       h(
-        'div',
+        NImage,
         {
-          href: 'https://baike.baidu.com/item/%E4%B8%94%E5%90%AC%E9%A3%8E%E5%90%9F',
-          target: '_blank',
-          rel: 'noopenner noreferrer'
+          src:'public/logo-svg.svg',
+          width: 100,
+          previewDisabled: true
         },
-        'Scooter'
+        ''
       ),
-    key: 'logo',
-    icon: renderIcon(Bicycle)
+    key: 'logo'
   },
   {
     label: renderSearch(inputstr.value, historyList.value),

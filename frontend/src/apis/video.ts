@@ -37,11 +37,11 @@ export function getRecommendVideos(offset: number, readed_videoId: number) {
   });
 }
 
-export function getPopularVideos(offset: number) {
+export function getPopularVideos(offset: number, readed_videoId: number) {
   return service({
     url: "/feed/populars",
     method: "post",
-    data: { offset },
+    data: { offset, readed_videoId },
   });
 }
 

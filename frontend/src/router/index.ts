@@ -2,8 +2,8 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:49:44
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 20:06:05
- * @Description:
+ * @LastEditTime: 2023-10-31 19:29:03
+ * @Description: 路由表
  * @FilePath: \scooter-WSVA\frontend\src\router\index.ts
  */
 import { createRouter, createWebHistory } from "vue-router";
@@ -30,7 +30,7 @@ const router = createRouter({
     {
       path: "/hot",
       name: "hot",
-      component: () => import("../view/ClassifiedView.vue"),
+      component: () => import("../view/HomeView.vue"),
     },
     {
       path: "/recreation",
@@ -62,6 +62,12 @@ const router = createRouter({
       name: "following",
       props: true,
       component: () => import("../view/UserView.vue"),
+    },
+    {
+      path: "/video/:id",
+      name: "video",
+      props: true,
+      component: () => import("../view/VideoView.vue"),
     },
     {
       path: "/",

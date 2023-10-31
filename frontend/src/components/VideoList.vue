@@ -3,23 +3,42 @@ import { NCarousel, NDrawer, NDrawerContent, NCarouselItem } from "naive-ui";
 import VideoPlus from "@/components/video/VideoPlus.vue";
 import { onMounted, ref } from "vue";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
-import { getRecommendVideos } from "@/apis/video";
+import { getRecommendVideos, getPopularVideos } from "@/apis/video";
 import { VideoType } from "@/apis/interface";
 import { getCommentList } from "@/apis/comment";
 import { videoStore } from "@/stores/video";
 
+interface propsType{
+  videoListType: number
+}
+
+const props = defineProps<propsType>()
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false);
+// 正在播放视频的下标
 const currentVideoIndex = ref<number>(0);
+// 上一个播放过的视频的下标
 const lastVideoIndex = ref<number>(0);
+// 视频队列
 const videos = ref<Array<VideoType>>();
+// 默认预加载数
 const defaultLoad: number = 4;
+// 评论列表
 const commentlists = ref<any>();
+// 绑定轮播器
+const carouselRef = ref<any>();
 
+// 获取视频队列
 onMounted(() => {
-  getRecommendVideos(0, 0).then((res: any) => {
-    videos.value = res.video_list;
-  });
+  if(props.videoListType == 0){
+    getRecommendVideos(0, 0).then((res: any) => {
+      videos.value = res.video_list;
+    });
+  }else{
+    getPopularVideos(0, 0).then((res: any) => {
+      videos.value = res.video_list;
+    });
+  }
 });
 
 // 更新评论区可见状态
@@ -31,12 +50,12 @@ const updateVisible = (thisVideo: any) => {
   });
 };
 
-const carouselRef = ref<any>();
-
+// 向上翻视频
 const upPage = () => {
   carouselRef.value.prev();
 };
 
+// 向下翻视频
 const downPage = () => {
   carouselRef.value.next();
 };
@@ -49,9 +68,15 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
     let offset = defaultLoad + currentIndex;
     let readedVideo = videoStore().video_id;
     console.log("readedVideo", readedVideo);
+    if(props.videoListType == 0){
     getRecommendVideos(offset, readedVideo).then((res: any) => {
       videos.value?.push(res.video_list[0]);
     });
+    }else{
+      getPopularVideos(offset, readedVideo).then((res: any) => {
+        videos.value?.push(res.video_list[0]);
+      });
+    }
   }
 };
 </script>
