@@ -14,32 +14,11 @@ package types
 //}
 
 type VideoEsMsg struct {
-	VideoId       int64    `json:"video_id"`
-	Author        UserInfo `json:"author"`
-	PlayUrl       string   `json:"play_url"`
-	CoverUrl      string   `json:"cover_url"`
-	FavoriteCount int64    `json:"favorite_count"`
-	CommentCount  int64    `json:"comment_count"`
-	StarCount     int64    `json:"star_count"`
-	IsStar        bool     `json:"is_star"`
-	IsFavorite    bool     `json:"is_favorite"`
-	Title         string   `json:"title"`
-	CreateTime    string   `json:"create_time"`
-	Duration      string   `json:"duration"`
-}
-type UserInfo struct {
-	Id              uint32 `json:"id"`
-	Name            string `json:"name"`
-	Avatar          string `json:"avatar"`
-	Gender          uint32 `json:"gender"`
-	Signature       string `json:"signature"`
-	BackgroundImage string `json:"background_image"` //用户个人页顶部大图
-	FollowCount     uint32 `json:"follow_count"`
-	FollowerCount   uint32 `json:"follower_count"`
-	TotalFavorited  uint32 `json:"total_favorited"`
-	WorkCount       uint32 `json:"work_count"`
-	FavoriteCount   uint32 `json:"favorite_count"`
-	IsFollow        bool   `json:"is_follow"`
+	VideoId   int64  `json:"video_id"`
+	Title     string `json:"title"`
+	Name      string `json:"name"`
+	Signature string `json:"signature"`
+	Content   string `json:"content"`
 }
 
 type CanalArticleMsg struct {

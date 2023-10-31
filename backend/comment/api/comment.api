@@ -73,11 +73,18 @@ type (
 		Content  string `json:"content"`
 	}
 )
+service comment-api {
+	
+	@handler GetDanmuList
+	get /danmu/listv3 (DanmulistReq) returns (DanmulistResp)
+	
+}
 
 @server(
 	jwt: Auth
 )
 service comment-api {
+	
 	@handler CommentAction
 	post /comment/action (actionReq) returns(actionResp)
 	
@@ -87,6 +94,4 @@ service comment-api {
 	@handler DanmuAction
 	post /danmu/action (DanmuActionReq) returns (DanmuActionResp)
 	
-	@handler GetDanmuList
-	get /danmu/listv3 (DanmulistReq) returns (DanmulistResp)
 }

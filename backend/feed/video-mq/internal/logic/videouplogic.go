@@ -115,13 +115,12 @@ func (l *ThumbupLogic) articleOperate(msg *types.CanalArticleMsg) error {
 	var esData []*types.VideoEsMsg
 	for _, d := range msg.Data {
 
-		favoriteCount, _ := strconv.ParseInt(d.FavoriteCount, 10, 64)
-		commentCount, _ := strconv.ParseInt(d.CommentCount, 10, 64)
-		starCount, _ := strconv.ParseInt(d.StarCount, 10, 64)
-		category, _ := strconv.ParseInt(d.Category, 10, 64)
+		//favoriteCount, _ := strconv.ParseInt(d.FavoriteCount, 10, 64)
+		//commentCount, _ := strconv.ParseInt(d.CommentCount, 10, 64)
+		//starCount, _ := strconv.ParseInt(d.StarCount, 10, 64)
+		//category, _ := strconv.ParseInt(d.Category, 10, 64)
 
-		articleId, _ := strconv.ParseInt(d.Id, 10, 64)
-		authorId, _ := strconv.ParseInt(d.AuthorId, 10, 64)
+		videoId, _ := strconv.ParseInt(d.Id, 10, 64)
 
 		//redis 代码
 		//t, err := time.ParseInLocation("2006-01-02 15:04:05", d.CreatedAt, time.Local)
@@ -154,27 +153,15 @@ func (l *ThumbupLogic) articleOperate(msg *types.CanalArticleMsg) error {
 		//		l.Logger.Errorf("ZremCtx key: %s req: %v error: %v", likeNumKey, d, err)
 		//	}
 		//}
-
-		//u, err := l.svcCtx.UserRPC.FindById(l.ctx, &user.FindByIdRequest{
-		//	UserId: authorId,
-		//})
-		//if err != nil {
-		//	l.Logger.Errorf("FindById userId: %d error: %v", authorId, err)
-		//	return err
-		//}
-
 		esData = append(esData, &types.VideoEsMsg{
-			VideoId:       uint(articleId),
-			AuthorId:      uint(authorId),
-			Title:         d.Title,
-			CoverUrl:      d.CoverUrl,
-			PlayUrl:       d.PlayUrl,
-			FavoriteCount: uint(favoriteCount),
-			StarCount:     int(starCount),
-			CommentCount:  uint(commentCount),
-			Category:      int(category),
+			VideoId:   videoId,
+			Title:     d.Title,
+			Name:      d.Name,
+			Signature: d.Dec,
+			Content:   d.Content,
 		})
 	}
+
 	err := l.BatchUpSertToEs(l.ctx, esData)
 	if err != nil {
 		l.Logger.Errorf("BatchUpToEs data: %v error: %v", esData, err)
