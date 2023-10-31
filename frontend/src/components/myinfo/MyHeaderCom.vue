@@ -7,10 +7,10 @@
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\myHeaderCom.vue
 -->
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { userStore } from "@/stores/user";
 import { getUserInfo } from "@/apis/user";
-import { NButton, NIcon } from "naive-ui";
+import { NAvatar, NButton, NDivider, NIcon, NText } from "naive-ui";
 import InfoEditCom from "./InfoEditCom.vue";
 import { CashOutline as CashIcon } from "@vicons/ionicons5";
 
@@ -63,20 +63,20 @@ onMounted(() => {
   >
     <ElRow>
       <ElCol :span="4">
-        <ElAvatar :src="avatar" />
+        <NAvatar :src="avatar" round />
       </ElCol>
       <ElCol v-if="userInfo" :span="20" class="info-tab">
-        <ElText tag="b">{{ userInfo.name }}</ElText>
-        <ElText tag="p">{{ userInfo.signature }}</ElText>
+        <NText tag="b">{{ userInfo.name }}</NText>
+        <NText tag="p">{{ userInfo.signature }}</NText>
         <div class="follow">
           <NButton color="#606266" text>
             关注 {{ userInfo.follow_count }}
           </NButton>
-          <ElDivider direction="vertical" />
+          <NDivider vertical />
           <NButton color="#606266" text>
             粉丝 {{ userInfo.follower_count }}
           </NButton>
-          <ElDivider direction="vertical" />
+          <NDivider vertical />
           <NButton color="#606266" text>
             获赞 {{ userInfo.favorite_count }}
           </NButton>
@@ -115,7 +115,7 @@ onMounted(() => {
   border-radius: 25px;
   background: no-repeat center top / 100% 100%;
 
-  .el-avatar {
+  .n-avatar {
     float: right;
     font-size: 5rem;
     width: calc((80vw - 260px) / 6);
