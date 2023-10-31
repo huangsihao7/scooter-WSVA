@@ -12,7 +12,7 @@ type ActionResp struct {
 }
 
 type ListReq struct {
-	UserId int64 `form:"uid"` // 用户id
+	UserId int64 `form:"to_user_id"` // 用户id
 }
 
 type ListResp struct {

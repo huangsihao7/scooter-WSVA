@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/internal/config"
@@ -21,7 +22,7 @@ var configFile = flag.String("f", "etc/comment-dev.yaml", "the config file")
 // comment rpc
 func main() {
 	flag.Parse()
-
+	logx.DisableStat()
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 	ctx := svc.NewServiceContext(c)
@@ -34,7 +35,6 @@ func main() {
 		}
 	})
 	defer s.Stop()
-
 	fmt.Printf("Starting comment rpc server at %s...\n", c.ListenOn)
 	s.Start()
 }

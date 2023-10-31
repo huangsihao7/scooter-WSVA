@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/config"
@@ -18,10 +19,10 @@ import (
 
 var configFile = flag.String("f", "etc/feed-dev.yaml", "the config file")
 
-// 注释
+// feed rpc
 func main() {
 	flag.Parse()
-
+	logx.DisableStat()
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 	ctx := svc.NewServiceContext(c)

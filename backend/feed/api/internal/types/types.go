@@ -14,7 +14,7 @@ type CreateVideoResp struct {
 }
 
 type UserVideoListReq struct {
-	ToUid int `json:"toUid"`
+	ToUid int `json:"to_video_id"`
 }
 
 type UserVideoListResp struct {
@@ -93,7 +93,7 @@ type PopularVideosListResp struct {
 
 type DurationTestReq struct {
 	Duration string `json:"duration"`
-	Vid      int64  `json:"vid"`
+	Vid      int64  `json:"video_id"`
 }
 
 type DurationTestResp struct {
@@ -108,7 +108,7 @@ type HistoryVideosResp struct {
 }
 
 type NeighborsVideoReq struct {
-	Vid int64 `form:"vid"`
+	Vid int64 `form:"video_id"`
 }
 
 type NeighborsVideoResp struct {
@@ -118,10 +118,20 @@ type NeighborsVideoResp struct {
 }
 
 type DeleteVideoReq struct {
-	Vid int64 `json:"vid"`
+	Vid int64 `json:"video_id"`
 }
 
 type DeleteVideoResp struct {
 	StatusCode int    `json:"status_code"`
 	StatusMsg  string `json:"status_msg"`
+}
+
+type SearchEsReq struct {
+	Content string `json:"content"`
+}
+
+type SearchEsResp struct {
+	StatusCode int         `json:"status_code"`
+	StatusMsg  string      `json:"status_msg"`
+	VideoList  []VideoInfo `json:"video_list"`
 }

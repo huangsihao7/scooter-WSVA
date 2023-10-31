@@ -24,4 +24,10 @@ type Config struct {
 		Brokers []string
 		Topic   string
 	}
+
+	Es struct {
+		Addresses []string
+		Username  string
+		Password  string
+	}
 }

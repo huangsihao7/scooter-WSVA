@@ -7,6 +7,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/feed/historyModel"
 	"github.com/huangsihao7/scooter-WSVA/feed/model"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/config"
+	"github.com/huangsihao7/scooter-WSVA/pkg/es"
 	"github.com/huangsihao7/scooter-WSVA/pkg/orm"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/usesrv"
 	"github.com/zeromicro/go-queue/kq"
@@ -26,6 +27,7 @@ type ServiceContext struct {
 	StarModel          *starModel.StarModel
 	KqPusherTestClient *kq.Pusher
 	KqPusherJobClient  *kq.Pusher
+	Es                 *es.Es
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -46,5 +48,10 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		KqPusherTestClient: kq.NewPusher(c.KqPusherTesTConf.Brokers, c.KqPusherTesTConf.Topic),
 		HistoryModel:       historyModel.NewHistoryModel(sqlx.NewMysql(c.DataSource)),
 		KqPusherJobClient:  kq.NewPusher(c.KqPusherJobConf.Brokers, c.KqPusherJobConf.Topic),
+		Es: es.MustNewEs(&es.Config{
+			Addresses: c.Es.Addresses,
+			Username:  c.Es.Username,
+			Password:  c.Es.Password,
+		}),
 	}
 }

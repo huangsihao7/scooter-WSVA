@@ -19,7 +19,7 @@ type (
 	}
 
 	listReq {
-		UserId int64 `form:"uid"` // 用户id
+		UserId int64 `form:"to_user_id"` // 用户id
 	}
 
 	listResp {
@@ -64,13 +64,13 @@ type (
 service favorite-api {
 	@handler FavoriteAction
 	post /favorite/action(actionReq) returns(actionResp)
-
+	
 	@handler FavoriteList
 	get /favorite/list(listReq) returns(listResp)
-
+	
 	@handler StarAction
 	post /star/action(actionReq) returns(actionResp)
-
+	
 	@handler StarList
 	get /star/list(listReq) returns(listResp)
 }
