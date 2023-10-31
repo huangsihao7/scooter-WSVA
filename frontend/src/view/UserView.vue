@@ -17,7 +17,6 @@ const route = useRoute();
 const userId = computed(() => route.params.id);
 const passUserId = ref<any>();
 onMounted(() => {
-  console.log("fffffffff", userId, userId.value);
   if (userId.value) {
     passUserId.value = userId.value;
   } else {
@@ -29,10 +28,10 @@ onMounted(() => {
 <template>
   <div class="user">
     <div class="header">
-      <MyHeaderCom v-if="passUserId" :userId="passUserId" />
+      <MyHeaderCom v-if="passUserId" :user-id="passUserId" />
     </div>
     <div class="interaction">
-      <MyInteractCom v-if="passUserId" :userId="passUserId"  />
+      <MyInteractCom v-if="passUserId" :user-id="passUserId" />
     </div>
   </div>
 </template>

@@ -31,3 +31,13 @@ func (s *CommentSrvServer) CommentList(ctx context.Context, in *comment.CommentL
 	l := logic.NewCommentListLogic(ctx, s.svcCtx)
 	return l.CommentList(in)
 }
+
+func (s *CommentSrvServer) DanMuAction(ctx context.Context, in *comment.DanmuActionRequest) (*comment.DanmuActionResponse, error) {
+	l := logic.NewDanMuActionLogic(ctx, s.svcCtx)
+	return l.DanMuAction(in)
+}
+
+func (s *CommentSrvServer) DanMuList(ctx context.Context, in *comment.DanmuListRequest) (*comment.DanmuListResponse, error) {
+	l := logic.NewDanMuListLogic(ctx, s.svcCtx)
+	return l.DanMuList(in)
+}

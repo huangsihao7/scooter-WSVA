@@ -121,4 +121,10 @@ const (
 	StarServiceDuplicateError      = "不能重复收藏"
 	StarServiceCancelCode          = 10019
 	StarServiceCancelError         = "没有收藏,不能取消收藏"
+	DanmuCanNotEmptyCode           = 10020
+	DanmuCanNotEmptyError          = "弹幕不能为空"
+	DanmuTimeErrorCode             = 10021
+	DanmuTimeError                 = "弹幕时间错误"
+	DanmuServiceErrorCode          = 10022
+	DanmuServiceError              = "弹幕服务错误"
 )

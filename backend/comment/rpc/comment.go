@@ -18,7 +18,7 @@ import (
 
 var configFile = flag.String("f", "etc/comment-dev.yaml", "the config file")
 
-// ad
+// comment rpc
 func main() {
 	flag.Parse()
 

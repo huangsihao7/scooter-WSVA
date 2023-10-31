@@ -9,3 +9,6 @@ Feed:
 Auth:
   AccessSecret: uOvKLmVfztaXGpNYd4Z0I1SiT7MweJhl
   AccessExpire: 86400
+Telemetry:
+  Name: feed.api
+  Endpoint: http://172.22.110.66:14278/api/traces

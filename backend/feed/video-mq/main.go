@@ -13,7 +13,7 @@ import (
 	"github.com/zeromicro/go-zero/core/service"
 )
 
-var configFile = flag.String("f", "etc/video-mq.yaml", "the config file")
+var configFile = flag.String("f", "etc/video-mq-dev.yaml", "the config file")
 
 func main() {
 	flag.Parse()
