@@ -14,11 +14,11 @@ package types
 //}
 
 type VideoEsMsg struct {
-	VideoId   int64  `json:"video_id"`
-	Title     string `json:"title"`
-	Name      string `json:"name"`
-	Signature string `json:"signature"`
-	Content   string `json:"content"`
+	VideoId int64  `json:"video_id"`
+	Title   string `json:"title"`
+	//Name      string `json:"name"`
+	//Signature string `json:"signature"`
+	Content string `json:"content"`
 }
 
 type CanalArticleMsg struct {

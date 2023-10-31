@@ -13,6 +13,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
+				Method:  http.MethodPost,
+				Path:    "/danmu/listv3",
+				Handler: DanmuActionHandler(serverCtx),
+			},
+			{
 				Method:  http.MethodGet,
 				Path:    "/danmu/listv3",
 				Handler: GetDanmuListHandler(serverCtx),
@@ -31,11 +36,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodGet,
 				Path:    "/comment/list",
 				Handler: GetCommentListHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/danmu/listv3",
-				Handler: DanmuActionHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
