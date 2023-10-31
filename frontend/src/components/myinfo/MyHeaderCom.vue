@@ -10,7 +10,15 @@
 import { onMounted, ref } from "vue";
 import { userStore } from "@/stores/user";
 import { getUserInfo } from "@/apis/user";
-import { NAvatar, NButton, NDivider, NIcon, NText } from "naive-ui";
+import {
+  NAvatar,
+  NButton,
+  NDivider,
+  NGrid,
+  NGridItem,
+  NIcon,
+  NText,
+} from "naive-ui";
 import InfoEditCom from "./InfoEditCom.vue";
 import { CashOutline as CashIcon } from "@vicons/ionicons5";
 
@@ -32,12 +40,12 @@ const getUserInfoFunc = () => {
   let uid_num = parseInt(uid);
   getUserInfo(uid_num).then((res: any) => {
     userInfo.value = res.user;
+    userStore().name = res.user.name;
+    userStore().avatar = res.user.avatar;
+    userStore().gender = res.user.gender;
+    userStore().signature = res.user.signature;
+    userStore().background_image = res.user.background_image;
   });
-};
-
-// 编辑资料开启
-const editInfo = () => {
-  editVisible.value = true;
 };
 
 // 更新编辑资料是否可见
@@ -61,11 +69,11 @@ onMounted(() => {
         ')',
     }"
   >
-    <ElRow>
-      <ElCol :span="4">
+    <NGrid>
+      <NGridItem :span="4">
         <NAvatar :src="avatar" round />
-      </ElCol>
-      <ElCol v-if="userInfo" :span="20" class="info-tab">
+      </NGridItem>
+      <NGridItem v-if="userInfo" :span="20" class="info-tab">
         <NText tag="b">{{ userInfo.name }}</NText>
         <NText tag="p">{{ userInfo.signature }}</NText>
         <div class="follow">
@@ -86,7 +94,7 @@ onMounted(() => {
           round
           class="edit-info"
           color="#409eff85"
-          @click="editInfo"
+          @click="editVisible = true"
         >
           <template #icon>
             <NIcon>
@@ -95,8 +103,8 @@ onMounted(() => {
           </template>
           编辑资料
         </NButton>
-      </ElCol>
-    </ElRow>
+      </NGridItem>
+    </NGrid>
     <InfoEditCom
       v-if="userInfo"
       :user-info="userInfo"
