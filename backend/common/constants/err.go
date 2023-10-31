@@ -79,6 +79,8 @@ const (
 	FindDbError                       = "查找数据库失败"
 	DeleteVideoDbErrorCode            = 50036
 	DeleteVideoDbError                = "删除视频数据库失败"
+	SearchServiceErrorCode            = 50037
+	SearchServiceError                = "搜索服务内部错误"
 )
 
 // Expected Error
