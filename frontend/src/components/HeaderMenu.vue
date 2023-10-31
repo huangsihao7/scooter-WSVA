@@ -2,14 +2,14 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 23:22:48
+ * @LastEditTime: 2023-11-01 00:31:04
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
 <script lang="ts" setup>
 import { watch, h, ref, Component, reactive, onBeforeMount } from 'vue'
-import { NDialogProvider, NIcon, NMenu, NInput, NButton, NAvatar, NPopover, NTag, NImage } from 'naive-ui'
-import type { MenuOption, NForm, NFormItem } from 'naive-ui'
+import { NIcon, NMenu, NInput, NButton, NAvatar, NPopover, NTag, NImage } from 'naive-ui'
+import type { MenuOption} from 'naive-ui'
 import { Search,Add } from '@vicons/ionicons5'
 import { userStore } from "@/stores/user";
 import { login } from "@/apis/login";
@@ -128,7 +128,7 @@ const loggedMenuOptions: MenuOption[] = [
       h(
         NImage,
         {
-          src:'public/logo-svg.svg',
+          src:'/logo-svg.svg',
           width: 100,
           previewDisabled: true
         },

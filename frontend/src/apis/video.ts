@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-29 13:04:21
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 21:15:44
+ * @LastEditTime: 2023-11-01 00:25:11
  * @FilePath: \scooter-WSVA\frontend\src\apis\video.ts
  * @Description: 视频接口
  */
@@ -69,6 +69,14 @@ export function getRecommendVideosList(video_id: number) {
 export function getHistoryVideosListReq() {
   return service({
     url: `/feed/history`,
+    method: "get",
+  });
+}
+
+
+export function getVideoById(video_id: number) {
+  return service({
+    url: `/feed/videoinfo?video_id=${video_id}`,
     method: "get",
   });
 }

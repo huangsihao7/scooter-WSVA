@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 18:45:20
+ * @LastEditTime: 2023-11-01 00:11:14
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -11,11 +11,11 @@ import { ref, onMounted } from "vue";
 import { userStore } from "@/stores/user";
 import { getFollowList, canclefollowOne, followOne } from "@/apis/follow";
 import { useRouter } from "vue-router";
-import { useMessage, NCard, NAvatar, NButton, NGrid, NGi } from "naive-ui";
-
+import { useMessage, NCard, NAvatar, NButton, NGrid, NGi, NEmpty } from "naive-ui";
+import { FollowCardType } from '@/apis/interface'
 const message = useMessage();
 const router = useRouter();
-const folllowList: any = ref([]);
+const folllowList = ref<FollowCardType>([]);
 
 // 获取关注的人的信息卡片
 onMounted(() => {
@@ -28,8 +28,8 @@ onMounted(() => {
 });
 
 // 跳转视频
-const handleShowVedio = () => {
-  const video_id = 80;
+const handleShowVedio = (info: FollowCardType) => {
+  const video_id = info.video_id
   router.push({ name: "video", params: { id: video_id } });
 };
 
@@ -70,11 +70,12 @@ const cancleFollow = (item: any, _index: any) => {
     <NGi v-for="(info, index) in folllowList" :key="index">
       <NCard class="card" style="padding: 0" :hoverable="true">
         <template #cover>
-          <img
+          <img v-if="info.cover_url"
             class="img"
-            :src="info.background_image"
-            @click="handleShowVedio"
+            :src="info.cover_url"
+            @click="handleShowVedio(info)"
           />
+          <NEmpty class="empty" v-else description="Ta最近没有发布视频哦"></NEmpty>
         </template>
         <div class="header-info">
           <NAvatar
@@ -128,6 +129,12 @@ const cancleFollow = (item: any, _index: any) => {
     width: 100%;
     height: calc(22vh - 40px);
     object-fit: fill;
+  }
+  .empty{
+    width: 100%;
+    height: calc(22vh - 40px);
+    position: relative;
+    top: 30%;
   }
 }
 

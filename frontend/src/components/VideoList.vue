@@ -136,7 +136,6 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
     :block-scroll="false"
     to="#drawer-target"
   >
-    
     <NDrawerContent :native-scrollbar="false">
       <NTabs type="line" animated>
         <NTabPane name="comment" tab="评论">

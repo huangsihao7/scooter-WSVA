@@ -45,4 +45,22 @@ interface UserType {
   background_image: string;
 }
 
-export type { VideoType, UserType, CommentType };
+interface FollowCardType {
+  id: number;
+  name: string;
+  gender: number;
+  avatar: string;
+  signature: string;
+  follow_count: number;
+  follower_count: number;
+  total_favorited: number;
+  work_count: number;
+  favorite_count: number;
+  is_follow: boolean;
+  phoneNum?: string;
+  background_image: string;
+  cover_url:string;
+  video_id:number;
+}
+
+export type { VideoType, UserType, CommentType, FollowCardType };
