@@ -28,8 +28,8 @@ const editVisible = ref<boolean>(false);
 // 获取用户信息
 const getUserInfoFunc = () => {
   // 别删 很诡异的错误 userId会显示string，必须转两下才能变成int
-  let uid = props.userId.toString()
-  let uid_num = parseInt(uid)
+  let uid = props.userId.toString();
+  let uid_num = parseInt(uid);
   getUserInfo(uid_num).then((res: any) => {
     userInfo.value = res.user;
   });

@@ -3,7 +3,7 @@
  * @Date: 2023-10-22 19:33:20
 <<<<<<< HEAD
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 21:23:17
+ * @LastEditTime: 2023-10-30 23:18:29
 =======
  * @LastEditors: huangsihao7 1057434651@qq.com
  * @LastEditTime: 2023-10-29 17:10:55
@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import DPlayer from "dplayer";
 import Hls from "hls.js";
-import { ref, reactive, onBeforeUnmount, onMounted, onUpdated } from "vue";
+import { onBeforeUnmount, onMounted, onUpdated, reactive, ref } from "vue";
 import { videoStore } from "@/stores/video";
 
 const videoRef = ref();
@@ -195,13 +195,23 @@ onMounted(() => {
     player.subtitle = props.subtitle;
   }
   if (props.danmaku) {
-    player.danmaku = props.danmaku;
+    player.danmaku = {
+      id: "2779e3b7c71be93b8103aef6985fbdd0",
+      api: "https://angustar.tech/api/dplayer/",
+      token: "tokendemo",
+      maximum: 1000,
+      user: "DIYgod",
+      bottom: "15%",
+      unlimited: true,
+      speedRate: 0.5,
+    };
+    console.log(player.danmaku);
   }
   if (props.videoIndex == 0) {
     //自动播放开启
     player.autoplay = true;
     state.instance = new DPlayer(player);
-    videoStore().video_id = props.videoId
+    videoStore().video_id = props.videoId;
     // state.instance.video.play()
     // console.log(state.instance);
   } else {
@@ -215,17 +225,10 @@ onUpdated(() => {
     // 如果需要播放的不是当前video 则暂停
     if (props.onPlayIndex != props.videoIndex) {
       state.instance.video.pause();
-      console.log(
-        "2222222pause",
-        props.videoIndex,
-        props.onPlayIndex,
-        state.instance,
-        state.instance.pause(),
-      );
     } else {
       state.instance.video.play();
-      console.log('props.videoId',props.videoId)
-      videoStore().video_id = props.videoId
+      console.log("props.videoId", props.videoId);
+      videoStore().video_id = props.videoId;
     }
   }
 });

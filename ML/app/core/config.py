@@ -1,3 +1,11 @@
+"""
+Author: huangsihao7
+Date: 2023-10-26 00:01:55
+LastEditors: huangsihao7 1057434651@qq.com
+LastEditTime: 2023-10-30 16:36:18
+FilePath: /scooter-WSVA/ML/app/core/config.py
+Description: 
+"""
 import tempfile
 from typing import List
 
@@ -17,27 +25,17 @@ class Settings(BaseSettings):
     KEYWORD_TYPES: List[str] = [
         "美食",
         "动漫",
-        "漫画",
         "游戏",
         "网络小说",
         "科学",
-        "历史",
-        "数学",
+        "编程",
         "文学",
-        "物理",
-        "生物",
         "化学",
         "计算机",
-        "天文学",
-        "心理学",
         "哲学",
         "经济学",
-        "地理",
         "政治",
-        "社会学",
-        "文化",
         "法律",
-        "音乐",
         "艺术",
         "健康",
         "音乐",
