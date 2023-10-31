@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
 
 	"github.com/huangsihao7/scooter-WSVA/relation/api/internal/svc"
@@ -25,8 +26,10 @@ func NewFavoriteListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Favo
 }
 
 func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *types.FavoriteListResp, err error) {
+	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
 	list, err := l.svcCtx.RelationRpc.FavoriteList(l.ctx, &relation.FavoriteListReq{
-		Uid: req.Uid,
+		Uid:     uid,
+		ActUser: req.Uid,
 	})
 
 	if err != nil {
@@ -41,10 +44,17 @@ func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *type
 			Id:              item.Id,
 			Name:            item.Name,
 			Gender:          item.Gender,
-			Mobile:          item.Mobile,
 			Avatar:          item.Avatar,
 			Dec:             item.Dec,
 			BackgroundImage: item.BackgroundImage,
+			FollowCount:     item.FollowCount,
+			FollowerCount:   item.FollowerCount,
+			TotalFavorited:  item.TotalFavorited,
+			WorkCount:       item.WorkCount,
+			FavoriteCount:   item.FavoriteCount,
+			IsFollow:        item.IsFollow,
+			CoverUrl:        item.CoverUrl,
+			VideoId:         item.VideoId,
 		})
 	}
 	return &types.FavoriteListResp{

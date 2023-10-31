@@ -6,6 +6,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/relation/model"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
+	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -25,7 +26,7 @@ func NewFavoriteListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Favo
 }
 
 func (l *FavoriteListLogic) FavoriteList(in *relation.FavoriteListReq) (*relation.FavoriteListResp, error) {
-	favorite, err := l.svcCtx.RelationModel.FindFavorite(l.ctx, in.Uid)
+	favorite, err := l.svcCtx.RelationModel.FindFavorite(l.ctx, in.ActUser)
 	if err != nil {
 		if err == model.ErrNotFound {
 			return &relation.FavoriteListResp{
@@ -42,21 +43,41 @@ func (l *FavoriteListLogic) FavoriteList(in *relation.FavoriteListReq) (*relatio
 
 	List := make([]*relation.UserInfo, 0)
 	for _, item := range favorite {
-		one, err := l.svcCtx.UserModel.FindOne(l.ctx, item.FollowingId)
+		one, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
+			UserId:  in.Uid,
+			ActorId: item.FollowingId,
+		})
 		if err != nil {
 			return &relation.FavoriteListResp{
 				StatusCode: constants.UnableToGetFollowListErrorCode,
 				StatusMsg:  constants.UnableToGetFollowListError,
 			}, err
 		}
+		var coverUrl string
+		var vid int64
+		video, err := l.svcCtx.VideoModel.FindLastByUId(l.ctx, int64(one.User.Id))
+		if err != nil {
+			coverUrl = ""
+			vid = 0
+		} else {
+			coverUrl = video.CoverUrl
+			vid = int64(video.Id)
+		}
 		List = append(List, &relation.UserInfo{
-			Id:              one.Id,
-			Name:            one.Name,
-			Gender:          one.Gender,
-			Mobile:          one.Mobile,
-			Avatar:          one.Avatar,
-			Dec:             one.Dec,
-			BackgroundImage: one.BackgroundUrl,
+			Id:              int64(one.User.Id),
+			Name:            one.User.Name,
+			Gender:          int64(one.User.Gender),
+			Avatar:          *one.User.Avatar,
+			Dec:             *one.User.Signature,
+			BackgroundImage: *one.User.BackgroundImage,
+			VideoId:         vid,
+			CoverUrl:        coverUrl,
+			FollowCount:     *one.User.FollowCount,
+			FollowerCount:   *one.User.FollowerCount,
+			IsFollow:        one.User.IsFollow,
+			TotalFavorited:  *one.User.TotalFavorited,
+			WorkCount:       *one.User.WorkCount,
+			FavoriteCount:   *one.User.FavoriteCount,
 		})
 	}
 	return &relation.FavoriteListResp{

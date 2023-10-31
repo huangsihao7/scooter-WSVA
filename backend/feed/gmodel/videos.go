@@ -66,3 +66,12 @@ func (m *VideoModel) DecrStarCount(ctx context.Context, video *Videos) error {
 
 	return m.db.WithContext(ctx).Save(video).Error
 }
+
+func (m *VideoModel) FindLastByUId(ctx context.Context, Uid int64) (*Videos, error) {
+	var result *Videos
+	err := m.db.WithContext(ctx).
+		Where("author_id = ? ", Uid).
+		Last(&result).Error
+
+	return result, err
+}
