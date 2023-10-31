@@ -7,13 +7,14 @@
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
 <script lang="ts" setup>
-import { ref, reactive } from "vue";
+import { reactive, ref } from "vue";
 import { userStore } from "@/stores/user";
 import { login } from "@/apis/login";
 import router from "@/router";
-import { VideoCameraFilled, CirclePlus, Search } from "@element-plus/icons-vue";
-import { useMessage } from "naive-ui";
+import { CirclePlus, Search, VideoCameraFilled } from "@element-plus/icons-vue";
+import { NAvatar, NText, useMessage } from "naive-ui";
 import PostVedio from "@/components/video/PostVideo.vue";
+
 const message = useMessage();
 // 路由数据
 const activeIndex = ref("");
@@ -143,7 +144,7 @@ const updateVisible = (flag: boolean) => {
       </ElInput>
       <ElCard v-if="isSearch" id="search-tab" shadow="always">
         <div>
-          <ElText class="mx-1" size="small">历史记录</ElText>
+          <NText class="mx-1" size="small">历史记录</NText>
         </div>
         <ElTag
           v-for="history in searchHistory"
@@ -161,7 +162,7 @@ const updateVisible = (flag: boolean) => {
 
     <div class="flex-grow" />
 
-    <ElMenuItem> </ElMenuItem>
+    <ElMenuItem></ElMenuItem>
     <div class="post-btn">
       <ElButton @click="getPostVideoForm">
         <ElIcon>
@@ -173,11 +174,11 @@ const updateVisible = (flag: boolean) => {
 
     <ElSubMenu v-if="userStore().isLoggedIn" index="logout">
       <template #title>
-        <ElAvatar :src="userStore().avatar" />
+        <NAvatar :src="userStore().avatar" round />
       </template>
       <ElMenuItem index="logout">退出登录</ElMenuItem>
     </ElSubMenu>
-    <ElMenuItem v-else index="login"> 登录 </ElMenuItem>
+    <ElMenuItem v-else index="login"> 登录</ElMenuItem>
 
     <ElDialog v-model="loginFormVisible" title="登录" width="30%">
       <ElForm :model="form">

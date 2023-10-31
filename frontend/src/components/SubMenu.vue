@@ -9,22 +9,21 @@
 
 <script lang="ts" setup>
 import { routeStore } from "@/stores/route";
-import { ref, onBeforeMount, h, Component } from "vue";
+import { Component, h, onBeforeMount, ref } from "vue";
 
-import { NMenu } from "naive-ui";
-import { NIcon } from "naive-ui";
 import type { MenuOption } from "naive-ui";
+import { NIcon, NMenu } from "naive-ui";
 import { RouterLink } from "vue-router";
 import {
-  Diamond as RecIcon,
-  Person as FollowIcon,
-  Home as UserIcon,
-  Rocket as HotIcon,
-  GameController as RecreationIcon,
   Basketball as SportsIcon,
-  FastFood as FoodIcon,
-  PlanetSharp as CartoonIcon,
   Book as KnowledgeIcon,
+  Diamond as RecIcon,
+  FastFood as FoodIcon,
+  GameController as RecreationIcon,
+  Home as UserIcon,
+  Person as FollowIcon,
+  PlanetSharp as CartoonIcon,
+  Rocket as HotIcon,
 } from "@vicons/ionicons5";
 
 function renderIcon(icon: Component) {
@@ -206,8 +205,7 @@ function getLastSegmentFromRoute(route: string): string {
 
 const handleUpdateValue = (key: string) => {
   let keyStr = JSON.stringify(key);
-  const withoutQuotes = keyStr.replace(/"/g, "");
-  routeStore().name = withoutQuotes;
+  routeStore().name = keyStr.replace(/"/g, "");
 };
 
 onBeforeMount(() => {

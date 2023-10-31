@@ -8,15 +8,17 @@
 -->
 <script lang="ts" setup>
 import { onMounted } from "vue";
-import { NTag, NIcon, NCard, NEllipsis } from "naive-ui";
-import { Play, Heart } from "@vicons/ionicons5";
+import { NCard, NEllipsis, NIcon, NTag } from "naive-ui";
+import { Heart, Play } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
+
 interface propsType {
   videos: Array<VideoType>;
 }
+
 const props = defineProps<propsType>();
 
-const handleShowVedio = () => {
+const handleShowVideo = () => {
   console.log("show");
 };
 
@@ -35,7 +37,12 @@ onMounted(() => {
     style="width: calc((100vw - 260px) / 6)"
   >
     <template #cover>
-      <img class="image-css" :src="info.cover_url" @click="handleShowVedio" />
+      <img
+        class="image-css"
+        :src="info.cover_url"
+        alt="img"
+        @click="handleShowVideo"
+      />
     </template>
     <div class="video-space" style="position: relative" @click="GetVideoLink">
       <NTag class="time" round :bordered="false" type="info">
@@ -69,7 +76,6 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 .card-space {
-  overflow: scroll-y;
   max-height: calc(100vh - 60px);
 }
 
@@ -84,7 +90,6 @@ onMounted(() => {
   }
 
   .image-css {
-    height: 100%;
     width: 100%;
     object-fit: fill;
     height: 30vh;
