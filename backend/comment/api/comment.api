@@ -79,6 +79,9 @@ type (
 )
 service comment-api {
 	
+	@handler DanmuAction
+	post /danmu/listv3 (DanmuActionReq) returns (DanmuActionResp)
+	
 	@handler GetDanmuList
 	get /danmu/listv3 (DanmulistReq) returns (DanmulistResp)
 	
@@ -94,8 +97,5 @@ service comment-api {
 	
 	@handler GetCommentList
 	get /comment/list (listReq) returns(listResp)
-	
-	@handler DanmuAction
-	post /danmu/listv3 (DanmuActionReq) returns (DanmuActionResp)
 	
 }
