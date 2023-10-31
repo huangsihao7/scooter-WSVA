@@ -135,3 +135,13 @@ type SearchEsResp struct {
 	StatusMsg  string      `json:"status_msg"`
 	VideoList  []VideoInfo `json:"video_list"`
 }
+
+type FindVideoByIdReq struct {
+	Vid int64 `form:"video_id"`
+}
+
+type FindVideoByIdResp struct {
+	StatusCode int       `json:"status_code"`
+	StatusMsg  string    `json:"status_msg"`
+	Video      VideoInfo `json:"video_info"`
+}

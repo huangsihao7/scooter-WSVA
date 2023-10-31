@@ -72,6 +72,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/feed/searcheEs",
 				Handler: SearchEsHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/feed/videoinfo",
+				Handler: FindVideoHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
