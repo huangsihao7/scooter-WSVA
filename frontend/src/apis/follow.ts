@@ -8,9 +8,9 @@
  */
 import { service } from "@/axios";
 
-export function getFollowList(uid: number) {
+export function getFollowList(user_id: number) {
   return service({
-    url: `/relation/favoriteList?uid=${uid}`,
+    url: `/relation/favoriteList?uid=${user_id}`,
     method: "get",
   });
 }

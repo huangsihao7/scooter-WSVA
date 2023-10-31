@@ -2,18 +2,31 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 18:47:28
+ * @LastEditTime: 2023-10-31 16:05:38
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
 <script lang="ts" setup>
-import { ref, reactive } from "vue";
+import { watch, h, ref, Component, reactive } from 'vue'
+import { NIcon, NMenu, NInput, NButton, NAvatar } from 'naive-ui'
+import type { MenuOption } from 'naive-ui'
+import {
+  Book as BookIcon,
+  Search,
+  Add,
+  Bicycle,
+  PersonOutline as PersonIcon,
+  WineOutline as WineIcon
+} from '@vicons/ionicons5'
 import { userStore } from "@/stores/user";
 import { login } from "@/apis/login";
 import router from "@/router";
-import { VideoCameraFilled, CirclePlus, Search } from "@element-plus/icons-vue";
+import { VideoCameraFilled, CirclePlus } from "@element-plus/icons-vue";
 import { useMessage } from "naive-ui";
 import PostVedio from "@/components/video/PostVideo.vue";
+import { number } from 'echarts';
+
+// 消息弹窗
 const message = useMessage();
 // 路由数据
 const activeIndex = ref("");
@@ -39,6 +52,122 @@ const form = reactive({
 
 // 投稿表单数据
 const isVideoFormVisible = ref<boolean>(false);
+
+function renderIcon (icon: Component) {
+  return () => h(NIcon, null, { default: () => h(icon) })
+}
+
+
+function renderSearch (num:string) {
+  return () => 
+    h(NInput, 
+    {
+      props:{
+        value:num,
+      },
+      class:"h-input",
+      round:true,
+      placeholder:'搜索',
+      onInput:(value)=>{console.log('input', value)},
+      onFocus:()=>{historyTabVisible.value = true},
+      onBlur:()=>{historyTabVisible.value = false}
+    },
+      {
+        suffix:renderIcon(Search)
+      }
+    )
+}
+
+function renderBtn () {
+  return () => 
+  h(NButton, 
+  {
+    attr:{
+      id:'post-btn'
+    },
+    round:true,
+    renderIcon:renderIcon(Add),
+    onClick:()=>{getPostVideoForm()}
+  },'投稿')
+}
+
+function renderAvatar (avatarSrc:string) {
+  return () => 
+  h(NAvatar, 
+  {
+    src:avatarSrc,
+    round:true,
+  },'')
+}
+
+
+const inputstr = ref<string>('')
+const historyTabVisible = ref<boolean>(false)
+
+// 菜单数据
+const loggedMenuOptions: MenuOption[] = [
+  {
+    label: () =>
+      h(
+        'div',
+        {
+          href: 'https://baike.baidu.com/item/%E4%B8%94%E5%90%AC%E9%A3%8E%E5%90%9F',
+          target: '_blank',
+          rel: 'noopenner noreferrer'
+        },
+        'Scooter'
+      ),
+    key: 'logo',
+    icon: renderIcon(Bicycle)
+  },
+  {
+    label: renderSearch(inputstr.value),
+    key: 'search'
+  },
+  {
+    label: renderBtn(),
+    key: 'post-btn',
+  },
+  {
+    label: renderAvatar(userStore().avatar),
+    key: 'avatar',
+    children: [
+      {
+        label: '退出登录',
+        key: 'logout',
+      }
+    ]
+  }
+]
+
+const notLogmenuOptions: MenuOption[] = [
+  {
+    label: () =>
+      h(
+        'div',
+        {
+          href: 'https://baike.baidu.com/item/%E4%B8%94%E5%90%AC%E9%A3%8E%E5%90%9F',
+          target: '_blank',
+          rel: 'noopenner noreferrer'
+        },
+        'Scooter'
+      ),
+    key: 'logo',
+    icon: renderIcon(Bicycle)
+  },
+  {
+    label: renderSearch(inputstr.value),
+    key: 'search'
+  },
+  {
+    label: renderBtn(),
+    key: 'post-btn',
+  },
+  {
+    label: '登录',
+    key: 'login',
+  }
+]
 
 // 路由选择index标志
 const handleSelect = (key: string, _keyPath: string[]) => {
@@ -110,38 +239,32 @@ const updateVisible = (flag: boolean) => {
   isVideoFormVisible.value = flag;
   console.log("callback", flag);
 };
+
+watch(()=>activeIndex.value,
+(newValue:any)=>{
+  switch (newValue) {
+    case "login":
+      loginFormVisible.value = true;
+      break;
+    case "logout":
+      doLogout();
+      break;
+  }
+})
+watch(()=>loginFormVisible.value,
+(newValue:any)=>{
+  if(!newValue){
+    activeIndex.value = ''
+  }
+  
+})
+
+
 </script>
 
 <template>
-  <ElMenu
-    :default-active="activeIndex"
-    class="el-menu-demo"
-    mode="horizontal"
-    :ellipsis="false"
-    @select="handleSelect"
-  >
-    <ElMenuItem>
-      <ElIcon>
-        <VideoCameraFilled />
-      </ElIcon>
-      See World
-    </ElMenuItem>
-    <div class="menu-search">
-      <ElInput
-        v-model="searchText"
-        placeholder="搜索"
-        class="search-input"
-        @keyup.enter="SearchFunc"
-        @focus="getFocus"
-        @blur="getBlur"
-      >
-        <template #append>
-          <ElButton :icon="Search" class="menu-search-btn" @click="SearchFunc">
-            搜索
-          </ElButton>
-        </template>
-      </ElInput>
-      <ElCard v-if="isSearch" id="search-tab" shadow="always">
+  <n-menu class="header-menu" v-model:value="activeIndex" mode="horizontal" :options="userStore().isLoggedIn?loggedMenuOptions:notLogmenuOptions" />
+  <ElCard v-if="isSearch" id="search-tab" shadow="always">
         <div>
           <ElText class="mx-1" size="small">历史记录</ElText>
         </div>
@@ -156,30 +279,8 @@ const updateVisible = (flag: boolean) => {
         >
           {{ history }}
         </ElTag>
-      </ElCard>
-    </div>
-
-    <div class="flex-grow" />
-
-    <ElMenuItem> </ElMenuItem>
-    <div class="post-btn">
-      <ElButton @click="getPostVideoForm">
-        <ElIcon>
-          <CirclePlus />
-        </ElIcon>
-        投稿
-      </ElButton>
-    </div>
-
-    <ElSubMenu v-if="userStore().isLoggedIn" index="logout">
-      <template #title>
-        <ElAvatar :src="userStore().avatar" />
-      </template>
-      <ElMenuItem index="logout">退出登录</ElMenuItem>
-    </ElSubMenu>
-    <ElMenuItem v-else index="login"> 登录 </ElMenuItem>
-
-    <ElDialog v-model="loginFormVisible" title="登录" width="30%">
+  </ElCard>
+  <ElDialog v-model="loginFormVisible" title="登录" width="30%">
       <ElForm :model="form">
         <ElFormItem label="账号" :label-width="formLabelWidth">
           <ElInput
@@ -205,47 +306,54 @@ const updateVisible = (flag: boolean) => {
           <ElButton type="primary" @click="doLogin"> 登录 </ElButton>
         </span>
       </template>
-    </ElDialog>
-
-    <PostVedio
-      :video-form-visible="isVideoFormVisible"
-      @visible-update="updateVisible"
-    />
-  </ElMenu>
+  </ElDialog>
+  <PostVedio
+    :video-form-visible="isVideoFormVisible"
+    @visible-update="updateVisible"
+  />
 </template>
 
-<style scoped>
+<style lang="scss">
+
+.header-menu{
+  width: 100%;
+  height: 60px;
+  // flex-direction: row;
+  // justify-content: space-between;
+  .n-menu-item{
+    height: 100%;
+    .n-menu-item-content{
+      height: 100%;
+    }
+    
+  }
+  .n-menu-item:nth-child(1) .n-menu-item-content{
+    width: 160px;
+  }
+  .n-menu-item:nth-child(2) .n-menu-item-content{
+    width: 20vw;
+  }
+  .n-menu-item:nth-child(3){
+    margin-left: auto;
+  }
+  .n-menu-item:nth-child(3) .n-menu-item-content{
+    
+  }
+  .n-menu-item:nth-child(4) .n-menu-item-content{
+    
+  }
+}
+
 .flex-grow {
   flex-grow: 1;
 }
 
-.menu-search {
-  margin: auto;
-  margin-left: 30px;
-  margin-top: 14px;
-  width: 20vw;
+#post-btn {
+  margin-left: 20vw;
 }
 
-.el-input-group__append button.el-button:hover {
-  /* background-color: #ecf5ff !important; */
-  color: #409eff !important;
-  border: 1px solid #e1e4ea;
-}
-
-#search-tab {
-  text-align: left;
-  z-index: 3000;
-  background: red;
-}
-
-.el-text {
-  font-weight: bold;
-  padding-bottom: 5px;
-}
-
-.mx-1 {
-  margin: 3px;
-  max-width: 99%;
+.aaa{
+  background-color: #409eff;
 }
 
 .post-btn {

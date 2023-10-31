@@ -8,13 +8,13 @@
  */
 import { service } from "@/axios";
 
-export function doFollow(to_user_id: number, action: number) {
+export function doFollow(to_user_id: number, action_type: number) {
   return service({
     url: "/relation/action",
     method: "post",
     data: {
       to_user_id: to_user_id,
-      action: action,
+      action_type: action_type,
     },
   });
 }

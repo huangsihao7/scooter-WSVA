@@ -21,11 +21,11 @@ export function postVideo(
   });
 }
 
-export function userVideoListReq(toUid: number) {
+export function userVideoListReq(to_user_id: number) {
   return service({
     url: "/feed/UserVideosList",
     method: "post",
-    data: { toUid },
+    data: { to_user_id },
   });
 }
 
