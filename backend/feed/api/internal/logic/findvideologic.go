@@ -25,6 +25,7 @@ func NewFindVideoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindVid
 	}
 }
 
+// 查询视频
 func (l *FindVideoLogic) FindVideo(req *types.FindVideoByIdReq) (resp *types.FindVideoByIdResp, err error) {
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
 	video, err := l.svcCtx.FeedRpc.FindVideo(l.ctx, &feed.FindVideoReq{
