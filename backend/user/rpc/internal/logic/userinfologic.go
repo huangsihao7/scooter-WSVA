@@ -3,11 +3,10 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/user/model"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 	"github.com/zeromicro/go-zero/core/logx"
-	"google.golang.org/grpc/status"
+	"gorm.io/gorm"
 )
 
 type UserInfoLogic struct {
@@ -29,48 +28,80 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 	userId := in.UserId
 	actionId := in.ActorId
 	//查询用户是否存在的
-	_, err := l.svcCtx.UserModel.FindOne(l.ctx, userId)
+	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
-		if err == model.ErrNotFound {
-			return nil, status.Error(100, "用户不存在")
+		if err == gorm.ErrRecordNotFound {
+			return &user.UserInfoResponse{
+				StatusCode: constants.UserNotExistedCode,
+				StatusMsg:  constants.UserNotExisted,
+				User:       nil,
+			}, nil
 		}
-		return nil, status.Error(500, err.Error())
+		return &user.UserInfoResponse{
+			StatusCode: constants.FindDbErrorCode,
+			StatusMsg:  constants.FindDbError,
+			User:       nil,
+		}, nil
 	}
 
 	//查询用户是否存在的
-	res, err := l.svcCtx.UserModel.FindOne(context.Background(), actionId)
+	res, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(actionId))
 	if err != nil {
-		if err == model.ErrNotFound {
-			return nil, status.Error(100, "用户不存在")
+		if err == gorm.ErrRecordNotFound {
+			return &user.UserInfoResponse{
+				StatusCode: constants.UserNotExistedCode,
+				StatusMsg:  constants.UserNotExisted,
+				User:       nil,
+			}, nil
 		}
-		return nil, status.Error(500, err.Error())
+		return &user.UserInfoResponse{
+			StatusCode: constants.FindDbErrorCode,
+			StatusMsg:  constants.FindDbError,
+			User:       nil,
+		}, nil
 	}
 
 	//查询关注数
 	followCount, err := l.svcCtx.RelationModel.GetFollowCount(l.ctx, actionId)
 	if err != nil {
-		return nil, status.Error(500, err.Error())
+		return &user.UserInfoResponse{
+			StatusCode: constants.UnableToGetFollowCountErrorCode,
+			StatusMsg:  constants.UnableToGetFollowCountError,
+			User:       nil,
+		}, nil
 	}
 	uint32followCount := uint32(followCount)
 
 	//查询粉丝数
 	followerCount, err := l.svcCtx.RelationModel.GetFollowerCount(l.ctx, actionId)
 	if err != nil {
-		return nil, status.Error(500, err.Error())
+		return &user.UserInfoResponse{
+			StatusCode: constants.UnableToGetFollowerCountErrorCode,
+			StatusMsg:  constants.UnableToGetFollowerCountError,
+			User:       nil,
+		}, nil
 	}
 	uint32followerCount := uint32(followerCount)
 
 	//查询点赞视频数
 	favorCount, err := l.svcCtx.FavorModel.GetFavoriteCount(l.ctx, actionId)
 	if err != nil {
-		return nil, status.Error(500, err.Error())
+		return &user.UserInfoResponse{
+			StatusCode: constants.UnableToGetFavoriteVideosCountErrorCode,
+			StatusMsg:  constants.UnableToGetFavoriteVideosCountError,
+			User:       nil,
+		}, nil
 	}
 	uint32favorCount := uint32(len(favorCount))
 
 	//查询视频获赞数
 	favorVideoCount, err := l.svcCtx.FavorModel.GetVideoCount(l.ctx, actionId)
 	if err != nil {
-		return nil, status.Error(500, err.Error())
+		return &user.UserInfoResponse{
+			StatusCode: constants.UnableToGetVideosFavoriteCountErrorCode,
+			StatusMsg:  constants.UnableToGetVideosFavoriteCountError,
+			User:       nil,
+		}, nil
 	}
 	uint32FavorVideoCount := uint32(len(favorVideoCount))
 
@@ -80,13 +111,16 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 	if userId != actionId {
 		isFavorite = l.svcCtx.RelationModel.FindIsFavorite(l.ctx, userId, actionId)
 		if err != nil {
-			return nil, status.Error(500, err.Error())
+			return &user.UserInfoResponse{
+				StatusCode: constants.UnableToGetFavoriteErrorCode,
+				StatusMsg:  constants.UnableToGetFavoriteError,
+				User:       nil,
+			}, nil
 		}
 	}
 
 	voideoList, err := l.svcCtx.VideoModel.FindOwnFeed(l.ctx, actionId)
 	if err != nil {
-		logx.Error(err.Error())
 		return &user.UserInfoResponse{
 			StatusCode: constants.UserServiceInnerErrorCode,
 			StatusMsg:  constants.UserServiceInnerError,

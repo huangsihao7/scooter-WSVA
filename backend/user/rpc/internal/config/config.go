@@ -12,4 +12,10 @@ type Config struct {
 	Salt       string
 	//FavoriteRpc zrpc.RpcClientConf //手动代码 fweqfqw
 	//RelationRpc zrpc.RpcClientConf //手动代码
+	DB struct {
+		DataSource   string
+		MaxOpenConns int `json:",default=10"`
+		MaxIdleConns int `json:",default=100"`
+		MaxLifetime  int `json:",default=3600"`
+	}
 }
