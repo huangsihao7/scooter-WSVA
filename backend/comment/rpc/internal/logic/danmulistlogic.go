@@ -58,7 +58,7 @@ func (l *DanMuListLogic) DanMuList(in *comment.DanmuListRequest) (*comment.Danmu
 			UserId:    int64(res[i].Uid),
 			VideoId:   int64(res[i].Vid),
 			DanmuText: res[i].Content,
-			SendTime:  res[i].SendTime,
+			SendTime:  float32(res[i].SendTime),
 		}
 		danmuList = append(danmuList, singleinfo)
 	}

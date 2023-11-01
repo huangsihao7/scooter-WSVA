@@ -14,7 +14,7 @@ type Danmu struct {
 	CreatedAt sql.NullTime `gorm:"column:created_at;type:datetime;default:CURRENT_TIMESTAMP;NOT NULL" json:"created_at"`
 	UpdatedAt sql.NullTime `gorm:"column:updated_at;type:datetime" json:"updated_at"`
 	DeletedAt sql.NullTime `gorm:"column:deleted_at;type:datetime" json:"deleted_at"`
-	SendTime  string       `gorm:"column:send_time;type:varchar(255);comment:在视频的哪个点发送的弹幕;NOT NULL" json:"send_time"`
+	SendTime  float64      `gorm:"column:send_time;type:float;comment:在视频的哪个点发送的弹幕;NOT NULL" json:"send_time"`
 }
 
 func (m *Danmu) TableName() string {

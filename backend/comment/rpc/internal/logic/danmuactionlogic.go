@@ -27,7 +27,6 @@ func NewDanMuActionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DanMu
 }
 
 func (l *DanMuActionLogic) DanMuAction(in *comment.DanmuActionRequest) (*comment.DanmuActionResponse, error) {
-	logx.DisableStat()
 	// todo: add your logic here and delete this line
 	userId := in.UserId
 	videoId := in.VideoId
@@ -55,6 +54,7 @@ func (l *DanMuActionLogic) DanMuAction(in *comment.DanmuActionRequest) (*comment
 		}
 		return nil, err
 	}
+
 	// 弹幕和发送时间不不能为空
 	if len(in.DanmuText) == 0 {
 		return &comment.DanmuActionResponse{
@@ -62,20 +62,20 @@ func (l *DanMuActionLogic) DanMuAction(in *comment.DanmuActionRequest) (*comment
 			StatusMsg:  constants.DanmuCanNotEmptyError,
 		}, nil
 	}
-	//限流
-	if len(in.SendTime) == 0 {
-		return &comment.DanmuActionResponse{
-			StatusCode: constants.DanmuTimeErrorCode,
-			StatusMsg:  constants.DanmuTimeError,
-		}, nil
-	}
-
+	////限流
+	////if len(in.SendTime) == 0 {
+	////	return &comment.DanmuActionResponse{
+	////		StatusCode: constants.DanmuTimeErrorCode,
+	////		StatusMsg:  constants.DanmuTimeError,
+	////	}, nil
+	////}
+	//
 	//添加弹幕到数据库
 	err = l.svcCtx.DanmuModel.Insert(l.ctx, &danmuModel.Danmu{
 		Uid:      uint(userId),
 		Vid:      uint(videoId),
 		Content:  in.DanmuText,
-		SendTime: in.SendTime,
+		SendTime: float64(in.SendTime),
 	})
 	if err != nil {
 		return &comment.DanmuActionResponse{

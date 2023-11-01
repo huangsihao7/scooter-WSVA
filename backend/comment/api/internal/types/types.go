@@ -48,7 +48,7 @@ type DanmuActionReq struct {
 	Color     int64   `json:"color"`
 	VideoId   int64   `json:"id"`   // 视频id
 	DanmuText string  `json:"text"` // 用户填写的弹幕内容
-	SendTime  float64 `json:"time"` // 用户发送弹幕的时间段
+	SendTime  float32 `json:"time"` // 用户发送弹幕的时间段
 	Token     string  `json:"token"`
 	Type      int64   `json:"type"`
 }
@@ -68,9 +68,9 @@ type DanmulistResp struct {
 }
 
 type DanmuInfo struct {
-	SendTime string `json:"send_time"`
-	IsShow   int    `json:"is_ihow"`
-	UserId   int64  `json:"user_id"`
-	VideoId  int64  `json:"video_id"`
-	Content  string `json:"content"`
+	SendTime float32 `json:"send_time"`
+	IsShow   int     `json:"is_ihow"`
+	UserId   int64   `json:"user_id"`
+	VideoId  int64   `json:"video_id"`
+	Content  string  `json:"content"`
 }

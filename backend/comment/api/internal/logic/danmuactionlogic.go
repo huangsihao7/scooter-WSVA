@@ -2,13 +2,10 @@ package logic
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/huangsihao7/scooter-WSVA/comment/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/comment/api/internal/types"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"strconv"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -30,13 +27,13 @@ func (l *DanmuActionLogic) DanmuAction(req *types.DanmuActionReq) (resp *types.D
 	// todo: add your logic here and delete this line
 	//验证token是否有效
 	//token 解析
-	userId, _ := l.ctx.Value("uid").(json.Number).Int64()
+	//userId, _ := l.ctx.Value("uid").(json.Number).Int64()
 
 	res, err := l.svcCtx.Commenter.DanMuAction(l.ctx, &comment.DanmuActionRequest{
-		UserId:    userId,
+		UserId:    req.Author,
 		VideoId:   req.VideoId,
 		DanmuText: req.DanmuText,
-		SendTime:  strconv.FormatFloat(req.SendTime, 'f', -1, 64),
+		SendTime:  req.SendTime,
 	})
 	if err != nil {
 		return &types.DanmuActionResp{
@@ -45,7 +42,7 @@ func (l *DanmuActionLogic) DanmuAction(req *types.DanmuActionReq) (resp *types.D
 		}, err
 	}
 	return &types.DanmuActionResp{
-		StatusCode: int(res.StatusCode),
+		StatusCode: constants.ServiceOKCode,
 		StatusMsg:  res.StatusMsg,
 	}, nil
 }

@@ -61,9 +61,8 @@ message User {
 message danmu_action_request {
    int64 user_id = 1; // 用户id
    int64 video_id = 2; // 视频id
-//   int32 action_type = 3; // 1-发布评论，2-删除评论
    string danmu_text = 3; // 用户填写的评论内容，在action_type=1的时候使用
-   string send_time = 4; // 用户填写的评论内容，在action_type=1的时候使用
+   float send_time = 4; // 用户填写的评论内容，在action_type=1的时候使用
 }
 
 message danmu_action_response {
@@ -87,7 +86,7 @@ message DanMu {
    int64 user_id = 1; // 用户id
    int64 video_id = 2; // 视频id
    string danmu_text = 4; // 用户填写的评论内容，在action_type=1的时候使用
-   string send_time = 5; // 用户填写的评论内容，在action_type=1的时候使用
+   float send_time = 5; // 用户填写的评论内容，在action_type=1的时候使用
 
 }
 
