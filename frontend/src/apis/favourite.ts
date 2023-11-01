@@ -30,15 +30,15 @@ export function doFavourite(video_id: number, action_type: number) {
   });
 }
 
-export function userFavouriteListReq(user_id: number) {
+export function userFavouriteListReq(to_user_id: number) {
   return service({
-    url: `/favorite/list?user_id=${user_id}`,
+    url: `/favorite/list?to_user_id=${to_user_id}`,
     method: "get",
   });
 }
-export function userStarListReq(user_id: number) {
+export function userStarListReq(to_user_id: number) {
   return service({
-    url: `/star/list?user_id=${user_id}`,
+    url: `/star/list?to_user_id=${to_user_id}`,
     method: "get",
   });
 }
