@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-29 17:10:06
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 16:44:30
+ * @LastEditTime: 2023-11-01 18:22:59
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\InfoEditCom.vue
 -->
@@ -175,7 +175,7 @@ const handleBgFinish = ({
   file: UploadFileInfo
   event?: ProgressEvent
 }) => {
-  file = file
+  console.log(file)
   const response = (event?.target as XMLHttpRequest)?.response;
   let responseJson = JSON.parse(response)
   formValue.value.background = responseJson.url
@@ -189,7 +189,7 @@ const handleAvatarFinish = ({
   file: UploadFileInfo
   event?: ProgressEvent
 }) => {
-  file = file
+  console.log(file)
   const response = (event?.target as XMLHttpRequest)?.response;
   let responseJson = JSON.parse(response)
   formValue.value.avatar = responseJson.url
