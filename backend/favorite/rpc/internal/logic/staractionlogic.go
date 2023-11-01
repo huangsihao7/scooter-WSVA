@@ -3,7 +3,7 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/favorite/starModel"
+	gmodel2 "github.com/huangsihao7/scooter-WSVA/favorite/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	"gorm.io/gorm"
 	"log"
@@ -83,7 +83,7 @@ func (l *StarActionLogic) StarAction(in *favorite.StarActionRequest) (*favorite.
 			}, nil
 		}
 
-		newStar := &starModel.Stars{
+		newStar := &gmodel2.Stars{
 			Uid: uint(userId),
 			Vid: int(videoId),
 		}
@@ -99,7 +99,7 @@ func (l *StarActionLogic) StarAction(in *favorite.StarActionRequest) (*favorite.
 		}
 
 		//增加video 收藏数
-		err = l.svcCtx.VideoGModel.IncrStarCount(l.ctx, &gmodel.Videos{Id: uint(videoId)})
+		err = l.svcCtx.VideoModel.IncrStarCount(l.ctx, &gmodel.Videos{Id: uint(videoId)})
 		if err != nil {
 			return &favorite.StarActionResponse{
 				StatusCode: constants.ServiceOKCode,
@@ -130,7 +130,7 @@ func (l *StarActionLogic) StarAction(in *favorite.StarActionRequest) (*favorite.
 		}
 
 		// 删除记录
-		newStar := &starModel.Stars{
+		newStar := &gmodel2.Stars{
 			Uid: uint(userId),
 			Vid: int(videoId),
 		}
@@ -143,7 +143,7 @@ func (l *StarActionLogic) StarAction(in *favorite.StarActionRequest) (*favorite.
 			}, nil
 		}
 		//TODO 减少video收藏数
-		err = l.svcCtx.VideoGModel.DecrStarCount(l.ctx, &gmodel.Videos{Id: uint(videoId)})
+		err = l.svcCtx.VideoModel.DecrStarCount(l.ctx, &gmodel.Videos{Id: uint(videoId)})
 		if err != nil {
 			return &favorite.StarActionResponse{
 				StatusCode: constants.ServiceOKCode,

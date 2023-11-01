@@ -3,7 +3,6 @@ package svc
 import (
 	gmodel3 "github.com/huangsihao7/scooter-WSVA/comment/gmodel"
 	gmodel2 "github.com/huangsihao7/scooter-WSVA/favorite/gmodel"
-	"github.com/huangsihao7/scooter-WSVA/favorite/starModel"
 	"github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/pkg/es"
@@ -21,7 +20,7 @@ type ServiceContext struct {
 	KqPusherClient     *kq.Pusher
 	DB                 *orm.DB
 	VideoModel         *gmodel.VideoModel
-	StarModel          *starModel.StarModel
+	StarModel          *gmodel2.StarModel
 	KqPusherTestClient *kq.Pusher
 	KqPusherJobClient  *kq.Pusher
 	Es                 *es.Es
@@ -42,7 +41,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		UserRpc:            usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
 		KqPusherClient:     kq.NewPusher(c.KqPusherConf.Brokers, c.KqPusherConf.Topic),
 		VideoModel:         gmodel.NewVideoModel(db.DB),
-		StarModel:          starModel.NewStarModel(db.DB),
+		StarModel:          gmodel2.NewStarModel(db.DB),
 		KqPusherTestClient: kq.NewPusher(c.KqPusherTesTConf.Brokers, c.KqPusherTesTConf.Topic),
 		HistoryModel:       gmodel.NewHistoryModel(db.DB),
 		KqPusherJobClient:  kq.NewPusher(c.KqPusherJobConf.Brokers, c.KqPusherJobConf.Topic),

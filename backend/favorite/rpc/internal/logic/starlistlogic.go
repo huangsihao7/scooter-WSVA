@@ -3,8 +3,8 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/favorite/model"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
+	"gorm.io/gorm"
 	"log"
 
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
@@ -37,7 +37,7 @@ func (l *StarListLogic) StarList(in *favorite.StarListRequest) (*favorite.StarLi
 	//检查用户id 是否能存在
 	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("用户不存在")
 			return &favorite.StarListResponse{
 				StatusCode: constants.UserDoNotExistedCode,
@@ -50,7 +50,7 @@ func (l *StarListLogic) StarList(in *favorite.StarListRequest) (*favorite.StarLi
 	//检查用户id 是否能存在
 	_, err = l.svcCtx.UserModel.GetUserByID(l.ctx, uint(actorId))
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("用户不存在")
 			return &favorite.StarListResponse{
 				StatusCode: constants.UserDoNotExistedCode,
@@ -69,7 +69,7 @@ func (l *StarListLogic) StarList(in *favorite.StarListRequest) (*favorite.StarLi
 	for i := 0; i < len(StarVideos); i++ {
 
 		videoId := StarVideos[i].Vid
-		videoDetail, err := l.svcCtx.VideoGModel.FindById(l.ctx, int64(videoId))
+		videoDetail, err := l.svcCtx.VideoModel.FindById(l.ctx, int64(videoId))
 
 		if err != nil {
 			return nil, err

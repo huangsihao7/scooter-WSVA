@@ -1,22 +1,21 @@
 package svc
 
 import (
-	model2 "github.com/huangsihao7/scooter-WSVA/favorite/model"
-	model4 "github.com/huangsihao7/scooter-WSVA/feed/model"
+	gmodel2 "github.com/huangsihao7/scooter-WSVA/favorite/gmodel"
+	gmodel4 "github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/pkg/orm"
-	model3 "github.com/huangsihao7/scooter-WSVA/relation/model"
+	gmodel3 "github.com/huangsihao7/scooter-WSVA/relation/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/user/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/internal/config"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
 type ServiceContext struct {
 	Config        config.Config
 	UserModel     *gmodel.UserModel // 手动代码
 	DB            *orm.DB
-	FavorModel    model2.FavoritesModel
-	RelationModel model3.RelationsModel
-	VideoModel    model4.VideosModel
+	FavorModel    *gmodel2.FavoriteModel
+	RelationModel *gmodel3.RelationModel
+	VideoModel    *gmodel4.VideoModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -29,8 +28,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:        c,
 		UserModel:     gmodel.NewUserModel(db.DB), // 手动代码
-		FavorModel:    model2.NewFavoritesModel(sqlx.NewMysql(c.DataSource)),
-		RelationModel: model3.NewRelationsModel(sqlx.NewMysql(c.DataSource)),
-		VideoModel:    model4.NewVideosModel(sqlx.NewMysql(c.DataSource)),
+		FavorModel:    gmodel2.NewFavoriteModel(db.DB),
+		RelationModel: gmodel3.NewRelationModel(db.DB),
+		VideoModel:    gmodel4.NewVideoModel(db.DB),
 	}
 }

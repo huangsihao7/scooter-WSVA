@@ -1,4 +1,4 @@
-package starModel
+package gmodel
 
 import (
 	"context"

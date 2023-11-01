@@ -68,7 +68,7 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 	for i := 0; i < len(favorVideos); i++ {
 
 		videoId := favorVideos[i].Vid
-		videoDetail, err := l.svcCtx.VideoGModel.FindById(l.ctx, int64(videoId))
+		videoDetail, err := l.svcCtx.VideoModel.FindById(l.ctx, int64(videoId))
 		if err != nil {
 			return nil, err
 		}
