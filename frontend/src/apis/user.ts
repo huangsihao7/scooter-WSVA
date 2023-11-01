@@ -8,8 +8,13 @@ export function getUserInfo(uid: number) {
   });
 }
 
-
-export function updateUserInfo(name: string, gender: number, avatar:string, dec: string, background_image: string) {
+export function updateUserInfo(
+  name: string,
+  gender: number,
+  avatar: string,
+  dec: string,
+  background_image: string,
+) {
   return service({
     url: "/user/update",
     method: "post",

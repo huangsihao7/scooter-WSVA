@@ -34,28 +34,28 @@ const VideoTypeMap: any = {
 // 挂载首次打开页面的视频流
 onMounted(() => {
   let typeCode = VideoTypeMap[videoType.value];
-  if(typeCode){
+  if (typeCode) {
     getCategoryVideosList(typeCode).then((res: any) => {
       videos.value = res.video_list;
     });
-  }else{
-    console.log(searchContent.value,'searchContent')
-    let searchValue = searchContent.value.toString()
-    getVideosByKeyWords(searchValue).then((res:any)=>{
-      videos.value = res.video_list
-    })
+  } else {
+    console.log(searchContent.value, "searchContent");
+    let searchValue = searchContent.value.toString();
+    getVideosByKeyWords(searchValue).then((res: any) => {
+      videos.value = res.video_list;
+    });
   }
 });
 
 watch(
   () => searchContent.value,
-  (newValue:any) => {
-    let searchValue = newValue.toString()
-    getVideosByKeyWords(searchValue).then((res:any)=>{
-      videos.value = res.video_list
-    })
-  }
-)
+  (newValue: any) => {
+    let searchValue = newValue.toString();
+    getVideosByKeyWords(searchValue).then((res: any) => {
+      videos.value = res.video_list;
+    });
+  },
+);
 
 // 更新切换页面后的视频流数据
 watch(

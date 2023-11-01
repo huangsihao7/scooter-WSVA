@@ -29,7 +29,7 @@ onMounted(() => {
     </NSpace>
   </NScrollbar>
   <NSpace v-else wrap>
-    <VideoCardList :videos="props.videos" :deletable=$props.deletable />
+    <VideoCardList :videos="props.videos" :deletable="$props.deletable" />
   </NSpace>
 </template>
 

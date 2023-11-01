@@ -8,9 +8,9 @@ interface propsType {
 
 const props = defineProps<propsType>();
 const emit = defineEmits(["delete-comment"]);
-const deleteFunc = (comment_id: number) =>{
+const deleteFunc = (comment_id: number) => {
   emit("delete-comment", comment_id);
-}
+};
 </script>
 
 <template>
@@ -20,12 +20,16 @@ const deleteFunc = (comment_id: number) =>{
       :key="index"
       class="comment-lists"
     >
-      <CommentCom class="comment" :comment="comment" @delete-comment="deleteFunc"/>
+      <CommentCom
+        class="comment"
+        :comment="comment"
+        @delete-comment="deleteFunc"
+      />
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
-.comment-space{
+.comment-space {
   height: 100%;
   .comment-lists {
     .comment {
@@ -33,12 +37,11 @@ const deleteFunc = (comment_id: number) =>{
     }
   }
 
-  .post-comment{
+  .post-comment {
     position: fixed;
-    width:360px;
+    width: 360px;
     bottom: 20px;
     background-color: antiquewhite;
   }
 }
-
 </style>

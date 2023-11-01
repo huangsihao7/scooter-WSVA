@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 23:44:28
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 12:52:45
+ * @LastEditTime: 2023-11-01 22:30:28
  * @Description:
  * @FilePath: \scooter-WSVA\frontend\src\apis\interface.ts
  */
@@ -24,7 +24,7 @@ interface VideoType {
 }
 
 interface CommentType {
-  comment_id:int;
+  comment_id: number;
   content: string;
   create_date: string;
   user: UserType;
@@ -47,8 +47,8 @@ interface UserType {
 }
 
 interface DownloadType {
-  url: string,
-  title: string
+  url: string;
+  title: string;
 }
 
 interface FollowCardType {

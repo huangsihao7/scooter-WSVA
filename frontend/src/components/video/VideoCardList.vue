@@ -22,9 +22,9 @@ interface propsType {
 
 const props = defineProps<propsType>();
 const router = useRouter();
-const message = useMessage()
+const message = useMessage();
 
-const handleShowVideo = (info:VideoType) => {
+const handleShowVideo = (info: VideoType) => {
   router.push({ name: "video", params: { id: info.video_id } });
 };
 
@@ -32,25 +32,21 @@ const handleShowVideo = (info:VideoType) => {
 const GetVideoLink = () => {};
 
 // 删除我的视频
-const deleteVideo = (info:any) =>{
+const deleteVideo = (info: any) => {
   myDeleteVideo(info.video_id).then((res: any) => {
-    if(res.status_code == 200){
-      message.success('删除成功')
-      window.location.reload()
+    if (res.status_code == 200) {
+      message.success("删除成功");
+      window.location.reload();
     }
   });
-}
+};
 
 onMounted(() => {
   //info.content
 });
 </script>
 <template>
-  <NCard
-    v-for="(info, index) in props.videos"
-    :key="index"
-    class="box-card"
-  >
+  <NCard v-for="(info, index) in props.videos" :key="index" class="box-card">
     <template #cover>
       <img
         class="image-css"
@@ -59,13 +55,19 @@ onMounted(() => {
         @click="handleShowVideo(info)"
       />
     </template>
-    <NButton class="btn" v-if="props.deletable" @click="deleteVideo(info)" quaternary circle type="error">
-        <template #icon>
-          <n-icon><TrashBin /></n-icon>
-        </template>
-      </NButton>
+    <NButton
+      v-if="props.deletable"
+      class="btn"
+      quaternary
+      circle
+      type="error"
+      @click="deleteVideo(info)"
+    >
+      <template #icon>
+        <NIcon><TrashBin /></NIcon>
+      </template>
+    </NButton>
     <div class="video-space" style="position: relative" @click="GetVideoLink">
-      
       <NTag class="time" round :bordered="false" type="info">
         {{ info.duration }}
         <template #icon>
@@ -81,33 +83,22 @@ onMounted(() => {
     </div>
     <div class="card-footer">
       <div class="content">
-        <NEllipsis
-          :tooltip="false"
-          class="title-eli"
-        >
+        <NEllipsis :tooltip="false" class="title-eli">
           {{ info.title }}
         </NEllipsis>
-        
       </div>
       <div class="other-info">
         <span class="name">
-            <NEllipsis
-            :tooltip="false"
-            class="name-eli"
-          >
-          {{ info.author == undefined ? "null" : info.author.name }}
-          </NEllipsis>
-          </span>
-        <span class="date">
-          <NEllipsis
-            :tooltip="false"
-            class="date-eli"
-          >{{ info.create_time }}
+          <NEllipsis :tooltip="false" class="name-eli">
+            {{ info.author == undefined ? "null" : info.author.name }}
           </NEllipsis>
         </span>
-        
+        <span class="date">
+          <NEllipsis :tooltip="false" class="date-eli">
+            {{ info.create_time }}
+          </NEllipsis>
+        </span>
       </div>
-      
     </div>
   </NCard>
 </template>
@@ -117,30 +108,29 @@ onMounted(() => {
 }
 @media (max-width: 1200px) {
   /* 在这里设置适应小屏幕的样式规则 */
-  .box-card{
+  .box-card {
     width: calc((100vw - 260px) / 4);
   }
-  .title-eli{
-    max-width: calc((100vw - 360px) / 4)
+  .title-eli {
+    max-width: calc((100vw - 360px) / 4);
   }
 }
 
 @media (min-width: 1200px) and (max-width: 1800px) {
   /* 在这里设置适应中等屏幕的样式规则 */
-  .box-card{
+  .box-card {
     width: calc((100vw - 260px) / 6);
   }
 }
 
 /* 在页面宽度大于1200px时应用以下样式 */
 @media (min-width: 1800px) {
-  .box-card{
+  .box-card {
     width: calc((100vw - 260px) / 7);
   }
 }
 
 .box-card {
-  
   margin-top: 15px;
   margin-left: 10px;
   display: inline-block;
@@ -189,17 +179,17 @@ onMounted(() => {
       text-align: left;
     }
 
-    .other-info{
+    .other-info {
       position: absolute;
       bottom: 0;
-      .name{
+      .name {
         display: inline-block;
         font-weight: 400;
-        font-size:0.8rem;
+        font-size: 0.8rem;
         color: rgb(95, 95, 95);
         width: 45%;
       }
-      .date{
+      .date {
         display: inline-block;
         margin-left: 6px;
         text-align: right;
@@ -209,19 +199,18 @@ onMounted(() => {
         width: 45%;
       }
     }
-    .content{ 
+    .content {
       padding-top: 6px;
-      span{
+      span {
         font-weight: bold;
         color: #333333;
       }
     }
-    
   }
-  .btn{
-        position: absolute;
-        top: 0;
-        right: 0;
-      }
+  .btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
 </style>

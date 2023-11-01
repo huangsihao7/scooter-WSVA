@@ -95,5 +95,3 @@ export function myDeleteVideo(video_id: number) {
     data: { video_id },
   });
 }
-
-
