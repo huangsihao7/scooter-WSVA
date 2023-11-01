@@ -2,14 +2,14 @@
  * @Author: Xu Ning
  * @Date: 2023-10-31 18:42:57
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 18:07:15
+ * @LastEditTime: 2023-11-01 22:14:43
  * @Description: 查看某个特定video
  * @FilePath: \scooter-WSVA\frontend\src\view\VideoView.vue
 -->
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import VideoPlus from "@/components/video/VideoPlus.vue";
-import { NEmpty, NDrawer, NDrawerContent, NTabs, NTabPane, NInput } from "naive-ui";
+import { NEmpty, NDrawer, NDrawerContent, NTabs, NTabPane, NInput, NIcon } from "naive-ui";
 import { getVideoById } from "@/apis/video";
 import { useRoute } from "vue-router";
 import { getCommentList, doComment } from "@/apis/comment";
@@ -20,6 +20,8 @@ import { userStore } from "@/stores/user";
 import { UserType } from "@/apis/interface";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
 import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
+import { ColorWand } from "@vicons/ionicons5";
+
 
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false);
@@ -77,7 +79,8 @@ const postComment = (e:any)=>{
         let addCommentObj:CommentType = {
           content: addComment.value,
           create_date: formattedDate(),
-          user: userObj
+          user: userObj,
+          comment_id: res.comment_id,
         }
         commentlists.value?.push(addCommentObj)
         addComment.value = ''
@@ -135,7 +138,11 @@ const formattedDate = ()=>{
           </NTabPane>
         </NTabs>
         <template #footer>
-            <NInput class="comment-input" @keydown="postComment" v-model:value="addComment" round placeholder="留下精彩的评论吧" />
+            <NInput class="comment-input" @keydown="postComment" v-model:value="addComment" round placeholder="留下精彩的评论吧">
+              <template #suffix>
+                <NIcon :component="ColorWand" />
+              </template>
+            </NInput>
         </template>
       </NDrawerContent>
     </NDrawer>

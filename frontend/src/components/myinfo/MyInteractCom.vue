@@ -15,7 +15,7 @@
   >
     <NTabPane name="work" tab="作品">
       <NScrollbar style="max-height: 50vh">
-        <VideoCard :is-scroll="false" :videos="videos" />
+        <VideoCard :is-scroll="false" :videos="videos" :deletable="true"/>
       </NScrollbar>
     </NTabPane>
     <NTabPane name="favourite" tab="喜欢">

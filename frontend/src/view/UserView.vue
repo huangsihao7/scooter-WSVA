@@ -23,15 +23,19 @@ onMounted(() => {
     passUserId.value = userStore().user_id;
   }
 });
+
+// 更新查看关注的人的页面
+const updateUserId = (userId: number) =>{
+}
 </script>
 
 <template>
   <div class="user">
     <div class="header">
-      <MyHeaderCom v-if="passUserId" :user-id="passUserId" />
+      <MyHeaderCom v-if="passUserId" :userId="passUserId" @userid-update="updateUserId" />
     </div>
     <div class="interaction">
-      <MyInteractCom v-if="passUserId" :user-id="passUserId" />
+      <MyInteractCom v-if="passUserId" :userId="passUserId" />
     </div>
   </div>
 </template>

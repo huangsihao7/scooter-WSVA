@@ -7,6 +7,7 @@ import {
   NTabs,
   NInput,
   NTabPane,
+  NIcon
 } from "naive-ui";
 import VideoPlus from "@/components/video/VideoPlus.vue";
 import { onMounted, ref } from "vue";
@@ -22,6 +23,8 @@ import { videoStore } from "@/stores/video";
 import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue"
 import { CommentType } from "@/apis/interface";
 import { userStore } from "@/stores/user";
+import { ColorWand } from "@vicons/ionicons5";
+
 interface propsType {
   videoListType: number;
 }
@@ -155,13 +158,21 @@ const postComment = (e:any)=>{
         let addCommentObj:CommentType = {
           content: addComment.value,
           create_date: formattedDate(),
-          user: userObj
+          user: userObj,
+          comment_id: 11,
         }
         commentlists.value?.push(addCommentObj)
         addComment.value = ''
       }
     })
   }
+}
+
+// 动态删除评论数据
+const deleteFunc = (comment_id: number) =>{
+  console.log('before',  commentlists.value)
+  commentlists.value = commentlists.value?.filter((item:CommentType) => item.comment_id !== comment_id);
+  console.log('after',  commentlists.value)
 }
 </script>
 
@@ -203,14 +214,18 @@ const postComment = (e:any)=>{
       <NDrawerContent :native-scrollbar="false">
         <NTabs type="line" animated>
           <NTabPane name="comment" tab="评论">
-            <CommentListCom v-if="commentlists" :commentlists="commentlists" />
+            <CommentListCom v-if="commentlists" :commentlists="commentlists" @delete-comment="deleteFunc"/>
           </NTabPane>
           <NTabPane name="recommend" tab="相关推荐">
             <VideoRecommendCard :recommendlists="recommendlists" />
           </NTabPane>
         </NTabs>
         <template #footer>
-            <NInput class="comment-input" @keydown="postComment" v-model:value="addComment" round placeholder="留下精彩的评论吧" />
+            <NInput class="comment-input" @keydown="postComment" v-model:value="addComment" round placeholder="留下精彩的评论吧" >
+              <template #suffix>
+                <NIcon :component="ColorWand" />
+              </template>
+            </NInput>
         </template>
       </NDrawerContent>
     </NDrawer>
@@ -237,6 +252,9 @@ const postComment = (e:any)=>{
   }
 }
 
+.n-carousel__arrow-group{
+  bottom: 50px;
+}
 .n-carousel.n-carousel--right .n-carousel__arrow-group {
   bottom: 100px;
 }

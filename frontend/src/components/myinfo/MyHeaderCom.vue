@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 23:53:03
+ * @LastEditTime: 2023-11-01 18:45:11
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\myHeaderCom.vue
 -->
@@ -13,6 +13,7 @@ import { getUserInfo } from "@/apis/user";
 import { NAvatar, NButton, NDivider, NGrid, NGridItem, NIcon } from "naive-ui";
 import InfoEditCom from "./InfoEditCom.vue";
 import { CashOutline as CashIcon } from "@vicons/ionicons5";
+import { useRouter } from "vue-router";
 
 interface propsType {
   userId: number;
@@ -24,6 +25,8 @@ const userInfo = ref<any>({
   background_image: userStore().avatar,
 });
 const editVisible = ref<boolean>(false);
+const router = useRouter();
+const emit = defineEmits(["userid-update"]);
 
 // 获取用户信息
 const getUserInfoFunc = () => {
@@ -46,9 +49,14 @@ const UpdateVisible = () => {
 };
 
 onMounted(() => {
-  console.log(props.userId);
   getUserInfoFunc();
 });
+
+const goFollowing = () =>{
+  console.log('go', props.userId)
+  // emit("userid-update", props.userId);
+  router.push({ name: "following", params: { id: props.userId } });
+}
 </script>
 
 <template>
@@ -69,7 +77,7 @@ onMounted(() => {
         <p class="name">{{ userInfo.name }}</p>
         <p class="signature">{{ userInfo.signature }}</p>
         <div class="follow">
-          <NButton color="#606266" text>
+          <NButton color="#606266" text @click="goFollowing">
             关注 {{ userInfo.follow_count }}
           </NButton>
           <NDivider vertical />

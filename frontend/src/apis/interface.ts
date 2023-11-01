@@ -24,6 +24,7 @@ interface VideoType {
 }
 
 interface CommentType {
+  comment_id:int;
   content: string;
   create_date: string;
   user: UserType;

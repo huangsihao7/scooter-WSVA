@@ -2,23 +2,27 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 17:47:17
+ * @LastEditTime: 2023-11-01 19:58:48
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardList.vue
  * @Description: 
 -->
 <script lang="ts" setup>
 import { onMounted } from "vue";
-import { NCard, NEllipsis, NIcon, NTag } from "naive-ui";
-import { Heart, Play } from "@vicons/ionicons5";
+import { NButton, NCard, NEllipsis, NIcon, NTag } from "naive-ui";
+import { Heart, Play, TrashBin } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
 import { useRouter } from "vue-router";
+import { myDeleteVideo } from "@/apis/video";
+import { useMessage } from "naive-ui";
 
 interface propsType {
   videos: Array<VideoType>;
+  deletable?: boolean;
 }
 
 const props = defineProps<propsType>();
 const router = useRouter();
+const message = useMessage()
 
 const handleShowVideo = (info:VideoType) => {
   router.push({ name: "video", params: { id: info.video_id } });
@@ -26,6 +30,16 @@ const handleShowVideo = (info:VideoType) => {
 
 // 跳转路由，展示视频
 const GetVideoLink = () => {};
+
+// 删除我的视频
+const deleteVideo = (info:any) =>{
+  myDeleteVideo(info.video_id).then((res: any) => {
+    if(res.status_code == 200){
+      message.success('删除成功')
+      window.location.reload()
+    }
+  });
+}
 
 onMounted(() => {
   //info.content
@@ -45,7 +59,13 @@ onMounted(() => {
         @click="handleShowVideo(info)"
       />
     </template>
+    <NButton class="btn" v-if="props.deletable" @click="deleteVideo(info)" quaternary circle type="error">
+        <template #icon>
+          <n-icon><TrashBin /></n-icon>
+        </template>
+      </NButton>
     <div class="video-space" style="position: relative" @click="GetVideoLink">
+      
       <NTag class="time" round :bordered="false" type="info">
         {{ info.duration }}
         <template #icon>
@@ -63,15 +83,31 @@ onMounted(() => {
       <div class="content">
         <NEllipsis
           :tooltip="false"
-          style="max-width: calc((100vw - 360px) / 4)"
+          class="title-eli"
         >
           {{ info.title }}
         </NEllipsis>
+        
       </div>
-      <div class="name">
-        <span>{{ info.author == undefined ? "null" : info.author.name }}</span>
-        <span class="date">{{ info.create_time }}</span>
+      <div class="other-info">
+        <span class="name">
+            <NEllipsis
+            :tooltip="false"
+            class="name-eli"
+          >
+          {{ info.author == undefined ? "null" : info.author.name }}
+          </NEllipsis>
+          </span>
+        <span class="date">
+          <NEllipsis
+            :tooltip="false"
+            class="date-eli"
+          >{{ info.create_time }}
+          </NEllipsis>
+        </span>
+        
       </div>
+      
     </div>
   </NCard>
 </template>
@@ -83,6 +119,9 @@ onMounted(() => {
   /* 在这里设置适应小屏幕的样式规则 */
   .box-card{
     width: calc((100vw - 260px) / 4);
+  }
+  .title-eli{
+    max-width: calc((100vw - 360px) / 4)
   }
 }
 
@@ -142,24 +181,47 @@ onMounted(() => {
   }
 
   .card-footer {
+    height: 5vh;
     span,
     p,
     .content,
-    .name {
-      margin-left: 10px;
+    .other-info {
       text-align: left;
     }
 
-    .content span {
-      font-weight: bold;
-      color: #333333;
+    .other-info{
+      position: absolute;
+      bottom: 0;
+      .name{
+        display: inline-block;
+        font-weight: 400;
+        font-size:0.8rem;
+        color: rgb(95, 95, 95);
+        width: 45%;
+      }
+      .date{
+        display: inline-block;
+        margin-left: 6px;
+        text-align: right;
+        font-weight: 200;
+        font-size: 0.6rem;
+        color: rgb(95, 95, 95);
+        width: 45%;
+      }
     }
-
-    span {
-      font-weight: 400;
-      font-size: 0.8rem;
-      color: rgb(95, 95, 95);
+    .content{ 
+      padding-top: 6px;
+      span{
+        font-weight: bold;
+        color: #333333;
+      }
     }
+    
   }
+  .btn{
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
 }
 </style>
