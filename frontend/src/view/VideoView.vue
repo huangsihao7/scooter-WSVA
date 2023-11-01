@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-31 18:42:57
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 12:11:23
+ * @LastEditTime: 2023-11-01 18:07:15
  * @Description: 查看某个特定video
  * @FilePath: \scooter-WSVA\frontend\src\view\VideoView.vue
 -->
@@ -12,8 +12,12 @@ import VideoPlus from "@/components/video/VideoPlus.vue";
 import { NEmpty, NDrawer, NDrawerContent, NTabs, NTabPane, NInput } from "naive-ui";
 import { getVideoById } from "@/apis/video";
 import { useRoute } from "vue-router";
-import { getCommentList } from "@/apis/comment";
+import { getCommentList, doComment } from "@/apis/comment";
 import { getRecommendVideosList } from "@/apis/video";
+import { videoStore } from "@/stores/video";
+import { CommentType } from "@/apis/interface";
+import { userStore } from "@/stores/user";
+import { UserType } from "@/apis/interface";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
 import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
 
@@ -25,6 +29,8 @@ const video = ref<any>();
 const commentlists = ref<any>();
 // 相关推荐列表
 const recommendlists = ref<any>();
+// 添加评论的内容
+const addComment = ref<string>('')
 
 onMounted(() => {
   let vid = videoId.value.toString();
@@ -45,6 +51,53 @@ const updateVisible = (thisVideo: any) => {
     recommendlists.value = res.video_list;
   });
 };
+
+// 发布评论
+const postComment = (e:any)=>{
+  console.log(addComment.value)
+  if(e.keyCode == 13 && addComment.value){
+    doComment(videoStore().video_id, 1, addComment.value, 0).then((res:any)=>{
+      if(res.status_code == 200){
+        let userInfo = userStore()
+        let userObj: UserType = {
+          id: userInfo.user_id,
+          name: userInfo.name,
+          gender: userInfo.gender,
+          avatar: userInfo.avatar,
+          signature: userInfo.signature,
+          phoneNum: userInfo.phoneNum,
+          background_image: userInfo.background_image,
+          follow_count: 0,
+          follower_count: 0,
+          total_favorited: 0,
+          work_count: 0,
+          favorite_count: 0,
+          is_follow: false
+        }
+        let addCommentObj:CommentType = {
+          content: addComment.value,
+          create_date: formattedDate(),
+          user: userObj
+        }
+        commentlists.value?.push(addCommentObj)
+        addComment.value = ''
+      }
+    })
+  }
+}
+
+// 时间获取
+const formattedDate = ()=>{
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  const day = String(currentDate.getDate()).padStart(2, "0");
+  const hours = String(currentDate.getHours()).padStart(2, "0");
+  const minutes = String(currentDate.getMinutes()).padStart(2, "0");
+  const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
+  return formattedDate
+}
+
 </script>
 
 <template>
@@ -82,7 +135,7 @@ const updateVisible = (thisVideo: any) => {
           </NTabPane>
         </NTabs>
         <template #footer>
-            <NInput class="comment-input" round placeholder="中" />
+            <NInput class="comment-input" @keydown="postComment" v-model:value="addComment" round placeholder="留下精彩的评论吧" />
         </template>
       </NDrawerContent>
     </NDrawer>

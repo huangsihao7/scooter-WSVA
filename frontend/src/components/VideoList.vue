@@ -46,6 +46,9 @@ const recommendlists = ref<any>();
 const carouselRef = ref<any>();
 // 添加评论的内容
 const addComment = ref<string>('')
+// 看到第几个视频的标记
+const visitedIndex = ref<number>(-1);
+
 
 // 获取视频队列
 onMounted(() => {
@@ -82,7 +85,7 @@ const upPage = () => {
 const downPage = () => {
   carouselRef.value.next();
 };
-const visitedIndex = ref<number>(-1);
+
 // 轮播图切换效果
 const updatePage = (currentIndex: number, lastIndex: number) => {
   currentVideoIndex.value = currentIndex;
@@ -115,6 +118,7 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
   }
 };
 
+// 时间获取
 const formattedDate = ()=>{
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -126,6 +130,7 @@ const formattedDate = ()=>{
   return formattedDate
 }
 
+// 发布评论
 const postComment = (e:any)=>{
   console.log(addComment.value)
   if(e.keyCode == 13 && addComment.value){
