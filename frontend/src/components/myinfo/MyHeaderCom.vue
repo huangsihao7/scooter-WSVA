@@ -10,15 +10,7 @@
 import { onMounted, ref } from "vue";
 import { userStore } from "@/stores/user";
 import { getUserInfo } from "@/apis/user";
-import {
-  NAvatar,
-  NButton,
-  NDivider,
-  NGrid,
-  NGridItem,
-  NIcon,
-  NText,
-} from "naive-ui";
+import { NAvatar, NButton, NDivider, NGrid, NGridItem, NIcon } from "naive-ui";
 import InfoEditCom from "./InfoEditCom.vue";
 import { CashOutline as CashIcon } from "@vicons/ionicons5";
 

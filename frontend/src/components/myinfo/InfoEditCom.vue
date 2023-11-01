@@ -12,7 +12,7 @@
     width="30vw"
     preset="dialog"
     title="修改资料"
-    :show-icon = "false"
+    :show-icon="false"
     positive-text="确认"
     negative-text="取消"
     :closable="false"
@@ -20,8 +20,8 @@
     @negative-click="cancelCallback"
   >
     <NForm
-    class="form-area"
       ref="formRef"
+      class="form-area"
       :model="formValue"
       label-placement="left"
       label-width="auto"
@@ -142,7 +142,7 @@ const submitCallback = () => {};
   margin-right: 10px;
 }
 
-.form-area{
+.form-area {
   margin-top: 30px;
 }
 

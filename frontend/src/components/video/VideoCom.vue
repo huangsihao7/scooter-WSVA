@@ -190,7 +190,7 @@ onMounted(() => {
     player.subtitle = props.subtitle;
   }
   if (props.danmaku) {
-    player.danmaku = props.danmaku
+    player.danmaku = props.danmaku;
     console.log(player.danmaku);
   }
   if (props.videoIndex == 0) {

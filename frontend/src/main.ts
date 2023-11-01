@@ -17,7 +17,6 @@ import "element-plus/dist/index.css";
 import "./style.css";
 import "animate.css";
 
-
 const pinia = createPinia();
 const app = createApp(App);
 Object.keys(ElementPlusIconsVue).forEach((key) => {

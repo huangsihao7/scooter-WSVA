@@ -60,7 +60,7 @@ const dplayerObj = reactive({
   danmaku: {
     id: props.video.video_id,
     // api: "https://angustar.tech/api/dplayer/",
-    api: baseURL + '/danmu/list',
+    api: baseURL + "/danmu/list",
     token: userStore().token,
     // maximum: 1000,
     // addition: ['https://api.prprpr.me/dplayer/v3/bilibili?aid=4157142'],

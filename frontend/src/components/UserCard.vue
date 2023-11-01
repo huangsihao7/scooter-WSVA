@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 00:11:14
+ * @LastEditTime: 2023-11-01 11:20:22
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -11,25 +11,35 @@ import { ref, onMounted } from "vue";
 import { userStore } from "@/stores/user";
 import { getFollowList, canclefollowOne, followOne } from "@/apis/follow";
 import { useRouter } from "vue-router";
-import { useMessage, NCard, NAvatar, NButton, NGrid, NGi, NEmpty } from "naive-ui";
-import { FollowCardType } from '@/apis/interface'
+import {
+  useMessage,
+  NCard,
+  NAvatar,
+  NButton,
+  NGrid,
+  NGi,
+  NEmpty,
+} from "naive-ui";
+import { FollowCardType } from "@/apis/interface";
 const message = useMessage();
 const router = useRouter();
-const folllowList = ref<FollowCardType>([]);
+const folllowList = ref<FollowCardType[]>([]);
 
 // 获取关注的人的信息卡片
 onMounted(() => {
   getFollowList(userStore().user_id).then((res: any) => {
     folllowList.value = res.list;
-    folllowList.value.forEach((element: any) => {
-      element.isfollowed = true;
-    });
+    if (folllowList.value) {
+      folllowList.value.forEach((element: any) => {
+        element.isfollowed = true;
+      });
+    }
   });
 });
 
 // 跳转视频
 const handleShowVedio = (info: FollowCardType) => {
-  const video_id = info.video_id
+  const video_id = info.video_id;
   router.push({ name: "video", params: { id: video_id } });
 };
 
@@ -70,12 +80,17 @@ const cancleFollow = (item: any, _index: any) => {
     <NGi v-for="(info, index) in folllowList" :key="index">
       <NCard class="card" style="padding: 0" :hoverable="true">
         <template #cover>
-          <img v-if="info.cover_url"
+          <img
+            v-if="info.cover_url"
             class="img"
             :src="info.cover_url"
             @click="handleShowVedio(info)"
           />
-          <NEmpty class="empty" v-else description="Ta最近没有发布视频哦"></NEmpty>
+          <NEmpty
+            v-else
+            class="empty"
+            description="Ta最近没有发布视频哦"
+          ></NEmpty>
         </template>
         <div class="header-info">
           <NAvatar
@@ -88,9 +103,9 @@ const cancleFollow = (item: any, _index: any) => {
           <div class="other-info">
             <span class="name">{{ info.name }}</span>
             <NButton class="btn" @click="cancleFollow(info, index)">
-              {{ info.isfollowed == true ? "已关注" : "关注" }}
+              {{ info.is_follow == true ? "已关注" : "关注" }}
             </NButton>
-            <p class="sig">{{ info.dec }}</p>
+            <p class="sig">{{ info.signature }}</p>
           </div>
         </div>
       </NCard>
@@ -130,7 +145,7 @@ const cancleFollow = (item: any, _index: any) => {
     height: calc(22vh - 40px);
     object-fit: fill;
   }
-  .empty{
+  .empty {
     width: 100%;
     height: calc(22vh - 40px);
     position: relative;

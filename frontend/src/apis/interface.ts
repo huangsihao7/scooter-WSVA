@@ -59,8 +59,8 @@ interface FollowCardType {
   is_follow: boolean;
   phoneNum?: string;
   background_image: string;
-  cover_url:string;
-  video_id:number;
+  cover_url: string;
+  video_id: number;
 }
 
 export type { VideoType, UserType, CommentType, FollowCardType };

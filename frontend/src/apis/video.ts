@@ -73,7 +73,6 @@ export function getHistoryVideosListReq() {
   });
 }
 
-
 export function getVideoById(video_id: number) {
   return service({
     url: `/feed/videoinfo?video_id=${video_id}`,

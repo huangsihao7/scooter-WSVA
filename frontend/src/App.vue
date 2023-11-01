@@ -11,13 +11,13 @@ import { RouterView } from "vue-router";
 import SubMenu from "./components/SubMenu.vue";
 import HeaderMenu from "./components/HeaderMenu.vue";
 import {
-NConfigProvider,
+  NConfigProvider,
   NLayout,
   NLayoutHeader,
   NLayoutSider,
   NMessageProvider,
 } from "naive-ui";
-import themeOverrides from './theme'
+import themeOverrides from "./theme";
 </script>
 
 <template>

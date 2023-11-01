@@ -1,19 +1,30 @@
 <script setup lang="ts">
-import { NCarousel, NDrawer, NDrawerContent, NCarouselItem, NTabs, NTabPane } from "naive-ui";
+import {
+  NCarousel,
+  NDrawer,
+  NDrawerContent,
+  NCarouselItem,
+  NTabs,
+  NTabPane,
+} from "naive-ui";
 import VideoPlus from "@/components/video/VideoPlus.vue";
 import { onMounted, ref } from "vue";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
-import { getRecommendVideos, getPopularVideos, getRecommendVideosList } from "@/apis/video";
+import {
+  getRecommendVideos,
+  getPopularVideos,
+  getRecommendVideosList,
+} from "@/apis/video";
 import { VideoType } from "@/apis/interface";
 import { getCommentList } from "@/apis/comment";
 import { videoStore } from "@/stores/video";
-import VideoRecommendCard from '@/components/video/VideoRecommendCard.vue'
+import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
 
-interface propsType{
-  videoListType: number
+interface propsType {
+  videoListType: number;
 }
 
-const props = defineProps<propsType>()
+const props = defineProps<propsType>();
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false);
 // 正在播放视频的下标
@@ -34,18 +45,17 @@ const carouselRef = ref<any>();
 
 // 获取视频队列
 onMounted(() => {
-  if(props.videoListType == 0){
+  if (props.videoListType == 0) {
     getRecommendVideos(0, 0).then((res: any) => {
       videos.value = res.video_list;
     });
-  }else{
+  } else {
     getPopularVideos(0, 0).then((res: any) => {
       videos.value = res.video_list;
     });
   }
-  visitedIndex.value = 0
-  console.log(visitedIndex.value)
-
+  visitedIndex.value = 0;
+  console.log(visitedIndex.value);
 });
 
 // 更新评论区可见状态
@@ -54,9 +64,9 @@ const updateVisible = (thisVideo: any) => {
   getCommentList(thisVideo.value.video_id).then((res: any) => {
     commentlists.value = res.comment_list;
   });
-  getRecommendVideosList(thisVideo.value.video_id).then((res:any) => {
-    recommendlists.value = res.video_list
-  })
+  getRecommendVideosList(thisVideo.value.video_id).then((res: any) => {
+    recommendlists.value = res.video_list;
+  });
 };
 
 // 向上翻视频
@@ -68,33 +78,35 @@ const upPage = () => {
 const downPage = () => {
   carouselRef.value.next();
 };
-const visitedIndex = ref<number>(-1)
+const visitedIndex = ref<number>(-1);
 // 轮播图切换效果
 const updatePage = (currentIndex: number, lastIndex: number) => {
   currentVideoIndex.value = currentIndex;
   lastVideoIndex.value = lastIndex;
-  console.log(visitedIndex.value)
+  console.log(visitedIndex.value);
   if (currentIndex > lastIndex && currentIndex > visitedIndex.value) {
     let offset = defaultLoad + currentIndex;
     let readedVideo = videoStore().video_id;
-    visitedIndex.value = currentIndex
+    visitedIndex.value = currentIndex;
     console.log("readedVideo", readedVideo);
-    if(props.videoListType == 0){
+    if (props.videoListType == 0) {
       getRecommendVideos(offset, readedVideo).then((res: any) => {
         videos.value?.push(res.video_list[0]);
       });
-    }else{
+    } else {
       getPopularVideos(offset, readedVideo).then((res: any) => {
         videos.value?.push(res.video_list[0]);
       });
     }
-    if(videos.value){
+    if (videos.value) {
       getCommentList(videos.value[currentIndex].video_id).then((res: any) => {
         commentlists.value = res.comment_list;
       });
-      getRecommendVideosList(videos.value[currentIndex].video_id).then((res:any) => {
-        recommendlists.value = res.video_list
-      })
+      getRecommendVideosList(videos.value[currentIndex].video_id).then(
+        (res: any) => {
+          recommendlists.value = res.video_list;
+        },
+      );
     }
   }
 };
@@ -142,7 +154,7 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
           <CommentListCom :commentlists="commentlists" />
         </NTabPane>
         <NTabPane name="recommend" tab="相关推荐">
-          <VideoRecommendCard :recommendlists="recommendlists"/>
+          <VideoRecommendCard :recommendlists="recommendlists" />
         </NTabPane>
       </NTabs>
     </NDrawerContent>

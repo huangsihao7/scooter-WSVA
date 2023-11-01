@@ -3,7 +3,7 @@ import VideoList from "@/components/VideoList.vue";
 </script>
 
 <template>
-  <VideoList :videoListType=1 />
+  <VideoList :video-list-type="1" />
 </template>
 
 <style scoped></style>
