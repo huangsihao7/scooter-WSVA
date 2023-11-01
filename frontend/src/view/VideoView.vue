@@ -2,14 +2,14 @@
  * @Author: Xu Ning
  * @Date: 2023-10-31 18:42:57
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 11:17:27
+ * @LastEditTime: 2023-11-01 12:11:23
  * @Description: 查看某个特定video
  * @FilePath: \scooter-WSVA\frontend\src\view\VideoView.vue
 -->
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import VideoPlus from "@/components/video/VideoPlus.vue";
-import { NEmpty, NDrawer, NDrawerContent, NTabs, NTabPane } from "naive-ui";
+import { NEmpty, NDrawer, NDrawerContent, NTabs, NTabPane, NInput } from "naive-ui";
 import { getVideoById } from "@/apis/video";
 import { useRoute } from "vue-router";
 import { getCommentList } from "@/apis/comment";
@@ -67,7 +67,6 @@ const updateVisible = (thisVideo: any) => {
     <NDrawer
       v-model:show="drawerVisible"
       :width="400"
-      :height="200"
       placement="right"
       :trap-focus="false"
       :block-scroll="false"
@@ -82,6 +81,9 @@ const updateVisible = (thisVideo: any) => {
             <VideoRecommendCard :recommendlists="recommendlists" />
           </NTabPane>
         </NTabs>
+        <template #footer>
+            <NInput class="comment-input" round placeholder="中" />
+        </template>
       </NDrawerContent>
     </NDrawer>
   </div>

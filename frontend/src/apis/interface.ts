@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 23:44:28
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 20:59:53
+ * @LastEditTime: 2023-11-01 12:52:45
  * @Description:
  * @FilePath: \scooter-WSVA\frontend\src\apis\interface.ts
  */
@@ -25,7 +25,7 @@ interface VideoType {
 
 interface CommentType {
   content: string;
-  createDate: string;
+  create_date: string;
   user: UserType;
 }
 

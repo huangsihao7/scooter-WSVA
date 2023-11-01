@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 22:00:03
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 15:14:08
+ * @LastEditTime: 2023-11-01 12:53:10
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\comment\CommentCom.vue
 -->
@@ -25,15 +25,15 @@ const action = ref(true);
 </script>
 
 <template>
-  <NThing content-indented>
+  <NThing class="comment" content-indented>
     <template v-if="avatar" #avatar>
       <NAvatar round :src="props.comment.user.avatar"> </NAvatar>
     </template>
     <template v-if="header" #header>
       <span class="name"> {{ props.comment.user.name }} </span>
     </template>
-    <template v-if="headerExtra" #header-extra>
-      {{ props.comment.createDate }}
+    <template v-if="headerExtra" #header-extra >
+      <span style="color:#666; font-size: 0.7rem;">{{ props.comment.create_date }}</span>
     </template>
     {{ props.comment.content }}
     <template v-if="action" #action>
@@ -65,5 +65,11 @@ const action = ref(true);
   .name {
     font-weight: bold;
   }
+}
+
+.comment{
+  background-color: #0000000a;
+  border-radius: 25px;
+  padding: 10px 15px;
 }
 </style>

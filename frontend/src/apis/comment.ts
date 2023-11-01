@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-29 22:43:26
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 20:37:40
+ * @LastEditTime: 2023-11-01 12:37:49
  * @Description:
  * @FilePath: \scooter-WSVA\frontend\src\apis\comment.ts
  */
@@ -25,7 +25,7 @@ export function getDanmuList(video_id: number) {
 export function doComment(
   video_id: number,
   action_type: number,
-  comment_text: number,
+  comment_text: string,
   comment_id: number,
 ) {
   return service({

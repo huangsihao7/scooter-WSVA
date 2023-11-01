@@ -10,18 +10,31 @@ const props = defineProps<propsType>();
 </script>
 
 <template>
-  <div
-    v-for="(comment, index) in props.commentlists"
-    :key="index"
-    class="comment-lists"
-  >
-    <CommentCom class="comment" :comment="comment" />
+  <div class="comment-space">
+    <div
+      v-for="(comment, index) in props.commentlists"
+      :key="index"
+      class="comment-lists"
+    >
+      <CommentCom class="comment" :comment="comment" />
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
-.comment-lists {
-  .comment {
-    margin-top: 10px;
+.comment-space{
+  height: 100%;
+  .comment-lists {
+    .comment {
+      margin-top: 10px;
+    }
+  }
+
+  .post-comment{
+    position: fixed;
+    width:360px;
+    bottom: 20px;
+    background-color: antiquewhite;
   }
 }
+
 </style>
