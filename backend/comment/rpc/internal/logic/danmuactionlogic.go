@@ -43,16 +43,20 @@ func (l *DanMuActionLogic) DanMuAction(in *comment.DanmuActionRequest) (*comment
 		return nil, err
 	}
 	// 检查视频id 是否存在
+
 	_, err = l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			log.Println("视频不存在")
+			logx.Infof("video not exist")
 			return &comment.DanmuActionResponse{
 				StatusCode: constants.UserVideosDoNotExistedCode,
 				StatusMsg:  constants.FindUserVideosError,
 			}, nil
 		}
-		return nil, err
+		return &comment.DanmuActionResponse{
+			StatusCode: constants.DanmuServiceErrorCode,
+			StatusMsg:  constants.DanmuServiceError,
+		}, nil
 	}
 
 	// 弹幕和发送时间不不能为空

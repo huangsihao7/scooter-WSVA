@@ -7,10 +7,13 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/favorite/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/internal/svc"
-	gmodel3 "github.com/huangsihao7/scooter-WSVA/feed/gmodel"
+	model2 "github.com/huangsihao7/scooter-WSVA/feed/gmodel"
+	"github.com/zeromicro/go-zero/core/logc"
 	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/gorm"
 	"log"
+	"strconv"
+	"time"
 )
 
 type FavoriteActionLogic struct {
@@ -60,113 +63,172 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		return nil, err
 	}
 
-	//将点赞信息添加到数据库
-	switch actionType {
-	case 1:
+	//在redis中查找的值
+	value := strconv.FormatInt(userId, 10) + "#" + strconv.FormatInt(videoId, 10)
 
-		//判断是否重复点赞
-		isFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, userId, videoId)
-		if err != nil && err != gorm.ErrRecordNotFound {
-			log.Println(err.Error())
-			return &favorite.FavoriteActionResponse{
-				StatusCode: constants.FavoriteServiceErrorCode,
-				StatusMsg:  constants.FavoriteServiceError,
-			}, nil
+	switch actionType {
+
+	//执行点赞操作
+	case 1:
+		//利用redis判断是否存在
+		exist, err := l.svcCtx.BizRedis.SismemberCtx(l.ctx, "favorite", value)
+		if err != nil {
+			logc.Error(l.ctx, err)
 		}
-		if isFavorite == true {
+		if exist {
+			// 记录存在
+			logx.Infof("点赞记录存在")
 			return &favorite.FavoriteActionResponse{
 				StatusCode: constants.FavoriteServiceDuplicateCode,
 				StatusMsg:  constants.FavoriteServiceDuplicateError,
 			}, nil
+		} else {
+			//redis 记录不命中
+			//去数据库查找
+			isFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, userId, videoId)
+			if err != nil && err != gorm.ErrRecordNotFound {
+				//数据库没有此记录
+				// 在数据库找了记录还是不存在 说明可以点在
+				logx.Infof("记录不存在")
+			}
+			if isFavorite == true {
+				//重新写入缓存中
+				_, err = l.svcCtx.BizRedis.SaddCtx(l.ctx, "favorite", value, time.Second*10)
+				if err != nil {
+					logc.Error(l.ctx, err)
+				}
+				return &favorite.FavoriteActionResponse{
+					StatusCode: constants.FavoriteServiceDuplicateCode,
+					StatusMsg:  constants.FavoriteServiceDuplicateError,
+				}, nil
+			}
 		}
-
-		newFavorite := gmodel.Favorites{
-			Uid: uint(userId),
-			Vid: int(videoId),
-		}
-
-		//添加到数据库
-		err = l.svcCtx.FavorModel.Insert(l.ctx, &newFavorite)
-		if err != nil {
-			log.Println(err.Error())
-			return &favorite.FavoriteActionResponse{
-				StatusCode: constants.FavoriteServiceErrorCode,
-				StatusMsg:  constants.FavoriteServiceError,
-			}, nil
-		}
-
-		//增加video的点赞数
-		err = l.svcCtx.VideoModel.Update(l.ctx, &gmodel3.Videos{
-			Id:            uint(videoId),
-			AuthorId:      videoDetail.AuthorId,
-			Title:         videoDetail.Title,
-			CoverUrl:      videoDetail.CoverUrl,
-			PlayUrl:       videoDetail.PlayUrl,
-			FavoriteCount: videoDetail.FavoriteCount + 1,
-			StarCount:     videoDetail.StarCount,
-			CommentCount:  videoDetail.CommentCount,
-			CreatedAt:     videoDetail.CreatedAt,
-			Category:      videoDetail.Category,
-			Duration:      videoDetail.Duration,
+		// 事务
+		err = l.svcCtx.DB.Transaction(func(tx *gorm.DB) error {
+			//更新favorite内容
+			newFavorite := gmodel.Favorites{
+				Uid: uint(userId),
+				Vid: int(videoId),
+			}
+			err = gmodel.NewFavoriteModel(tx).Insert(l.ctx, &newFavorite)
+			if err != nil {
+				return err
+			}
+			//增加video的点赞数
+			err = l.svcCtx.VideoModel.Update(l.ctx, &model2.Videos{
+				Id:            uint(videoId),
+				AuthorId:      videoDetail.AuthorId,
+				Title:         videoDetail.Title,
+				CoverUrl:      videoDetail.CoverUrl,
+				PlayUrl:       videoDetail.PlayUrl,
+				FavoriteCount: videoDetail.FavoriteCount + 1,
+				StarCount:     videoDetail.StarCount,
+				CommentCount:  videoDetail.CommentCount,
+				CreatedAt:     videoDetail.CreatedAt,
+				Category:      videoDetail.Category,
+				Duration:      videoDetail.Duration,
+			})
+			return err
 		})
-
+		//if err != nil {
+		//	l.Logger.Errorf("[Follow] Transaction error: %v", err)
+		//	return nil, err
+		//}
 		if err != nil {
-			log.Println(err.Error())
+			l.Logger.Errorf("[Follow] Transaction error: %v", err)
 			return &favorite.FavoriteActionResponse{
 				StatusCode: constants.FavoriteServiceErrorCode,
 				StatusMsg:  constants.FavoriteServiceError,
 			}, nil
 		}
+		//添加到redis
+		_, err = l.svcCtx.BizRedis.SaddCtx(l.ctx, constants.RedisFavoriteRelationKey, value, time.Second*10)
+		if err != nil {
+			logc.Error(l.ctx, err)
+		}
+
 		return &favorite.FavoriteActionResponse{
 			StatusCode: constants.ServiceOKCode,
 			StatusMsg:  constants.ServiceOK,
 		}, nil
+
+		//删除点赞记录
 	case 2:
 
-		//判断点赞记录是否存在
-		isFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, userId, videoId)
-		if err != nil && err != gorm.ErrRecordNotFound {
-			log.Println(err.Error())
-			return &favorite.FavoriteActionResponse{
-				StatusCode: constants.FavoriteServiceErrorCode,
-				StatusMsg:  constants.FavoriteServiceError,
-			}, nil
-		}
-		if isFavorite == false {
-			return &favorite.FavoriteActionResponse{
-				StatusCode: constants.FavoriteServiceCancelCode,
-				StatusMsg:  constants.FavoriteServiceCancelError,
-			}, nil
-		}
-		err = l.svcCtx.FavorModel.DeleteFavorite(l.ctx, userId, videoId)
+		//利用redis判断是否存在
+		exist, err := l.svcCtx.BizRedis.SismemberCtx(l.ctx, "favorite", value)
 		if err != nil {
-			log.Println(err.Error())
-			return &favorite.FavoriteActionResponse{
-				StatusCode: constants.FavoriteServiceErrorCode,
-				StatusMsg:  constants.FavoriteServiceError,
-			}, nil
+			logc.Error(l.ctx, err)
 		}
-		//减少video的点赞数
-		err = l.svcCtx.VideoModel.Update(l.ctx, &gmodel3.Videos{
-			Id:            uint(videoId),
-			AuthorId:      videoDetail.AuthorId,
-			Title:         videoDetail.Title,
-			CoverUrl:      videoDetail.CoverUrl,
-			PlayUrl:       videoDetail.PlayUrl,
-			FavoriteCount: videoDetail.FavoriteCount - 1,
-			StarCount:     videoDetail.StarCount,
-			CommentCount:  videoDetail.CommentCount,
-			CreatedAt:     videoDetail.CreatedAt,
-			Category:      videoDetail.Category,
-			Duration:      videoDetail.Duration,
+		if exist {
+			// 记录存在
+			logx.Infof("点赞记录存在,可以删除")
+
+		} else {
+			//redis 记录不命中
+			//去数据库查找
+			isFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, userId, videoId)
+			if err != nil && err != gorm.ErrRecordNotFound {
+				//内部错误
+				return &favorite.FavoriteActionResponse{
+					StatusCode: constants.FavoriteServiceErrorCode,
+					StatusMsg:  constants.FavoriteServiceError,
+				}, nil
+			}
+			if isFavorite == false {
+				logx.Infof("删除的记录不存在")
+				return &favorite.FavoriteActionResponse{
+					StatusCode: constants.FavoriteServiceCancelCode,
+					StatusMsg:  constants.FavoriteServiceCancelError,
+				}, nil
+			}
+			if isFavorite == true {
+				//重新写入缓存中
+				l.svcCtx.BizRedis.SaddCtx(l.ctx, "favorite", value, time.Second*10)
+			}
+		}
+		// 事务
+		err = l.svcCtx.DB.Transaction(func(tx *gorm.DB) error {
+
+			err = gmodel.NewFavoriteModel(tx).DeleteFavorite(l.ctx, userId, videoId)
+			if err != nil {
+				return err
+			}
+			//增加video的点赞数
+			err = l.svcCtx.VideoModel.Update(l.ctx, &model2.Videos{
+				Id:            uint(videoId),
+				AuthorId:      videoDetail.AuthorId,
+				Title:         videoDetail.Title,
+				CoverUrl:      videoDetail.CoverUrl,
+				PlayUrl:       videoDetail.PlayUrl,
+				FavoriteCount: videoDetail.FavoriteCount - 1,
+				StarCount:     videoDetail.StarCount,
+				CommentCount:  videoDetail.CommentCount,
+				CreatedAt:     videoDetail.CreatedAt,
+				Category:      videoDetail.Category,
+				Duration:      videoDetail.Duration,
+			})
+			return err
 		})
+		//if err != nil {
+		//	l.Logger.Errorf("[Follow] Transaction error: %v", err)
+		//	return nil, err
+		//}
+		//
 		if err != nil {
-			log.Println(err.Error())
+			l.Logger.Errorf("[Follow] Transaction error: %v", err)
 			return &favorite.FavoriteActionResponse{
 				StatusCode: constants.FavoriteServiceErrorCode,
 				StatusMsg:  constants.FavoriteServiceError,
 			}, nil
 		}
+
+		//删除缓存
+		_, err = l.svcCtx.BizRedis.SremCtx(l.ctx, constants.RedisFavoriteRelationKey, value)
+		if err != nil {
+			logc.Error(l.ctx, err)
+		}
+
 		return &favorite.FavoriteActionResponse{
 			StatusCode: constants.ServiceOKCode,
 			StatusMsg:  constants.ServiceOK,

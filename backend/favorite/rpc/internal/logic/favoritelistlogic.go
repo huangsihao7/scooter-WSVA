@@ -2,8 +2,10 @@ package logic
 
 import (
 	"context"
+	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
+	"github.com/zeromicro/go-zero/core/logc"
 	"gorm.io/gorm"
 	"log"
 
@@ -59,6 +61,19 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 		return nil, err
 	}
 
+	//redis 测试
+
+	err = l.svcCtx.BizRedis.SetCtx(l.ctx, "key", "hello world")
+	if err != nil {
+		logc.Error(l.ctx, err)
+	}
+
+	v, err := l.svcCtx.BizRedis.GetCtx(l.ctx, "key")
+	if err != nil {
+		logc.Error(l.ctx, err)
+	}
+	fmt.Println(v)
+
 	favorVideos, err := l.svcCtx.FavorModel.FindOwnFavorites(l.ctx, actorId)
 	if err != nil {
 		return nil, err
@@ -70,6 +85,13 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 		videoId := favorVideos[i].Vid
 		videoDetail, err := l.svcCtx.VideoModel.FindById(l.ctx, int64(videoId))
 		if err != nil {
+			if err == gorm.ErrRecordNotFound {
+				logx.Infof("视频记录不存在")
+				return &favorite.FavoriteListResponse{
+					StatusCode: constants.UserVideosDoNotExistedCode,
+					StatusMsg:  constants.UserVideosDoNotExisted,
+				}, nil
+			}
 			return nil, err
 		}
 		//这个视频的作者
