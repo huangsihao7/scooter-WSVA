@@ -45,6 +45,11 @@ interface UserType {
   background_image: string;
 }
 
+interface DownloadType {
+  url: string,
+  title: string
+}
+
 interface FollowCardType {
   id: number;
   name: string;
@@ -63,4 +68,4 @@ interface FollowCardType {
   video_id: number;
 }
 
-export type { VideoType, UserType, CommentType, FollowCardType };
+export type { VideoType, DownloadType, UserType, CommentType, FollowCardType };

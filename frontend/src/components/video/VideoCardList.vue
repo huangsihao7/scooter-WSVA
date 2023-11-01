@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 20:51:51
+ * @LastEditTime: 2023-11-01 17:47:17
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardList.vue
  * @Description: 
 -->
@@ -11,15 +11,17 @@ import { onMounted } from "vue";
 import { NCard, NEllipsis, NIcon, NTag } from "naive-ui";
 import { Heart, Play } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
+import { useRouter } from "vue-router";
 
 interface propsType {
   videos: Array<VideoType>;
 }
 
 const props = defineProps<propsType>();
+const router = useRouter();
 
-const handleShowVideo = () => {
-  console.log("show");
+const handleShowVideo = (info:VideoType) => {
+  router.push({ name: "video", params: { id: info.video_id } });
 };
 
 // 跳转路由，展示视频
@@ -34,14 +36,13 @@ onMounted(() => {
     v-for="(info, index) in props.videos"
     :key="index"
     class="box-card"
-    style="width: calc((100vw - 260px) / 8)"
   >
     <template #cover>
       <img
         class="image-css"
         :src="info.cover_url"
         alt="img"
-        @click="handleShowVideo"
+        @click="handleShowVideo(info)"
       />
     </template>
     <div class="video-space" style="position: relative" @click="GetVideoLink">
@@ -78,12 +79,32 @@ onMounted(() => {
 .card-space {
   max-height: calc(100vh - 60px);
 }
+@media (max-width: 1200px) {
+  /* 在这里设置适应小屏幕的样式规则 */
+  .box-card{
+    width: calc((100vw - 260px) / 4);
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1800px) {
+  /* 在这里设置适应中等屏幕的样式规则 */
+  .box-card{
+    width: calc((100vw - 260px) / 6);
+  }
+}
+
+/* 在页面宽度大于1200px时应用以下样式 */
+@media (min-width: 1800px) {
+  .box-card{
+    width: calc((100vw - 260px) / 7);
+  }
+}
 
 .box-card {
+  
   margin-top: 15px;
   margin-left: 10px;
   display: inline-block;
-
   .n-card__content {
     height: 200px;
     width: 100%;

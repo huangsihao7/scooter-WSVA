@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 11:41:54
+ * @LastEditTime: 2023-11-01 17:30:39
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -19,6 +19,7 @@ import {
   Checkmark,
   Heart,
   Star,
+  Download
 } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
 import { ElMessageBox } from "element-plus";
@@ -27,6 +28,7 @@ import { doFavourite, doStar } from "@/apis/favourite";
 import { doFollow } from "@/apis/relation";
 import { userStore } from "@/stores/user";
 import { baseURL } from "@/axios";
+import { DownloadType } from '@/apis/interface'
 
 interface propsType {
   video: VideoType;
@@ -36,13 +38,12 @@ interface propsType {
 
 const message = useMessage();
 const props = defineProps<propsType>();
-
 const emit = defineEmits(["comment-visible-update"]);
 
-const thisVideo = ref<VideoType>();
-const userId = computed(() => userStore().user_id);
 const { toClipboard } = useClipboard();
-
+const thisVideo = ref<VideoType>();
+const copyFlag = ref<boolean>(false);
+const userId = computed(() => userStore().user_id);
 const dplayerObj = reactive({
   videoId: props.video.video_id,
   video: {
@@ -159,8 +160,6 @@ const handleCommentBtn = () => {
   emit("comment-visible-update", thisVideo);
 };
 
-const copyFlag = ref<boolean>(false);
-
 // 分享按钮的操作
 const handleShareBtn = () => {
   shareVisible.value = !shareVisible.value;
@@ -196,6 +195,60 @@ const handleShareBtn = () => {
     },
   });
 };
+
+const handleDownloadBtn = () =>{
+  if(thisVideo.value){
+    let videoUrl = thisVideo.value.play_url;
+    const lastDotIndex = videoUrl.lastIndexOf(".");
+    let url = ''
+    if (lastDotIndex !== -1) {
+      const beforeDot = videoUrl.substring(0, lastDotIndex);
+      const afterDot = videoUrl.substring(lastDotIndex + 1);
+      url = beforeDot + '-1.'+ afterDot
+    }
+    if(url != ''){
+      let title = thisVideo.value.title.toString();
+      const downItem: DownloadType = {url:url,title:title}
+      console.log(downItem)
+      downLoad(downItem)
+    }
+    else{
+      message.error('下载路径错误')
+    }
+  }
+  else{
+    message.error('下载失败')
+  }
+}
+
+// 仅支持视频下载和图片下载
+function downLoad(item:DownloadType) {
+  let url = item.url;
+  // let fileName = url.slice(url.lastIndexOf("/") + 1); //下载的文件名换成自己的
+  let fileName = item.title; //dayjs
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", url, true);
+  xhr.responseType = "blob"; // 返回类型blob
+  xhr.onload = () => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      let blob = xhr.response;
+      let downLoadUrl = window.URL.createObjectURL(
+        new Blob([blob], {
+          // type: item.type === "video" ? "video/mp4" : "image/jpeg",
+          type: "video/mp4",
+        })
+      );
+      let a = document.createElement("a");
+      a.download = fileName;
+      a.href = downLoadUrl;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+  };
+  xhr.send();
+}
 
 // 关注的操作
 const updateFollow = (flag: boolean) => {
@@ -355,7 +408,17 @@ onMounted(() => {
               </NIcon>
             </NButton>
           </div>
-          <p>{{ thisVideo?.share_count }}</p>
+          <!-- <p>{{ thisVideo?.share_count }}</p> -->
+        </div>
+        <div class="share">
+          <div :class="shareAnimateClass">
+            <NButton class="btn" text color="#fff" @click="handleDownloadBtn">
+              <NIcon>
+                <Download />
+              </NIcon>
+            </NButton>
+          </div>
+          <!-- <p>{{ thisVideo?.share_count }}</p> -->
         </div>
       </div>
     </div>
@@ -417,9 +480,9 @@ onMounted(() => {
     position: absolute;
     z-index: 999;
     width: 4vw;
-    bottom: calc((100vh - 420px) / 2);
+    bottom: calc((100vh - 360px) / 2);
     right: 0;
-    height: 360px;
+    height: 400px;
     padding: 0 20px;
 
     .avatar {
