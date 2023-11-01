@@ -24,7 +24,7 @@ interface VideoType {
 }
 
 interface CommentType {
-  comment_id:int;
+  comment_id: int;
   content: string;
   create_date: string;
   user: UserType;
@@ -47,8 +47,8 @@ interface UserType {
 }
 
 interface DownloadType {
-  url: string,
-  title: string
+  url: string;
+  title: string;
 }
 
 interface FollowCardType {

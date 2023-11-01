@@ -19,7 +19,7 @@ import {
   Checkmark,
   Heart,
   Star,
-  Download
+  Download,
 } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
 import { ElMessageBox } from "element-plus";
@@ -28,7 +28,7 @@ import { doFavourite, doStar } from "@/apis/favourite";
 import { doFollow } from "@/apis/relation";
 import { userStore } from "@/stores/user";
 import { baseURL } from "@/axios";
-import { DownloadType } from '@/apis/interface'
+import { DownloadType } from "@/apis/interface";
 
 interface propsType {
   video: VideoType;
@@ -164,9 +164,12 @@ const handleCommentBtn = () => {
 const handleShareBtn = () => {
   shareVisible.value = !shareVisible.value;
   let currentUrl: string = window.location.href;
-  let firstSegment: string = currentUrl.substring(0, currentUrl.indexOf('/', 8));
-  let id = thisVideo.value?.video_id
-  let url = firstSegment +'/video/' + id
+  let firstSegment: string = currentUrl.substring(
+    0,
+    currentUrl.indexOf("/", 8),
+  );
+  let id = thisVideo.value?.video_id;
+  let url = firstSegment + "/video/" + id;
   ElMessageBox.alert(url, "分享", {
     confirmButtonText: "复制",
     center: true,
@@ -197,37 +200,35 @@ const handleShareBtn = () => {
 };
 
 // 视频下载函数
-const handleDownloadBtn = () =>{
-  if(thisVideo.value){
+const handleDownloadBtn = () => {
+  if (thisVideo.value) {
     let videoUrl = thisVideo.value.play_url;
     const lastDotIndex = videoUrl.lastIndexOf(".");
-    let url = ''
+    let url = "";
     if (lastDotIndex !== -1) {
       const beforeDot = videoUrl.substring(0, lastDotIndex);
       const afterDot = videoUrl.substring(lastDotIndex + 1);
-      url = beforeDot + '-1.'+ afterDot
+      url = beforeDot + "-1." + afterDot;
     }
-    if(url != ''){
+    if (url != "") {
       let title = thisVideo.value.title.toString();
-      const downItem: DownloadType = {url:url,title:title}
-      console.log(downItem)
-      downLoad(downItem)
+      const downItem: DownloadType = { url: url, title: title };
+      console.log(downItem);
+      downLoad(downItem);
+    } else {
+      message.error("下载路径错误");
     }
-    else{
-      message.error('下载路径错误')
-    }
+  } else {
+    message.error("下载失败");
   }
-  else{
-    message.error('下载失败')
-  }
-}
+};
 
 // 仅支持视频下载和图片下载
-function downLoad(item:DownloadType) {
+function downLoad(item: DownloadType) {
   let url = item.url;
   // let fileName = url.slice(url.lastIndexOf("/") + 1); //下载的文件名换成自己的
   let fileName = item.title; //dayjs
-  var xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   xhr.open("GET", url, true);
   xhr.responseType = "blob"; // 返回类型blob
   xhr.onload = () => {
@@ -237,7 +238,7 @@ function downLoad(item:DownloadType) {
         new Blob([blob], {
           // type: item.type === "video" ? "video/mp4" : "image/jpeg",
           type: "video/mp4",
-        })
+        }),
       );
       let a = document.createElement("a");
       a.download = fileName;

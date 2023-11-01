@@ -52,11 +52,11 @@ onMounted(() => {
   getUserInfoFunc();
 });
 
-const goFollowing = () =>{
-  console.log('go', props.userId)
+const goFollowing = () => {
+  console.log("go", props.userId);
   // emit("userid-update", props.userId);
   router.push({ name: "following", params: { id: props.userId } });
-}
+};
 </script>
 
 <template>

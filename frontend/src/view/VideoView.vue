@@ -9,7 +9,15 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import VideoPlus from "@/components/video/VideoPlus.vue";
-import { NEmpty, NDrawer, NDrawerContent, NTabs, NTabPane, NInput, NIcon } from "naive-ui";
+import {
+  NEmpty,
+  NDrawer,
+  NDrawerContent,
+  NTabs,
+  NTabPane,
+  NInput,
+  NIcon,
+} from "naive-ui";
 import { getVideoById } from "@/apis/video";
 import { useRoute } from "vue-router";
 import { getCommentList, doComment } from "@/apis/comment";
@@ -22,7 +30,6 @@ import CommentListCom from "@/components/comment/CommentListCom.vue";
 import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
 import { ColorWand } from "@vicons/ionicons5";
 
-
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false);
 const route = useRoute();
@@ -32,7 +39,7 @@ const commentlists = ref<any>();
 // 相关推荐列表
 const recommendlists = ref<any>();
 // 添加评论的内容
-const addComment = ref<string>('')
+const addComment = ref<string>("");
 
 onMounted(() => {
   let vid = videoId.value.toString();
@@ -55,42 +62,44 @@ const updateVisible = (thisVideo: any) => {
 };
 
 // 发布评论
-const postComment = (e:any)=>{
-  console.log(addComment.value)
-  if(e.keyCode == 13 && addComment.value){
-    doComment(videoStore().video_id, 1, addComment.value, 0).then((res:any)=>{
-      if(res.status_code == 200){
-        let userInfo = userStore()
-        let userObj: UserType = {
-          id: userInfo.user_id,
-          name: userInfo.name,
-          gender: userInfo.gender,
-          avatar: userInfo.avatar,
-          signature: userInfo.signature,
-          phoneNum: userInfo.phoneNum,
-          background_image: userInfo.background_image,
-          follow_count: 0,
-          follower_count: 0,
-          total_favorited: 0,
-          work_count: 0,
-          favorite_count: 0,
-          is_follow: false
+const postComment = (e: any) => {
+  console.log(addComment.value);
+  if (e.keyCode == 13 && addComment.value) {
+    doComment(videoStore().video_id, 1, addComment.value, 0).then(
+      (res: any) => {
+        if (res.status_code == 200) {
+          let userInfo = userStore();
+          let userObj: UserType = {
+            id: userInfo.user_id,
+            name: userInfo.name,
+            gender: userInfo.gender,
+            avatar: userInfo.avatar,
+            signature: userInfo.signature,
+            phoneNum: userInfo.phoneNum,
+            background_image: userInfo.background_image,
+            follow_count: 0,
+            follower_count: 0,
+            total_favorited: 0,
+            work_count: 0,
+            favorite_count: 0,
+            is_follow: false,
+          };
+          let addCommentObj: CommentType = {
+            content: addComment.value,
+            create_date: formattedDate(),
+            user: userObj,
+            comment_id: res.comment_id,
+          };
+          commentlists.value?.push(addCommentObj);
+          addComment.value = "";
         }
-        let addCommentObj:CommentType = {
-          content: addComment.value,
-          create_date: formattedDate(),
-          user: userObj,
-          comment_id: res.comment_id,
-        }
-        commentlists.value?.push(addCommentObj)
-        addComment.value = ''
-      }
-    })
+      },
+    );
   }
-}
+};
 
 // 时间获取
-const formattedDate = ()=>{
+const formattedDate = () => {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
   const month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -98,9 +107,8 @@ const formattedDate = ()=>{
   const hours = String(currentDate.getHours()).padStart(2, "0");
   const minutes = String(currentDate.getMinutes()).padStart(2, "0");
   const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
-  return formattedDate
-}
-
+  return formattedDate;
+};
 </script>
 
 <template>
@@ -138,11 +146,18 @@ const formattedDate = ()=>{
           </NTabPane>
         </NTabs>
         <template #footer>
-            <NInput class="comment-input" @keydown="postComment" v-model:value="addComment" round placeholder="留下精彩的评论吧">
-              <template #suffix>
-                <NIcon :component="ColorWand" />
-              </template>
-            </NInput>
+          <NInput
+            v-model:value="addComment"
+            class="comment-input"
+            round
+            placeholder="留下精彩的评论吧"
+            @keydown="postComment"
+          >
+            >
+            <template #suffix>
+              <NIcon :component="ColorWand" />
+            </template>
+          </NInput>
         </template>
       </NDrawerContent>
     </NDrawer>

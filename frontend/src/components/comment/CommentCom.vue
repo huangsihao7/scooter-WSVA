@@ -21,7 +21,7 @@ interface propsType {
 
 const props = defineProps<propsType>();
 
-const message = useMessage()
+const message = useMessage();
 const avatar = ref(true);
 const header = ref(true);
 const headerExtra = ref(true);
@@ -29,31 +29,31 @@ const action = ref(true);
 const emit = defineEmits(["delete-comment"]);
 
 // 删除我的评论
-const deleteMyComment = () =>{
+const deleteMyComment = () => {
   let comment_id = props.comment.comment_id;
-  doComment(videoStore().video_id, 2, '', comment_id).then((res: any)=>{
-    if(res.status_code == 200){
-      message.success('删除成功')
+  doComment(videoStore().video_id, 2, "", comment_id).then((res: any) => {
+    if (res.status_code == 200) {
+      message.success("删除成功");
       emit("delete-comment", comment_id);
+    } else {
+      message.success(res.status_msg);
     }
-    else{
-      message.success(res.status_msg)
-    }
-  })
-}
+  });
+};
 </script>
 
 <template>
   <NThing class="comment" content-indented>
-    
     <template v-if="avatar" #avatar>
       <NAvatar round :src="props.comment.user.avatar"> </NAvatar>
     </template>
     <template v-if="header" #header>
       <span class="name"> {{ props.comment.user.name }} </span>
     </template>
-    <template v-if="headerExtra" #header-extra >
-      <span style="color:#666; font-size: 0.7rem;">{{ props.comment.create_date }}</span>
+    <template v-if="headerExtra" #header-extra>
+      <span style="color: #666; font-size: 0.7rem">{{
+        props.comment.create_date
+      }}</span>
     </template>
     {{ props.comment.content }}
     <template v-if="action" #action>
@@ -75,7 +75,11 @@ const deleteMyComment = () =>{
           </template>
           评论
         </NButton>
-        <NButton v-if="props.comment.user.id == userStore().user_id" size="small" @click="deleteMyComment">
+        <NButton
+          v-if="props.comment.user.id == userStore().user_id"
+          size="small"
+          @click="deleteMyComment"
+        >
           <template #icon>
             <NIcon>
               <Trash />
@@ -95,7 +99,7 @@ const deleteMyComment = () =>{
   }
 }
 
-.comment{
+.comment {
   background-color: #0000000a;
   border-radius: 25px;
   padding: 10px 15px;

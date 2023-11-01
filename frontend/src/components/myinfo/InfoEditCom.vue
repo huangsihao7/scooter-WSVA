@@ -47,7 +47,7 @@
       </NFormItem>
       <NFormItem label="背景">
         <NUpload
-        :action="uploadApi"
+          :action="uploadApi"
           :default-file-list="[
             {
               id: '1',
@@ -67,7 +67,7 @@
       <NFormItem label="昵称">
         <NInput v-model:value="formValue.name" placeholder="请输入姓名" />
       </NFormItem>
-    
+
       <NFormItem label="性别">
         <NSelect
           v-model:value="formValue.gender"
@@ -98,9 +98,9 @@ import {
 import { UserType } from "@/apis/interface";
 import { userStore } from "@/stores/user";
 import { baseURL } from "@/axios";
-import { updateUserInfo } from "@/apis/user"
+import { updateUserInfo } from "@/apis/user";
 
-const uploadApi = baseURL+'/user/uploadImg'
+const uploadApi = baseURL + "/user/uploadImg";
 const message = useMessage();
 
 interface propsType {
@@ -170,30 +170,30 @@ const beforeBgUpload = (data: {
 // 获取背景url
 const handleBgFinish = ({
   file,
-  event
+  event,
 }: {
-  file: UploadFileInfo
-  event?: ProgressEvent
+  file: UploadFileInfo;
+  event?: ProgressEvent;
 }) => {
-  console.log(file)
+  console.log(file);
   const response = (event?.target as XMLHttpRequest)?.response;
-  let responseJson = JSON.parse(response)
-  formValue.value.background = responseJson.url
-}
+  let responseJson = JSON.parse(response);
+  formValue.value.background = responseJson.url;
+};
 
 // 获取头像url
 const handleAvatarFinish = ({
   file,
-  event
+  event,
 }: {
-  file: UploadFileInfo
-  event?: ProgressEvent
+  file: UploadFileInfo;
+  event?: ProgressEvent;
 }) => {
-  console.log(file)
+  console.log(file);
   const response = (event?.target as XMLHttpRequest)?.response;
-  let responseJson = JSON.parse(response)
-  formValue.value.avatar = responseJson.url
-}
+  let responseJson = JSON.parse(response);
+  formValue.value.avatar = responseJson.url;
+};
 
 // 模态框取消回调
 const cancelCallback = () => {
@@ -203,21 +203,27 @@ const cancelCallback = () => {
 // 修改资料
 const submitCallback = () => {
   // TODO: 修改上传
-  let userInfo = formValue.value
-  updateUserInfo(userInfo.name, userInfo.gender, userInfo.avatar, userInfo.signature, userInfo.background).then((res:any)=>{
-    if(res.status_code == 200){
-      userStore().name = userInfo.name
-      userStore().gender = userInfo.gender
-      userStore().avatar = userInfo.avatar
-      userStore().signature = userInfo.signature
-      userStore().background_image = userInfo.background
-      message.success('修改成功')
-      cancelCallback()
-      window.location.reload()
-    }else{
-      message.error("修改失败")
+  let userInfo = formValue.value;
+  updateUserInfo(
+    userInfo.name,
+    userInfo.gender,
+    userInfo.avatar,
+    userInfo.signature,
+    userInfo.background,
+  ).then((res: any) => {
+    if (res.status_code == 200) {
+      userStore().name = userInfo.name;
+      userStore().gender = userInfo.gender;
+      userStore().avatar = userInfo.avatar;
+      userStore().signature = userInfo.signature;
+      userStore().background_image = userInfo.background;
+      message.success("修改成功");
+      cancelCallback();
+      window.location.reload();
+    } else {
+      message.error("修改失败");
     }
-  })
+  });
 };
 </script>
 

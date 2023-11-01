@@ -7,7 +7,8 @@ import {
   NTabs,
   NInput,
   NTabPane,
-  NIcon
+  NIcon,
+  NButton,
 } from "naive-ui";
 import VideoPlus from "@/components/video/VideoPlus.vue";
 import { onMounted, ref } from "vue";
@@ -20,10 +21,10 @@ import {
 import { UserType, VideoType } from "@/apis/interface";
 import { getCommentList, doComment } from "@/apis/comment";
 import { videoStore } from "@/stores/video";
-import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue"
+import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
 import { CommentType } from "@/apis/interface";
 import { userStore } from "@/stores/user";
-import { ColorWand } from "@vicons/ionicons5";
+import { ArrowUpCircle } from "@vicons/ionicons5";
 
 interface propsType {
   videoListType: number;
@@ -48,10 +49,9 @@ const recommendlists = ref<any>();
 // 绑定轮播器
 const carouselRef = ref<any>();
 // 添加评论的内容
-const addComment = ref<string>('')
+const addComment = ref<string>("");
 // 看到第几个视频的标记
 const visitedIndex = ref<number>(-1);
-
 
 // 获取视频队列
 onMounted(() => {
@@ -122,7 +122,7 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
 };
 
 // 时间获取
-const formattedDate = ()=>{
+const formattedDate = () => {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
   const month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -130,50 +130,59 @@ const formattedDate = ()=>{
   const hours = String(currentDate.getHours()).padStart(2, "0");
   const minutes = String(currentDate.getMinutes()).padStart(2, "0");
   const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
-  return formattedDate
-}
+  return formattedDate;
+};
+
+const doCommentApi = () => {
+  doComment(videoStore().video_id, 1, addComment.value, 0).then((res: any) => {
+    if (res.status_code == 200) {
+      let userInfo = userStore();
+      let userObj: UserType = {
+        id: userInfo.user_id,
+        name: userInfo.name,
+        gender: userInfo.gender,
+        avatar: userInfo.avatar,
+        signature: userInfo.signature,
+        phoneNum: userInfo.phoneNum,
+        background_image: userInfo.background_image,
+        follow_count: 0,
+        follower_count: 0,
+        total_favorited: 0,
+        work_count: 0,
+        favorite_count: 0,
+        is_follow: false,
+      };
+      let addCommentObj: CommentType = {
+        content: addComment.value,
+        create_date: formattedDate(),
+        user: userObj,
+        comment_id: 11,
+      };
+      commentlists.value?.push(addCommentObj);
+      addComment.value = "";
+    }
+  });
+};
 
 // 发布评论
-const postComment = (e:any)=>{
-  console.log(addComment.value)
-  if(e.keyCode == 13 && addComment.value){
-    doComment(videoStore().video_id, 1, addComment.value, 0).then((res:any)=>{
-      if(res.status_code == 200){
-        let userInfo = userStore()
-        let userObj: UserType = {
-          id: userInfo.user_id,
-          name: userInfo.name,
-          gender: userInfo.gender,
-          avatar: userInfo.avatar,
-          signature: userInfo.signature,
-          phoneNum: userInfo.phoneNum,
-          background_image: userInfo.background_image,
-          follow_count: 0,
-          follower_count: 0,
-          total_favorited: 0,
-          work_count: 0,
-          favorite_count: 0,
-          is_follow: false
-        }
-        let addCommentObj:CommentType = {
-          content: addComment.value,
-          create_date: formattedDate(),
-          user: userObj,
-          comment_id: 11,
-        }
-        commentlists.value?.push(addCommentObj)
-        addComment.value = ''
-      }
-    })
+const postComment = (e: any) => {
+  if (e.keyCode == 13 && addComment.value) {
+    doCommentApi();
   }
-}
+};
+
+const postCommentByBtn = () => {
+  doCommentApi();
+};
 
 // 动态删除评论数据
-const deleteFunc = (comment_id: number) =>{
-  console.log('before',  commentlists.value)
-  commentlists.value = commentlists.value?.filter((item:CommentType) => item.comment_id !== comment_id);
-  console.log('after',  commentlists.value)
-}
+const deleteFunc = (comment_id: number) => {
+  console.log("before", commentlists.value);
+  commentlists.value = commentlists.value?.filter(
+    (item: CommentType) => item.comment_id !== comment_id,
+  );
+  console.log("after", commentlists.value);
+};
 </script>
 
 <template>
@@ -204,31 +213,45 @@ const deleteFunc = (comment_id: number) =>{
     </NCarousel>
   </div>
   <NDrawer
-      v-model:show="drawerVisible"
-      :width="400"
-      placement="right"
-      :trap-focus="false"
-      :block-scroll="false"
-      to="#drawer-target"
-    >
-      <NDrawerContent :native-scrollbar="false">
-        <NTabs type="line" animated>
-          <NTabPane name="comment" tab="评论">
-            <CommentListCom v-if="commentlists" :commentlists="commentlists" @delete-comment="deleteFunc"/>
-          </NTabPane>
-          <NTabPane name="recommend" tab="相关推荐">
-            <VideoRecommendCard :recommendlists="recommendlists" />
-          </NTabPane>
-        </NTabs>
-        <template #footer>
-            <NInput class="comment-input" @keydown="postComment" v-model:value="addComment" round placeholder="留下精彩的评论吧" >
-              <template #suffix>
-                <NIcon :component="ColorWand" />
+    v-model:show="drawerVisible"
+    :width="400"
+    placement="right"
+    :trap-focus="false"
+    :block-scroll="false"
+    to="#drawer-target"
+  >
+    <NDrawerContent :native-scrollbar="false">
+      <NTabs type="line" animated>
+        <NTabPane name="comment" tab="评论">
+          <CommentListCom
+            v-if="commentlists"
+            :commentlists="commentlists"
+            @delete-comment="deleteFunc"
+          />
+        </NTabPane>
+        <NTabPane name="recommend" tab="相关推荐">
+          <VideoRecommendCard :recommendlists="recommendlists" />
+        </NTabPane>
+      </NTabs>
+      <template #footer>
+        <NInput
+          v-model:value="addComment"
+          class="comment-input"
+          round
+          placeholder="留下精彩的评论吧"
+          @keydown="postComment"
+        >
+          <template #suffix>
+            <NButton text @click="postCommentByBtn">
+              <template #icon>
+                <NIcon :component="ArrowUpCircle" />
               </template>
-            </NInput>
-        </template>
-      </NDrawerContent>
-    </NDrawer>
+            </NButton>
+          </template>
+        </NInput>
+      </template>
+    </NDrawerContent>
+  </NDrawer>
 </template>
 
 <style scoped lang="scss">
@@ -252,7 +275,7 @@ const deleteFunc = (comment_id: number) =>{
   }
 }
 
-.n-carousel__arrow-group{
+.n-carousel__arrow-group {
   bottom: 50px;
 }
 .n-carousel.n-carousel--right .n-carousel__arrow-group {
