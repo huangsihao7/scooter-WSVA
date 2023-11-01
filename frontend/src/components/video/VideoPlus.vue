@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 01:00:10
+ * @LastEditTime: 2023-11-01 11:41:54
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -164,9 +164,11 @@ const copyFlag = ref<boolean>(false);
 // 分享按钮的操作
 const handleShareBtn = () => {
   shareVisible.value = !shareVisible.value;
-  const currentUrl: string = window.location.href;
-  copy(currentUrl);
-  ElMessageBox.alert(currentUrl, "分享", {
+  let currentUrl: string = window.location.href;
+  let firstSegment: string = currentUrl.substring(0, currentUrl.indexOf('/', 8));
+  let id = thisVideo.value?.video_id
+  let url = firstSegment +'/video/' + id
+  ElMessageBox.alert(url, "分享", {
     confirmButtonText: "复制",
     center: true,
     beforeClose: (action, instance, done) => {
@@ -174,7 +176,7 @@ const handleShareBtn = () => {
         instance.confirmButtonText = "复制中...";
         instance.confirmButtonLoading = true;
         console.log("action", action);
-        copy(currentUrl);
+        copy(url);
         copyFlag.value = true;
         setTimeout(() => {
           instance.confirmButtonLoading = false;

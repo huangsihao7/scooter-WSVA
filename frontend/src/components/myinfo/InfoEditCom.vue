@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-29 17:10:06
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-29 20:14:00
+ * @LastEditTime: 2023-11-01 11:30:40
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\InfoEditCom.vue
 -->
@@ -11,7 +11,7 @@
     v-model:show="visibel"
     width="30vw"
     preset="dialog"
-    title="修改资料"
+    title="编辑资料"
     :show-icon="false"
     positive-text="确认"
     negative-text="取消"
