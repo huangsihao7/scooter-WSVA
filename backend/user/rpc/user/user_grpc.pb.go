@@ -22,6 +22,7 @@ const (
 	UseSrv_Login_FullMethodName    = "/user.UseSrv/Login"
 	UseSrv_Register_FullMethodName = "/user.UseSrv/Register"
 	UseSrv_UserInfo_FullMethodName = "/user.UseSrv/UserInfo"
+	UseSrv_Update_FullMethodName   = "/user.UseSrv/Update"
 )
 
 // UseSrvClient is the client API for UseSrv service.
@@ -31,6 +32,7 @@ type UseSrvClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	UserInfo(ctx context.Context, in *UserInfoRequest, opts ...grpc.CallOption) (*UserInfoResponse, error)
+	Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*UpdateResp, error)
 }
 
 type useSrvClient struct {
@@ -68,6 +70,15 @@ func (c *useSrvClient) UserInfo(ctx context.Context, in *UserInfoRequest, opts .
 	return out, nil
 }
 
+func (c *useSrvClient) Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*UpdateResp, error) {
+	out := new(UpdateResp)
+	err := c.cc.Invoke(ctx, UseSrv_Update_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UseSrvServer is the server API for UseSrv service.
 // All implementations must embed UnimplementedUseSrvServer
 // for forward compatibility
@@ -75,6 +86,7 @@ type UseSrvServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	UserInfo(context.Context, *UserInfoRequest) (*UserInfoResponse, error)
+	Update(context.Context, *UpdateReq) (*UpdateResp, error)
 	mustEmbedUnimplementedUseSrvServer()
 }
 
@@ -90,6 +102,9 @@ func (UnimplementedUseSrvServer) Register(context.Context, *RegisterRequest) (*R
 }
 func (UnimplementedUseSrvServer) UserInfo(context.Context, *UserInfoRequest) (*UserInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserInfo not implemented")
+}
+func (UnimplementedUseSrvServer) Update(context.Context, *UpdateReq) (*UpdateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedUseSrvServer) mustEmbedUnimplementedUseSrvServer() {}
 
@@ -158,6 +173,24 @@ func _UseSrv_UserInfo_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UseSrv_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UseSrvServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UseSrv_Update_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UseSrvServer).Update(ctx, req.(*UpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UseSrv_ServiceDesc is the grpc.ServiceDesc for UseSrv service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +209,10 @@ var UseSrv_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserInfo",
 			Handler:    _UseSrv_UserInfo_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _UseSrv_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

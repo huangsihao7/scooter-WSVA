@@ -6,7 +6,6 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/relation/model"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
-	"google.golang.org/grpc/status"
 	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -67,7 +66,10 @@ func (l *FavoriteLogic) Favorite(in *relation.FavoriteRequest) (*relation.Favori
 		}
 		_, err := l.svcCtx.RelationModel.Insert(l.ctx, &newRelation)
 		if err != nil {
-			return nil, status.Error(500, err.Error())
+			return &relation.FavoriteResponse{
+				StatusCode: constants.FavoriteUserErrorCode,
+				StatusMsg:  constants.FavoriteUserError,
+			}, nil
 		}
 		//newRelation.Id, err = res.LastInsertId()
 		//if err != nil {
@@ -88,7 +90,10 @@ func (l *FavoriteLogic) Favorite(in *relation.FavoriteRequest) (*relation.Favori
 		//正常情况
 		err := l.svcCtx.RelationModel.DeleteUnFavorite(l.ctx, in.Uid, in.ToUid)
 		if err != nil {
-			return nil, status.Error(500, err.Error())
+			return &relation.FavoriteResponse{
+				StatusCode: constants.UnFavoriteUserErrorCode,
+				StatusMsg:  constants.UnFavoriteUserError,
+			}, nil
 		}
 		return &relation.FavoriteResponse{
 			StatusCode: constants.ServiceOKCode,

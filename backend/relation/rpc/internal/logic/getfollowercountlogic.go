@@ -30,7 +30,7 @@ func (l *GetFollowerCountLogic) GetFollowerCount(in *relation.FollowerCountReq) 
 		return &relation.FollowerCountResp{
 			StatusCode: constants.UnableToGetFollowerCountErrorCode,
 			StatusMsg:  constants.UnableToGetFollowerCountError,
-		}, err
+		}, nil
 	}
 	return &relation.FollowerCountResp{
 		Count:      count,

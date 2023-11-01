@@ -61,3 +61,12 @@ func (m *UserModel) GetUserByID(ctx context.Context, userID uint) (*User, error)
 	}
 	return &user, nil
 }
+func (m *UserModel) UpdateUser(ctx context.Context, user *User) error {
+	// Save the updated user information in the database
+	//db = db.OmitEmpty(user)
+	err := m.db.WithContext(ctx).Save(user).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}

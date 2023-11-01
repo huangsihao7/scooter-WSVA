@@ -29,13 +29,8 @@ message RegisterRequest {
   string background_image=7;
 }
 message RegisterResponse {
-  int64 Id = 1;
-  string Name = 2;
-  int64 Gender = 3;
-  string Mobile = 4;
-  string Avatar =5;
-  string Dec = 6;
-  string background_image=7;
+  int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  string status_msg = 2; // 返回状态描述
 }
 // 用户注册
 
@@ -65,8 +60,23 @@ message UserInfo {
   uint32 gender = 12; // 用户名称
 }
 
+message UpdateReq {
+  optional string name = 1;
+  optional int64 gender = 2;
+  optional string mobile = 3;
+  optional string password = 4;
+  optional string avatar = 5;
+  optional string dec = 6;
+  optional string background_image = 7;
+  int64 uid=8;
+}
+message UpdateResp {
+  int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  string status_msg = 2; // 返回状态描述
+}
 service UseSrv {
   rpc Login(LoginRequest) returns(LoginResponse);
   rpc Register(RegisterRequest) returns(RegisterResponse);
   rpc UserInfo(UserInfoRequest) returns(UserInfoResponse);
+  rpc Update(UpdateReq) returns(UpdateResp);
 }

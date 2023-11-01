@@ -19,19 +19,35 @@ type RegisterRequest struct {
 	Gender          int64  `json:"gender"`
 	Mobile          string `json:"mobile"`
 	Password        string `json:"password"`
-	Avatar          string `json:"avatar"`
 	Dec             string `json:"dec"`
+	Avatar          string `json:"avatar"`
 	BackgroundImage string `json:"background_image"`
 }
 
 type RegisterResponse struct {
-	Id              int64  `json:"id"`
-	Name            string `json:"name"`
-	Gender          int64  `json:"gender"`
-	Mobile          string `json:"mobile"`
-	Avatar          string `json:"avatar"`
-	BackgroundImage string `json:"background_image"`
-	Dec             string `json:"dec"`
+	StatusCode int    `json:"status_code"`
+	StatusMsg  string `json:"status_msg"`
+}
+
+type UploadImageResponse struct {
+	Url        string `json:"url"`
+	StatusCode int    `json:"status_code"`
+	StatusMsg  string `json:"status_msg"`
+}
+
+type UpdateRequest struct {
+	Name            string `json:"name,optional"`
+	Gender          int64  `json:"gender,optional"`
+	Mobile          string `json:"mobile,optional"`
+	Password        string `json:"password,optional"`
+	Avatar          string `json:"avatar,optional"`
+	Dec             string `json:"dec,optional"`
+	BackgroundImage string `json:"background_image,optional"`
+}
+
+type UpdateResponse struct {
+	StatusCode int    `json:"status_code"`
+	StatusMsg  string `json:"status_msg"`
 }
 
 type UserInfoReq struct {

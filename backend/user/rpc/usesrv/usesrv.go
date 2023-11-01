@@ -17,6 +17,8 @@ type (
 	LoginResponse    = user.LoginResponse
 	RegisterRequest  = user.RegisterRequest
 	RegisterResponse = user.RegisterResponse
+	UpdateReq        = user.UpdateReq
+	UpdateResp       = user.UpdateResp
 	UserInfo         = user.UserInfo
 	UserInfoRequest  = user.UserInfoRequest
 	UserInfoResponse = user.UserInfoResponse
@@ -25,6 +27,7 @@ type (
 		Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 		Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 		UserInfo(ctx context.Context, in *UserInfoRequest, opts ...grpc.CallOption) (*UserInfoResponse, error)
+		Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*UpdateResp, error)
 	}
 
 	defaultUseSrv struct {
@@ -51,4 +54,9 @@ func (m *defaultUseSrv) Register(ctx context.Context, in *RegisterRequest, opts 
 func (m *defaultUseSrv) UserInfo(ctx context.Context, in *UserInfoRequest, opts ...grpc.CallOption) (*UserInfoResponse, error) {
 	client := user.NewUseSrvClient(m.cli.Conn())
 	return client.UserInfo(ctx, in, opts...)
+}
+
+func (m *defaultUseSrv) Update(ctx context.Context, in *UpdateReq, opts ...grpc.CallOption) (*UpdateResp, error) {
+	client := user.NewUseSrvClient(m.cli.Conn())
+	return client.Update(ctx, in, opts...)
 }

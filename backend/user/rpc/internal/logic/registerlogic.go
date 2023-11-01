@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/common/crypt"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/huangsihao7/scooter-WSVA/user/gmodel"
@@ -34,7 +35,10 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 	// 判断手机号是否已经注册
 	_, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile)
 	if err == nil {
-		return nil, status.Error(100, "该用户已存在")
+		return &user.RegisterResponse{
+			StatusCode: constants.AuthUserExistedCode,
+			StatusMsg:  constants.AuthUserExisted,
+		}, nil
 	}
 
 	if err == gorm.ErrRecordNotFound {
@@ -48,9 +52,12 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 			BackgroundUrl: in.BackgroundImage,
 		}
 
-		err := l.svcCtx.UserModel.InsertUser(l.ctx, &newUser)
+		err = l.svcCtx.UserModel.InsertUser(l.ctx, &newUser)
 		if err != nil {
-			return nil, status.Error(500, err.Error())
+			return &user.RegisterResponse{
+				StatusCode: constants.InsertUserErrorCode,
+				StatusMsg:  constants.InsertUserError,
+			}, nil
 		}
 
 		postbaseurl := "http://172.22.121.54:8088/api/user"
@@ -62,16 +69,12 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 		}
 		_, err = format.QiNiuPost(postbaseurl, jsonData)
 		return &user.RegisterResponse{
-			Id:              int64(newUser.Id),
-			Name:            newUser.Name,
-			Gender:          int64(newUser.Gender),
-			Mobile:          newUser.Mobile,
-			Avatar:          newUser.Avatar,
-			Dec:             newUser.Dec,
-			BackgroundImage: newUser.BackgroundUrl,
+			StatusCode: constants.ServiceOKCode,
+			StatusMsg:  constants.ServiceOK,
 		}, nil
-
 	}
-
-	return nil, status.Error(500, err.Error())
+	return &user.RegisterResponse{
+		StatusCode: constants.FindDbErrorCode,
+		StatusMsg:  constants.FindDbError,
+	}, nil
 }

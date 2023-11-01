@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"encoding/json"
+	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
 
 	"github.com/huangsihao7/scooter-WSVA/relation/api/internal/svc"
@@ -34,8 +35,11 @@ func (l *FavoriteActionLogic) FavoriteAction(req *types.ActionReq) (resp *types.
 		ToUid:  req.ToUserId,
 		Action: req.Action,
 	})
-	if err != nil {
-		return nil, err
+	if res.StatusCode != constants.ServiceOKCode {
+		return &types.ActionResp{
+			StatusCode: int(res.StatusCode),
+			StatusMsg:  res.StatusMsg,
+		}, nil
 	}
 	return &types.ActionResp{
 		StatusCode: int(res.StatusCode),

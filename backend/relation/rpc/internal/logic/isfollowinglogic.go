@@ -31,7 +31,7 @@ func (l *IsFollowingLogic) IsFollowing(in *relation.IsFollowingReq) (*relation.I
 		return &relation.IsFollowingResp{
 			StatusCode: constants.UnableToGetIsFollowErrorCode,
 			StatusMsg:  constants.UnableToGetIsFollowCountError,
-		}, err
+		}, nil
 	}
 	return &relation.IsFollowingResp{
 		StatusCode: constants.ServiceOKCode,

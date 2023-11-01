@@ -22,6 +22,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/user/register",
 				Handler: RegisterHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/uploadImg",
+				Handler: UploadImgHandler(serverCtx),
+			},
 		},
 	)
 
@@ -36,6 +41,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/user/upload",
 				Handler: UploadHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/update",
+				Handler: UpdateHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

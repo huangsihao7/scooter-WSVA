@@ -36,3 +36,8 @@ func (s *UseSrvServer) UserInfo(ctx context.Context, in *user.UserInfoRequest) (
 	l := logic.NewUserInfoLogic(ctx, s.svcCtx)
 	return l.UserInfo(in)
 }
+
+func (s *UseSrvServer) Update(ctx context.Context, in *user.UpdateReq) (*user.UpdateResp, error) {
+	l := logic.NewUpdateLogic(ctx, s.svcCtx)
+	return l.Update(in)
+}

@@ -87,6 +87,14 @@ const (
 	UnableToGetVideosFavoriteCountError     = "无法查询到视频获赞数"
 	UnableToGetFavoriteErrorCode            = 50040
 	UnableToGetFavoriteError                = "无法查询是否关注"
+	FavoriteUserErrorCode                   = 50041
+	FavoriteUserError                       = "关注用户失败"
+	UnFavoriteUserErrorCode                 = 50042
+	UnFavoriteUserError                     = "取消关注用户失败"
+	InsertUserErrorCode                     = 50043
+	InsertUserError                         = "添加用户失败"
+	UploadErrCode                           = 50044
+	UploadErr                               = "上传出错"
 )
 
 // Expected Error
