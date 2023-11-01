@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/favorite/model"
+	"github.com/huangsihao7/scooter-WSVA/favorite/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/internal/svc"
 	model2 "github.com/huangsihao7/scooter-WSVA/feed/model"
 	"github.com/zeromicro/go-zero/core/logx"
+	"gorm.io/gorm"
 	"log"
 )
 
@@ -35,9 +36,9 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 
 	// Check if user exists
 	//检查用户id 是否能存在
-	_, err := l.svcCtx.UserModel.FindOne(l.ctx, userId)
+	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("用户不存在")
 			return &favorite.FavoriteActionResponse{
 				StatusCode: constants.UserDoNotExistedCode,
@@ -49,7 +50,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 	// Check if video exists
 	videoDetail, err := l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("视频不存在")
 			return &favorite.FavoriteActionResponse{
 				StatusCode: constants.UnableToQueryVideoErrorCode,
@@ -64,8 +65,8 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 	case 1:
 
 		//判断是否重复点赞
-		isFavorite, err := l.svcCtx.Model.IsFavorite(l.ctx, userId, videoId)
-		if err != nil && err != model.ErrNotFound {
+		isFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, userId, videoId)
+		if err != nil && err != gorm.ErrRecordNotFound {
 			log.Println(err.Error())
 			return &favorite.FavoriteActionResponse{
 				StatusCode: constants.FavoriteServiceErrorCode,
@@ -79,13 +80,13 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 			}, nil
 		}
 
-		newFavorite := model.Favorites{
-			Uid: userId,
-			Vid: videoId,
+		newFavorite := gmodel.Favorites{
+			Uid: uint(userId),
+			Vid: int(videoId),
 		}
 
 		//添加到数据库
-		_, err = l.svcCtx.Model.Insert(l.ctx, &newFavorite)
+		err = l.svcCtx.FavorModel.Insert(l.ctx, &newFavorite)
 		if err != nil {
 			log.Println(err.Error())
 			return &favorite.FavoriteActionResponse{
@@ -123,8 +124,8 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 	case 2:
 
 		//判断点赞记录是否存在
-		isFavorite, err := l.svcCtx.Model.IsFavorite(l.ctx, userId, videoId)
-		if err != nil && err != model.ErrNotFound {
+		isFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, userId, videoId)
+		if err != nil && err != gorm.ErrRecordNotFound {
 			log.Println(err.Error())
 			return &favorite.FavoriteActionResponse{
 				StatusCode: constants.FavoriteServiceErrorCode,
@@ -137,7 +138,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 				StatusMsg:  constants.FavoriteServiceCancelError,
 			}, nil
 		}
-		err = l.svcCtx.Model.DeleteFavorite(l.ctx, userId, videoId)
+		err = l.svcCtx.FavorModel.DeleteFavorite(l.ctx, userId, videoId)
 		if err != nil {
 			log.Println(err.Error())
 			return &favorite.FavoriteActionResponse{

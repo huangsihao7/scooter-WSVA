@@ -5,7 +5,6 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/favorite/model"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
-	"github.com/pkg/errors"
 	"log"
 
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
@@ -36,21 +35,27 @@ func (l *StarListLogic) StarList(in *favorite.StarListRequest) (*favorite.StarLi
 	actorId := in.ActorId
 
 	//检查用户id 是否能存在
-	_, err := l.svcCtx.UserModel.FindOne(l.ctx, userId)
+	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
 		if err == model.ErrNotFound {
 			log.Println("用户不存在")
-			return nil, errors.New("评论用户不存在")
+			return &favorite.StarListResponse{
+				StatusCode: constants.UserDoNotExistedCode,
+				StatusMsg:  constants.UserDoNotExisted,
+			}, nil
 		}
 		return nil, err
 	}
 
 	//检查用户id 是否能存在
-	_, err = l.svcCtx.UserModel.FindOne(l.ctx, actorId)
+	_, err = l.svcCtx.UserModel.GetUserByID(l.ctx, uint(actorId))
 	if err != nil {
 		if err == model.ErrNotFound {
 			log.Println("用户不存在")
-			return nil, errors.New("评论用户不存在")
+			return &favorite.StarListResponse{
+				StatusCode: constants.UserDoNotExistedCode,
+				StatusMsg:  constants.UserDoNotExisted,
+			}, nil
 		}
 		return nil, err
 	}
@@ -76,7 +81,7 @@ func (l *StarListLogic) StarList(in *favorite.StarListRequest) (*favorite.StarLi
 		}
 
 		//userID 是否喜欢该视频
-		isFavorited, err := l.svcCtx.Model.IsFavorite(l.ctx, userId, int64(videoId))
+		isFavorited, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, userId, int64(videoId))
 		if err != nil {
 			return nil, err
 		}

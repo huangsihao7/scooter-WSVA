@@ -2,47 +2,39 @@ package common
 
 import (
 	"context"
-	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/common/crypt"
 	"github.com/qiniu/go-sdk/v7/auth/qbox"
 	"github.com/qiniu/go-sdk/v7/storage"
+	"mime/multipart"
 	"time"
 )
 
-func UserUpload(accessKey, secretKey, bucket string, filepath string) (string, error) {
-	fileURL := ""
-	mac := qbox.NewMac(accessKey, secretKey)
-
+func Upload(file multipart.File, handler *multipart.FileHeader, AccessKey string, SecretKey string, bucket string) (string, error) {
+	filename := crypt.PasswordEncrypt(time.Now().String(), handler.Filename)
+	key := filename + ".jpg"
+	defer file.Close()
+	// 创建七牛云的上传凭证
 	putPolicy := storage.PutPolicy{
 		Scope: bucket,
 	}
-	upToken := putPolicy.UploadToken(mac)
-	// 配置参数
-	cfg := storage.Config{
-		Zone:          &storage.ZoneHuanan, // 华南区
-		UseCdnDomains: false,
-		UseHTTPS:      false, // 非https
+	mac := qbox.NewMac(AccessKey, SecretKey)
+	uploadToken := putPolicy.UploadToken(mac)
+
+	// 设置上传配置
+	cfg := storage.Config{}
+	formUploader := storage.NewFormUploader(&cfg)
+
+	ret := storage.PutRet{}
+
+	// 上传文件
+	err := formUploader.Put(context.Background(), &ret, uploadToken, key, file, handler.Size, nil)
+	if err != nil {
+		return "", err
 	}
-	resumeUploader := storage.NewResumeUploaderV2(&cfg)
-
-	ret := storage.PutRet{}           // 上传后返回的结果
-	putExtra := storage.RputV2Extra{} // 额外参数
-
-	//key为上传的文件名
-	key := crypt.PasswordEncrypt(time.Now().String(), filepath) + ".jpg"
-	go func() {
-		err := resumeUploader.PutFile(context.Background(), &ret, upToken, key, filepath, &putExtra)
-		if err != nil {
-			fmt.Println(err)
-			return
-		} else {
-			println("上传成功")
-		}
-	}()
-
-	baseURL := "http://s327crbzf.hn-bkt.clouddn.com"
-	fileURL = baseURL + "/" + key
-	fmt.Println(upToken)
-
+	baseURL := "http://s327crbzf.hn-bkt.clouddn.com" // 替换为您的文件访问域名
+	fileURL := baseURL + "/" + key
+	//deadline := time.Now().Add(time.Second * 3600).Unix() //1小时有效期
+	//privateAccessURL := storage.MakePrivateURL(mac, baseURL, ret.Key, deadline)
+	// 返回上传成功的信息
 	return fileURL, nil
 }

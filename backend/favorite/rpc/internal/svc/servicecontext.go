@@ -2,28 +2,26 @@ package svc
 
 import (
 	"github.com/huangsihao7/scooter-WSVA/favorite/gmodel"
-	"github.com/huangsihao7/scooter-WSVA/favorite/model"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/favorite/starModel"
 	model4 "github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	model3 "github.com/huangsihao7/scooter-WSVA/feed/model"
 	"github.com/huangsihao7/scooter-WSVA/pkg/orm"
-	model2 "github.com/huangsihao7/scooter-WSVA/user/model"
+	gmodel2 "github.com/huangsihao7/scooter-WSVA/user/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/usesrv"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"github.com/zeromicro/go-zero/zrpc"
 )
 
 type ServiceContext struct {
-	c              config.Config
-	Model          model.FavoritesModel // 手动代码
-	UserModel      model2.UserModel
-	VideoModel     model3.VideosModel
-	UserRpc        usesrv.UseSrv
-	DB             *orm.DB
-	GormFavorModel *gmodel.FavoriteModel
-	StarModel      *starModel.StarModel
-	VideoGModel    *model4.VideoModel
+	c           config.Config
+	UserModel   *gmodel2.UserModel
+	VideoModel  model3.VideosModel
+	UserRpc     usesrv.UseSrv
+	DB          *orm.DB
+	FavorModel  *gmodel.FavoriteModel
+	StarModel   *starModel.StarModel
+	VideoGModel *model4.VideoModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -34,14 +32,13 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		MaxLifetime:  c.DB.MaxLifetime,
 	})
 	return &ServiceContext{
-		c:              c,
-		Model:          model.NewFavoritesModel(sqlx.NewMysql(c.DataSource)), // 手动代码
-		UserModel:      model2.NewUserModel(sqlx.NewMysql(c.DataSource), c.Cache),
-		VideoModel:     model3.NewVideosModel(sqlx.NewMysql(c.DataSource)),
-		UserRpc:        usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
-		DB:             db,
-		GormFavorModel: gmodel.NewFavoriteModel(db.DB),
-		StarModel:      starModel.NewStarModel(db.DB),
-		VideoGModel:    model4.NewFavoriteModel(db.DB),
+		c:           c,
+		UserModel:   gmodel2.NewUserModel(db.DB),
+		VideoModel:  model3.NewVideosModel(sqlx.NewMysql(c.DataSource)),
+		UserRpc:     usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
+		DB:          db,
+		FavorModel:  gmodel.NewFavoriteModel(db.DB),
+		StarModel:   starModel.NewStarModel(db.DB),
+		VideoGModel: model4.NewVideoModel(db.DB),
 	}
 }

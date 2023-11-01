@@ -38,3 +38,48 @@ func (m *FavoriteModel) FindByUserId(ctx context.Context, userId int64, limit in
 		Find(&result).Error
 	return result, err
 }
+func (m *FavoriteModel) GetVideoCount(ctx context.Context, uid int64) ([]*Favorites, error) {
+	var favorites []*Favorites
+	err := m.db.WithContext(ctx).Where("vid = ?", uid).Find(&favorites).Error
+	if err != nil {
+		return nil, err
+	}
+	return favorites, nil
+}
+
+func (m *FavoriteModel) GetFavoriteCount(ctx context.Context, uid int64) ([]*Favorites, error) {
+	var favorites []*Favorites
+	err := m.db.WithContext(ctx).Where("uid = ?", uid).Find(&favorites).Error
+	if err != nil {
+		return nil, err
+	}
+	return favorites, nil
+}
+
+func (m *FavoriteModel) IsFavorite(ctx context.Context, uid, vid int64) (bool, error) {
+	var count int64
+	m.db.WithContext(ctx).Model(&Favorites{}).Where("uid = ? AND vid = ?", uid, vid).Count(&count)
+	return count > 0, nil
+}
+
+func (m *FavoriteModel) FindOwnFavorites(ctx context.Context, uid int64) ([]*Favorites, error) {
+	var favorites []*Favorites
+	err := m.db.WithContext(ctx).Where("uid = ?", uid).Find(&favorites).Error
+	if err != nil {
+		return nil, err
+	}
+	return favorites, nil
+}
+
+func (m *FavoriteModel) FindIsFavorite(ctx context.Context, uid int64, vid int64) bool {
+	var count int64
+	m.db.WithContext(ctx).Model(&Favorites{}).Where("uid = ? AND vid = ?", uid, vid).Count(&count)
+	return count > 0
+}
+
+func (m *FavoriteModel) DeleteFavorite(ctx context.Context, uid int64, vid int64) error {
+	return m.db.WithContext(ctx).Delete(&Favorites{}, "uid = ? AND vid = ?", uid, vid).Error
+}
+func (m *FavoriteModel) Insert(ctx context.Context, data *Favorites) error {
+	return m.db.WithContext(ctx).Create(data).Error
+}

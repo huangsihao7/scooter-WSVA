@@ -30,7 +30,7 @@ type VideoModel struct {
 	db *gorm.DB
 }
 
-func NewFavoriteModel(db *gorm.DB) *VideoModel {
+func NewVideoModel(db *gorm.DB) *VideoModel {
 	return &VideoModel{
 		db: db,
 	}

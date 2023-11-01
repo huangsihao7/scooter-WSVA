@@ -3,13 +3,11 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/relation/model"
+	"github.com/huangsihao7/scooter-WSVA/relation/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
-	"google.golang.org/grpc/status"
-	"time"
-
 	"github.com/zeromicro/go-zero/core/logx"
+	"gorm.io/gorm"
 )
 
 type FavoriteLogic struct {
@@ -37,7 +35,7 @@ func (l *FavoriteLogic) Favorite(in *relation.FavoriteRequest) (*relation.Favori
 	}
 	//被关注的人不存在
 	_, err := l.svcCtx.UserModel.FindOne(l.ctx, in.ToUid)
-	if err == model.ErrNotFound {
+	if err == gorm.ErrRecordNotFound {
 		return &relation.FavoriteResponse{
 			StatusCode: constants.UserDoNotExistedCode,
 			StatusMsg:  constants.UserDoNotExisted,
@@ -60,14 +58,16 @@ func (l *FavoriteLogic) Favorite(in *relation.FavoriteRequest) (*relation.Favori
 			}, nil
 		}
 		//正常情况
-		newRelation := model.Relations{
-			FollowerId:  in.Uid,
-			FollowingId: in.ToUid,
-			CreatedAt:   time.Now(),
+		newRelation := gmodel.Relations{
+			FollowerId:  uint(in.Uid),
+			FollowingId: uint(in.ToUid),
 		}
-		_, err := l.svcCtx.RelationModel.Insert(l.ctx, &newRelation)
+		err := l.svcCtx.RelationModel.Insert(l.ctx, &newRelation)
 		if err != nil {
-			return nil, status.Error(500, err.Error())
+			return &relation.FavoriteResponse{
+				StatusCode: constants.FavoriteUserErrorCode,
+				StatusMsg:  constants.FavoriteUserError,
+			}, nil
 		}
 		//newRelation.Id, err = res.LastInsertId()
 		//if err != nil {
@@ -88,7 +88,10 @@ func (l *FavoriteLogic) Favorite(in *relation.FavoriteRequest) (*relation.Favori
 		//正常情况
 		err := l.svcCtx.RelationModel.DeleteUnFavorite(l.ctx, in.Uid, in.ToUid)
 		if err != nil {
-			return nil, status.Error(500, err.Error())
+			return &relation.FavoriteResponse{
+				StatusCode: constants.UnFavoriteUserErrorCode,
+				StatusMsg:  constants.UnFavoriteUserError,
+			}, nil
 		}
 		return &relation.FavoriteResponse{
 			StatusCode: constants.ServiceOKCode,

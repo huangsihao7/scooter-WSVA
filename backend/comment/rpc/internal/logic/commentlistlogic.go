@@ -3,10 +3,10 @@ package logic
 import (
 	"context"
 	"fmt"
-	"github.com/huangsihao7/scooter-WSVA/comment/model"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 	"github.com/pkg/errors"
+	"gorm.io/gorm"
 	"log"
 
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
@@ -36,9 +36,9 @@ func (l *CommentListLogic) CommentList(in *comment.CommentListRequest) (*comment
 	videoId := in.VideoId
 
 	//检查用户id 是否能存在
-	_, err := l.svcCtx.UserModel.FindOne(l.ctx, userId)
+	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("用户不存在")
 			return nil, errors.New("评论用户不存在")
 		}
@@ -48,7 +48,7 @@ func (l *CommentListLogic) CommentList(in *comment.CommentListRequest) (*comment
 	// 检查视频id 是否存在 ddd
 	_, err = l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("视频不存在")
 			return &comment.CommentListResponse{
 				StatusCode: constants.UnableToQueryCommentErrorCode,
@@ -57,16 +57,16 @@ func (l *CommentListLogic) CommentList(in *comment.CommentListRequest) (*comment
 		}
 		return nil, err
 	}
-	fmt.Println("+++++++++++++++++++++++")
-	comments, err := l.svcCtx.Model.FindComments(l.ctx, videoId)
-	if err != nil && err != model.ErrNotFound {
+	fmt.Println("+++++++++++++++++++++++", videoId)
+	comments, err := l.svcCtx.CommentModel.FindComments(l.ctx, videoId)
+	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
 	fmt.Println("-----------------------------", comments)
 
 	reslist := make([]*comment.Comment, 0)
 	for i := 0; i < len(comments); i++ {
-		userInfo, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: userId, ActorId: comments[i].Uid})
+		userInfo, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: userId, ActorId: int64(comments[i].Uid)})
 		if err != nil {
 			return nil, err
 		}
@@ -84,7 +84,7 @@ func (l *CommentListLogic) CommentList(in *comment.CommentListRequest) (*comment
 			FavoriteCount:  userInfo.User.FavoriteCount,
 		}
 		res := &comment.Comment{
-			Id:         comments[i].Id,
+			Id:         int64(comments[i].Id),
 			User:       userDetail,
 			Content:    comments[i].Content,
 			CreateDate: comments[i].CreatedAt.Format(constants.TimeFormat),

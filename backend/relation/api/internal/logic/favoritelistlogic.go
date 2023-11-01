@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"encoding/json"
+	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
 
 	"github.com/huangsihao7/scooter-WSVA/relation/api/internal/svc"
@@ -32,7 +33,7 @@ func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *type
 		ActUser: req.Uid,
 	})
 
-	if err != nil {
+	if list.StatusCode != constants.ServiceOKCode {
 		return &types.FavoriteListResp{
 			StatusCode: int(list.StatusCode),
 			StatusMsg:  list.StatusMsg,
@@ -59,6 +60,6 @@ func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *type
 	}
 	return &types.FavoriteListResp{
 		StatusCode: int(list.StatusCode),
-		StatusMsg:  list.GetStatusMsg(),
+		StatusMsg:  list.StatusMsg,
 		List:       resList}, nil
 }

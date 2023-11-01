@@ -28,21 +28,31 @@ type (
 		Gender          int64  `json:"gender"`
 		Mobile          string `json:"mobile"`
 		Password        string `json:"password"`
-		Avatar          string `json:"avatar"`
 		Dec             string `json:"dec"`
+		Avatar          string `json:"avatar"`
 		BackgroundImage string `json:"background_image"`
 	}
 	RegisterResponse {
-		Id              int64  `json:"id"`
-		Name            string `json:"name"`
-		Gender          int64  `json:"gender"`
-		Mobile          string `json:"mobile"`
-		Avatar          string `json:"avatar"`
-		BackgroundImage string `json:"background_image"`
-		Dec             string `json:"dec"`
+		StatusCode int    `json:"status_code"`
+		StatusMsg  string `json:"status_msg"`
 	}
-	// 用户注册
-
+	UploadImageResponse {
+		Url        string `json:"url"`
+		StatusCode int    `json:"status_code"`
+		StatusMsg  string `json:"status_msg"`
+	}
+	// 用户编辑信息
+	UpdateRequest {
+		Name            string `json:"name,optional"`
+		Gender          int64  `json:"gender,optional"`
+		Avatar          string `json:"avatar,optional"`
+		Dec             string `json:"dec,optional"`
+		BackgroundImage string `json:"background_image,optional"`
+	}
+	UpdateResponse {
+		StatusCode int    `json:"status_code"`
+		StatusMsg  string `json:"status_msg"`
+	}
 	// 用户信息
 	UserInfoReq {
 		Uid int64 `json:"uid"`
@@ -78,6 +88,9 @@ service User {
 
 	@handler Register
 	post /user/register (RegisterRequest) returns (RegisterResponse)
+
+	@handler UploadImg
+	post /user/uploadImg returns(UploadImageResponse)
 }
 
 @server(
@@ -92,4 +105,7 @@ service User {
 
 	@handler Upload
 	post /user/upload returns (UserUploadResponse)
+
+	@handler Update
+	post /user/update (UpdateRequest)returns(UpdateResponse)
 }

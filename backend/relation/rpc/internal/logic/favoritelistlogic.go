@@ -3,10 +3,10 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/relation/model"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
+	"gorm.io/gorm"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -28,16 +28,16 @@ func NewFavoriteListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Favo
 func (l *FavoriteListLogic) FavoriteList(in *relation.FavoriteListReq) (*relation.FavoriteListResp, error) {
 	favorite, err := l.svcCtx.RelationModel.FindFavorite(l.ctx, in.ActUser)
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			return &relation.FavoriteListResp{
 				StatusCode: constants.UserDoNotExistedCode,
 				StatusMsg:  constants.UserDoNotExisted,
-			}, err
+			}, nil
 		} else {
 			return &relation.FavoriteListResp{
 				StatusCode: constants.UnableToGetFollowListErrorCode,
 				StatusMsg:  constants.UnableToGetFollowListError,
-			}, err
+			}, nil
 		}
 	}
 
@@ -45,13 +45,13 @@ func (l *FavoriteListLogic) FavoriteList(in *relation.FavoriteListReq) (*relatio
 	for _, item := range favorite {
 		one, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
 			UserId:  in.Uid,
-			ActorId: item.FollowingId,
+			ActorId: int64(item.FollowingId),
 		})
 		if err != nil {
 			return &relation.FavoriteListResp{
 				StatusCode: constants.UnableToGetFollowListErrorCode,
 				StatusMsg:  constants.UnableToGetFollowListError,
-			}, err
+			}, nil
 		}
 		var coverUrl string
 		var vid int64

@@ -2,8 +2,8 @@ package logic
 
 import (
 	"context"
-	"github.com/huangsihao7/scooter-WSVA/comment/model"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"gorm.io/gorm"
 	"log"
 
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
@@ -34,7 +34,7 @@ func (l *DanMuListLogic) DanMuList(in *comment.DanmuListRequest) (*comment.Danmu
 	// 检查视频id 是否存在
 	_, err := l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("视频不存在")
 			return &comment.DanmuListResponse{
 				StatusCode: constants.UserVideosDoNotExistedCode,

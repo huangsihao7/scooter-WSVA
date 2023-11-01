@@ -27,7 +27,7 @@ type UserModel struct {
 	db *gorm.DB
 }
 
-func NewFavoriteModel(db *gorm.DB) *UserModel {
+func NewUserModel(db *gorm.DB) *UserModel {
 	return &UserModel{
 		db: db,
 	}
@@ -60,4 +60,25 @@ func (m *UserModel) GetUserByID(ctx context.Context, userID uint) (*User, error)
 		return nil, result.Error
 	}
 	return &user, nil
+}
+func (m *UserModel) UpdateUser(ctx context.Context, user *User) error {
+	// Save the updated user information in the database
+	existingUser := &User{}
+	err := m.db.WithContext(ctx).First(existingUser, user.Id).Error
+	if err != nil {
+		return err
+	}
+	existingUser.Gender = user.Gender
+	existingUser.Name = user.Name
+	existingUser.Avatar = user.Avatar
+	existingUser.Dec = user.Dec
+	existingUser.BackgroundUrl = user.BackgroundUrl
+
+	// 保存更新后的用户信息到数据库
+	err = m.db.WithContext(ctx).Save(existingUser).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

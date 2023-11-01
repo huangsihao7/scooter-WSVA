@@ -3,8 +3,8 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/relation/model"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
+	"gorm.io/gorm"
 
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
@@ -29,7 +29,7 @@ func NewFriendListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Friend
 func (l *FriendListLogic) FriendList(in *relation.FriendListReq) (*relation.FriendListResp, error) {
 	friend, err := l.svcCtx.RelationModel.FindFriend(l.ctx, in.ActUser)
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			return &relation.FriendListResp{
 				StatusCode: constants.UserDoNotExistedCode,
 				StatusMsg:  constants.UserDoNotExisted,
@@ -46,7 +46,7 @@ func (l *FriendListLogic) FriendList(in *relation.FriendListReq) (*relation.Frie
 	for _, item := range friend {
 		one, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
 			UserId:  in.Uid,
-			ActorId: item.FollowerId,
+			ActorId: int64(item.FollowerId),
 		})
 		if err != nil {
 			return &relation.FriendListResp{
