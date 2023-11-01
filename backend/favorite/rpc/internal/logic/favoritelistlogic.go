@@ -3,9 +3,8 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/favorite/model"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
-	"github.com/pkg/errors"
+	"gorm.io/gorm"
 	"log"
 
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
@@ -35,26 +34,32 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 	actorId := in.ActorId
 
 	//检查用户id 是否能存在
-	_, err := l.svcCtx.UserModel.FindOne(l.ctx, userId)
+	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("用户不存在")
-			return nil, errors.New("评论用户不存在")
+			return &favorite.FavoriteListResponse{
+				StatusCode: constants.UserDoNotExistedCode,
+				StatusMsg:  constants.UserDoNotExisted,
+			}, nil
 		}
 		return nil, err
 	}
 
 	//检查用户id 是否能存在
-	_, err = l.svcCtx.UserModel.FindOne(l.ctx, actorId)
+	_, err = l.svcCtx.UserModel.GetUserByID(l.ctx, uint(actorId))
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("用户不存在")
-			return nil, errors.New("评论用户不存在")
+			return &favorite.FavoriteListResponse{
+				StatusCode: constants.UserDoNotExistedCode,
+				StatusMsg:  constants.UserDoNotExisted,
+			}, nil
 		}
 		return nil, err
 	}
 
-	favorVideos, err := l.svcCtx.Model.FindOwnFavorites(l.ctx, actorId)
+	favorVideos, err := l.svcCtx.FavorModel.FindOwnFavorites(l.ctx, actorId)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +68,7 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 	for i := 0; i < len(favorVideos); i++ {
 
 		videoId := favorVideos[i].Vid
-		videoDetail, err := l.svcCtx.VideoGModel.FindById(l.ctx, videoId)
+		videoDetail, err := l.svcCtx.VideoGModel.FindById(l.ctx, int64(videoId))
 		if err != nil {
 			return nil, err
 		}
@@ -74,7 +79,7 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 		}
 
 		//userID 是否喜欢该视频
-		isFavorited, err := l.svcCtx.Model.IsFavorite(l.ctx, userId, videoId)
+		isFavorited, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, userId, int64(videoId))
 		if err != nil {
 			return nil, err
 		}

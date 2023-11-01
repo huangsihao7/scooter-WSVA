@@ -3,10 +3,10 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/comment/danmuModel"
-	"github.com/huangsihao7/scooter-WSVA/comment/model"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"gorm.io/gorm"
 	"log"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -31,9 +31,9 @@ func (l *DanMuActionLogic) DanMuAction(in *comment.DanmuActionRequest) (*comment
 	userId := in.UserId
 	videoId := in.VideoId
 	//检查用户id 是否能存在
-	_, err := l.svcCtx.UserModel.FindOne(l.ctx, userId)
+	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("用户不存在")
 			return &comment.DanmuActionResponse{
 				StatusCode: constants.UserNotExistedCode,
@@ -45,7 +45,7 @@ func (l *DanMuActionLogic) DanMuAction(in *comment.DanmuActionRequest) (*comment
 	// 检查视频id 是否存在
 	_, err = l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("视频不存在")
 			return &comment.DanmuActionResponse{
 				StatusCode: constants.UserVideosDoNotExistedCode,

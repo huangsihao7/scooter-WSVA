@@ -1,9 +1,9 @@
 package svc
 
 import (
-	"github.com/huangsihao7/scooter-WSVA/feed/gmodel"
+	gmodel2 "github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/pkg/orm"
-	"github.com/huangsihao7/scooter-WSVA/relation/model"
+	"github.com/huangsihao7/scooter-WSVA/relation/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/internal/config"
 	model2 "github.com/huangsihao7/scooter-WSVA/user/model"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/usesrv"
@@ -13,9 +13,9 @@ import (
 
 type ServiceContext struct {
 	Config        config.Config
-	RelationModel model.RelationsModel
+	RelationModel *gmodel.RelationModel
 	DB            *orm.DB
-	VideoModel    *gmodel.VideoModel
+	VideoModel    *gmodel2.VideoModel
 	UserRpc       usesrv.UseSrv
 	UserModel     model2.UserModel
 }
@@ -29,8 +29,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	})
 	return &ServiceContext{
 		Config:        c,
-		RelationModel: model.NewRelationsModel(sqlx.NewMysql(c.DataSource)),
-		VideoModel:    gmodel.NewFavoriteModel(db.DB),
+		RelationModel: gmodel.NewRelationModel(db.DB),
+		VideoModel:    gmodel2.NewVideoModel(db.DB),
 		UserRpc:       usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
 		UserModel:     model2.NewUserModel(sqlx.NewMysql(c.DataSource), c.Cache),
 	}

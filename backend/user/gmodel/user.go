@@ -27,7 +27,7 @@ type UserModel struct {
 	db *gorm.DB
 }
 
-func NewFavoriteModel(db *gorm.DB) *UserModel {
+func NewUserModel(db *gorm.DB) *UserModel {
 	return &UserModel{
 		db: db,
 	}

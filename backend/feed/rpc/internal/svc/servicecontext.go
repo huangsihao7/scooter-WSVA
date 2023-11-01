@@ -43,7 +43,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		FavorModel:         model2.NewFavoritesModel(sqlx.NewMysql(c.DataSource)),
 		UserRpc:            usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
 		KqPusherClient:     kq.NewPusher(c.KqPusherConf.Brokers, c.KqPusherConf.Topic),
-		VideoModel:         gmodel.NewFavoriteModel(db.DB),
+		VideoModel:         gmodel.NewVideoModel(db.DB),
 		StarModel:          starModel.NewStarModel(db.DB),
 		KqPusherTestClient: kq.NewPusher(c.KqPusherTesTConf.Brokers, c.KqPusherTesTConf.Topic),
 		HistoryModel:       historyModel.NewHistoryModel(sqlx.NewMysql(c.DataSource)),

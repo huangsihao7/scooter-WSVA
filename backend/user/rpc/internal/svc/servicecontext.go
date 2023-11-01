@@ -28,7 +28,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	})
 	return &ServiceContext{
 		Config:        c,
-		UserModel:     gmodel.NewFavoriteModel(db.DB), // 手动代码
+		UserModel:     gmodel.NewUserModel(db.DB), // 手动代码
 		FavorModel:    model2.NewFavoritesModel(sqlx.NewMysql(c.DataSource)),
 		RelationModel: model3.NewRelationsModel(sqlx.NewMysql(c.DataSource)),
 		VideoModel:    model4.NewVideosModel(sqlx.NewMysql(c.DataSource)),

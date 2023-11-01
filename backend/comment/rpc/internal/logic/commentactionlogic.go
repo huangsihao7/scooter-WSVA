@@ -3,11 +3,12 @@ package logic
 import (
 	"context"
 	"errors"
-	"github.com/huangsihao7/scooter-WSVA/comment/model"
+	"github.com/huangsihao7/scooter-WSVA/comment/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/internal/svc"
 	constants "github.com/huangsihao7/scooter-WSVA/common/constants"
 	model2 "github.com/huangsihao7/scooter-WSVA/feed/model"
+	"gorm.io/gorm"
 	"log"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -37,9 +38,9 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 	commentId := in.CommentId
 
 	//检查用户id 是否能存在
-	_, err := l.svcCtx.UserModel.FindOne(l.ctx, in.UserId)
+	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(in.UserId))
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("用户不存在")
 			return nil, errors.New("评论用户不存在")
 		}
@@ -48,7 +49,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 	// 检查视频id 是否存在
 	videoDetail, err := l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("视频不存在")
 			return nil, errors.New("评论视频不存在")
 		}
@@ -58,12 +59,12 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 	switch actionType {
 	//添加评论
 	case 1:
-		newComment := model.Comments{
-			Uid:     userId,
-			Vid:     videoId,
+		newComment := gmodel.Comments{
+			Uid:     uint(userId),
+			Vid:     uint(videoId),
 			Content: contents,
 		}
-		_, err := l.svcCtx.Model.Insert(l.ctx, &newComment)
+		err := l.svcCtx.CommentModel.Insert(l.ctx, &newComment)
 		if err != nil {
 			log.Println(err.Error())
 			return nil, err
@@ -93,7 +94,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 		}, nil
 		//删除评论
 	case 2:
-		err := l.svcCtx.Model.Delete(l.ctx, commentId)
+		err := l.svcCtx.CommentModel.Delete(l.ctx, commentId)
 		if err != nil {
 			log.Println(err.Error())
 			return nil, err

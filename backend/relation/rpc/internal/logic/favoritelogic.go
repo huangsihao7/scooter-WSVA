@@ -3,12 +3,11 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/relation/model"
+	"github.com/huangsihao7/scooter-WSVA/relation/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
-	"time"
-
 	"github.com/zeromicro/go-zero/core/logx"
+	"gorm.io/gorm"
 )
 
 type FavoriteLogic struct {
@@ -36,7 +35,7 @@ func (l *FavoriteLogic) Favorite(in *relation.FavoriteRequest) (*relation.Favori
 	}
 	//被关注的人不存在
 	_, err := l.svcCtx.UserModel.FindOne(l.ctx, in.ToUid)
-	if err == model.ErrNotFound {
+	if err == gorm.ErrRecordNotFound {
 		return &relation.FavoriteResponse{
 			StatusCode: constants.UserDoNotExistedCode,
 			StatusMsg:  constants.UserDoNotExisted,
@@ -59,12 +58,11 @@ func (l *FavoriteLogic) Favorite(in *relation.FavoriteRequest) (*relation.Favori
 			}, nil
 		}
 		//正常情况
-		newRelation := model.Relations{
-			FollowerId:  in.Uid,
-			FollowingId: in.ToUid,
-			CreatedAt:   time.Now(),
+		newRelation := gmodel.Relations{
+			FollowerId:  uint(in.Uid),
+			FollowingId: uint(in.ToUid),
 		}
-		_, err := l.svcCtx.RelationModel.Insert(l.ctx, &newRelation)
+		err := l.svcCtx.RelationModel.Insert(l.ctx, &newRelation)
 		if err != nil {
 			return &relation.FavoriteResponse{
 				StatusCode: constants.FavoriteUserErrorCode,

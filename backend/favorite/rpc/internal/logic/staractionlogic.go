@@ -3,9 +3,9 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/favorite/model"
 	"github.com/huangsihao7/scooter-WSVA/favorite/starModel"
 	"github.com/huangsihao7/scooter-WSVA/feed/gmodel"
+	"gorm.io/gorm"
 	"log"
 
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
@@ -36,9 +36,9 @@ func (l *StarActionLogic) StarAction(in *favorite.StarActionRequest) (*favorite.
 	actionType := in.ActionType
 	//查询用户是否存在
 	//检查用户id 是否能存在
-	_, err := l.svcCtx.UserModel.FindOne(l.ctx, userId)
+	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("用户不存在")
 			return &favorite.StarActionResponse{
 				StatusCode: constants.UserDoNotExistedCode,
@@ -52,7 +52,7 @@ func (l *StarActionLogic) StarAction(in *favorite.StarActionRequest) (*favorite.
 	// Check if video exists
 	_, err = l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			log.Println("视频不存在")
 			return &favorite.StarActionResponse{
 				StatusCode: constants.UserNotExistedCode,
@@ -69,7 +69,7 @@ func (l *StarActionLogic) StarAction(in *favorite.StarActionRequest) (*favorite.
 
 		//判断是否重复收藏
 		isStar, err := l.svcCtx.StarModel.IsStarExist(l.ctx, userId, videoId)
-		if err != nil && err != model.ErrNotFound {
+		if err != nil && err != gorm.ErrRecordNotFound {
 			log.Println(err.Error())
 			return &favorite.StarActionResponse{
 				StatusCode: constants.FavoriteServiceErrorCode,
@@ -115,7 +115,7 @@ func (l *StarActionLogic) StarAction(in *favorite.StarActionRequest) (*favorite.
 
 		//判断收藏记录是否存在
 		isStar, err := l.svcCtx.StarModel.IsStarExist(l.ctx, userId, videoId)
-		if err != nil && err != model.ErrNotFound {
+		if err != nil && err != gorm.ErrRecordNotFound {
 			log.Println(err.Error())
 			return &favorite.StarActionResponse{
 				StatusCode: constants.FavoriteServiceErrorCode,
