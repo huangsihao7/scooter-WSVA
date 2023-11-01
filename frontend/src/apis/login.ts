@@ -18,13 +18,18 @@ export function login(mobile: string, password: string) {
   });
 }
 
-export function register(mobile: string, password: string) {
+export function register(name: string, gender:number, mobile: string, password: string, dec:string, avatar:string, background_image:string) {
   return service({
     url: "/user/register",
     method: "post",
     data: {
+      name,
+      gender,
       mobile,
       password,
+      dec,
+      avatar,
+      background_image
     },
   });
 }

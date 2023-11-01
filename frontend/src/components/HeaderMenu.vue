@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 16:01:45
+ * @LastEditTime: 2023-11-01 17:02:39
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
@@ -213,12 +213,14 @@ const doLogin = () => {
 const doRegister = () => {
   //发请求
   if(registerForm.pwd == registerForm.repeatPwd){
-    register(registerForm.phoneNum, registerForm.pwd).then((res: any) => {
+    let defaultAvatar = 'http://s327crbzf.hn-bkt.clouddn.com/a74c50c16c528f561ecb3fc2f8e4856b9bd70c828616c558cad98be75a400c81.jpg'
+    let defaultBg = 'http://s327crbzf.hn-bkt.clouddn.com/d689982a1aa68d1242a802fc10228e9a8f17901980bf4251c295ad619592ad98.jpg'
+    register('匿名用户MOMO', 0, registerForm.phoneNum, registerForm.pwd,'该用户暂时还没有个人简介哦',defaultAvatar, defaultBg).then((res: any) => {
       if(res.status_code == 200){
         message.success("注册成功");
       }
       else{
-        message.success('注册成功')
+        message.error(res.status_msg)
       }
     }); 
   }
@@ -240,6 +242,7 @@ const doLogout = () => {
   userStore().background_image = "";
   userStore().user_id = -1;
   message.success("已退出");
+  router.push("/");
   window.location.reload()
 };
 
@@ -326,6 +329,7 @@ watch(()=>loginFormVisible.value,
         <n-form :model="loginForm">
           <n-form-item-row label="手机号">
             <n-input  v-model:value="loginForm.phoneNum"
+            placeholder="请输入"
               autocomplete="off"
               clearable/>
           </n-form-item-row>
@@ -333,6 +337,7 @@ watch(()=>loginFormVisible.value,
             <n-input v-model:value="loginForm.pwd"
               autocomplete="off"
               type="password"
+              placeholder="请输入"
               show-password
               clearable/>
           </n-form-item-row>
@@ -346,12 +351,14 @@ watch(()=>loginFormVisible.value,
           <n-form-item-row label="手机号">
             <n-input v-model:value="registerForm.phoneNum"
               autocomplete="off"
+              placeholder="请输入"
               clearable/>
           </n-form-item-row>
           <n-form-item-row label="密码">
             <n-input v-model:value="registerForm.pwd" 
             autocomplete="off"
               type="password"
+              placeholder="请输入"
               show-password
               clearable/>
           </n-form-item-row>
@@ -359,6 +366,7 @@ watch(()=>loginFormVisible.value,
             <n-input v-model:value="registerForm.repeatPwd" 
             autocomplete="off"
               type="password"
+              placeholder="请输入"
               show-password
               clearable/>
           </n-form-item-row>
