@@ -3,11 +3,11 @@ KqConsumerConf:
   Name: like-kq-consumer
   Brokers:
     - 172.22.121.54:9092
-  Group: kqConsumer
+  Group: like-kqConsumer
   Topic: testVideos
   Offset: last
-  Consumers: 1
-  Processors: 1
+  Consumers: 8
+  Processors: 8
 Es:
   Addresses:
     - http://172.22.121.54:9200/
