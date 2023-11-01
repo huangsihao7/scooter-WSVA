@@ -51,7 +51,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		return nil, err
 	}
 	// Check if video exists
-	videoDetail, err := l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
+	_, err = l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			log.Println("视频不存在")
@@ -105,6 +105,10 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		}
 		// 事务
 		err = l.svcCtx.DB.Transaction(func(tx *gorm.DB) error {
+			videoDetail, err := l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
+			if err != nil {
+				return err
+			}
 			//更新favorite内容
 			newFavorite := gmodel.Favorites{
 				Uid: uint(userId),
@@ -189,19 +193,23 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		}
 		// 事务
 		err = l.svcCtx.DB.Transaction(func(tx *gorm.DB) error {
-
+			videoDetail, err := l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
+			if err != nil {
+				return err
+			}
 			err = gmodel.NewFavoriteModel(tx).DeleteFavorite(l.ctx, userId, videoId)
 			if err != nil {
 				return err
 			}
 			//增加video的点赞数
+			favoriteCount := videoDetail.FavoriteCount - 1
 			err = l.svcCtx.VideoModel.Update(l.ctx, &model2.Videos{
 				Id:            uint(videoId),
 				AuthorId:      videoDetail.AuthorId,
 				Title:         videoDetail.Title,
 				CoverUrl:      videoDetail.CoverUrl,
 				PlayUrl:       videoDetail.PlayUrl,
-				FavoriteCount: videoDetail.FavoriteCount - 1,
+				FavoriteCount: favoriteCount,
 				StarCount:     videoDetail.StarCount,
 				CommentCount:  videoDetail.CommentCount,
 				CreatedAt:     videoDetail.CreatedAt,
