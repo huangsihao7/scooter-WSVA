@@ -2,19 +2,19 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 14:09:58
+ * @LastEditTime: 2023-11-01 16:01:45
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
 <script lang="ts" setup>
 import { watch, h, ref, Component, reactive, onBeforeMount, onMounted } from 'vue'
-import { NIcon, NMenu, NInput, NButton, NAvatar, NPopover, NTag, NImage } from 'naive-ui'
+import { NIcon, NMenu, NInput, NButton, NAvatar, NPopover, NTag, NForm, NTabs, NImage, NTabPane, NModal, NFormItemRow } from 'naive-ui'
 import type { MenuOption} from 'naive-ui'
 import { Search,Add } from '@vicons/ionicons5'
 import { userStore } from "@/stores/user";
 import { videoStore } from '@/stores/video'
 import { routeStore } from '@/stores/route'
-import { login } from "@/apis/login";
+import { login, register } from "@/apis/login";
 import router from "@/router";
 import { useMessage } from "naive-ui";
 import PostVedio from "@/components/video/PostVideo.vue";
@@ -32,10 +32,15 @@ const historyTabVisible = ref<boolean>(true)
 
 // 登录表单数据
 const loginFormVisible = ref<boolean>(false);
-const formLabelWidth = "50px";
-const form = reactive({
+const loginForm = reactive({
   phoneNum: "",
   pwd: "",
+});
+
+const registerForm = reactive({
+  phoneNum: "",
+  pwd: "",
+  repeatPwd:""
 });
 
 // TODO: history search 挂载渲染早，不能这么写
@@ -185,18 +190,41 @@ const notLogmenuOptions: MenuOption[] = [
 
 // 用户登录
 const doLogin = () => {
-  //发请求
-  login(form.phoneNum, form.pwd).then((res: any) => {
-    menuClass.value = 'header-menu-login'
-    userStore().token = res.accessToken;
-    userStore().user_id = res.user_id;
-    userStore().isLoggedIn = true;
-    userStore().phoneNum = form.phoneNum;
-    userStore().avatar = res.avatar;
-    message.success("登录成功");
-    router.push("/");
+  login(loginForm.phoneNum, loginForm.pwd).then( async (res: any) => {
+    if(res.status_code == 200){
+      menuClass.value = 'header-menu-login'
+      userStore().token = res.accessToken;
+      userStore().user_id = res.user_id;
+      userStore().isLoggedIn = true;
+      userStore().phoneNum = loginForm.phoneNum;
+      userStore().avatar = res.avatar;
+      message.success("登录成功");
+      loginFormVisible.value = false;
+      window.location.reload()
+      router.push("/");
+    }
+    else{
+      message.error(res.status_msg)
+    }
   });
-  loginFormVisible.value = false;
+};
+
+// 用户注册
+const doRegister = () => {
+  //发请求
+  if(registerForm.pwd == registerForm.repeatPwd){
+    register(registerForm.phoneNum, registerForm.pwd).then((res: any) => {
+      if(res.status_code == 200){
+        message.success("注册成功");
+      }
+      else{
+        message.success('注册成功')
+      }
+    }); 
+  }
+  else{
+    message.error('密码不一致，请重试')
+  }
 };
 
 // 用户登出
@@ -205,9 +233,14 @@ const doLogout = () => {
   userStore().isLoggedIn = false;
   userStore().token = "";
   userStore().avatar = "";
+  userStore().name = "";
+  userStore().gender = -1;
+  userStore().signature = "";
   userStore().phoneNum = "";
+  userStore().background_image = "";
   userStore().user_id = -1;
   message.success("已退出");
+  window.location.reload()
 };
 
 // 获取投稿dialogue
@@ -240,13 +273,12 @@ watch(()=>loginFormVisible.value,
     activeIndex.value = ''
   }
 })
-
 </script>
 
 <template>
   <div>
     <n-menu :class="menuClass" v-model:value="activeIndex" mode="horizontal" :options="userStore().isLoggedIn?loggedMenuOptions:notLogmenuOptions" />
-    <ElDialog v-model="loginFormVisible" title="登录" width="30%">
+    <!-- <ElDialog v-model="loginFormVisible" title="登录" width="30%">
         <ElForm :model="form">
           <ElFormItem label="账号" :label-width="formLabelWidth">
             <ElInput
@@ -272,32 +304,71 @@ watch(()=>loginFormVisible.value,
             <ElButton type="primary" @click="doLogin"> 登录 </ElButton>
           </span>
         </template>
-    </ElDialog>
-    <!-- <NDialogProvider v-model="loginFormVisible" title="登录" width="30%">
-      <NForm :model="form">
-        <NFormItem label="账号" :label-width="formLabelWidth">
-          <NInput 
-              v-model="form.phoneNum"
+    </ElDialog> -->
+    <NModal
+      v-model:show="loginFormVisible"
+      class="custom-card"
+      preset="card"
+      :closable="false"
+      size="huge"
+      :bordered="false"
+    >
+    <n-tabs
+      class="card-tabs"
+      default-value="login"
+      size="large"
+      animated
+      pane-wrapper-style="margin: 0 -4px"
+      pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+    >
+    
+      <n-tab-pane name="login" tab="登录">
+        <n-form :model="loginForm">
+          <n-form-item-row label="手机号">
+            <n-input  v-model:value="loginForm.phoneNum"
               autocomplete="off"
-              placeholder="输入账号"
-              clearable></NInput>
-        </NFormItem>
-        <NFormItem label="密码" :label-width="formLabelWidth">
-          <NInput 
-              v-model="form.pwd"
+              clearable/>
+          </n-form-item-row>
+          <n-form-item-row label="密码">
+            <n-input v-model:value="loginForm.pwd"
               autocomplete="off"
               type="password"
-              placeholder="输入密码"
               show-password
-              clearable></NInput>
-        </NFormItem>
-        <div style="display: flex; justify-content: flex-end">
-          <n-button round type="primary" @click="doLogin">
-            登录
-          </n-button>
-        </div>
-      </NForm>
-    </NDialogProvider> -->
+              clearable/>
+          </n-form-item-row>
+        </n-form>
+        <n-button type="primary" @click="doLogin" block secondary strong>
+          登录
+        </n-button>
+      </n-tab-pane>
+      <n-tab-pane name="register" tab="注册">
+        <n-form :model="registerForm">
+          <n-form-item-row label="手机号">
+            <n-input v-model:value="registerForm.phoneNum"
+              autocomplete="off"
+              clearable/>
+          </n-form-item-row>
+          <n-form-item-row label="密码">
+            <n-input v-model:value="registerForm.pwd" 
+            autocomplete="off"
+              type="password"
+              show-password
+              clearable/>
+          </n-form-item-row>
+          <n-form-item-row label="重复密码">
+            <n-input v-model:value="registerForm.repeatPwd" 
+            autocomplete="off"
+              type="password"
+              show-password
+              clearable/>
+          </n-form-item-row>
+        </n-form>
+        <n-button type="primary" block secondary strong @click="doRegister">
+          注册
+        </n-button>
+      </n-tab-pane>
+    </n-tabs>
+    </NModal>
     <PostVedio
       :video-form-visible="isVideoFormVisible"
       @visible-update="updateVisible"
@@ -308,6 +379,10 @@ watch(()=>loginFormVisible.value,
 <style lang="scss">
 .history-card{
   width: 50vw;
+}
+
+.custom-card{
+  width: 30vw;
 }
 .header-menu-login{
   width: 100%;

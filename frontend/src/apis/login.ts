@@ -11,12 +11,21 @@ export function login(mobile: string, password: string) {
   return service({
     url: "/user/login",
     method: "post",
-    // headers: {
-    //   'Content-Type': 'application/x-www-form-urlencoded'
-    // },
     data: {
       mobile,
       password,
     },
   });
 }
+
+export function register(mobile: string, password: string) {
+  return service({
+    url: "/user/register",
+    method: "post",
+    data: {
+      mobile,
+      password,
+    },
+  });
+}
+

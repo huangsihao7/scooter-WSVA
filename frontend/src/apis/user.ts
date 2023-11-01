@@ -7,3 +7,12 @@ export function getUserInfo(uid: number) {
     data: { uid },
   });
 }
+
+
+export function updateUserInfo(name: string, gender: number, avatar:string, dec: string, background_image: string) {
+  return service({
+    url: "/user/update",
+    method: "post",
+    data: { name, gender, avatar, dec, background_image },
+  });
+}

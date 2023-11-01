@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-29 17:10:06
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 11:30:40
+ * @LastEditTime: 2023-11-01 16:44:30
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\InfoEditCom.vue
 -->
@@ -28,11 +28,11 @@
     >
       <NFormItem label="头像">
         <NUpload
-          action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
+          :action="uploadApi"
           :default-file-list="[
             {
               id: '1',
-              name: '头像',
+              name: 'avatar',
               status: 'finished',
               url: formValue.avatar,
             },
@@ -40,6 +40,26 @@
           list-type="image-card"
           :max="1"
           @before-upload="beforeAvatarUpload"
+          @finish="handleAvatarFinish"
+        >
+          点击上传
+        </NUpload>
+      </NFormItem>
+      <NFormItem label="背景">
+        <NUpload
+        :action="uploadApi"
+          :default-file-list="[
+            {
+              id: '1',
+              name: 'background',
+              status: 'finished',
+              url: formValue.background,
+            },
+          ]"
+          list-type="image-card"
+          :max="1"
+          @before-upload="beforeBgUpload"
+          @finish="handleBgFinish"
         >
           点击上传
         </NUpload>
@@ -47,9 +67,7 @@
       <NFormItem label="昵称">
         <NInput v-model:value="formValue.name" placeholder="请输入姓名" />
       </NFormItem>
-      <NFormItem label="手机号">
-        <NInput v-model:value="formValue.phoneNum" placeholder="请输入手机号" />
-      </NFormItem>
+    
       <NFormItem label="性别">
         <NSelect
           v-model:value="formValue.gender"
@@ -79,7 +97,10 @@ import {
 } from "naive-ui";
 import { UserType } from "@/apis/interface";
 import { userStore } from "@/stores/user";
+import { baseURL } from "@/axios";
+import { updateUserInfo } from "@/apis/user"
 
+const uploadApi = baseURL+'/user/uploadImg'
 const message = useMessage();
 
 interface propsType {
@@ -93,9 +114,9 @@ const formRef = ref<FormInst | null>(null);
 const visibel = computed(() => props.isVisible);
 const formValue = ref({
   name: "",
-  phoneNum: "",
   gender: 0,
   signature: "",
+  background: "",
   avatar: "",
 });
 const genderOptions = [
@@ -108,15 +129,17 @@ const genderOptions = [
     value: 0,
   },
 ];
+
 onMounted(() => {
   formValue.value.name = userStore().name;
-  formValue.value.phoneNum = userStore().phoneNum;
   formValue.value.gender = userStore().gender;
   formValue.value.signature = userStore().signature;
+  formValue.value.background = userStore().background_image;
   formValue.value.avatar = userStore().avatar;
   console.log(formValue.value);
 });
 
+// 上传限制
 const beforeAvatarUpload = (data: {
   file: UploadFileInfo;
   fileList: UploadFileInfo[];
@@ -130,11 +153,72 @@ const beforeAvatarUpload = (data: {
   }
 };
 
+// 上传限制
+const beforeBgUpload = (data: {
+  file: UploadFileInfo;
+  fileList: UploadFileInfo[];
+}) => {
+  if (data.file.file?.type !== "image/jpeg") {
+    message.error("Avatar picture must be JPG format!");
+    return false;
+  } else if (data.file.file.size / 1024 / 1024 > 10) {
+    message.error("Avatar picture size can not exceed 2MB!");
+    return false;
+  }
+};
+
+// 获取背景url
+const handleBgFinish = ({
+  file,
+  event
+}: {
+  file: UploadFileInfo
+  event?: ProgressEvent
+}) => {
+  file = file
+  const response = (event?.target as XMLHttpRequest)?.response;
+  let responseJson = JSON.parse(response)
+  formValue.value.background = responseJson.url
+}
+
+// 获取头像url
+const handleAvatarFinish = ({
+  file,
+  event
+}: {
+  file: UploadFileInfo
+  event?: ProgressEvent
+}) => {
+  file = file
+  const response = (event?.target as XMLHttpRequest)?.response;
+  let responseJson = JSON.parse(response)
+  formValue.value.avatar = responseJson.url
+}
+
+// 模态框取消回调
 const cancelCallback = () => {
   emit("visible-update", false);
 };
 
-const submitCallback = () => {};
+// 修改资料
+const submitCallback = () => {
+  // TODO: 修改上传
+  let userInfo = formValue.value
+  updateUserInfo(userInfo.name, userInfo.gender, userInfo.avatar, userInfo.signature, userInfo.background).then((res:any)=>{
+    if(res.status_code == 200){
+      userStore().name = userInfo.name
+      userStore().gender = userInfo.gender
+      userStore().avatar = userInfo.avatar
+      userStore().signature = userInfo.signature
+      userStore().background_image = userInfo.background
+      message.success('修改成功')
+      cancelCallback()
+      window.location.reload()
+    }else{
+      message.error("修改失败")
+    }
+  })
+};
 </script>
 
 <style scoped>
