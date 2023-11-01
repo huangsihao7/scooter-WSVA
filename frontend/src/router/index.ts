@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:49:44
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 20:22:36
+ * @LastEditTime: 2023-11-01 13:59:10
  * @Description: 路由表
  * @FilePath: \scooter-WSVA\frontend\src\router\index.ts
  */
@@ -68,6 +68,11 @@ const router = createRouter({
       name: "video",
       props: true,
       component: () => import("../view/VideoView.vue"),
+    },
+    {
+      path: "/search",
+      name: "search",
+      component: () => import("../view/ClassifiedView.vue"),
     },
     {
       path: "/",

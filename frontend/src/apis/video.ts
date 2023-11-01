@@ -45,6 +45,14 @@ export function getPopularVideos(offset: number, readed_videoId: number) {
   });
 }
 
+export function getVideosByKeyWords(content: string) {
+  return service({
+    url: "/feed/searcheEs",
+    method: "post",
+    data: { content },
+  });
+}
+
 export function getVideosList() {
   return service({
     url: `/feed/VideosList`, // 使用字符串模板来拼接runId
