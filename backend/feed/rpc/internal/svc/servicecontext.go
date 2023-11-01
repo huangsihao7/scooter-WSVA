@@ -1,25 +1,22 @@
 package svc
 
 import (
-	model2 "github.com/huangsihao7/scooter-WSVA/favorite/model"
+	gmodel3 "github.com/huangsihao7/scooter-WSVA/comment/gmodel"
+	gmodel2 "github.com/huangsihao7/scooter-WSVA/favorite/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/favorite/starModel"
 	"github.com/huangsihao7/scooter-WSVA/feed/gmodel"
-	"github.com/huangsihao7/scooter-WSVA/feed/historyModel"
-	"github.com/huangsihao7/scooter-WSVA/feed/model"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/pkg/es"
 	"github.com/huangsihao7/scooter-WSVA/pkg/orm"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/usesrv"
 	"github.com/zeromicro/go-queue/kq"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"github.com/zeromicro/go-zero/zrpc"
 )
 
 type ServiceContext struct {
 	Config             config.Config
-	FeedModel          model.VideosModel
-	HistoryModel       historyModel.HistoryModel
-	FavorModel         model2.FavoritesModel
+	HistoryModel       *gmodel.HistoryModel
+	FavorModel         *gmodel2.FavoriteModel
 	UserRpc            usesrv.UseSrv
 	KqPusherClient     *kq.Pusher
 	DB                 *orm.DB
@@ -28,6 +25,8 @@ type ServiceContext struct {
 	KqPusherTestClient *kq.Pusher
 	KqPusherJobClient  *kq.Pusher
 	Es                 *es.Es
+	DanmuModel         *gmodel3.DanmuModel
+	CommentModel       *gmodel3.CommentModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -39,15 +38,16 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	})
 	return &ServiceContext{
 		Config:             c,
-		FeedModel:          model.NewVideosModel(sqlx.NewMysql(c.DataSource)),
-		FavorModel:         model2.NewFavoritesModel(sqlx.NewMysql(c.DataSource)),
+		FavorModel:         gmodel2.NewFavoriteModel(db.DB),
 		UserRpc:            usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
 		KqPusherClient:     kq.NewPusher(c.KqPusherConf.Brokers, c.KqPusherConf.Topic),
 		VideoModel:         gmodel.NewVideoModel(db.DB),
 		StarModel:          starModel.NewStarModel(db.DB),
 		KqPusherTestClient: kq.NewPusher(c.KqPusherTesTConf.Brokers, c.KqPusherTesTConf.Topic),
-		HistoryModel:       historyModel.NewHistoryModel(sqlx.NewMysql(c.DataSource)),
+		HistoryModel:       gmodel.NewHistoryModel(db.DB),
 		KqPusherJobClient:  kq.NewPusher(c.KqPusherJobConf.Brokers, c.KqPusherJobConf.Topic),
+		DanmuModel:         gmodel3.NewDanmuModel(db.DB),
+		CommentModel:       gmodel3.NewCommentModel(db.DB),
 		Es: es.MustNewEs(&es.Config{
 			Addresses: c.Es.Addresses,
 			Username:  c.Es.Username,

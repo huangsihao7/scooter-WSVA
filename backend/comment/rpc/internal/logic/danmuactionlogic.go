@@ -2,7 +2,7 @@ package logic
 
 import (
 	"context"
-	"github.com/huangsihao7/scooter-WSVA/comment/danmuModel"
+	"github.com/huangsihao7/scooter-WSVA/comment/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
@@ -71,7 +71,7 @@ func (l *DanMuActionLogic) DanMuAction(in *comment.DanmuActionRequest) (*comment
 	////}
 	//
 	//添加弹幕到数据库
-	err = l.svcCtx.DanmuModel.Insert(l.ctx, &danmuModel.Danmu{
+	err = l.svcCtx.DanmuModel.Insert(l.ctx, &gmodel.Danmu{
 		Uid:      uint(userId),
 		Vid:      uint(videoId),
 		Content:  in.DanmuText,

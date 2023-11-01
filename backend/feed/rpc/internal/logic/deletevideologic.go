@@ -34,15 +34,55 @@ func (l *DeleteVideoLogic) DeleteVideo(in *feed.DeleteVideoReq) (*feed.DeleteVid
 		return &feed.DeleteVideoResp{
 			StatusCode: constants.RecommendServiceInnerErrorCode,
 			StatusMsg:  constants.RecommendServiceInnerError,
-		}, err
+		}, nil
 	}
 	//在数据库中删除
-	err = l.svcCtx.FeedModel.Delete(l.ctx, int64(in.Vid))
+	err = l.svcCtx.VideoModel.Delete(l.ctx, int64(in.Vid))
 	if err != nil {
 		return &feed.DeleteVideoResp{
 			StatusCode: constants.DeleteVideoDbErrorCode,
 			StatusMsg:  constants.DeleteVideoDbError,
-		}, err
+		}, nil
+	}
+	//从点赞表中删除
+	err = l.svcCtx.FavorModel.DeleteByVid(l.ctx, int64(in.Vid))
+	if err != nil {
+		return &feed.DeleteVideoResp{
+			StatusCode: constants.DeleteVideoDbErrorCode,
+			StatusMsg:  constants.DeleteVideoDbError,
+		}, nil
+	}
+	//从收藏表中删除
+	err = l.svcCtx.StarModel.DeleteByVid(l.ctx, int64(in.Vid))
+	if err != nil {
+		return &feed.DeleteVideoResp{
+			StatusCode: constants.DeleteVideoDbErrorCode,
+			StatusMsg:  constants.DeleteVideoDbError,
+		}, nil
+	}
+	//从历史记录里面删除
+	err = l.svcCtx.HistoryModel.DeleteByVid(l.ctx, int64(in.Vid))
+	if err != nil {
+		return &feed.DeleteVideoResp{
+			StatusCode: constants.DeleteVideoDbErrorCode,
+			StatusMsg:  constants.DeleteVideoDbError,
+		}, nil
+	}
+	//从弹幕中删除
+	err = l.svcCtx.DanmuModel.DeleteByVid(l.ctx, int64(in.Vid))
+	if err != nil {
+		return &feed.DeleteVideoResp{
+			StatusCode: constants.DeleteVideoDbErrorCode,
+			StatusMsg:  constants.DeleteVideoDbError,
+		}, nil
+	}
+	//从评论中删除
+	err = l.svcCtx.CommentModel.DeleteByVid(l.ctx, int64(in.Vid))
+	if err != nil {
+		return &feed.DeleteVideoResp{
+			StatusCode: constants.DeleteVideoDbErrorCode,
+			StatusMsg:  constants.DeleteVideoDbError,
+		}, nil
 	}
 
 	return &feed.DeleteVideoResp{

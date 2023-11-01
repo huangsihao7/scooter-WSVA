@@ -1,7 +1,7 @@
 package svc
 
 import (
-	"github.com/huangsihao7/scooter-WSVA/label/model"
+	"github.com/huangsihao7/scooter-WSVA/label/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/label/rpc/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/pkg/orm"
 )
@@ -9,7 +9,7 @@ import (
 type ServiceContext struct {
 	Config         config.Config
 	DB             *orm.DB
-	GormLabelModel *model.LabelModel
+	GormLabelModel *gmodel.LabelModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -22,6 +22,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:         c,
 		DB:             db,
-		GormLabelModel: model.NewLabelModel(db.DB),
+		GormLabelModel: gmodel.NewLabelModel(db.DB),
 	}
 }

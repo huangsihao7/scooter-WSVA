@@ -45,3 +45,6 @@ func (m *CommentModel) Insert(ctx context.Context, data *Comments) error {
 func (m *CommentModel) Delete(ctx context.Context, id int64) error {
 	return m.db.WithContext(ctx).Delete(&Comments{}, id).Error
 }
+func (m *CommentModel) DeleteByVid(ctx context.Context, vid int64) error {
+	return m.db.WithContext(ctx).Where("vid = ?", vid).Delete(&Comments{}).Error
+}

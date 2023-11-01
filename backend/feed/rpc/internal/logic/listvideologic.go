@@ -3,10 +3,10 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/feed/model"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
+	"gorm.io/gorm"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -26,9 +26,9 @@ func NewListVideoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListVid
 }
 
 func (l *ListVideoLogic) ListVideo(in *feed.ListVideoRequest) (*feed.ListVideoResponse, error) {
-	Feeds, err := l.svcCtx.FeedModel.FindOwnFeed(l.ctx, int64(in.ToUid))
+	Feeds, err := l.svcCtx.VideoModel.FindOwnFeed(l.ctx, int64(in.ToUid))
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			return &feed.ListVideoResponse{
 				StatusCode: constants.UserVideosDoNotExistedCode,
 				StatusMsg:  constants.UserVideosDoNotExisted,
@@ -58,8 +58,8 @@ func (l *ListVideoLogic) ListVideo(in *feed.ListVideoRequest) (*feed.ListVideoRe
 	}
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range Feeds {
-		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.Uid), item.Id)
-		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.Uid), item.Id)
+		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.Uid), int64(item.Id))
+		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.Uid), int64(item.Id))
 
 		VideoList = append(VideoList, &feed.VideoInfo{
 			Id:            uint32(item.Id),
@@ -72,7 +72,7 @@ func (l *ListVideoLogic) ListVideo(in *feed.ListVideoRequest) (*feed.ListVideoRe
 			IsFavorite:    IsFavorite,
 			Title:         item.Title,
 			IsStar:        IsStar,
-			CreateTime:    item.CreatedAt.Format(constants.TimeFormat),
+			CreateTime:    item.CreatedAt.Time.Format(constants.TimeFormat),
 			Duration:      item.Duration.String,
 		})
 	}

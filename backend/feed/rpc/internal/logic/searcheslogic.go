@@ -81,7 +81,7 @@ func (l *SearchESLogic) SearchES(in *feed.EsSearchReq) (*feed.EsSearchResp, erro
 	for i := 0; i < totalHits; i++ {
 		videoIds = append(videoIds, responses.Hits.Hits[i].Source.VideoID)
 		curVideoID := responses.Hits.Hits[i].Source.VideoID
-		video, err := l.svcCtx.FeedModel.FindOne(l.ctx, int64(curVideoID))
+		video, err := l.svcCtx.VideoModel.FindOne(l.ctx, int64(curVideoID))
 		if err != nil {
 			return &feed.EsSearchResp{
 				StatusCode: constants.UnableToQueryVideoErrorCode,
@@ -90,7 +90,7 @@ func (l *SearchESLogic) SearchES(in *feed.EsSearchReq) (*feed.EsSearchResp, erro
 		}
 		userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
 			UserId:  int64(in.UserId),
-			ActorId: video.AuthorId,
+			ActorId: int64(video.AuthorId),
 		})
 		if err != nil {
 			return &feed.EsSearchResp{
@@ -123,7 +123,7 @@ func (l *SearchESLogic) SearchES(in *feed.EsSearchReq) (*feed.EsSearchResp, erro
 			CommentCount:  uint32(video.CommentCount),
 			IsFavorite:    IsFavorite,
 			Title:         video.Title,
-			CreateTime:    video.CreatedAt.Format(constants.TimeFormat),
+			CreateTime:    video.CreatedAt.Time.Format(constants.TimeFormat),
 			StarCount:     uint32(video.StarCount),
 			IsStar:        IsStar,
 			Duration:      video.Duration.String,

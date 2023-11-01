@@ -63,8 +63,8 @@ func (l *ListNeighborVideosLogic) ListNeighborVideos(in *feed.NeighborsReq) (*fe
 				VideoList:  nil,
 			}, err
 		}
-		video, err := l.svcCtx.FeedModel.FindOne(l.ctx, int64(id))
-		userRpcRes, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.Uid), ActorId: video.AuthorId})
+		video, err := l.svcCtx.VideoModel.FindOne(l.ctx, int64(id))
+		userRpcRes, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.Uid), ActorId: int64(video.AuthorId)})
 
 		userInfo := &feed.User{
 			Id:              userRpcRes.User.Id,
@@ -80,8 +80,8 @@ func (l *ListNeighborVideosLogic) ListNeighborVideos(in *feed.NeighborsReq) (*fe
 			FavoriteCount:   userRpcRes.User.FavoriteCount,
 			Gender:          userRpcRes.User.Gender,
 		}
-		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.Uid), video.Id)
-		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.Uid), video.Id)
+		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.Uid), int64(video.Id))
+		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.Uid), int64(video.Id))
 
 		VideoList = append(VideoList, &feed.VideoInfo{
 			Id:            uint32(video.Id),
@@ -94,7 +94,7 @@ func (l *ListNeighborVideosLogic) ListNeighborVideos(in *feed.NeighborsReq) (*fe
 			IsFavorite:    IsFavorite,
 			IsStar:        IsStar,
 			Title:         video.Title,
-			CreateTime:    video.CreatedAt.Format(constants.TimeFormat),
+			CreateTime:    video.CreatedAt.Time.Format(constants.TimeFormat),
 			Duration:      video.Duration.String,
 		})
 	}
