@@ -25,7 +25,6 @@ func NewGetCommentListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 }
 
 func (l *GetCommentListLogic) GetCommentList(req *types.ListReq) (resp *types.ListResp, err error) {
-	// todo: add your logic here and delete this line
 
 	//token 解析
 	usrId, _ := l.ctx.Value("uid").(json.Number).Int64()
