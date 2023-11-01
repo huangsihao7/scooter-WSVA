@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-29 13:04:21
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 00:25:11
+ * @LastEditTime: 2023-11-01 19:19:20
  * @FilePath: \scooter-WSVA\frontend\src\apis\video.ts
  * @Description: 视频接口
  */
@@ -87,3 +87,13 @@ export function getVideoById(video_id: number) {
     method: "get",
   });
 }
+
+export function myDeleteVideo(video_id: number) {
+  return service({
+    url: "/feed/deleteViedo",
+    method: "post",
+    data: { video_id },
+  });
+}
+
+

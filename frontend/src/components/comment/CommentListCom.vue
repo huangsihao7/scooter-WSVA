@@ -7,6 +7,10 @@ interface propsType {
 }
 
 const props = defineProps<propsType>();
+const emit = defineEmits(["delete-comment"]);
+const deleteFunc = (comment_id: number) =>{
+  emit("delete-comment", comment_id);
+}
 </script>
 
 <template>
@@ -16,7 +20,7 @@ const props = defineProps<propsType>();
       :key="index"
       class="comment-lists"
     >
-      <CommentCom class="comment" :comment="comment" />
+      <CommentCom class="comment" :comment="comment" @delete-comment="deleteFunc"/>
     </div>
   </div>
 </template>

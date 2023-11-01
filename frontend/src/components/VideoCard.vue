@@ -13,6 +13,7 @@ import VideoCardList from "@/components/video/VideoCardList.vue";
 interface propsType {
   isScroll: boolean;
   videos: any;
+  deletable?: boolean;
 }
 const props = defineProps<propsType>();
 
@@ -28,7 +29,7 @@ onMounted(() => {
     </NSpace>
   </NScrollbar>
   <NSpace v-else wrap>
-    <VideoCardList :videos="props.videos" />
+    <VideoCardList :videos="props.videos" :deletable=$props.deletable />
   </NSpace>
 </template>
 

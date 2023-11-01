@@ -2,15 +2,18 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 22:00:03
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 12:53:10
+ * @LastEditTime: 2023-11-01 22:06:19
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\comment\CommentCom.vue
 -->
 <script lang="ts" setup>
 import { ref } from "vue";
-import { Heart, ChatbubbleEllipses } from "@vicons/ionicons5";
-import { NIcon, NButton, NSpace, NThing, NAvatar } from "naive-ui";
+import { Heart, ChatbubbleEllipses, Trash } from "@vicons/ionicons5";
+import { NIcon, NButton, NSpace, NThing, NAvatar, useMessage } from "naive-ui";
 import { CommentType } from "@/apis/interface";
+import { userStore } from "@/stores/user";
+import { doComment } from "@/apis/comment";
+import { videoStore } from "@/stores/video";
 
 interface propsType {
   comment: CommentType;
@@ -18,14 +21,31 @@ interface propsType {
 
 const props = defineProps<propsType>();
 
+const message = useMessage()
 const avatar = ref(true);
 const header = ref(true);
 const headerExtra = ref(true);
 const action = ref(true);
+const emit = defineEmits(["delete-comment"]);
+
+// 删除我的评论
+const deleteMyComment = () =>{
+  let comment_id = props.comment.comment_id;
+  doComment(videoStore().video_id, 2, '', comment_id).then((res: any)=>{
+    if(res.status_code == 200){
+      message.success('删除成功')
+      emit("delete-comment", comment_id);
+    }
+    else{
+      message.success(res.status_msg)
+    }
+  })
+}
 </script>
 
 <template>
   <NThing class="comment" content-indented>
+    
     <template v-if="avatar" #avatar>
       <NAvatar round :src="props.comment.user.avatar"> </NAvatar>
     </template>
@@ -54,6 +74,14 @@ const action = ref(true);
             </NIcon>
           </template>
           评论
+        </NButton>
+        <NButton v-if="props.comment.user.id == userStore().user_id" size="small" @click="deleteMyComment">
+          <template #icon>
+            <NIcon>
+              <Trash />
+            </NIcon>
+          </template>
+          删除
         </NButton>
       </NSpace>
     </template>

@@ -11,6 +11,6 @@ export const videoStore = defineStore({
   id: "video",
   state: () => ({
     video_id: -1,
-    search_value : ''
+    search_value : '',
   }),
 });
