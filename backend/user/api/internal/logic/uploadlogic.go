@@ -48,7 +48,7 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 
 	putPolicy := storage.PutPolicy{
 		Scope:               bucket,
-		PersistentOps:       "avthumb/mp4/wmImage/aHR0cDovL3MzZWplbjBnMi5oZC1ia3QuY2xvdWRkbi5jb20va2tsbC5wbmc=/wmGravity/NorthWest|saveas/" + saceas,
+		PersistentOps:       "avthumb/mp4/wmImage/aHR0cDovL3MzZWplbjBnMi5oZC1ia3QuY2xvdWRkbi5jb20vbG9nLnBuZw==/wmGravity/NorthWest|saveas/" + saceas,
 		PersistentNotifyURL: "http://fake.com/qiniu/notify",
 	}
 	upToken := putPolicy.UploadToken(mac)
