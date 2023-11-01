@@ -24,8 +24,10 @@ onMounted(() => {
   }
 });
 
-// 更新查看关注的人的页面
-const updateUserId = (userId: number) => {};
+// 更新查看关注的人的页面 TODO
+const updateUserId = (userId: number) => {
+  console.log(userId)
+};
 </script>
 
 <template>
