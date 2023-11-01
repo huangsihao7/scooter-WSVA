@@ -24,6 +24,7 @@ type ListResp struct {
 }
 
 type CommentInfo struct {
+	CommentId  int64  `json:"comment_id"`
 	User       User   `json:"user"`
 	Content    string `json:"content"`
 	CreateDate string `json:"create_date"`

@@ -24,6 +24,7 @@ type (
 	}
 
 	CommentInfo {
+		CommentId  int64  `json:"comment_id"`
 		User       User   `json:"user"`
 		Content    string `json:"content"`
 		CreateDate string `json:"create_date"`
@@ -78,24 +79,24 @@ type (
 	}
 )
 service comment-api {
-	
+
 	@handler DanmuAction
 	post /danmu/listv3 (DanmuActionReq) returns (DanmuActionResp)
-	
+
 	@handler GetDanmuList
 	get /danmu/listv3 (DanmulistReq) returns (DanmulistResp)
-	
+
 }
 
 @server(
 	jwt: Auth
 )
 service comment-api {
-	
+
 	@handler CommentAction
 	post /comment/action (actionReq) returns(actionResp)
-	
+
 	@handler GetCommentList
 	get /comment/list (listReq) returns(listResp)
-	
+
 }
