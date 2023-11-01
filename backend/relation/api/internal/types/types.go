@@ -2,8 +2,8 @@
 package types
 
 type ActionReq struct {
-	ToUserId int64 `json:"to_user_id"` //关注谁
-	Action   int32 `json:"action"`     // 1 关注 2 是取关 其他是报错
+	ToUserId int64 `json:"to_user_id"`  //关注谁
+	Action   int32 `json:"action_type"` // 1 关注 2 是取关 其他是报错
 }
 
 type ActionResp struct {
