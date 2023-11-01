@@ -75,3 +75,62 @@ func (m *VideoModel) FindLastByUId(ctx context.Context, Uid int64) (*Videos, err
 
 	return result, err
 }
+func (m *VideoModel) FindOwnFeed(ctx context.Context, uid int64) ([]*Videos, error) {
+	var resp []*Videos
+	err := m.db.WithContext(ctx).Where("author_id = ?", uid).Find(&resp).Error
+	switch err {
+	case nil:
+		return resp, nil
+	default:
+		return nil, err
+	}
+}
+
+func (m *VideoModel) FindFeeds(ctx context.Context) ([]*Videos, error) {
+	var resp []*Videos
+	err := m.db.WithContext(ctx).Order("id DESC").Find(&resp).Error
+	switch err {
+	case nil:
+		return resp, nil
+	default:
+		return nil, err
+	}
+}
+
+func (m *VideoModel) FindCategoryFeeds(ctx context.Context, category int64) ([]*Videos, error) {
+	var resp []*Videos
+	err := m.db.WithContext(ctx).Where("category = ?", category).Order("id DESC").Find(&resp).Error
+	switch err {
+	case nil:
+		return resp, nil
+	default:
+		return nil, err
+	}
+}
+
+func (m *VideoModel) UpdateDuration(ctx context.Context, id int64, duration string) error {
+	err := m.db.WithContext(ctx).Model(&Videos{}).Where("id = ?", id).Update("duration", duration).Error
+	return err
+}
+func (m *VideoModel) Insert(ctx context.Context, data *Videos) error {
+	err := m.db.WithContext(ctx).Create(data).Error
+	return err
+}
+func (m *VideoModel) Delete(ctx context.Context, id int64) error {
+	err := m.db.WithContext(ctx).Delete(&Videos{}, id).Error
+	return err
+}
+func (m *VideoModel) FindOne(ctx context.Context, id int64) (*Videos, error) {
+	var resp Videos
+	err := m.db.WithContext(ctx).First(&resp, id).Error
+	switch err {
+	case nil:
+		return &resp, nil
+	default:
+		return nil, err
+	}
+}
+func (m *VideoModel) Update(ctx context.Context, data *Videos) error {
+	err := m.db.WithContext(ctx).Model(&Videos{}).Where("id = ?", data.Id).Updates(data).Error
+	return err
+}

@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/feed/model"
+	"github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/common"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/svc"
@@ -29,33 +29,31 @@ func NewCreateVideoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Creat
 }
 
 func (l *CreateVideoLogic) CreateVideo(in *feed.CreateVideoRequest) (*feed.CreateVideoResponse, error) {
-	newVideo := model.Videos{
-		AuthorId:      int64(in.ActorId),
+	newVideo := gmodel.Videos{
+		AuthorId:      uint(in.ActorId),
 		Title:         in.Title,
 		CoverUrl:      in.CoverUrl,
 		PlayUrl:       in.Url,
 		FavoriteCount: 0,
 		CommentCount:  0,
 		StarCount:     0,
-		Category:      int64(in.Category),
+		Category:      int(in.Category),
 	}
-	res, err := l.svcCtx.FeedModel.Insert(l.ctx, &newVideo)
-	//newVideo.Id,_ = res.LastInsertId()
+	err := l.svcCtx.VideoModel.Insert(l.ctx, &newVideo)
 	if err != nil {
 		return &feed.CreateVideoResponse{
 			StatusCode: constants.VideoServiceInnerErrorCode,
 			StatusMsg:  constants.VideoServiceInnerError,
 		}, nil
 	}
-	newVideo.Id, err = res.LastInsertId()
 
 	JobId := common.IsSafeJobId(in.Url, strconv.Itoa(int(newVideo.Id)))
 
 	//将文件信息传入mq
 	messagekq := format.UploadFile{
-		Id:  newVideo.Id,
+		Id:  int64(newVideo.Id),
 		Url: in.Url,
-		Uid: newVideo.AuthorId,
+		Uid: int64(newVideo.AuthorId),
 	}
 	jobKq := format.JobBody{
 		Job: JobId,

@@ -7,7 +7,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/favorite/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/internal/svc"
-	model2 "github.com/huangsihao7/scooter-WSVA/feed/model"
+	gmodel3 "github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/gorm"
 	"log"
@@ -96,8 +96,8 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		}
 
 		//增加video的点赞数
-		err = l.svcCtx.VideoModel.Update(l.ctx, &model2.Videos{
-			Id:            videoId,
+		err = l.svcCtx.VideoModel.Update(l.ctx, &gmodel3.Videos{
+			Id:            uint(videoId),
 			AuthorId:      videoDetail.AuthorId,
 			Title:         videoDetail.Title,
 			CoverUrl:      videoDetail.CoverUrl,
@@ -147,8 +147,8 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 			}, nil
 		}
 		//减少video的点赞数
-		err = l.svcCtx.VideoModel.Update(l.ctx, &model2.Videos{
-			Id:            videoId,
+		err = l.svcCtx.VideoModel.Update(l.ctx, &gmodel3.Videos{
+			Id:            uint(videoId),
 			AuthorId:      videoDetail.AuthorId,
 			Title:         videoDetail.Title,
 			CoverUrl:      videoDetail.CoverUrl,

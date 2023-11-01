@@ -34,7 +34,7 @@ func (l *FavoriteLogic) Favorite(in *relation.FavoriteRequest) (*relation.Favori
 		}, nil
 	}
 	//被关注的人不存在
-	_, err := l.svcCtx.UserModel.FindOne(l.ctx, in.ToUid)
+	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(in.ToUid))
 	if err == gorm.ErrRecordNotFound {
 		return &relation.FavoriteResponse{
 			StatusCode: constants.UserDoNotExistedCode,

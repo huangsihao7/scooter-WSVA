@@ -1,4 +1,4 @@
-package danmuModel
+package gmodel
 
 import (
 	"context"
@@ -44,6 +44,9 @@ func (m *DanmuModel) Insert(ctx context.Context, danmu *Danmu) error {
 
 	return m.db.WithContext(ctx).Create(danmu).Error
 
+}
+func (m *DanmuModel) DeleteByVid(ctx context.Context, vid int64) error {
+	return m.db.WithContext(ctx).Where("vid = ?", vid).Delete(&Danmu{}).Error
 }
 
 //func (m *DanmuModel) IsStarExist(ctx context.Context, userId int64, videoId int64) (bool, error) {

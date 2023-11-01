@@ -25,7 +25,7 @@ func NewVideoDurationLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Vid
 }
 
 func (l *VideoDurationLogic) VideoDuration(in *feed.VideoDurationReq) (*feed.VideoDurationResp, error) {
-	err := l.svcCtx.FeedModel.UpdateDuration(l.ctx, int64(in.VideoId), in.Duration)
+	err := l.svcCtx.VideoModel.UpdateDuration(l.ctx, int64(in.VideoId), in.Duration)
 	if err != nil {
 		return &feed.VideoDurationResp{
 			StatusCode: constants.DurationErrorCode,

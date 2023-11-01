@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/feed/historyModel"
+	"github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 	"strconv"
@@ -56,9 +56,9 @@ func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*f
 	//向数据库插入浏览记录
 	if in.Offset == 0 {
 		id, _ := strconv.Atoi(result[0].Id)
-		_, err = l.svcCtx.HistoryModel.Insert(l.ctx, &historyModel.History{
-			Uid: int64(in.ActorId),
-			Vid: int64(id),
+		err = l.svcCtx.HistoryModel.Insert(l.ctx, &gmodel.History{
+			Uid: uint(in.ActorId),
+			Vid: id,
 		})
 		if err != nil {
 			return &feed.ListFeedResponse{
@@ -68,9 +68,9 @@ func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*f
 			}, err
 		}
 	} else {
-		_, err = l.svcCtx.HistoryModel.Insert(l.ctx, &historyModel.History{
-			Uid: int64(in.ActorId),
-			Vid: in.ReadVid,
+		err = l.svcCtx.HistoryModel.Insert(l.ctx, &gmodel.History{
+			Uid: uint(in.ActorId),
+			Vid: int(in.ReadVid),
 		})
 		if err != nil {
 			return &feed.ListFeedResponse{
@@ -91,8 +91,8 @@ func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*f
 				VideoList:  nil,
 			}, err
 		}
-		video, err := l.svcCtx.FeedModel.FindOne(l.ctx, int64(id))
-		userRpcRes, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.ActorId), ActorId: video.AuthorId})
+		video, err := l.svcCtx.VideoModel.FindOne(l.ctx, int64(id))
+		userRpcRes, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.ActorId), ActorId: int64(video.AuthorId)})
 
 		userInfo := &feed.User{
 			Id:              userRpcRes.User.Id,
@@ -108,8 +108,8 @@ func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*f
 			FavoriteCount:   userRpcRes.User.FavoriteCount,
 			Gender:          userRpcRes.User.Gender,
 		}
-		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.ActorId), video.Id)
-		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.ActorId), video.Id)
+		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.ActorId), int64(video.Id))
+		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.ActorId), int64(video.Id))
 
 		VideoList = append(VideoList, &feed.VideoInfo{
 			Id:            uint32(video.Id),
@@ -122,7 +122,7 @@ func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*f
 			IsFavorite:    IsFavorite,
 			IsStar:        IsStar,
 			Title:         video.Title,
-			CreateTime:    video.CreatedAt.Format(constants.TimeFormat),
+			CreateTime:    video.CreatedAt.Time.Format(constants.TimeFormat),
 			Duration:      video.Duration.String,
 		})
 	}

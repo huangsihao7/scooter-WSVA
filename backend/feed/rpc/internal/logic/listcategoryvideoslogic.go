@@ -3,8 +3,8 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/feed/model"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
+	"gorm.io/gorm"
 
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/svc"
@@ -27,9 +27,9 @@ func NewListCategoryVideosLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 }
 
 func (l *ListCategoryVideosLogic) ListCategoryVideos(in *feed.CategoryFeedRequest) (*feed.CategoryFeedResponse, error) {
-	Feeds, err := l.svcCtx.FeedModel.FindCategoryFeeds(l.ctx, int64(in.Category))
+	Feeds, err := l.svcCtx.VideoModel.FindCategoryFeeds(l.ctx, int64(in.Category))
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			return &feed.CategoryFeedResponse{
 				StatusCode: constants.CategoryVideosDoNotExistedCode,
 				StatusMsg:  constants.CategoryVideosDoNotExisted,
@@ -44,7 +44,7 @@ func (l *ListCategoryVideosLogic) ListCategoryVideos(in *feed.CategoryFeedReques
 
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range Feeds {
-		userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.ActorId), ActorId: item.AuthorId})
+		userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.ActorId), ActorId: int64(item.AuthorId)})
 		if err != nil {
 			return &feed.CategoryFeedResponse{
 				StatusCode: constants.FindUserErrorCode,
@@ -66,8 +66,8 @@ func (l *ListCategoryVideosLogic) ListCategoryVideos(in *feed.CategoryFeedReques
 			FavoriteCount:   userRpcRes.User.FavoriteCount,
 			Gender:          userRpcRes.User.Gender,
 		}
-		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.ActorId), item.Id)
-		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.ActorId), item.Id)
+		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.ActorId), int64(item.Id))
+		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.ActorId), int64(item.Id))
 		VideoList = append(VideoList, &feed.VideoInfo{
 			Id:            uint32(item.Id),
 			Author:        userInfo,
@@ -79,7 +79,7 @@ func (l *ListCategoryVideosLogic) ListCategoryVideos(in *feed.CategoryFeedReques
 			IsFavorite:    IsFavorite,
 			IsStar:        IsStar,
 			Title:         item.Title,
-			CreateTime:    item.CreatedAt.Format(constants.TimeFormat),
+			CreateTime:    item.CreatedAt.Time.Format(constants.TimeFormat),
 			Duration:      item.Duration.String,
 		})
 	}

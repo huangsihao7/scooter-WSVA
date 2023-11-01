@@ -1,4 +1,4 @@
-package model
+package gmodel
 
 import (
 	"context"

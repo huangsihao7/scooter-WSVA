@@ -3,8 +3,8 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"github.com/huangsihao7/scooter-WSVA/feed/model"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
+	"gorm.io/gorm"
 
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/svc"
@@ -27,9 +27,9 @@ func NewListVideosLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListVi
 }
 
 func (l *ListVideosLogic) ListVideos(in *feed.ListFeedRequest) (*feed.ListFeedResponse, error) {
-	Feeds, err := l.svcCtx.FeedModel.FindFeeds(l.ctx)
+	Feeds, err := l.svcCtx.VideoModel.FindFeeds(l.ctx)
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			return &feed.ListFeedResponse{
 				StatusCode: constants.UserVideosDoNotExistedCode,
 				StatusMsg:  constants.UserVideosDoNotExisted,
@@ -43,7 +43,7 @@ func (l *ListVideosLogic) ListVideos(in *feed.ListFeedRequest) (*feed.ListFeedRe
 	}
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range Feeds {
-		userRpcRes, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.ActorId), ActorId: item.AuthorId})
+		userRpcRes, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.ActorId), ActorId: int64(item.AuthorId)})
 
 		userInfo := &feed.User{
 			Id:              userRpcRes.User.Id,
@@ -71,7 +71,7 @@ func (l *ListVideosLogic) ListVideos(in *feed.ListFeedRequest) (*feed.ListFeedRe
 			IsFavorite:    false,
 			IsStar:        false,
 			Title:         item.Title,
-			CreateTime:    item.CreatedAt.Format(constants.TimeFormat),
+			CreateTime:    item.CreatedAt.Time.Format(constants.TimeFormat),
 			Duration:      item.Duration.String,
 		})
 	}

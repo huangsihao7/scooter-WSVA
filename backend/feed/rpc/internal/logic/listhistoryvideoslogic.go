@@ -36,7 +36,7 @@ func (l *ListHistoryVideosLogic) ListHistoryVideos(in *feed.HistoryReq) (*feed.H
 	}
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range histories {
-		videoinfo, err := l.svcCtx.FeedModel.FindOne(l.ctx, item.Vid)
+		videoinfo, err := l.svcCtx.VideoModel.FindOne(l.ctx, int64(item.Vid))
 		if err != nil {
 			return &feed.HistoryResp{
 				StatusCode: constants.FindDbErrorCode,
@@ -44,7 +44,7 @@ func (l *ListHistoryVideosLogic) ListHistoryVideos(in *feed.HistoryReq) (*feed.H
 				VideoList:  nil,
 			}, err
 		}
-		userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.Uid), ActorId: videoinfo.AuthorId})
+		userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.Uid), ActorId: int64(videoinfo.AuthorId)})
 		if err != nil {
 			return &feed.HistoryResp{
 				StatusCode: constants.FindUserErrorCode,
@@ -67,7 +67,7 @@ func (l *ListHistoryVideosLogic) ListHistoryVideos(in *feed.HistoryReq) (*feed.H
 			FavoriteCount:   userRpcRes.User.FavoriteCount,
 			Gender:          userRpcRes.User.Gender,
 		}
-		IsFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.Uid), item.Id)
+		IsFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.Uid), int64(item.Id))
 		if err != nil {
 			return &feed.HistoryResp{
 				StatusCode: constants.FindUserErrorCode,
@@ -75,7 +75,7 @@ func (l *ListHistoryVideosLogic) ListHistoryVideos(in *feed.HistoryReq) (*feed.H
 				VideoList:  nil,
 			}, err
 		}
-		IsStar, err := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.Uid), item.Id)
+		IsStar, err := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.Uid), int64(item.Id))
 		if err != nil {
 			return &feed.HistoryResp{
 				StatusCode: constants.FindUserErrorCode,
@@ -94,7 +94,7 @@ func (l *ListHistoryVideosLogic) ListHistoryVideos(in *feed.HistoryReq) (*feed.H
 			IsFavorite:    IsFavorite,
 			IsStar:        IsStar,
 			Title:         videoinfo.Title,
-			CreateTime:    videoinfo.CreatedAt.Format(constants.TimeFormat),
+			CreateTime:    videoinfo.CreatedAt.Time.Format(constants.TimeFormat),
 			Duration:      videoinfo.Duration.String,
 		})
 	}

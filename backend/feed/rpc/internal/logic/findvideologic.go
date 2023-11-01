@@ -26,7 +26,7 @@ func NewFindVideoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindVid
 }
 
 func (l *FindVideoLogic) FindVideo(in *feed.FindVideoReq) (*feed.FindVideoResp, error) {
-	video, err := l.svcCtx.FeedModel.FindOne(l.ctx, int64(in.Vid))
+	video, err := l.svcCtx.VideoModel.FindOne(l.ctx, int64(in.Vid))
 	if err != nil {
 		return &feed.FindVideoResp{
 			StatusCode: constants.UnableToQueryVideoErrorCode,
@@ -36,7 +36,7 @@ func (l *FindVideoLogic) FindVideo(in *feed.FindVideoReq) (*feed.FindVideoResp, 
 	}
 	userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
 		UserId:  int64(in.Uid),
-		ActorId: video.AuthorId,
+		ActorId: int64(video.AuthorId),
 	})
 	if err != nil {
 		return &feed.FindVideoResp{
@@ -70,7 +70,7 @@ func (l *FindVideoLogic) FindVideo(in *feed.FindVideoReq) (*feed.FindVideoResp, 
 		CommentCount:  uint32(video.CommentCount),
 		IsFavorite:    IsFavorite,
 		Title:         video.Title,
-		CreateTime:    video.CreatedAt.Format(constants.TimeFormat),
+		CreateTime:    video.CreatedAt.Time.Format(constants.TimeFormat),
 		StarCount:     uint32(video.StarCount),
 		IsStar:        IsStar,
 		Duration:      video.Duration.String,
