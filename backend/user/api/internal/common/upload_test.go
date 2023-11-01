@@ -1,7 +1,15 @@
 package common
 
-import "testing"
+import (
+	"encoding/base64"
+	"fmt"
+	"testing"
+)
 
 func TestUserUpload(t *testing.T) {
-	UserUpload("cipx2awPLz7XNduXeJPtbWoTEQj7PWnV_2O727ew", "4hf0lBad0AFg_IaShAN14JD3IbcEg8Xn4DPSX3fY", "wy-video", "C:/Users/86704/Desktop/ss.jpg")
+	str := "wy-video2:logo.jpg"
+
+	encodedStr := base64.StdEncoding.EncodeToString([]byte(str))
+
+	fmt.Println("Base64 编码后的字符串:", string(encodedStr))
 }
