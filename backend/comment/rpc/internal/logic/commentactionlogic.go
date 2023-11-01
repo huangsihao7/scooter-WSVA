@@ -7,7 +7,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/internal/svc"
 	constants "github.com/huangsihao7/scooter-WSVA/common/constants"
-	model2 "github.com/huangsihao7/scooter-WSVA/feed/model"
+	gmodel3 "github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	"gorm.io/gorm"
 	"log"
 
@@ -70,8 +70,8 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 			return nil, err
 		}
 		//添加video的评论数
-		err = l.svcCtx.VideoModel.Update(l.ctx, &model2.Videos{
-			Id:            videoId,
+		err = l.svcCtx.VideoModel.Update(l.ctx, &gmodel3.Videos{
+			Id:            uint(videoId),
 			AuthorId:      videoDetail.AuthorId,
 			Title:         videoDetail.Title,
 			CoverUrl:      videoDetail.CoverUrl,
@@ -100,8 +100,8 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 			return nil, err
 		}
 		//减少video的评论数
-		err = l.svcCtx.VideoModel.Update(l.ctx, &model2.Videos{
-			Id:            videoId,
+		err = l.svcCtx.VideoModel.Update(l.ctx, &gmodel3.Videos{
+			Id:            uint(videoId),
 			AuthorId:      videoDetail.AuthorId,
 			Title:         videoDetail.Title,
 			CoverUrl:      videoDetail.CoverUrl,
