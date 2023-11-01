@@ -9,6 +9,12 @@ DataSource: root:8691136f0fc946ffb141307209d3143f@tcp(172.22.110.66:3310)/qiniu?
 Cache:
   - Host: 172.22.110.66:6388
 Salt: HWVOFkGgPTryzICwd7qnJaZR9KQ2i8xe
+
+DB:
+  DataSource: root:8691136f0fc946ffb141307209d3143f@tcp(172.22.110.66:3310)/qiniu?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  MaxIdleConns: 10
+  MaxOpenConns: 100
+  ConnMaxLifetime: 3600
 #FavoriteRpc:
 #  Etcd:
 #    Hosts:
