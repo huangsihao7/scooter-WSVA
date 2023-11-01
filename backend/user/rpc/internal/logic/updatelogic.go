@@ -2,6 +2,8 @@ package logic
 
 import (
 	"context"
+	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/user/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 
@@ -23,5 +25,22 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 }
 
 func (l *UpdateLogic) Update(in *user.UpdateReq) (*user.UpdateResp, error) {
-	return nil, nil
+	err := l.svcCtx.UserModel.UpdateUser(l.ctx, &gmodel.User{
+		Id:            uint64(in.Uid),
+		Name:          in.Name,
+		Gender:        uint(in.Gender),
+		Dec:           in.Dec,
+		Avatar:        in.Avatar,
+		BackgroundUrl: in.BackgroundImage,
+	})
+	if err != nil {
+		return &user.UpdateResp{
+			StatusCode: constants.UpdateDbErrorCode,
+			StatusMsg:  constants.UpdateDbError,
+		}, nil
+	}
+	return &user.UpdateResp{
+		StatusCode: constants.ServiceOKCode,
+		StatusMsg:  constants.ServiceOK,
+	}, nil
 }

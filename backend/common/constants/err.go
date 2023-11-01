@@ -95,6 +95,8 @@ const (
 	InsertUserError                         = "添加用户失败"
 	UploadErrCode                           = 50044
 	UploadErr                               = "上传出错"
+	UpdateDbErrorCode                       = 50045
+	UpdateDbError                           = "更新数据库失败"
 )
 
 // Expected Error

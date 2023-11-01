@@ -18,7 +18,7 @@ type Comments struct {
 }
 
 func (m *Comments) TableName() string {
-	return "favorites"
+	return "comments"
 }
 
 type CommentModel struct {
@@ -31,9 +31,9 @@ func NewCommentModel(db *gorm.DB) *CommentModel {
 	}
 }
 
-func (m *CommentModel) FindComments(ctx context.Context, uid int64) ([]*Comments, error) {
+func (m *CommentModel) FindComments(ctx context.Context, vid int64) ([]*Comments, error) {
 	var comments []*Comments
-	err := m.db.WithContext(ctx).Where("vid = ?", uid).Find(&comments).Error
+	err := m.db.WithContext(ctx).Where("vid = ?", vid).Find(&comments).Error
 	if err != nil {
 		return nil, err
 	}

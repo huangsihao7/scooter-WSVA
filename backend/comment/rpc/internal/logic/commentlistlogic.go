@@ -57,7 +57,7 @@ func (l *CommentListLogic) CommentList(in *comment.CommentListRequest) (*comment
 		}
 		return nil, err
 	}
-	fmt.Println("+++++++++++++++++++++++")
+	fmt.Println("+++++++++++++++++++++++", videoId)
 	comments, err := l.svcCtx.CommentModel.FindComments(l.ctx, videoId)
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err

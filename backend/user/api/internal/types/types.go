@@ -38,8 +38,6 @@ type UploadImageResponse struct {
 type UpdateRequest struct {
 	Name            string `json:"name,optional"`
 	Gender          int64  `json:"gender,optional"`
-	Mobile          string `json:"mobile,optional"`
-	Password        string `json:"password,optional"`
 	Avatar          string `json:"avatar,optional"`
 	Dec             string `json:"dec,optional"`
 	BackgroundImage string `json:"background_image,optional"`

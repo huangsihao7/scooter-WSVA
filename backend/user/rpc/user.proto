@@ -61,14 +61,12 @@ message UserInfo {
 }
 
 message UpdateReq {
-  optional string name = 1;
-  optional int64 gender = 2;
-  optional string mobile = 3;
-  optional string password = 4;
-  optional string avatar = 5;
-  optional string dec = 6;
-  optional string background_image = 7;
-  int64 uid=8;
+  string name = 1;
+  int64 gender = 2;
+   string avatar = 3;
+   string dec = 4;
+   string background_image = 5;
+  int64 uid=6;
 }
 message UpdateResp {
   int32 status_code = 1; // 状态码，0-成功，其他值-失败

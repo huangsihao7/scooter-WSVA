@@ -63,10 +63,22 @@ func (m *UserModel) GetUserByID(ctx context.Context, userID uint) (*User, error)
 }
 func (m *UserModel) UpdateUser(ctx context.Context, user *User) error {
 	// Save the updated user information in the database
-	//db = db.OmitEmpty(user)
-	err := m.db.WithContext(ctx).Save(user).Error
+	existingUser := &User{}
+	err := m.db.WithContext(ctx).First(existingUser, user.Id).Error
 	if err != nil {
 		return err
 	}
+	existingUser.Gender = user.Gender
+	existingUser.Name = user.Name
+	existingUser.Avatar = user.Avatar
+	existingUser.Dec = user.Dec
+	existingUser.BackgroundUrl = user.BackgroundUrl
+
+	// 保存更新后的用户信息到数据库
+	err = m.db.WithContext(ctx).Save(existingUser).Error
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

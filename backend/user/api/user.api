@@ -45,8 +45,6 @@ type (
 	UpdateRequest {
 		Name            string `json:"name,optional"`
 		Gender          int64  `json:"gender,optional"`
-		Mobile          string `json:"mobile,optional"`
-		Password        string `json:"password,optional"`
 		Avatar          string `json:"avatar,optional"`
 		Dec             string `json:"dec,optional"`
 		BackgroundImage string `json:"background_image,optional"`
@@ -109,5 +107,5 @@ service User {
 	post /user/upload returns (UserUploadResponse)
 
 	@handler Update
-	post /user/update (UpdateRequest)returns(UserInfoResponse)
+	post /user/update (UpdateRequest)returns(UpdateResponse)
 }
