@@ -109,6 +109,7 @@ const goFriends = () =>{
         </div>
         <NButton
           strong
+          v-if="userInfo.id == userStore().user_id"
           round
           class="edit-info"
           color="#409eff85"
