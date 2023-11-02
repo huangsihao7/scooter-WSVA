@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 13:47:46
+ * @LastEditTime: 2023-11-02 13:48:52
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
@@ -29,7 +29,7 @@ import {
   NFormItemRow,
   NDropdown,
 } from "naive-ui";
-import { Trash, Search as SearchIcon } from "@vicons/ionicons5";
+import { Trash } from "@vicons/ionicons5";
 import type { MenuOption } from "naive-ui";
 import { Search, Add } from "@vicons/ionicons5";
 import { userStore } from "@/stores/user";
@@ -41,7 +41,7 @@ import { useMessage } from "naive-ui";
 import PostVedio from "@/components/video/PostVideo.vue";
 import { historyStore } from "@/stores/historySearch";
 
-// 消息弹窗
+// 消息弹窗message
 const message = useMessage();
 // 路由数据
 const activeIndex = ref("");
@@ -93,8 +93,7 @@ const doSearch = ( isHistory: boolean, historyValue?: string) => {
   }
   let child = {
     label: searchValue,
-    key: searchValue,
-    // icon: renderIcon(Trash)
+    key: searchValue
   };
   historyStore().historyData.push(child);
   if (historyStore().historyData.length > 5) {
@@ -153,8 +152,7 @@ onMounted(() => {
       type: "group",
       label: "历史记录",
       key: "main",
-      children: children,
-      // children: historyStore().historyData,
+      children: children
     },
   ];
 });
