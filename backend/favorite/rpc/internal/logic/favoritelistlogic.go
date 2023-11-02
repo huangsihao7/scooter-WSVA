@@ -2,10 +2,9 @@ package logic
 
 import (
 	"context"
-	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/favorite/code"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
-	"github.com/zeromicro/go-zero/core/logc"
 	"gorm.io/gorm"
 	"log"
 
@@ -30,8 +29,7 @@ func NewFavoriteListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Favo
 }
 
 func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*favorite.FavoriteListResponse, error) {
-	// todo: add your logic here and delete this line
-	//得到喜欢列表
+
 	userId := in.UserId
 	actorId := in.ActorId
 
@@ -39,12 +37,10 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			log.Println("用户不存在")
-			return &favorite.FavoriteListResponse{
-				StatusCode: constants.UserDoNotExistedCode,
-				StatusMsg:  constants.UserDoNotExisted,
-			}, nil
+			log.Println("点赞用户不存在")
+			return nil, code.FavoriteUserIdEmptyError
 		}
+		l.Logger.Errorf(err.Error())
 		return nil, err
 	}
 
@@ -52,30 +48,16 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 	_, err = l.svcCtx.UserModel.GetUserByID(l.ctx, uint(actorId))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			log.Println("用户不存在")
-			return &favorite.FavoriteListResponse{
-				StatusCode: constants.UserDoNotExistedCode,
-				StatusMsg:  constants.UserDoNotExisted,
-			}, nil
+			log.Println("点赞列表不存在")
+			return nil, code.FavoriteVideoIdEmptyError
 		}
+		l.Logger.Errorf(err.Error())
 		return nil, err
 	}
 
-	//redis 测试
-
-	err = l.svcCtx.BizRedis.SetCtx(l.ctx, "key", "hello world")
-	if err != nil {
-		logc.Error(l.ctx, err)
-	}
-
-	v, err := l.svcCtx.BizRedis.GetCtx(l.ctx, "key")
-	if err != nil {
-		logc.Error(l.ctx, err)
-	}
-	fmt.Println(v)
-
 	favorVideos, err := l.svcCtx.FavorModel.FindOwnFavorites(l.ctx, actorId)
 	if err != nil {
+		l.Logger.Errorf(err.Error())
 		return nil, err
 	}
 	//得到喜欢视频的id
@@ -86,28 +68,29 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 		videoDetail, err := l.svcCtx.VideoModel.FindById(l.ctx, int64(videoId))
 		if err != nil {
 			if err == gorm.ErrRecordNotFound {
-				logx.Infof("视频记录不存在")
-				return &favorite.FavoriteListResponse{
-					StatusCode: constants.UserVideosDoNotExistedCode,
-					StatusMsg:  constants.UserVideosDoNotExisted,
-				}, nil
+				l.Logger.Errorf("查询点赞列表视频不存在")
+				return nil, code.FavoriteVideoIdEmptyError
 			}
+			l.Logger.Errorf(err.Error())
 			return nil, err
 		}
 		//这个视频的作者
 		userInfo, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: userId, ActorId: int64(videoDetail.AuthorId)})
 		if err != nil {
+			l.Logger.Errorf(err.Error())
 			return nil, err
 		}
 
 		//userID 是否喜欢该视频
 		isFavorited, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, userId, int64(videoId))
 		if err != nil {
+			l.Logger.Errorf(err.Error())
 			return nil, err
 		}
 		//userId 是否收藏该视频
 		isStar, err := l.svcCtx.StarModel.IsStarExist(l.ctx, userId, int64(videoId))
 		if err != nil {
+			l.Logger.Errorf(err.Error())
 			return nil, err
 		}
 		userDetail := &favorite.User{

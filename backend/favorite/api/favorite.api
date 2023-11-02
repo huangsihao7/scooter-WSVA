@@ -1,8 +1,6 @@
 syntax = "v1"
 
 info (
-	title: // TODO: add title
-	desc: // TODO: add description
 	author: "huangsihao7"
 	email: "1057434651@qq.com"
 )

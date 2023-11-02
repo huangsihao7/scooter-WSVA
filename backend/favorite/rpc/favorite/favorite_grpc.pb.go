@@ -19,13 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Favorite_FavoriteAction_FullMethodName             = "/favorite.Favorite/FavoriteAction"
-	Favorite_FavoriteList_FullMethodName               = "/favorite.Favorite/FavoriteList"
-	Favorite_GetVideoFavoriteCount_FullMethodName      = "/favorite.Favorite/GetVideoFavoriteCount"
-	Favorite_GetUserFavoriteCount_FullMethodName       = "/favorite.Favorite/GetUserFavoriteCount"
-	Favorite_GetUserTotalFavoritedCount_FullMethodName = "/favorite.Favorite/GetUserTotalFavoritedCount"
-	Favorite_StarAction_FullMethodName                 = "/favorite.Favorite/StarAction"
-	Favorite_StarList_FullMethodName                   = "/favorite.Favorite/StarList"
+	Favorite_FavoriteAction_FullMethodName = "/favorite.Favorite/FavoriteAction"
+	Favorite_FavoriteList_FullMethodName   = "/favorite.Favorite/FavoriteList"
+	Favorite_StarAction_FullMethodName     = "/favorite.Favorite/StarAction"
+	Favorite_StarList_FullMethodName       = "/favorite.Favorite/StarList"
 )
 
 // FavoriteClient is the client API for Favorite service.
@@ -34,9 +31,6 @@ const (
 type FavoriteClient interface {
 	FavoriteAction(ctx context.Context, in *FavoriteActionRequest, opts ...grpc.CallOption) (*FavoriteActionResponse, error)
 	FavoriteList(ctx context.Context, in *FavoriteListRequest, opts ...grpc.CallOption) (*FavoriteListResponse, error)
-	GetVideoFavoriteCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error)
-	GetUserFavoriteCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error)
-	GetUserTotalFavoritedCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error)
 	StarAction(ctx context.Context, in *StarActionRequest, opts ...grpc.CallOption) (*StarActionResponse, error)
 	StarList(ctx context.Context, in *StarListRequest, opts ...grpc.CallOption) (*StarListResponse, error)
 }
@@ -67,33 +61,6 @@ func (c *favoriteClient) FavoriteList(ctx context.Context, in *FavoriteListReque
 	return out, nil
 }
 
-func (c *favoriteClient) GetVideoFavoriteCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error) {
-	out := new(QueryCount)
-	err := c.cc.Invoke(ctx, Favorite_GetVideoFavoriteCount_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *favoriteClient) GetUserFavoriteCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error) {
-	out := new(QueryCount)
-	err := c.cc.Invoke(ctx, Favorite_GetUserFavoriteCount_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *favoriteClient) GetUserTotalFavoritedCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error) {
-	out := new(QueryCount)
-	err := c.cc.Invoke(ctx, Favorite_GetUserTotalFavoritedCount_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *favoriteClient) StarAction(ctx context.Context, in *StarActionRequest, opts ...grpc.CallOption) (*StarActionResponse, error) {
 	out := new(StarActionResponse)
 	err := c.cc.Invoke(ctx, Favorite_StarAction_FullMethodName, in, out, opts...)
@@ -118,9 +85,6 @@ func (c *favoriteClient) StarList(ctx context.Context, in *StarListRequest, opts
 type FavoriteServer interface {
 	FavoriteAction(context.Context, *FavoriteActionRequest) (*FavoriteActionResponse, error)
 	FavoriteList(context.Context, *FavoriteListRequest) (*FavoriteListResponse, error)
-	GetVideoFavoriteCount(context.Context, *QueryId) (*QueryCount, error)
-	GetUserFavoriteCount(context.Context, *QueryId) (*QueryCount, error)
-	GetUserTotalFavoritedCount(context.Context, *QueryId) (*QueryCount, error)
 	StarAction(context.Context, *StarActionRequest) (*StarActionResponse, error)
 	StarList(context.Context, *StarListRequest) (*StarListResponse, error)
 	mustEmbedUnimplementedFavoriteServer()
@@ -135,15 +99,6 @@ func (UnimplementedFavoriteServer) FavoriteAction(context.Context, *FavoriteActi
 }
 func (UnimplementedFavoriteServer) FavoriteList(context.Context, *FavoriteListRequest) (*FavoriteListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FavoriteList not implemented")
-}
-func (UnimplementedFavoriteServer) GetVideoFavoriteCount(context.Context, *QueryId) (*QueryCount, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetVideoFavoriteCount not implemented")
-}
-func (UnimplementedFavoriteServer) GetUserFavoriteCount(context.Context, *QueryId) (*QueryCount, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserFavoriteCount not implemented")
-}
-func (UnimplementedFavoriteServer) GetUserTotalFavoritedCount(context.Context, *QueryId) (*QueryCount, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserTotalFavoritedCount not implemented")
 }
 func (UnimplementedFavoriteServer) StarAction(context.Context, *StarActionRequest) (*StarActionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StarAction not implemented")
@@ -200,60 +155,6 @@ func _Favorite_FavoriteList_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Favorite_GetVideoFavoriteCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryId)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FavoriteServer).GetVideoFavoriteCount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Favorite_GetVideoFavoriteCount_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FavoriteServer).GetVideoFavoriteCount(ctx, req.(*QueryId))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Favorite_GetUserFavoriteCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryId)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FavoriteServer).GetUserFavoriteCount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Favorite_GetUserFavoriteCount_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FavoriteServer).GetUserFavoriteCount(ctx, req.(*QueryId))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Favorite_GetUserTotalFavoritedCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryId)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FavoriteServer).GetUserTotalFavoritedCount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Favorite_GetUserTotalFavoritedCount_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FavoriteServer).GetUserTotalFavoritedCount(ctx, req.(*QueryId))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Favorite_StarAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(StarActionRequest)
 	if err := dec(in); err != nil {
@@ -304,18 +205,6 @@ var Favorite_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FavoriteList",
 			Handler:    _Favorite_FavoriteList_Handler,
-		},
-		{
-			MethodName: "GetVideoFavoriteCount",
-			Handler:    _Favorite_GetVideoFavoriteCount_Handler,
-		},
-		{
-			MethodName: "GetUserFavoriteCount",
-			Handler:    _Favorite_GetUserFavoriteCount_Handler,
-		},
-		{
-			MethodName: "GetUserTotalFavoritedCount",
-			Handler:    _Favorite_GetUserTotalFavoritedCount_Handler,
 		},
 		{
 			MethodName: "StarAction",

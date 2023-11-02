@@ -26,7 +26,6 @@ func NewFavoriteActionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Fa
 }
 
 func (l *FavoriteActionLogic) FavoriteAction(req *types.ActionReq) (resp *types.ActionResp, err error) {
-	// todo: add your logic here and delete this line
 
 	userId, _ := l.ctx.Value("uid").(json.Number).Int64()
 	if req.ActionType == 1 {
@@ -39,7 +38,6 @@ func (l *FavoriteActionLogic) FavoriteAction(req *types.ActionReq) (resp *types.
 		ActionType: req.ActionType,
 	})
 	if err != nil {
-		logx.Errorf("FavoriteRPC.Action req: %v userId: %d error: %v", req, userId, err)
 		return nil, err
 	}
 

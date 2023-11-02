@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/favorite/code"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 	"gorm.io/gorm"
 	"log"
@@ -28,40 +29,35 @@ func NewStarListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *StarList
 }
 
 func (l *StarListLogic) StarList(in *favorite.StarListRequest) (*favorite.StarListResponse, error) {
-	// todo: add your logic here and delete this line
-	// todo: add your logic here and delete this line
-	//得到喜欢列表
+
 	userId := in.UserId
 	actorId := in.ActorId
 
-	//检查用户id 是否能存在
+	//检查用户id 是否存在
 	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			log.Println("用户不存在")
-			return &favorite.StarListResponse{
-				StatusCode: constants.UserDoNotExistedCode,
-				StatusMsg:  constants.UserDoNotExisted,
-			}, nil
+			log.Println("收藏用户不存在")
+			return nil, code.StarUserIdEmptyError
 		}
+		l.Logger.Errorf(err.Error())
 		return nil, err
 	}
 
-	//检查用户id 是否能存在
+	//检查用户id 是否存在
 	_, err = l.svcCtx.UserModel.GetUserByID(l.ctx, uint(actorId))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			log.Println("用户不存在")
-			return &favorite.StarListResponse{
-				StatusCode: constants.UserDoNotExistedCode,
-				StatusMsg:  constants.UserDoNotExisted,
-			}, nil
+			log.Println("收藏用户不存在")
+			return nil, code.StarUserIdEmptyError
 		}
+		l.Logger.Errorf(err.Error())
 		return nil, err
 	}
 
 	StarVideos, err := l.svcCtx.StarModel.FindsByUserId(l.ctx, actorId)
 	if err != nil {
+		l.Logger.Errorf(err.Error())
 		return nil, err
 	}
 	//得到喜欢视频的id
@@ -70,24 +66,27 @@ func (l *StarListLogic) StarList(in *favorite.StarListRequest) (*favorite.StarLi
 
 		videoId := StarVideos[i].Vid
 		videoDetail, err := l.svcCtx.VideoModel.FindById(l.ctx, int64(videoId))
-
 		if err != nil {
+			l.Logger.Errorf(err.Error())
 			return nil, err
 		}
 		//这个视频的作者
 		userInfo, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: userId, ActorId: int64(videoDetail.AuthorId)})
 		if err != nil {
+			l.Logger.Errorf(err.Error())
 			return nil, err
 		}
 
 		//userID 是否喜欢该视频
 		isFavorited, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, userId, int64(videoId))
 		if err != nil {
+			l.Logger.Errorf(err.Error())
 			return nil, err
 		}
 		//userId 是否收藏该视频
 		isStar, err := l.svcCtx.StarModel.IsStarExist(l.ctx, userId, int64(videoId))
 		if err != nil {
+			l.Logger.Errorf(err.Error())
 			return nil, err
 		}
 		userDetail := &favorite.User{

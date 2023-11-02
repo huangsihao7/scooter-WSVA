@@ -20,7 +20,6 @@ var configFile = flag.String("f", "etc/favorite-api-dev.yaml", "the config file"
 func main() {
 	flag.Parse()
 	logx.DisableStat()
-
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 

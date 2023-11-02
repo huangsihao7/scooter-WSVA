@@ -99,10 +99,6 @@ message star_list_response {
 service Favorite {
   rpc FavoriteAction(favorite_action_request) returns(favorite_action_response); //点赞操作
   rpc FavoriteList(favorite_list_request) returns(favorite_list_response); //得到喜欢列表
-  rpc  GetVideoFavoriteCount (QueryId) returns (QueryCount); //获取video_id的点赞总数
-  rpc  GetUserFavoriteCount (QueryId) returns (QueryCount); //获取user_id的点赞数
-  rpc  GetUserTotalFavoritedCount(QueryId) returns (QueryCount); //获取user_id的总获赞数量
-
   rpc StarAction(star_action_request) returns(star_action_response); //收藏操作
   rpc StarList(star_list_request) returns(star_list_response); //得到收藏列表
 }

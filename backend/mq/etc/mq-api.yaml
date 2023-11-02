@@ -57,3 +57,12 @@ Es:
     - http://172.22.121.54:9200/
   Username: elastic
   Password: changeme
+KqVideoConsumerConf:
+  Name: like-kq-consumer
+  Brokers:
+    - 172.22.121.54:9092
+  Group: like-kqConsumer
+  Topic: testVideos
+  Offset: last
+  Consumers: 8
+  Processors: 8
