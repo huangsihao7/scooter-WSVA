@@ -35,6 +35,6 @@ build:
 	cd comment/rpc && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/comment_rpc" comment.go
 	cd comment/api && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/comment_api" comment.go
 	# MQ
-	cd mq/api && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/mq_api" mq.go
+	cd mq && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/mq_api" mq.go
 	# label
 	cd label/rpc && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/label_rpc" label.go
