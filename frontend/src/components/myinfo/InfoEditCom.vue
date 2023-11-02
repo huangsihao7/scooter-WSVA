@@ -208,8 +208,7 @@ const submitCallback = () => {
     userInfo.avatar,
     userInfo.signature,
     userInfo.background,
-  ).then((res: any) => {
-    if (res.status_code == 200) {
+  ).then(() => {
       userStore().name = userInfo.name;
       userStore().gender = userInfo.gender;
       userStore().avatar = userInfo.avatar;
@@ -218,9 +217,6 @@ const submitCallback = () => {
       message.success("修改成功");
       cancelCallback();
       window.location.reload();
-    } else {
-      message.error("修改失败");
-    }
   });
 };
 </script>

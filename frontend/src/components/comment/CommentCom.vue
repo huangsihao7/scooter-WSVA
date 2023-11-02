@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 22:00:03
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 22:06:19
+ * @LastEditTime: 2023-11-02 21:02:07
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\comment\CommentCom.vue
 -->
@@ -31,13 +31,9 @@ const emit = defineEmits(["delete-comment"]);
 // 删除我的评论
 const deleteMyComment = () => {
   let comment_id = props.comment.comment_id;
-  doComment(videoStore().video_id, 2, "", comment_id).then((res: any) => {
-    if (res.status_code == 200) {
+  doComment(videoStore().video_id, 2, "", comment_id).then(() => {
       message.success("删除成功");
       emit("delete-comment", comment_id);
-    } else {
-      message.success(res.status_message);
-    }
   });
 };
 </script>

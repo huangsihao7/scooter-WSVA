@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 19:18:16
+ * @LastEditTime: 2023-11-02 20:59:48
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -100,22 +100,14 @@ const handleShowUser = (userId: number) => {
 // 取消关注
 const cancleFollow = (item: any, _index: any) => {
   if (item.isfollowed) {
-    canclefollowOne(item.id).then((res: any) => {
-      if (res.status_code == 200) {
+    canclefollowOne(item.id).then(() => {
         message.success("取消关注成功");
         window.location.reload()
-      } else {
-        message.error(res.status_message);
-      }
     });
     item.isfollowed = false;
   } else {
-    followOne(item.id).then((res: any) => {
-      if (res.status_code == 200) {
+    followOne(item.id).then(() => {
         message.success("关注成功");
-      } else {
-        message.error(res.status_message);
-      }
     });
     item.isfollowed = true;
   }

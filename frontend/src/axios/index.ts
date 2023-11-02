@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 7:08:43
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 19:10:46
+ * @LastEditTime: 2023-11-02 20:58:25
  * @FilePath: \scooter-WSVA\frontend\src\axios\index.ts
  * @Description:
  *
@@ -10,15 +10,15 @@
 import axios, { type AxiosRequestHeaders } from "axios";
 import router from "@/router";
 import { userStore } from "@/stores/user";
-import { useMessage } from "naive-ui";
+import { createDiscreteApi } from 'naive-ui'
 
 // const baseURl = 'http://127.0.0.1:8080';
 const baseURL = "http://172.22.121.53:7070";
-const message = useMessage();
 const service = axios.create({
   baseURL: baseURL,
   timeout: 15000, // 请求超时时间
 });
+const { message } = createDiscreteApi(['message'])
 
 // const { token } = storeToRefs('user')
 
@@ -39,18 +39,24 @@ service.interceptors.request.use(
 
 //  response拦截器
 service.interceptors.response.use((response) => {
-  if (response.status === 200) {
+  console.log(response)
+  console.log(response.data)
+  if (response.data.status_code === 200) {
     return response.data;
   } else if (response.status === 401) {
-    message.error(response.data.status_msg + "，请重新登录");
+    message.error(response.data.status_message + "，请重新登录");
     userStore().isLoggedIn = false;
+    userStore().user_id = -1;
     userStore().token = "";
     userStore().avatar = "";
     userStore().phoneNum = "";
+    userStore().gender = 1;
+    userStore().signature = '';
+    userStore().background_image = '';
     router.push("/");
     return Promise.reject();
   } else {
-    message.error(response.data.status_msg);
+    message.error(response.data.status_message);
     return Promise.reject();
   }
 });

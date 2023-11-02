@@ -324,12 +324,8 @@ const doRegister = () => {
       "该用户暂时还没有个人简介哦",
       defaultAvatar,
       defaultBg,
-    ).then((res: any) => {
-      if (res.status_code == 200) {
+    ).then(() => {
         message.success("注册成功");
-      } else {
-        message.error(res.status_message);
-      }
     });
   } else {
     message.error("密码不一致，请重试");

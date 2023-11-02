@@ -104,10 +104,7 @@ const handleLikeBtn = () => {
     }
     thisVideo.value.is_favorite = !thisVideo.value.is_favorite;
   }
-  doFavourite(props.video.video_id, action_type).then((res: any) => {
-    if(res.status_code!=200){
-      message.error(res.status_message)
-    }
+  doFavourite(props.video.video_id, action_type).then(() => {
   });
 };
 
@@ -129,10 +126,7 @@ const handleCollectBtn = () => {
     }
     thisVideo.value.is_star = !thisVideo.value.is_star;
   }
-  doStar(props.video.video_id, action_type).then((res: any) => {
-    if(res.status_code != 200){
-      message.error(res.status_message)
-    }
+  doStar(props.video.video_id, action_type).then(() => {
   });
 };
 
@@ -242,10 +236,7 @@ const updateFollow = (flag: boolean) => {
   } else {
     message.error("关注失败");
   }
-  doFollow(props.video.author.id, action).then((res: any) => {
-    if(res.status_code != 200){
-      message.error(res.status_message)
-    }
+  doFollow(props.video.author.id, action).then(() => {
   });
 };
 

@@ -8,8 +8,7 @@ import {
   NInput,
   NTabPane,
   NIcon,
-  NButton,
-useMessage,
+  NButton
 } from "naive-ui";
 import VideoPlus from "@/components/video/VideoPlus.vue";
 import { onMounted, ref } from "vue";
@@ -32,7 +31,6 @@ interface propsType {
   videoListType: number;
 }
 
-const message = useMessage()
 const props = defineProps<propsType>();
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false);
@@ -74,7 +72,8 @@ onMounted(() => {
     // 游客试看功能 前10条
     getVideosList().then((res:any)=>{
       if(res.status_code == 200){
-        videos.value = res.video_list.slice(0, 10)
+        let loadNum = res.video_list.length>10?10:res.video_list.length
+        videos.value = res.video_list.slice(0, loadNum)
       }
     })
   }
@@ -85,16 +84,10 @@ onMounted(() => {
 const updateVisible = (thisVideo: any) => {
   drawerVisible.value = !drawerVisible.value;
   getCommentList(thisVideo.value.video_id).then((res: any) => {
-    if(res.status_code == 200){
       commentlists.value = res.comment_list;
-    }else{
-      message.error(res.status_message)
-    }
   });
   getRecommendVideosList(thisVideo.value.video_id).then((res: any) => {
-    if(res.status_code == 200){
       recommendlists.value = res.video_list;
-    }
   });
 };
 
@@ -160,32 +153,30 @@ const formattedDate = () => {
 
 const doCommentApi = () => {
   doComment(videoStore().video_id, 1, addComment.value, 0).then((res: any) => {
-    if (res.status_code == 200) {
-      let userInfo = userStore();
-      let userObj: UserType = {
-        id: userInfo.user_id,
-        name: userInfo.name,
-        gender: userInfo.gender,
-        avatar: userInfo.avatar,
-        signature: userInfo.signature,
-        phoneNum: userInfo.phoneNum,
-        background_image: userInfo.background_image,
-        follow_count: 0,
-        follower_count: 0,
-        total_favorited: 0,
-        work_count: 0,
-        favorite_count: 0,
-        is_follow: false,
-      };
-      let addCommentObj: CommentType = {
-        content: addComment.value,
-        create_date: formattedDate(),
-        user: userObj,
-        comment_id: res.comment_id,
-      };
-      commentlists.value?.push(addCommentObj);
-      addComment.value = "";
-    }
+    let userInfo = userStore();
+    let userObj: UserType = {
+      id: userInfo.user_id,
+      name: userInfo.name,
+      gender: userInfo.gender,
+      avatar: userInfo.avatar,
+      signature: userInfo.signature,
+      phoneNum: userInfo.phoneNum,
+      background_image: userInfo.background_image,
+      follow_count: 0,
+      follower_count: 0,
+      total_favorited: 0,
+      work_count: 0,
+      favorite_count: 0,
+      is_follow: false,
+    };
+    let addCommentObj: CommentType = {
+      content: addComment.value,
+      create_date: formattedDate(),
+      user: userObj,
+      comment_id: res.comment_id,
+    };
+    commentlists.value?.push(addCommentObj);
+    addComment.value = "";
   });
 };
 
