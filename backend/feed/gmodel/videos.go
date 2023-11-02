@@ -136,6 +136,7 @@ func (m *VideoModel) Update(ctx context.Context, data *Videos) error {
 	return err
 }
 
+// 获取用户获赞数
 func (m *VideoModel) GetFavoriteCount(ctx context.Context, uid int64) (int64, error) {
 	var totalCount int64
 	result := m.db.WithContext(ctx).Model(&Videos{}).Where("author_id = ?", uid).Select("SUM(favorite_count)").Scan(&totalCount)
