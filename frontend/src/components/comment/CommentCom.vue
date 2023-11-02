@@ -36,7 +36,7 @@ const deleteMyComment = () => {
       message.success("删除成功");
       emit("delete-comment", comment_id);
     } else {
-      message.success(res.status_msg);
+      message.success(res.status_message);
     }
   });
 };

@@ -9,6 +9,7 @@ import {
   NTabPane,
   NIcon,
   NButton,
+useMessage,
 } from "naive-ui";
 import VideoPlus from "@/components/video/VideoPlus.vue";
 import { onMounted, ref } from "vue";
@@ -31,6 +32,7 @@ interface propsType {
   videoListType: number;
 }
 
+const message = useMessage()
 const props = defineProps<propsType>();
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false);
@@ -78,14 +80,21 @@ onMounted(() => {
   }
 });
 
+
 // 更新评论区可见状态
 const updateVisible = (thisVideo: any) => {
   drawerVisible.value = !drawerVisible.value;
   getCommentList(thisVideo.value.video_id).then((res: any) => {
-    commentlists.value = res.comment_list;
+    if(res.status_code == 200){
+      commentlists.value = res.comment_list;
+    }else{
+      message.error(res.status_message)
+    }
   });
   getRecommendVideosList(thisVideo.value.video_id).then((res: any) => {
-    recommendlists.value = res.video_list;
+    if(res.status_code == 200){
+      recommendlists.value = res.video_list;
+    }
   });
 };
 

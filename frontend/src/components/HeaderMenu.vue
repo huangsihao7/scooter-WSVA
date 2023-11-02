@@ -303,7 +303,7 @@ const doLogin = () => {
       window.location.reload();
       router.push("/");
     } else {
-      message.error(res.status_msg);
+      message.error(res.status_message);
     }
   });
 };
@@ -328,7 +328,7 @@ const doRegister = () => {
       if (res.status_code == 200) {
         message.success("注册成功");
       } else {
-        message.error(res.status_msg);
+        message.error(res.status_message);
       }
     });
   } else {

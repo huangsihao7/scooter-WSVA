@@ -87,7 +87,7 @@ const handlePostVideo = () => {
     ).then((res: any) => {
       fileUploadRef.value.clear();
       titleIptRef.value.clear();
-      message.success(res.status_msg);
+      message.success(res.status_message);
     });
     emit("visible-update", false);
   }

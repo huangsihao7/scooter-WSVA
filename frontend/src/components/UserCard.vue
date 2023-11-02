@@ -105,7 +105,7 @@ const cancleFollow = (item: any, _index: any) => {
         message.success("取消关注成功");
         window.location.reload()
       } else {
-        message.error(res.status_msg);
+        message.error(res.status_message);
       }
     });
     item.isfollowed = false;
@@ -114,7 +114,7 @@ const cancleFollow = (item: any, _index: any) => {
       if (res.status_code == 200) {
         message.success("关注成功");
       } else {
-        message.error(res.status_msg);
+        message.error(res.status_message);
       }
     });
     item.isfollowed = true;
