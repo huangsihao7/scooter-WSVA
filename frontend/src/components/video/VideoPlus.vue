@@ -255,7 +255,7 @@ const commentAnimateClass = ref<String>("");
 const shareAnimateClass = ref<String>("");
 const commentVisible = ref<boolean>(false);
 const shareVisible = ref<boolean>(false);
-const logedFlag = computed(()=>userStore().user_id == -1? true:false)
+const logedFlag = computed(()=>!userStore().isLoggedIn)
 onMounted(() => {
   thisVideo.value = props.video;
 });

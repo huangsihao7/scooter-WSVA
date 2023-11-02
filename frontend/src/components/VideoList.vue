@@ -58,7 +58,7 @@ const visitedIndex = ref<number>(-1);
 
 // 获取视频队列
 onMounted(() => {
-  if(userStore().user_id != -1){
+  if(userStore().isLoggedIn){
     if (props.videoListType == 0) {
       getRecommendVideos(0, 0).then((res: any) => {
         videos.value = res.video_list;
