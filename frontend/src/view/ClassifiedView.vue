@@ -39,7 +39,6 @@ onMounted(() => {
       videos.value = res.video_list;
     });
   } else {
-    console.log(searchContent.value, "searchContent");
     let searchValue = searchContent.value.toString();
     getVideosByKeyWords(searchValue).then((res: any) => {
       videos.value = res.video_list;

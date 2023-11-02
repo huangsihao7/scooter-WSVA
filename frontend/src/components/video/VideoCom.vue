@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 11:30:27
+ * @LastEditTime: 2023-11-02 19:07:17
  * @Description: 视频基础组件
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCom.vue
 -->
@@ -101,7 +101,6 @@ const props = defineProps({
   //       type: "mp4",
   //       customType: {
   //         customHls: function (video: any, player: any) {
-  //           console.log(player);
   //           const hls = new Hls(); //实例化Hls  用于解析m3u8
   //           hls.loadSource(video.src);
   //           hls.attachMedia(video);
@@ -118,7 +117,6 @@ const props = defineProps({
       type: "mp4",
       customType: {
         customHls: function (video: any, _player: any) {
-          // console.log(player);
           const hls = new Hls(); //实例化Hls  用于解析m3u8
           hls.loadSource(video.src);
           hls.attachMedia(video);
@@ -191,7 +189,6 @@ onMounted(() => {
   }
   if (props.danmaku) {
     player.danmaku = props.danmaku;
-    console.log(player.danmaku);
   }
   if (props.videoIndex == 0) {
     //自动播放开启
@@ -199,7 +196,6 @@ onMounted(() => {
     state.instance = new DPlayer(player);
     videoStore().video_id = props.videoId;
     // state.instance.video.play()
-    // console.log(state.instance);
   } else {
     player.autoplay = false;
     state.instance = new DPlayer(player);
@@ -213,7 +209,6 @@ onUpdated(() => {
       state.instance.video.pause();
     } else {
       state.instance.video.play();
-      console.log("props.videoId", props.videoId);
       videoStore().video_id = props.videoId;
     }
   }

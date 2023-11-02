@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 17:10:32
+ * @LastEditTime: 2023-11-02 19:18:16
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -23,7 +23,6 @@ import { FollowCardType } from "@/apis/interface";
 import { routeStore } from "@/stores/route";
 
 interface propsType{
-  cardType: string,
   userId: number
 }
 const props = defineProps<propsType>()
@@ -31,12 +30,21 @@ const message = useMessage();
 const router = useRouter();
 // 用户列表渲染数据
 const usersList = ref<FollowCardType[]>([]);
+const cardType = ref<string>()
+
+function getLastSegmentFromRoute(route: string): string {
+  const segments = route.split("/");
+  return segments[segments.length - 1];
+}
 
 // 获取关注的人的信息卡片
 onMounted(() => {
-  console.log(props.userId, props.cardType, 'cardType')
+  let path = window.location.href;
+  let curRoute= getLastSegmentFromRoute(path);
+  routeStore().name =curRoute;
+  cardType.value = curRoute
   let userId = props.userId
-  switch (props.cardType) {
+  switch (curRoute) {
     case 'friends':
       getFriendsList(userId).then((res: any) => {
         usersList.value = res.list;
@@ -62,6 +70,16 @@ onMounted(() => {
         }
       });
     break;
+    case 'follow':
+      getFollowsList(userId).then((res: any) => {
+        usersList.value = res.list;
+        if (usersList.value) {
+          usersList.value.forEach((element: any) => {
+            element.isfollowed = true;
+          });
+        }
+      });
+    break;
   }
   
 });
@@ -75,7 +93,7 @@ const handleShowVedio = (info: FollowCardType) => {
 
 // 跳转到关注人的页面
 const handleShowUser = (userId: number) => {
-  routeStore().name = "userinfo";
+  // routeStore().name = "userinfo";//不能写，写了回退有问题
   router.push({ name: "userinfo", params: { id: userId } });
 };
 

@@ -65,7 +65,6 @@ onMounted(() => {
     });
   }
   visitedIndex.value = 0;
-  console.log(visitedIndex.value);
 });
 
 // 更新评论区可见状态
@@ -93,7 +92,6 @@ const downPage = () => {
 const updatePage = (currentIndex: number, lastIndex: number) => {
   currentVideoIndex.value = currentIndex;
   lastVideoIndex.value = lastIndex;
-  console.log(visitedIndex.value);
   if (currentIndex > lastIndex && currentIndex > visitedIndex.value) {
     let offset = defaultLoad + currentIndex;
     let readedVideo = videoStore().video_id;
@@ -184,11 +182,9 @@ const postCommentByBtn = () => {
 
 // 动态删除评论数据
 const deleteFunc = (comment_id: number) => {
-  console.log("333333333333",comment_id, commentlists.value);
   commentlists.value = commentlists.value?.filter(
     (item: CommentType) => item.comment_id !== comment_id,
   );
-  console.log("4444444444444444", commentlists.value);
 };
 </script>
 

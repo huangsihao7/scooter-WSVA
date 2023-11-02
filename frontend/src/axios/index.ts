@@ -1,9 +1,9 @@
 /*
  * @Author: Xu Ning
  * @Date: 2023-10-25 7:08:43
- * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-10-30 16:19:02
- * @FilePath: /scooter-WSVA/frontend/src/axios/index.ts
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-11-02 19:10:46
+ * @FilePath: \scooter-WSVA\frontend\src\axios\index.ts
  * @Description:
  *
  */
@@ -39,7 +39,6 @@ service.interceptors.request.use(
 
 //  response拦截器
 service.interceptors.response.use((response) => {
-  // console.log(response, response.data);
   if (response.status === 200) {
     return response.data;
   } else if (response.status === 401) {

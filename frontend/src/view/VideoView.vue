@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-31 18:42:57
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 22:14:43
+ * @LastEditTime: 2023-11-02 19:09:22
  * @Description: 查看某个特定video
  * @FilePath: \scooter-WSVA\frontend\src\view\VideoView.vue
 -->
@@ -45,8 +45,9 @@ onMounted(() => {
   let vid = videoId.value.toString();
   let vidNum = parseInt(vid);
   getVideoById(vidNum).then((res: any) => {
-    video.value = res.video_info;
-    console.log("video", res, res.video_info, video.value);
+    if(res.status_code == 200){
+      video.value = res.video_info;
+    }
   });
 });
 
@@ -63,7 +64,6 @@ const updateVisible = (thisVideo: any) => {
 
 // 发布评论
 const postComment = (e: any) => {
-  console.log(addComment.value);
   if (e.keyCode == 13 && addComment.value) {
     doComment(videoStore().video_id, 1, addComment.value, 0).then(
       (res: any) => {

@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-29 17:10:06
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 18:22:59
+ * @LastEditTime: 2023-11-02 19:06:19
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\InfoEditCom.vue
 -->
@@ -136,7 +136,6 @@ onMounted(() => {
   formValue.value.signature = userStore().signature;
   formValue.value.background = userStore().background_image;
   formValue.value.avatar = userStore().avatar;
-  console.log(formValue.value);
 });
 
 // 上传限制

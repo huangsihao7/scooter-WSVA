@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 18:28:33
+ * @LastEditTime: 2023-11-02 19:09:06
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyHeaderCom.vue
 -->
@@ -26,7 +26,6 @@ const userInfo = ref<any>({
 });
 const editVisible = ref<boolean>(false);
 const router = useRouter();
-const emit = defineEmits(["userid-update"]);
 
 // 获取用户信息
 const getUserInfoFunc = () => {

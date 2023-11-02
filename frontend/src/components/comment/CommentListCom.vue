@@ -9,7 +9,6 @@ interface propsType {
 const props = defineProps<propsType>();
 const emit = defineEmits(["delete-comment"]);
 const deleteFunc = (comment_id: number) => {
-  console.log('22222',comment_id)
   emit("delete-comment", comment_id);
 };
 </script>
