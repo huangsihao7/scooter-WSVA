@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 17:30:39
+ * @LastEditTime: 2023-11-02 11:32:07
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -60,12 +60,8 @@ const dplayerObj = reactive({
   },
   danmaku: {
     id: props.video.video_id,
-    // api: "https://angustar.tech/api/dplayer/",
     api: baseURL + "/danmu/list",
     token: userStore().token,
-    // maximum: 1000,
-    // addition: ['https://api.prprpr.me/dplayer/v3/bilibili?aid=4157142'],
-    // addition: [baseURL + '/danmu/listv3?/video_id=' + props.video.video_id],
     user: userStore().user_id,
     bottom: "15%",
     unlimited: true,
@@ -73,24 +69,8 @@ const dplayerObj = reactive({
   },
   contextmenu: [
     {
-      text: "custom1",
-      link: "https://github.com/DIYgod/DPlayer",
-    },
-    {
-      text: "custom2",
-      click: (player: any) => {
-        console.log(player);
-      },
-    },
-  ],
-  highlight: [
-    {
-      time: 20,
-      text: "这是第 20 秒",
-    },
-    {
-      time: 120,
-      text: "这是 2 分钟",
+      text: "项目GitHub地址",
+      link: "https://github.com/huangsihao7/scooter-WSVA",
     },
   ],
 });
@@ -157,6 +137,7 @@ const handleCollectBtn = () => {
 // 评论按钮的操作
 const handleCommentBtn = () => {
   commentVisible.value = !commentVisible.value;
+  console.log("2222222222", thisVideo);
   emit("comment-visible-update", thisVideo);
 };
 
@@ -214,6 +195,7 @@ const handleDownloadBtn = () => {
       let title = thisVideo.value.title.toString();
       const downItem: DownloadType = { url: url, title: title };
       console.log(downItem);
+      message.info("正在下载");
       downLoad(downItem);
     } else {
       message.error("下载路径错误");

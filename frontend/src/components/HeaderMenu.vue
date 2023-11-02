@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 17:02:39
+ * @LastEditTime: 2023-11-02 00:03:18
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
@@ -22,14 +22,13 @@ import {
   NInput,
   NButton,
   NAvatar,
-  NPopover,
-  NTag,
   NForm,
   NTabs,
   NImage,
   NTabPane,
   NModal,
   NFormItemRow,
+  NDropdown,
 } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import { Search, Add } from "@vicons/ionicons5";
@@ -40,6 +39,7 @@ import { login, register } from "@/apis/login";
 import router from "@/router";
 import { useMessage } from "naive-ui";
 import PostVedio from "@/components/video/PostVideo.vue";
+import { historyStore } from "@/stores/historySearch";
 
 // 消息弹窗
 const message = useMessage();
@@ -88,9 +88,18 @@ function renderIcon(icon: Component) {
 const doSearch = () => {
   let searchValue = inputstr.value;
   videoStore().search_value = searchValue;
-  if (routeStore().name != "search") {
-    router.push({ name: "search" });
+  let child = {
+    label: searchValue,
+    key: searchValue,
+  };
+  historyStore().historyData.push(child);
+  if (historyStore().historyData.length > 5) {
+    historyStore().historyData.shift(); // 移除第一条数据
   }
+  if (historyStore().historyData)
+    if (routeStore().name != "search") {
+      router.push({ name: "search" });
+    }
 };
 
 //投稿渲染
@@ -124,20 +133,36 @@ function renderAvatar(avatarSrc: string) {
       "",
     );
 }
+const dropOptions = ref<DropdownOption[]>();
+onMounted(() => {
+  dropOptions.value = [
+    {
+      type: "group",
+      label: "历史记录",
+      key: "main",
+      children: historyStore().historyData,
+    },
+  ];
+});
 
-// 渲染history
-function renderTags(historyStr: string) {
-  return () =>
-    h(
-      NTag,
-      {
-        type: "info",
-        round: true,
-        closable: true,
-      },
-      historyStr,
-    );
-}
+import type { VNodeChild } from "vue";
+import type { DropdownOption } from "naive-ui";
+
+const renderDropdownLabel = (option: DropdownOption) => {
+  if (option.type === "group") {
+    return option.label as VNodeChild;
+  }
+  return h(
+    "a",
+    {
+      href: "",
+      target: "_blank",
+    },
+    {
+      default: () => option.label as VNodeChild,
+    },
+  );
+};
 
 // 菜单数据
 const loggedMenuOptions: MenuOption[] = [
@@ -157,43 +182,43 @@ const loggedMenuOptions: MenuOption[] = [
   {
     label: () =>
       h(
-        NPopover,
+        NDropdown,
         {
           trigger: "focus",
+          options: dropOptions.value,
+          placement: "bottom-start",
           showArrow: false,
+          renderLabel: renderDropdownLabel,
         },
-        {
-          trigger: () => {
-            return h(
-              NInput,
-              {
-                modelValue: inputstr.value,
-                onUpdateValue: (value: any) => {
-                  console.log("hhh", value);
-                  inputstr.value = value;
-                },
-                class: "h-input",
-                round: true,
-                placeholder: "搜索",
-                onKeydown: (e) => {
-                  if (e.key == "Enter") {
-                    doSearch();
-                  }
-                },
-                onFocus: () => {
-                  historyTabVisible.value = true;
-                },
-                onBlur: () => {
-                  historyTabVisible.value = false;
-                },
+        [
+          h(
+            NInput,
+            {
+              modelValue: inputstr.value,
+              onUpdateValue: (value: any) => {
+                console.log("hhh", value);
+                inputstr.value = value;
               },
-              {
-                suffix: renderIcon(Search),
+              class: "h-input",
+              round: true,
+              placeholder: "搜索",
+              onKeydown: (e) => {
+                if (e.key == "Enter") {
+                  doSearch();
+                }
               },
-            );
-          },
-          default: renderTags("亚运会冠军"),
-        },
+              onFocus: () => {
+                historyTabVisible.value = true;
+              },
+              onBlur: () => {
+                historyTabVisible.value = false;
+              },
+            },
+            {
+              suffix: renderIcon(Search),
+            },
+          ),
+        ],
       ),
     key: "search",
   },
@@ -511,6 +536,10 @@ watch(
 
 .aaa {
   background-color: #409eff;
+}
+
+.n-dropdown-menu {
+  width: calc(20vw - 40px);
 }
 
 .post-btn {

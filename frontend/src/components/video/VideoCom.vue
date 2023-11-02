@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 22:23:49
+ * @LastEditTime: 2023-11-02 11:30:27
  * @Description: 视频基础组件
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCom.vue
 -->
@@ -114,7 +114,7 @@ const props = defineProps({
     type: Object,
     // eslint-disable-next-line vue/require-valid-default-prop
     default: {
-      url: "http://s327crbzf.hn-bkt.clouddn.com/4993187b41132025aaaa88063de94727b54d482b203c325a78ce8bf61e41e514.mp4", //视频地址
+      url: "", //视频地址
       type: "mp4",
       customType: {
         customHls: function (video: any, _player: any) {

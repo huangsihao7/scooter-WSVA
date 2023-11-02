@@ -98,23 +98,30 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
     let offset = defaultLoad + currentIndex;
     let readedVideo = videoStore().video_id;
     visitedIndex.value = currentIndex;
-    console.log("readedVideo", readedVideo);
     if (props.videoListType == 0) {
       getRecommendVideos(offset, readedVideo).then((res: any) => {
-        videos.value?.push(res.video_list[0]);
+        if (res.video_list[0]) {
+          videos.value?.push(res.video_list[0]);
+        }
       });
     } else {
       getPopularVideos(offset, readedVideo).then((res: any) => {
-        videos.value?.push(res.video_list[0]);
+        if (res.video_list[0]) {
+          videos.value?.push(res.video_list[0]);
+        }
       });
     }
     if (videos.value) {
       getCommentList(videos.value[currentIndex].video_id).then((res: any) => {
-        commentlists.value = res.comment_list;
+        if (res.comment_list[0]) {
+          commentlists.value = res.comment_list;
+        }
       });
       getRecommendVideosList(videos.value[currentIndex].video_id).then(
         (res: any) => {
-          recommendlists.value = res.video_list;
+          if (res.video_list[0]) {
+            recommendlists.value = res.video_list;
+          }
         },
       );
     }
