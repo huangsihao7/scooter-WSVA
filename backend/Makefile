@@ -15,7 +15,7 @@ doc:
 	# comment
 	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/comment.json -host 172.22.121.53:7070" -api comment/api/comment.api -dir .
 	# mq
-	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/mq.json -host 172.22.121.53:7070" -api mq/api/mq.api -dir .
+	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/mq.json -host 172.22.121.53:7070" -api mq/mq.api -dir .
 
 build:
 	mkdir -p output
