@@ -18,8 +18,6 @@ const userId = computed(() => route.params.id?parseInt(route.params.id.toString(
 
 <template>
   <UserCard :userId="userId" />
-  <!-- <UserCard v-if="cardType!='follow'" :cardType="cardType" :userId="userId"/>
-  <UserCard v-else cardType='follow' :userId="userStore().user_id"/> -->
 </template>
 
 <style scoped></style>

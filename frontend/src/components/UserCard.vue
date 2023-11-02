@@ -2,12 +2,12 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 21:55:40
+ * @LastEditTime: 2023-11-02 22:14:30
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch, reactive } from "vue";
 import { getFollowsList, getFollowersList, getFriendsList, canclefollowOne, followOne } from "@/apis/follow";
 import { useRouter } from "vue-router";
 import {
@@ -30,7 +30,7 @@ const props = defineProps<propsType>()
 const message = useMessage();
 const router = useRouter();
 // 用户列表渲染数据
-const usersList = ref<FollowCardType[]>([]);
+const usersList = reactive<Array<FollowCardType>>([]);
 const cardType = ref<string>()
 
 function getLastSegmentFromRoute(route: string): string {
@@ -43,12 +43,100 @@ function getSecondSegmentFromRoute(route: string): string {
   return segments[segments.length - 2];
 }
 
+watch(()=>routeStore().name,
+(newValue:any)=>{
+  console.log('hiiiiiiiiiiii')
+  getUserCardsInfo(newValue)
+})
+
+const getUserCardsInfo = (finalRoute: string) =>{
+  let userId = props.userId
+  switch (finalRoute) {
+    case 'friends':
+      getFriendsList(userId).then((res: any) => {
+        usersList.splice(0, usersList.length, ...res.list);
+        console.log(usersList)
+        if (usersList) {
+          usersList.forEach((element: any) => {
+            element.isfriends = true;
+          });
+        }
+      });
+      break;
+    case 'followers':
+      getFollowersList(userId).then((res: any) => {
+        usersList.splice(0, usersList.length, ...res.list);
+      });
+    break;
+    case 'follows':
+      getFollowsList(userId).then((res: any) => {
+        usersList.splice(0, usersList.length, ...res.list);
+        if (usersList) {
+          usersList.forEach((element: any) => {
+            element.is_follow = true;
+          });
+        }
+      });
+    break;
+    case 'follow':
+      getFollowsList(userId).then((res: any) => {
+        usersList.splice(0, usersList.length, ...res.list);
+        if (usersList) {
+          usersList.forEach((element: any) => {
+            element.is_follow = true;
+          });
+        }
+      });
+    break;
+  }
+}
+
+// const getUserCardsInfo = (finalRoute: string) =>{
+//   let userId = props.userId
+//   switch (finalRoute) {
+//     case 'friends':
+//       getFriendsList(userId).then((res: any) => {
+//         usersList.value = res.list;
+//         if (usersList.value) {
+//           usersList.value.forEach((element: any) => {
+//             element.isfriends = true;
+//           });
+//         }
+//       });
+//       break;
+//     case 'followers':
+//       getFollowersList(userId).then((res: any) => {
+//         usersList.value = res.list;
+//       });
+//     break;
+//     case 'follows':
+//       getFollowsList(userId).then((res: any) => {
+//         usersList.value = res.list;
+//         if (usersList.value) {
+//           usersList.value.forEach((element: any) => {
+//             element.is_follow = true;
+//           });
+//         }
+//       });
+//     break;
+//     case 'follow':
+//       getFollowsList(userId).then((res: any) => {
+//         usersList.value = res.list;
+//         if (usersList.value) {
+//           usersList.value.forEach((element: any) => {
+//             element.is_follow = true;
+//           });
+//         }
+//       });
+//     break;
+//   }
+// }
+
+
 // 获取关注的人的信息卡片
 onMounted(() => {
-  console.log('userId11111111111111111111111111')
   let path = window.location.href;
   console.log(path)
-
   let lastRoute = getLastSegmentFromRoute(path);
   let secondRoute = getSecondSegmentFromRoute(path);
   let finalRoute = ''
@@ -59,45 +147,7 @@ onMounted(() => {
   }
   routeStore().name = finalRoute;
   cardType.value = finalRoute
-  let userId = props.userId
-  switch (finalRoute) {
-    case 'friends':
-      getFriendsList(userId).then((res: any) => {
-        usersList.value = res.list;
-        if (usersList.value) {
-          usersList.value.forEach((element: any) => {
-            element.isfriends = true;
-          });
-        }
-      });
-      break;
-    case 'followers':
-      getFollowersList(userId).then((res: any) => {
-        usersList.value = res.list;
-      });
-    break;
-    case 'follows':
-      getFollowsList(userId).then((res: any) => {
-        usersList.value = res.list;
-        if (usersList.value) {
-          usersList.value.forEach((element: any) => {
-            element.is_follow = true;
-          });
-        }
-      });
-    break;
-    case 'follow':
-      getFollowsList(userId).then((res: any) => {
-        usersList.value = res.list;
-        if (usersList.value) {
-          usersList.value.forEach((element: any) => {
-            element.is_follow = true;
-          });
-        }
-      });
-    break;
-  }
-  
+  getUserCardsInfo(finalRoute)
 });
 
 // 跳转视频
