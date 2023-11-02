@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 20:59:48
+ * @LastEditTime: 2023-11-02 21:11:31
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -65,7 +65,7 @@ onMounted(() => {
         usersList.value = res.list;
         if (usersList.value) {
           usersList.value.forEach((element: any) => {
-            element.isfollowed = true;
+            element.is_follow = true;
           });
         }
       });
@@ -75,7 +75,7 @@ onMounted(() => {
         usersList.value = res.list;
         if (usersList.value) {
           usersList.value.forEach((element: any) => {
-            element.isfollowed = true;
+            element.is_follow = true;
           });
         }
       });
@@ -99,17 +99,17 @@ const handleShowUser = (userId: number) => {
 
 // 取消关注
 const cancleFollow = (item: any, _index: any) => {
-  if (item.isfollowed) {
+  if (item.is_follow) {
     canclefollowOne(item.id).then(() => {
         message.success("取消关注成功");
         window.location.reload()
     });
-    item.isfollowed = false;
+    item.is_follow = false;
   } else {
     followOne(item.id).then(() => {
         message.success("关注成功");
     });
-    item.isfollowed = true;
+    item.is_follow = true;
   }
 };
 </script>
@@ -143,6 +143,9 @@ const cancleFollow = (item: any, _index: any) => {
           <div class="other-info">
             <span class="name">{{ info.name }}</span>
             <NButton class="btn" v-if="cardType=='follows'" @click="cancleFollow(info, index)">
+              {{ info.is_follow ? "已关注" : "关注" }}
+            </NButton>
+            <NButton class="btn" v-if="cardType=='follow'" @click="cancleFollow(info, index)">
               {{ info.is_follow ? "已关注" : "关注" }}
             </NButton>
             <NButton class="btn" v-if="cardType=='friends'" @click="cancleFollow(info, index)">
