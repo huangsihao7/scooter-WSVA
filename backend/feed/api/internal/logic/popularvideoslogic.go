@@ -45,11 +45,7 @@ func (l *PopularVideosLogic) PopularVideos(req *types.PopularVideosListReq) (res
 		})
 	}
 	if err != nil {
-		return &types.PopularVideosListResp{
-			StatusCode: int(popular.StatusCode),
-			StatusMsg:  popular.StatusMsg,
-			Videos:     nil,
-		}, nil
+		return nil, err
 	}
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range popular.VideoList {

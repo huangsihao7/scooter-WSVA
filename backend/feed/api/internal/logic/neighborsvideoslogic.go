@@ -33,12 +33,7 @@ func (l *NeighborsVideosLogic) NeighborsVideos(req *types.NeighborsVideoReq) (re
 		Uid: int32(uid),
 	})
 	if err != nil {
-		println("-------------222----------------------")
-		return &types.NeighborsVideoResp{
-			StatusCode: int(neighbors.StatusCode),
-			StatusMsg:  neighbors.StatusMsg,
-			VideoList:  nil,
-		}, nil
+		return nil, err
 	}
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range neighbors.VideoList {

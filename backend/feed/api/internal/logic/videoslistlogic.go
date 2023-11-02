@@ -28,11 +28,7 @@ func NewVideosListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Videos
 func (l *VideosListLogic) VideosList() (resp *types.VideosListResp, err error) {
 	videos, err := l.svcCtx.FeedRpc.ListVideos(l.ctx, &feed.ListFeedRequest{ActorId: uint32(10)})
 	if err != nil {
-		return &types.VideosListResp{
-			StatusCode: int(videos.StatusCode),
-			StatusMsg:  videos.StatusMsg,
-			Videos:     nil,
-		}, nil
+		return nil, err
 	}
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range videos.VideoList {

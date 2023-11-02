@@ -35,10 +35,7 @@ func (l *CreateVideoLogic) CreateVideo(req *types.CreateVideoReq) (resp *types.C
 		Category: uint32(req.Category),
 	})
 	if err != nil {
-		return &types.CreateVideoResp{
-			StatusCode: int(res.StatusCode),
-			StatusMsg:  res.StatusMsg,
-		}, nil
+		return nil, err
 	}
 	return &types.CreateVideoResp{
 		StatusCode: int(res.StatusCode),

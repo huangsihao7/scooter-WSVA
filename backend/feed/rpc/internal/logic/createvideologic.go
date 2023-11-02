@@ -41,10 +41,8 @@ func (l *CreateVideoLogic) CreateVideo(in *feed.CreateVideoRequest) (*feed.Creat
 	}
 	err := l.svcCtx.VideoModel.Insert(l.ctx, &newVideo)
 	if err != nil {
-		return &feed.CreateVideoResponse{
-			StatusCode: constants.VideoServiceInnerErrorCode,
-			StatusMsg:  constants.VideoServiceInnerError,
-		}, nil
+		l.Logger.Error("视频插入数据库错误", err.Error())
+		return nil, err
 	}
 
 	JobId := common.IsSafeJobId(in.Url, strconv.Itoa(int(newVideo.Id)))

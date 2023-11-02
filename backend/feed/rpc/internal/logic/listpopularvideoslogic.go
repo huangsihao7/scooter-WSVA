@@ -36,22 +36,15 @@ func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*f
 
 	getresponse, err := format.QiNiuGet(url)
 	if err != nil {
-		return &feed.ListFeedResponse{
-			StatusCode: constants.RecommendServiceInnerErrorCode,
-			StatusMsg:  constants.RecommendServiceInnerError,
-			VideoList:  nil,
-		}, err
+		l.Logger.Error("推荐系统错误", err.Error())
+		return nil, err
 	}
 	var result []format.PopularResp
 	println(string(getresponse))
 	err = json.Unmarshal(getresponse, &result)
 	if err != nil {
-		fmt.Println("JSON unmarshal error:", err)
-		return &feed.ListFeedResponse{
-			StatusCode: constants.JsonErrorCode,
-			StatusMsg:  constants.JsonError,
-			VideoList:  nil,
-		}, err
+		l.Logger.Errorf("JSON unmarshal error:", err)
+		return nil, err
 	}
 	//向数据库插入浏览记录
 	if in.Offset == 0 {
@@ -61,11 +54,7 @@ func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*f
 			Vid: id,
 		})
 		if err != nil {
-			return &feed.ListFeedResponse{
-				StatusCode: constants.InsertDbErrorCode,
-				StatusMsg:  constants.InsertDbError,
-				VideoList:  nil,
-			}, err
+			l.Logger.Error("插入历史记录失败")
 		}
 	} else {
 		err = l.svcCtx.HistoryModel.Insert(l.ctx, &gmodel.History{
@@ -73,11 +62,7 @@ func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*f
 			Vid: int(in.ReadVid),
 		})
 		if err != nil {
-			return &feed.ListFeedResponse{
-				StatusCode: constants.InsertDbErrorCode,
-				StatusMsg:  constants.InsertDbError,
-				VideoList:  nil,
-			}, err
+			l.Logger.Error("插入历史记录失败")
 		}
 	}
 
@@ -85,11 +70,8 @@ func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*f
 	for _, item := range result {
 		id, err := strconv.Atoi(item.Id)
 		if err != nil {
-			return &feed.ListFeedResponse{
-				StatusCode: constants.StringToIntErrorCode,
-				StatusMsg:  constants.StringToIntError,
-				VideoList:  nil,
-			}, err
+			l.Logger.Errorf("strconv.Atoi error:", err)
+			return nil, err
 		}
 		video, err := l.svcCtx.VideoModel.FindOne(l.ctx, int64(id))
 		userRpcRes, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.ActorId), ActorId: int64(video.AuthorId)})

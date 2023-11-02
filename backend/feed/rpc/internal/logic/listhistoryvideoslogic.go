@@ -28,29 +28,20 @@ func NewListHistoryVideosLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 func (l *ListHistoryVideosLogic) ListHistoryVideos(in *feed.HistoryReq) (*feed.HistoryResp, error) {
 	histories, err := l.svcCtx.HistoryModel.FindHistorys(l.ctx, int64(in.Uid))
 	if err != nil {
-		return &feed.HistoryResp{
-			StatusCode: constants.FindDbErrorCode,
-			StatusMsg:  constants.FindDbError,
-			VideoList:  nil,
-		}, err
+		l.Logger.Error("数据库查找历史记录信息失败", err.Error())
+		return nil, err
 	}
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range histories {
 		videoinfo, err := l.svcCtx.VideoModel.FindOne(l.ctx, int64(item.Vid))
 		if err != nil {
-			return &feed.HistoryResp{
-				StatusCode: constants.FindDbErrorCode,
-				StatusMsg:  constants.FindDbError,
-				VideoList:  nil,
-			}, err
+			l.Logger.Error("数据库查找视频信息失败", err.Error())
+			return nil, err
 		}
 		userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.Uid), ActorId: int64(videoinfo.AuthorId)})
 		if err != nil {
-			return &feed.HistoryResp{
-				StatusCode: constants.FindUserErrorCode,
-				StatusMsg:  constants.FindUserError,
-				VideoList:  nil,
-			}, err
+			l.Logger.Error("查找用户信息失败", err.Error())
+			return nil, err
 		}
 
 		userInfo := &feed.User{
@@ -69,19 +60,13 @@ func (l *ListHistoryVideosLogic) ListHistoryVideos(in *feed.HistoryReq) (*feed.H
 		}
 		IsFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.Uid), int64(item.Id))
 		if err != nil {
-			return &feed.HistoryResp{
-				StatusCode: constants.FindUserErrorCode,
-				StatusMsg:  constants.FindUserError,
-				VideoList:  nil,
-			}, err
+			l.Logger.Error("是否关注失败")
+			return nil, err
 		}
 		IsStar, err := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.Uid), int64(item.Id))
 		if err != nil {
-			return &feed.HistoryResp{
-				StatusCode: constants.FindUserErrorCode,
-				StatusMsg:  constants.FindUserError,
-				VideoList:  nil,
-			}, err
+			l.Logger.Error("是否收藏失败")
+			return nil, err
 		}
 		VideoList = append(VideoList, &feed.VideoInfo{
 			Id:            uint32(videoinfo.Id),

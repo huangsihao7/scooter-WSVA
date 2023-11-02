@@ -29,11 +29,7 @@ func (l *HistoryVideosLogic) HistoryVideos() (resp *types.HistoryVideosResp, err
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
 	videos, err := l.svcCtx.FeedRpc.ListHistoryVideos(l.ctx, &feed.HistoryReq{Uid: int32(uid)})
 	if err != nil {
-		return &types.HistoryVideosResp{
-			StatusCode: int(videos.StatusCode),
-			StatusMsg:  videos.StatusMsg,
-			VideoList:  nil,
-		}, nil
+		return nil, err
 	}
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range videos.VideoList {

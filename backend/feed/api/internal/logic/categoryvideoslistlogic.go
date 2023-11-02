@@ -33,11 +33,7 @@ func (l *CategoryVideosListLogic) CategoryVideosList(req *types.CategoryVideosLi
 		Category: req.Category,
 	})
 	if err != nil {
-		return &types.CategoryVideosListResp{
-			StatusCode: int(videos.StatusCode),
-			StatusMsg:  videos.StatusMsg,
-			Videos:     nil,
-		}, nil
+		return nil, err
 	}
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range videos.VideoList {

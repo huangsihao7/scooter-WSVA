@@ -33,11 +33,7 @@ func (l *UserVideosListLogic) UserVideosList(req *types.UserVideoListReq) (resp 
 		ToUid: uint32(req.ToUid),
 	})
 	if err != nil {
-		return &types.UserVideoListResp{
-			StatusCode: int(videos.StatusCode),
-			StatusMsg:  videos.StatusMsg,
-			VideoList:  nil,
-		}, nil
+		return nil, err
 	}
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range videos.VideoList {

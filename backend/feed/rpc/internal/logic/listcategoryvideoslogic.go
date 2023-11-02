@@ -30,15 +30,10 @@ func (l *ListCategoryVideosLogic) ListCategoryVideos(in *feed.CategoryFeedReques
 	Feeds, err := l.svcCtx.VideoModel.FindCategoryFeeds(l.ctx, int64(in.Category))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return &feed.CategoryFeedResponse{
-				StatusCode: constants.CategoryVideosDoNotExistedCode,
-				StatusMsg:  constants.CategoryVideosDoNotExisted,
-			}, err
+			return nil, nil
 		} else {
-			return &feed.CategoryFeedResponse{
-				StatusCode: constants.FindCategoryVideosErrorCode,
-				StatusMsg:  constants.FindCategoryVideosError,
-			}, err
+			l.Logger.Error("数据库查找分类失败", err.Error())
+			return nil, err
 		}
 	}
 
@@ -46,10 +41,8 @@ func (l *ListCategoryVideosLogic) ListCategoryVideos(in *feed.CategoryFeedReques
 	for _, item := range Feeds {
 		userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.ActorId), ActorId: int64(item.AuthorId)})
 		if err != nil {
-			return &feed.CategoryFeedResponse{
-				StatusCode: constants.FindUserErrorCode,
-				StatusMsg:  constants.FindUserError,
-			}, err
+			l.Logger.Error("查找用户信息失败", err.Error())
+			return nil, err
 		}
 
 		userInfo := &feed.User{

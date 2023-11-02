@@ -35,22 +35,15 @@ func (l *ListVideosByRecommendLogic) ListVideosByRecommend(in *feed.ListFeedRequ
 	//向推荐系统请求推荐视频id
 	getresponse, err := format.QiNiuGet(url)
 	if err != nil {
-		return &feed.ListFeedResponse{
-			StatusCode: constants.RecommendServiceInnerErrorCode,
-			StatusMsg:  constants.RecommendServiceInnerError,
-			VideoList:  nil,
-		}, err
+		l.Logger.Error("推荐系统错误", err.Error())
+		return nil, err
 	}
 	var result []string
 	println(string(getresponse))
 	err = json.Unmarshal(getresponse, &result)
 	if err != nil {
-		fmt.Println("JSON unmarshal error:", err)
-		return &feed.ListFeedResponse{
-			StatusCode: constants.JsonErrorCode,
-			StatusMsg:  constants.JsonError,
-			VideoList:  nil,
-		}, err
+		l.Logger.Error("JSON unmarshal error", err.Error())
+		return nil, err
 	}
 	if in.Offset == 0 {
 		id, _ := strconv.Atoi(result[0])
@@ -59,11 +52,8 @@ func (l *ListVideosByRecommendLogic) ListVideosByRecommend(in *feed.ListFeedRequ
 			Vid: id,
 		})
 		if err != nil {
-			return &feed.ListFeedResponse{
-				StatusCode: constants.InsertDbErrorCode,
-				StatusMsg:  constants.InsertDbError,
-				VideoList:  nil,
-			}, err
+			l.Logger.Errorf("HistoryModel.Insert error:", err)
+			return nil, err
 		}
 	} else {
 		err = l.svcCtx.HistoryModel.Insert(l.ctx, &gmodel.History{
@@ -71,22 +61,16 @@ func (l *ListVideosByRecommendLogic) ListVideosByRecommend(in *feed.ListFeedRequ
 			Vid: int(in.ReadVid),
 		})
 		if err != nil {
-			return &feed.ListFeedResponse{
-				StatusCode: constants.InsertDbErrorCode,
-				StatusMsg:  constants.InsertDbError,
-				VideoList:  nil,
-			}, err
+			l.Logger.Errorf("插入数据库错误:", err)
+			return nil, err
 		}
 	}
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range result {
 		id, err := strconv.Atoi(item)
 		if err != nil {
-			return &feed.ListFeedResponse{
-				StatusCode: constants.StringToIntErrorCode,
-				StatusMsg:  constants.StringToIntError,
-				VideoList:  nil,
-			}, err
+			l.Logger.Errorf("strconv.Atoi error:", err)
+			return nil, err
 		}
 		video, err := l.svcCtx.VideoModel.FindOne(l.ctx, int64(id))
 		userRpcRes, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.ActorId), ActorId: int64(video.AuthorId)})

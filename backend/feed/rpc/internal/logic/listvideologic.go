@@ -29,15 +29,10 @@ func (l *ListVideoLogic) ListVideo(in *feed.ListVideoRequest) (*feed.ListVideoRe
 	Feeds, err := l.svcCtx.VideoModel.FindOwnFeed(l.ctx, int64(in.ToUid))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return &feed.ListVideoResponse{
-				StatusCode: constants.UserVideosDoNotExistedCode,
-				StatusMsg:  constants.UserVideosDoNotExisted,
-			}, err
+			return nil, nil
 		} else {
-			return &feed.ListVideoResponse{
-				StatusCode: constants.FindUserVideosErrorCode,
-				StatusMsg:  constants.FindUserVideosError,
-			}, err
+			l.Logger.Error("数据库查找失败", err.Error())
+			return nil, err
 		}
 	}
 	userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.Uid), ActorId: int64(in.ToUid)})

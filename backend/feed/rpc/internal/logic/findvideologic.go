@@ -28,22 +28,16 @@ func NewFindVideoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindVid
 func (l *FindVideoLogic) FindVideo(in *feed.FindVideoReq) (*feed.FindVideoResp, error) {
 	video, err := l.svcCtx.VideoModel.FindOne(l.ctx, int64(in.Vid))
 	if err != nil {
-		return &feed.FindVideoResp{
-			StatusCode: constants.UnableToQueryVideoErrorCode,
-			StatusMsg:  constants.UnableToQueryVideoError,
-			Video:      nil,
-		}, err
+		l.Logger.Error("数据库查找视频出错")
+		return nil, err
 	}
 	userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
 		UserId:  int64(in.Uid),
 		ActorId: int64(video.AuthorId),
 	})
 	if err != nil {
-		return &feed.FindVideoResp{
-			StatusCode: constants.UnableToQueryUserErrorCode,
-			StatusMsg:  constants.UnableToQueryUserError,
-			Video:      nil,
-		}, err
+		l.Logger.Error("查找用户信息出错")
+		return nil, err
 	}
 	IsFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.Uid), int64(in.Vid))
 	IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.Uid), int64(in.Vid))
@@ -76,8 +70,8 @@ func (l *FindVideoLogic) FindVideo(in *feed.FindVideoReq) (*feed.FindVideoResp, 
 		Duration:      video.Duration.String,
 	}
 	return &feed.FindVideoResp{
-		StatusCode: 0,
-		StatusMsg:  "",
+		StatusCode: constants.ServiceOKCode,
+		StatusMsg:  constants.ServiceOK,
 		Video:      videoInfo,
 	}, nil
 }

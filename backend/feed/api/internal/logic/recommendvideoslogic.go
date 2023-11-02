@@ -43,11 +43,7 @@ func (l *RecommendVideosLogic) RecommendVideos(req *types.RecommendVideosListReq
 		})
 	}
 	if err != nil {
-		return &types.RecommendVideosListResp{
-			StatusCode: int(recommend.StatusCode),
-			StatusMsg:  recommend.StatusMsg,
-			Videos:     nil,
-		}, nil
+		return nil, err
 	}
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range recommend.VideoList {

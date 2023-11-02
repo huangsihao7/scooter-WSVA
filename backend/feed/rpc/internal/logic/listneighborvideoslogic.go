@@ -35,33 +35,23 @@ func (l *ListNeighborVideosLogic) ListNeighborVideos(in *feed.NeighborsReq) (*fe
 	url := fmt.Sprintf("%s/%d/neighbors?n=10", baseurl, in.Vid)
 	getresponse, err := format.QiNiuGet(url)
 	if err != nil {
-		return &feed.NeighborsResp{
-			StatusCode: constants.RecommendServiceInnerErrorCode,
-			StatusMsg:  constants.RecommendServiceInnerError,
-			VideoList:  nil,
-		}, err
+		l.Logger.Error("推荐系统错误", err.Error())
+		return nil, err
 	}
 	var result []format.PopularResp
 	println(string(getresponse))
 	err = json.Unmarshal(getresponse, &result)
 	if err != nil {
-		fmt.Println("JSON unmarshal error:", err)
-		return &feed.NeighborsResp{
-			StatusCode: constants.JsonErrorCode,
-			StatusMsg:  constants.JsonError,
-			VideoList:  nil,
-		}, err
+		l.Logger.Errorf("JSON unmarshal error:", err)
+		return nil, err
 	}
 	//获得视频信息
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range result {
 		id, err := strconv.Atoi(item.Id)
 		if err != nil {
-			return &feed.NeighborsResp{
-				StatusCode: constants.StringToIntErrorCode,
-				StatusMsg:  constants.StringToIntError,
-				VideoList:  nil,
-			}, err
+			l.Logger.Errorf("strconv.Atoi error:", err)
+			return nil, err
 		}
 		video, err := l.svcCtx.VideoModel.FindOne(l.ctx, int64(id))
 		userRpcRes, _ := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{UserId: int64(in.Uid), ActorId: int64(video.AuthorId)})

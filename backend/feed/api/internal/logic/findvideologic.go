@@ -33,11 +33,7 @@ func (l *FindVideoLogic) FindVideo(req *types.FindVideoByIdReq) (resp *types.Fin
 		Vid: int32(req.Vid),
 	})
 	if err != nil {
-		return &types.FindVideoByIdResp{
-			StatusCode: int(video.StatusCode),
-			StatusMsg:  video.StatusMsg,
-			Video:      types.VideoInfo{},
-		}, err
+		return nil, err
 	}
 	return &types.FindVideoByIdResp{
 		StatusCode: int(video.StatusCode),
@@ -68,6 +64,6 @@ func (l *FindVideoLogic) FindVideo(req *types.FindVideoByIdReq) (resp *types.Fin
 			CreateTime:    video.Video.CreateTime,
 			Duration:      video.Video.Duration,
 		},
-	}, err
+	}, nil
 
 }
