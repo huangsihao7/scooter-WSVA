@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"fmt"
+	"github.com/go-redis/redis_rate/v10"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/favorite/code"
 	"github.com/huangsihao7/scooter-WSVA/favorite/gmodel"
@@ -16,6 +17,8 @@ import (
 	"strconv"
 	"time"
 )
+
+const chatActionMaxQPS = 1
 
 type FavoriteActionLogic struct {
 	ctx    context.Context
@@ -32,15 +35,28 @@ func NewFavoriteActionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Fa
 }
 
 func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest) (*favorite.FavoriteActionResponse, error) {
-	// todo: add your logic here and delete this line
+
 	userId := in.UserId
 	videoId := in.VideoId
+
+	// Rate limiting
+	limiter := redis_rate.NewLimiter(l.svcCtx.RedisClient)
+	limiterKey := strconv.FormatInt(userId, 10) + "favorite"
+	limiterRes, err := limiter.Allow(l.ctx, limiterKey, redis_rate.PerSecond(chatActionMaxQPS))
+	if err != nil {
+		l.Logger.Errorf("[favorite limiter] err ", err)
+	}
+	if limiterRes.Allowed == 0 {
+		l.Logger.Errorf("[favorite limiter] err ", err)
+		return nil, code.FavoriteLimitError
+	}
+
 	actionType := in.ActionType
 	fmt.Println("actionType:", actionType)
 
 	// Check if user exists
 	//检查用户id 是否能存在
-	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
+	_, err = l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			log.Println("用户不存在")
