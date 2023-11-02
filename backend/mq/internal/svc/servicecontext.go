@@ -4,7 +4,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/commentsrv"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feedclient"
 	"github.com/huangsihao7/scooter-WSVA/label/rpc/labelclient"
-	"github.com/huangsihao7/scooter-WSVA/mq/api/internal/config"
+	"github.com/huangsihao7/scooter-WSVA/mq/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/pkg/es"
 	"github.com/zeromicro/go-queue/kq"
 	"github.com/zeromicro/go-zero/zrpc"
