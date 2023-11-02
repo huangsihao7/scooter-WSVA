@@ -32,12 +32,8 @@ func (l *UserInfoLogic) UserInfo(req *types.UserInfoReq) (resp *types.UserInfoRe
 		UserId:  uid,
 		ActorId: req.Uid,
 	})
-	if res.StatusCode != 200 {
-		return &types.UserInfoResponse{
-			StatusCode: int(res.StatusCode),
-			StatusMsg:  res.StatusMsg,
-			User:       types.User{},
-		}, nil
+	if err != nil {
+		return nil, err
 	}
 	userInfo := types.User{
 		Id:              res.User.Id,

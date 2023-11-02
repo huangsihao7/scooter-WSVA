@@ -7,8 +7,9 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/common/crypt"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
+	"github.com/huangsihao7/scooter-WSVA/user/code"
 	"github.com/huangsihao7/scooter-WSVA/user/gmodel"
-	"google.golang.org/grpc/status"
+	"github.com/pkg/errors"
 	"gorm.io/gorm"
 
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/internal/svc"
@@ -35,10 +36,7 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 	// 判断手机号是否已经注册
 	_, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile)
 	if err == nil {
-		return &user.RegisterResponse{
-			StatusCode: constants.AuthUserExistedCode,
-			StatusMsg:  constants.AuthUserExisted,
-		}, nil
+		return nil, code.UserExistError
 	}
 
 	if err == gorm.ErrRecordNotFound {
@@ -54,18 +52,15 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 
 		err = l.svcCtx.UserModel.InsertUser(l.ctx, &newUser)
 		if err != nil {
-			return &user.RegisterResponse{
-				StatusCode: constants.InsertUserErrorCode,
-				StatusMsg:  constants.InsertUserError,
-			}, nil
+			l.Logger.Errorf("插入数据库失败")
+			return nil, err
 		}
-
 		postbaseurl := "http://172.22.121.54:8088/api/user"
 		userReq := format.UserGoresBody{UserId: fmt.Sprintf("%d", newUser.Id)}
 		jsonData, err := json.Marshal(userReq)
 		if err != nil {
-			fmt.Println("JSON编码失败:", err)
-			return nil, status.Error(500, "JSON编码失败")
+			l.Logger.Errorf("JSON编码失败:", err)
+			return nil, err
 		}
 		_, err = format.QiNiuPost(postbaseurl, jsonData)
 		return &user.RegisterResponse{
@@ -73,8 +68,5 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 			StatusMsg:  constants.ServiceOK,
 		}, nil
 	}
-	return &user.RegisterResponse{
-		StatusCode: constants.FindDbErrorCode,
-		StatusMsg:  constants.FindDbError,
-	}, nil
+	return nil, errors.New("数据库出错")
 }

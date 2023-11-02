@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/user/code"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -31,77 +32,50 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return &user.UserInfoResponse{
-				StatusCode: constants.UserNotExistedCode,
-				StatusMsg:  constants.UserNotExisted,
-				User:       nil,
-			}, nil
+			return nil, code.UserUnExistError
 		}
-		return &user.UserInfoResponse{
-			StatusCode: constants.FindDbErrorCode,
-			StatusMsg:  constants.FindDbError,
-			User:       nil,
-		}, nil
+		l.Logger.Errorf("数据库出错")
+		return nil, err
 	}
 
 	//查询用户是否存在的
 	res, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(actionId))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return &user.UserInfoResponse{
-				StatusCode: constants.UserNotExistedCode,
-				StatusMsg:  constants.UserNotExisted,
-				User:       nil,
-			}, nil
+			return nil, code.UserUnExistError
 		}
-		return &user.UserInfoResponse{
-			StatusCode: constants.FindDbErrorCode,
-			StatusMsg:  constants.FindDbError,
-			User:       nil,
-		}, nil
+		return nil, err
 	}
 
 	//查询关注数
 	followCount, err := l.svcCtx.RelationModel.GetFollowCount(l.ctx, actionId)
 	if err != nil {
-		return &user.UserInfoResponse{
-			StatusCode: constants.UnableToGetFollowCountErrorCode,
-			StatusMsg:  constants.UnableToGetFollowCountError,
-			User:       nil,
-		}, nil
+		l.Logger.Errorf("获取关注数量出错" + err.Error())
+		return nil, err
 	}
 	uint32followCount := uint32(followCount)
 
 	//查询粉丝数
 	followerCount, err := l.svcCtx.RelationModel.GetFollowerCount(l.ctx, actionId)
 	if err != nil {
-		return &user.UserInfoResponse{
-			StatusCode: constants.UnableToGetFollowerCountErrorCode,
-			StatusMsg:  constants.UnableToGetFollowerCountError,
-			User:       nil,
-		}, nil
+		l.Logger.Errorf("获取粉丝数量出错" + err.Error())
+		return nil, err
 	}
 	uint32followerCount := uint32(followerCount)
 
 	//查询点赞视频数
 	favorCount, err := l.svcCtx.FavorModel.GetFavoriteCount(l.ctx, actionId)
 	if err != nil {
-		return &user.UserInfoResponse{
-			StatusCode: constants.UnableToGetFavoriteVideosCountErrorCode,
-			StatusMsg:  constants.UnableToGetFavoriteVideosCountError,
-			User:       nil,
-		}, nil
+		l.Logger.Errorf("获取获赞数量出错" + err.Error())
+		return nil, err
 	}
 	uint32favorCount := uint32(len(favorCount))
 
 	//查询视频获赞数
 	favorVideoCount, err := l.svcCtx.FavorModel.GetVideoCount(l.ctx, actionId)
 	if err != nil {
-		return &user.UserInfoResponse{
-			StatusCode: constants.UnableToGetVideosFavoriteCountErrorCode,
-			StatusMsg:  constants.UnableToGetVideosFavoriteCountError,
-			User:       nil,
-		}, nil
+		l.Logger.Errorf("获取视频获赞数量出错" + err.Error())
+		return nil, err
 	}
 	uint32FavorVideoCount := uint32(len(favorVideoCount))
 
@@ -111,20 +85,15 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 	if userId != actionId {
 		isFavorite = l.svcCtx.RelationModel.FindIsFavorite(l.ctx, userId, actionId)
 		if err != nil {
-			return &user.UserInfoResponse{
-				StatusCode: constants.UnableToGetFavoriteErrorCode,
-				StatusMsg:  constants.UnableToGetFavoriteError,
-				User:       nil,
-			}, nil
+			l.Logger.Errorf("获取是否关注数量出错" + err.Error())
+			return nil, err
 		}
 	}
 
 	voideoList, err := l.svcCtx.VideoModel.FindOwnFeed(l.ctx, actionId)
 	if err != nil {
-		return &user.UserInfoResponse{
-			StatusCode: constants.UserServiceInnerErrorCode,
-			StatusMsg:  constants.UserServiceInnerError,
-		}, nil
+		l.Logger.Errorf("获取自己视频出错" + err.Error())
+		return nil, err
 	}
 	workCount := uint32(len(voideoList))
 	users := user.UserInfo{
@@ -141,7 +110,6 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 		WorkCount:       &workCount,
 		BackgroundImage: &res.BackgroundUrl,
 	}
-
 	return &user.UserInfoResponse{
 		User:       &users,
 		StatusCode: constants.ServiceOKCode,

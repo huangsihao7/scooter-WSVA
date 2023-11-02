@@ -34,10 +34,7 @@ func (l *UpdateLogic) Update(in *user.UpdateReq) (*user.UpdateResp, error) {
 		BackgroundUrl: in.BackgroundImage,
 	})
 	if err != nil {
-		return &user.UpdateResp{
-			StatusCode: constants.UpdateDbErrorCode,
-			StatusMsg:  constants.UpdateDbError,
-		}, nil
+		return nil, err
 	}
 	return &user.UpdateResp{
 		StatusCode: constants.ServiceOKCode,

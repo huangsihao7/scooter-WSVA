@@ -4,7 +4,9 @@ import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/common/crypt"
+	"github.com/huangsihao7/scooter-WSVA/user/code"
 	"gorm.io/gorm"
+	"log"
 
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
@@ -31,30 +33,18 @@ func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
 	res, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return &user.LoginResponse{
-				StatusCode: constants.UserNotExistedCode,
-				StatusMsg:  constants.UserNotExisted,
-				UserId:     0,
-				Avatar:     "",
-			}, nil
+			log.Println("用户不存在")
+			return nil, code.UserNotExistError
 		}
-		return &user.LoginResponse{
-			StatusCode: constants.FindDbErrorCode,
-			StatusMsg:  constants.FindDbError,
-			UserId:     0,
-			Avatar:     "",
-		}, nil
+		return nil, err
 	}
 
 	// 判断密码是否正确
 	password := crypt.PasswordEncrypt(l.svcCtx.Config.Salt, in.Password)
 	if password != res.Password {
-		return &user.LoginResponse{
-			StatusCode: constants.AuthUserLoginFailedCode,
-			StatusMsg:  constants.AuthUserLoginFailed,
-			UserId:     0,
-			Avatar:     "",
-		}, nil
+		log.Println("密码错误")
+		return nil, code.UserNotExistError
+
 	}
 
 	return &user.LoginResponse{

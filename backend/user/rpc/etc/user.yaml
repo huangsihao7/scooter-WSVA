@@ -14,13 +14,3 @@ DB:
   MaxIdleConns: 10
   MaxOpenConns: 100
   ConnMaxLifetime: 3600
-#FavoriteRpc:
-#  Etcd:
-#    Hosts:
-#      - 172.22.121.53:2479
-#    Key: favorite.rpc
-#RelationRpc:
-#  Etcd:
-#    Hosts:
-#      - 172.22.121.53:2479
-#    Key: relation.rpc

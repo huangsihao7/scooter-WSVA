@@ -33,6 +33,9 @@ func (l *RegisterLogic) Register(req *types.RegisterRequest) (resp *types.Regist
 		Dec:             req.Dec,
 		BackgroundImage: req.BackgroundImage,
 	})
+	if err != nil {
+		return nil, err
+	}
 	return &types.RegisterResponse{
 		StatusCode: int(res.StatusCode),
 		StatusMsg:  res.StatusMsg,
