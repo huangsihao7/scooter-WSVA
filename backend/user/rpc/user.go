@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/huangsihao7/scooter-WSVA/pkg/interceptors"
 
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/internal/server"
@@ -23,7 +24,7 @@ func main() {
 	flag.Parse()
 
 	var c config.Config
-	conf.MustLoad(*configFile, &c)
+	conf.MustLoad(*configFile, &c, conf.UseEnv())
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
@@ -34,6 +35,8 @@ func main() {
 		}
 	})
 	defer s.Stop()
+	//自定义拦截器
+	s.AddUnaryInterceptors(interceptors.ServerErrorInterceptor())
 
 	fmt.Printf("Starting user rpc server at %s...\n", c.ListenOn)
 	s.Start()

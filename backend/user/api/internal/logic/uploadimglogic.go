@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/user/api/internal/common"
+	"github.com/huangsihao7/scooter-WSVA/user/code"
 	"net/http"
 
 	"github.com/huangsihao7/scooter-WSVA/user/api/internal/svc"
@@ -30,12 +31,8 @@ func (l *UploadImgLogic) UploadImg(req *http.Request) (resp *types.UploadImageRe
 	imgFile, imgHandler, err := req.FormFile("file")
 	imgUrl, err := common.Upload(imgFile, imgHandler, l.svcCtx.Config.AccessKey, l.svcCtx.Config.SecretKey, l.svcCtx.Config.Bucket)
 	if err != nil {
-		return &types.UploadImageResponse{
-			StatusCode: constants.UploadErrCode,
-			StatusMsg:  constants.UploadErr,
-		}, nil
+		return nil, code.UserUploadImgError
 	}
-
 	return &types.UploadImageResponse{
 		StatusCode: constants.ServiceOKCode,
 		StatusMsg:  constants.ServiceOK,

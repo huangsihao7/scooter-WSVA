@@ -101,7 +101,7 @@ func (l *ThumbupLogic) BatchUpSertToEs(ctx context.Context, data []*types.VideoE
 			return err
 		}
 	}
-
+	logx.Info("上传成功")
 	return bi.Close(ctx)
 }
 
@@ -141,7 +141,6 @@ func (l *ThumbupLogic) articleOperate(msg *types.CanalArticleMsg) error {
 	if err != nil {
 		l.Logger.Errorf("BatchUpToEs data: %v error: %v", esData, err)
 	}
-	logx.Info("上传成功")
 	return err
 
 }

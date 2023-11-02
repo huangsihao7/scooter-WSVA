@@ -7,6 +7,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/common/crypt"
 	"github.com/huangsihao7/scooter-WSVA/user/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/user/api/internal/types"
+	"github.com/huangsihao7/scooter-WSVA/user/code"
 	"github.com/qiniu/go-sdk/v7/auth/qbox"
 	"github.com/qiniu/go-sdk/v7/storage"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -35,7 +36,6 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 	secretKey := l.svcCtx.Config.SecretKey
 	bucket := l.svcCtx.Config.Bucket
 	fileURL := ""
-
 	file, handler, err := req.FormFile("file")
 	//key为上传的文件名
 	filename := crypt.PasswordEncrypt(time.Now().String(), handler.Filename)
@@ -66,7 +66,7 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 
 	err = resumeUploader.Put(context.Background(), &ret, upToken, key, file, handler.Size, &putExtra)
 	if err != nil {
-		return
+		return nil, code.UserUploadVideoError
 	}
 	operationManager := storage.NewOperationManager(mac, &cfg)
 	fopVframe := fmt.Sprintf("vframe/jpg/offset/1|saveas/%s",
@@ -76,11 +76,11 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 
 	_, err = operationManager.Pfop(bucket, key, fops, "", "", true)
 	if err != nil {
-		fmt.Println(err)
-		return
+		l.Logger.Error("截帧失败")
+		return nil, code.UserUploadVideoError
 	}
 
-	baseURL := "http://s327crbzf.hn-bkt.clouddn.com"
+	baseURL := l.svcCtx.Config.OssUrl
 	fileURL = baseURL + "/" + key
 	coverUrl := baseURL + "/" + strings.TrimSuffix(key, filepath.Ext(key)) + ".jpg"
 	println(ret.PersistentID)

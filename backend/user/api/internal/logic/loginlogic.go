@@ -31,11 +31,8 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 		Mobile:   req.Mobile,
 		Password: req.Password,
 	})
-	if res.StatusCode != 200 {
-		return &types.LoginResponse{
-			StatusCode: int(res.StatusCode),
-			StatusMsg:  res.StatusMsg,
-		}, nil
+	if err != nil {
+		return nil, err
 	}
 
 	now := time.Now().Unix()
