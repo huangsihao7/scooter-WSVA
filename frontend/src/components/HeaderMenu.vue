@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 12:39:43
+ * @LastEditTime: 2023-11-02 13:47:46
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
@@ -13,7 +13,6 @@ import {
   ref,
   Component,
   reactive,
-  onBeforeMount,
   onMounted,
 } from "vue";
 import {
@@ -30,6 +29,7 @@ import {
   NFormItemRow,
   NDropdown,
 } from "naive-ui";
+import { Trash, Search as SearchIcon } from "@vicons/ionicons5";
 import type { MenuOption } from "naive-ui";
 import { Search, Add } from "@vicons/ionicons5";
 import { userStore } from "@/stores/user";
@@ -94,6 +94,7 @@ const doSearch = ( isHistory: boolean, historyValue?: string) => {
   let child = {
     label: searchValue,
     key: searchValue,
+    // icon: renderIcon(Trash)
   };
   historyStore().historyData.push(child);
   if (historyStore().historyData.length > 5) {
@@ -138,12 +139,22 @@ function renderAvatar(avatarSrc: string) {
 }
 const dropOptions = ref<DropdownOption[]>();
 onMounted(() => {
+  let hisChild = historyStore().historyData
+  let deleteChild = {
+    label: '删除历史记录',
+    key: 'delete',
+    icon: renderIcon(Trash)
+  };
+  let children = [];
+  children[0] = deleteChild;
+  hisChild.forEach((item:any)=>{children.push(item)})
   dropOptions.value = [
     {
       type: "group",
       label: "历史记录",
       key: "main",
-      children: historyStore().historyData,
+      children: children,
+      // children: historyStore().historyData,
     },
   ];
 });
@@ -159,7 +170,7 @@ const renderDropdownLabel = (option: DropdownOption) => {
   return h(
     "a",
     {
-      onClick:()=>{doSearch(true,option.label)}
+      onClick:()=>{doSearch(true,option.key?.toString())}
     },
     {
       default: () => option.label as VNodeChild,
