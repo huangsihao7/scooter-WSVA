@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-31 18:42:57
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 21:03:55
+ * @LastEditTime: 2023-11-02 22:29:38
  * @Description: 查看某个特定video
  * @FilePath: \scooter-WSVA\frontend\src\view\VideoView.vue
 -->
@@ -17,6 +17,7 @@ import {
   NTabPane,
   NInput,
   NIcon,
+  NButton
 } from "naive-ui";
 import { getVideoById } from "@/apis/video";
 import { useRoute } from "vue-router";
@@ -28,7 +29,7 @@ import { userStore } from "@/stores/user";
 import { UserType } from "@/apis/interface";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
 import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
-import { ColorWand } from "@vicons/ionicons5";
+import { ArrowUpCircle } from "@vicons/ionicons5";
 
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false);
@@ -61,37 +62,40 @@ const updateVisible = (thisVideo: any) => {
   });
 };
 
+// 发布评论接口
+const doCommentApi = () => {
+  doComment(videoStore().video_id, 1, addComment.value, 0).then((res: any) => {
+    let userInfo = userStore();
+    let userObj: UserType = {
+      id: userInfo.user_id,
+      name: userInfo.name,
+      gender: userInfo.gender,
+      avatar: userInfo.avatar,
+      signature: userInfo.signature,
+      phoneNum: userInfo.phoneNum,
+      background_image: userInfo.background_image,
+      follow_count: 0,
+      follower_count: 0,
+      total_favorited: 0,
+      work_count: 0,
+      favorite_count: 0,
+      is_follow: false,
+    };
+    let addCommentObj: CommentType = {
+      content: addComment.value,
+      create_date: formattedDate(),
+      user: userObj,
+      comment_id: res.comment_id,
+    };
+    commentlists.value?.push(addCommentObj);
+    addComment.value = "";
+  });
+};
+
 // 发布评论
 const postComment = (e: any) => {
   if (e.keyCode == 13 && addComment.value) {
-    doComment(videoStore().video_id, 1, addComment.value, 0).then(
-      (res: any) => {
-          let userInfo = userStore();
-          let userObj: UserType = {
-            id: userInfo.user_id,
-            name: userInfo.name,
-            gender: userInfo.gender,
-            avatar: userInfo.avatar,
-            signature: userInfo.signature,
-            phoneNum: userInfo.phoneNum,
-            background_image: userInfo.background_image,
-            follow_count: 0,
-            follower_count: 0,
-            total_favorited: 0,
-            work_count: 0,
-            favorite_count: 0,
-            is_follow: false,
-          };
-          let addCommentObj: CommentType = {
-            content: addComment.value,
-            create_date: formattedDate(),
-            user: userObj,
-            comment_id: res.comment_id,
-          };
-          commentlists.value?.push(addCommentObj);
-          addComment.value = "";
-        }
-    );
+    doCommentApi();
   }
 };
 
@@ -106,6 +110,19 @@ const formattedDate = () => {
   const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
   return formattedDate;
 };
+
+// 动态删除评论数据
+const deleteFunc = (comment_id: number) => {
+  commentlists.value = commentlists.value?.filter(
+    (item: CommentType) => item.comment_id !== comment_id,
+  );
+};
+
+// 点击事件发布评论
+const postCommentByBtn = () => {
+  doCommentApi();
+};
+
 </script>
 
 <template>
@@ -136,7 +153,10 @@ const formattedDate = () => {
       <NDrawerContent :native-scrollbar="false">
         <NTabs type="line" animated>
           <NTabPane name="comment" tab="评论">
-            <CommentListCom :commentlists="commentlists" />
+            <CommentListCom 
+            v-if="commentlists"
+            :commentlists="commentlists"
+            @delete-comment="deleteFunc" />
           </NTabPane>
           <NTabPane name="recommend" tab="相关推荐">
             <VideoRecommendCard :recommendlists="recommendlists" />
@@ -150,10 +170,13 @@ const formattedDate = () => {
             placeholder="留下精彩的评论吧"
             @keydown="postComment"
           >
-            >
-            <template #suffix>
-              <NIcon :component="ColorWand" />
-            </template>
+          <template #suffix>
+            <NButton text @click="postCommentByBtn">
+              <template #icon>
+                <NIcon :component="ArrowUpCircle" />
+              </template>
+            </NButton>
+          </template>
           </NInput>
         </template>
       </NDrawerContent>

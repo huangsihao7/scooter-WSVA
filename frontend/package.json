@@ -22,6 +22,7 @@
     "eslint-define-config": "^1.24.1",
     "hls.js": "^1.4.12",
     "leaflet": "^1.9.4",
+    "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",
     "ol": "^8.1.0",
     "pinia": "^2.1.7",

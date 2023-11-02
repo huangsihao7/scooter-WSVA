@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 22:14:30
+ * @LastEditTime: 2023-11-02 22:17:07
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -45,7 +45,6 @@ function getSecondSegmentFromRoute(route: string): string {
 
 watch(()=>routeStore().name,
 (newValue:any)=>{
-  console.log('hiiiiiiiiiiii')
   getUserCardsInfo(newValue)
 })
 
@@ -90,48 +89,6 @@ const getUserCardsInfo = (finalRoute: string) =>{
     break;
   }
 }
-
-// const getUserCardsInfo = (finalRoute: string) =>{
-//   let userId = props.userId
-//   switch (finalRoute) {
-//     case 'friends':
-//       getFriendsList(userId).then((res: any) => {
-//         usersList.value = res.list;
-//         if (usersList.value) {
-//           usersList.value.forEach((element: any) => {
-//             element.isfriends = true;
-//           });
-//         }
-//       });
-//       break;
-//     case 'followers':
-//       getFollowersList(userId).then((res: any) => {
-//         usersList.value = res.list;
-//       });
-//     break;
-//     case 'follows':
-//       getFollowsList(userId).then((res: any) => {
-//         usersList.value = res.list;
-//         if (usersList.value) {
-//           usersList.value.forEach((element: any) => {
-//             element.is_follow = true;
-//           });
-//         }
-//       });
-//     break;
-//     case 'follow':
-//       getFollowsList(userId).then((res: any) => {
-//         usersList.value = res.list;
-//         if (usersList.value) {
-//           usersList.value.forEach((element: any) => {
-//             element.is_follow = true;
-//           });
-//         }
-//       });
-//     break;
-//   }
-// }
-
 
 // 获取关注的人的信息卡片
 onMounted(() => {

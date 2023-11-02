@@ -151,6 +151,7 @@ const formattedDate = () => {
   return formattedDate;
 };
 
+// 发布评论接口
 const doCommentApi = () => {
   doComment(videoStore().video_id, 1, addComment.value, 0).then((res: any) => {
     let userInfo = userStore();
@@ -187,6 +188,7 @@ const postComment = (e: any) => {
   }
 };
 
+// 点击事件发布评论
 const postCommentByBtn = () => {
   doCommentApi();
 };
