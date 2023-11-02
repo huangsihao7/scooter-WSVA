@@ -163,7 +163,7 @@ const doCommentApi = () => {
         content: addComment.value,
         create_date: formattedDate(),
         user: userObj,
-        comment_id: 11,
+        comment_id: res.comment_id,
       };
       commentlists.value?.push(addCommentObj);
       addComment.value = "";
@@ -184,11 +184,11 @@ const postCommentByBtn = () => {
 
 // 动态删除评论数据
 const deleteFunc = (comment_id: number) => {
-  console.log("before", commentlists.value);
+  console.log("333333333333",comment_id, commentlists.value);
   commentlists.value = commentlists.value?.filter(
     (item: CommentType) => item.comment_id !== comment_id,
   );
-  console.log("after", commentlists.value);
+  console.log("4444444444444444", commentlists.value);
 };
 </script>
 
