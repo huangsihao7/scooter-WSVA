@@ -17,6 +17,7 @@ import {
   getRecommendVideos,
   getPopularVideos,
   getRecommendVideosList,
+getVideosList,
 } from "@/apis/video";
 import { UserType, VideoType } from "@/apis/interface";
 import { getCommentList, doComment } from "@/apis/comment";
@@ -55,16 +56,26 @@ const visitedIndex = ref<number>(-1);
 
 // 获取视频队列
 onMounted(() => {
-  if (props.videoListType == 0 ) {
-    getRecommendVideos(0, 0).then((res: any) => {
-      videos.value = res.video_list;
-    });
-  } else {
-    getPopularVideos(0, 0).then((res: any) => {
-      videos.value = res.video_list;
-    });
+  if(userStore().user_id != -1){
+    if (props.videoListType == 0) {
+      getRecommendVideos(0, 0).then((res: any) => {
+        videos.value = res.video_list;
+      });
+    } else{
+      getPopularVideos(0, 0).then((res: any) => {
+        videos.value = res.video_list;
+      });
+    }
+    visitedIndex.value = 0;
   }
-  visitedIndex.value = 0;
+  else{
+    // 游客试看功能
+    getVideosList().then((res:any)=>{
+      if(res.status_code == 200){
+        videos.value = res.video_list.slice(0, 10)
+      }
+    })
+  }
 });
 
 // 更新评论区可见状态
