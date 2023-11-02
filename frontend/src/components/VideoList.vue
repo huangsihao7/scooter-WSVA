@@ -69,7 +69,7 @@ onMounted(() => {
     visitedIndex.value = 0;
   }
   else{
-    // 游客试看功能
+    // 游客试看功能 前10条
     getVideosList().then((res:any)=>{
       if(res.status_code == 200){
         videos.value = res.video_list.slice(0, 10)

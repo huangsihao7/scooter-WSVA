@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 19:37:50
+ * @LastEditTime: 2023-11-02 20:02:18
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -255,6 +255,7 @@ const commentAnimateClass = ref<String>("");
 const shareAnimateClass = ref<String>("");
 const commentVisible = ref<boolean>(false);
 const shareVisible = ref<boolean>(false);
+const logedFlag = computed(()=>userStore().user_id == -1? true:false)
 onMounted(() => {
   thisVideo.value = props.video;
 });
@@ -324,6 +325,7 @@ onMounted(() => {
             <NButton
               v-if="thisVideo?.is_favorite"
               class="btn"
+              :disabled="logedFlag"
               text
               color="rgb(254, 44, 85)"
               @click="handleLikeBtn"
@@ -336,6 +338,7 @@ onMounted(() => {
               v-else
               class="btn"
               text
+              :disabled="logedFlag"
               color="#ffffff"
               @click="handleLikeBtn"
             >
@@ -348,7 +351,7 @@ onMounted(() => {
         </div>
         <div class="comment">
           <div :class="commentAnimateClass">
-            <NButton class="btn" text color="#fff" @click="handleCommentBtn">
+            <NButton class="btn" :disabled="logedFlag" text color="#fff" @click="handleCommentBtn">
               <NIcon>
                 <ChatbubbleEllipses />
               </NIcon>
@@ -361,6 +364,7 @@ onMounted(() => {
             <NButton
               v-if="thisVideo?.is_star"
               class="btn"
+              :disabled="logedFlag"
               text
               color="#ffb802"
               @click="handleCollectBtn"
@@ -372,6 +376,7 @@ onMounted(() => {
             <NButton
               v-else
               class="btn"
+              :disabled="logedFlag"
               text
               color="#fff"
               @click="handleCollectBtn"
