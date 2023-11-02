@@ -26,10 +26,13 @@ func NewGetCommentListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 
 func (l *GetCommentListLogic) GetCommentList(req *types.ListReq) (resp *types.ListResp, err error) {
 
-	//token 解析
 	usrId, _ := l.ctx.Value("uid").(json.Number).Int64()
 
 	res, err := l.svcCtx.Commenter.CommentList(l.ctx, &comment.CommentListRequest{UserId: usrId, VideoId: req.VideoId})
+
+	if err != nil {
+		return nil, err
+	}
 	resLists := make([]types.CommentInfo, 0)
 
 	for i := 0; i < len(res.CommentList); i++ {

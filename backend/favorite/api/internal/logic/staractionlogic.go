@@ -27,8 +27,6 @@ func NewStarActionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *StarAc
 }
 
 func (l *StarActionLogic) StarAction(req *types.ActionReq) (resp *types.ActionResp, err error) {
-	// todo: add your logic here and delete this line
-	// todo: add your logic here and delete this line
 
 	//token 解析
 	userId, _ := l.ctx.Value("uid").(json.Number).Int64()

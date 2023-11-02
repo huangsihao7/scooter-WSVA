@@ -33,7 +33,7 @@ func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
 	res, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			log.Println("用户不存在")
+			l.Logger.Infof("用户不存在")
 			return nil, code.UserNotExistError
 		}
 		return nil, err
