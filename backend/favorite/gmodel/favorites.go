@@ -47,15 +47,6 @@ func (m *FavoriteModel) GetVideoCount(ctx context.Context, uid int64) ([]*Favori
 	return favorites, nil
 }
 
-func (m *FavoriteModel) GetFavoriteCount(ctx context.Context, uid int64) ([]*Favorites, error) {
-	var favorites []*Favorites
-	err := m.db.WithContext(ctx).Where("uid = ?", uid).Find(&favorites).Error
-	if err != nil {
-		return nil, err
-	}
-	return favorites, nil
-}
-
 func (m *FavoriteModel) IsFavorite(ctx context.Context, uid, vid int64) (bool, error) {
 	var count int64
 	m.db.WithContext(ctx).Model(&Favorites{}).Where("uid = ? AND vid = ?", uid, vid).Count(&count)
