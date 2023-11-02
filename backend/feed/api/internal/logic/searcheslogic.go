@@ -35,12 +35,9 @@ func (l *SearchEsLogic) SearchEs(req *types.SearchEsReq) (resp *types.SearchEsRe
 	})
 
 	if err != nil {
-		return &types.SearchEsResp{
-			StatusCode: int(videos.StatusCode),
-			StatusMsg:  videos.StatusMsg,
-			VideoList:  nil,
-		}, nil
+		return nil, err
 	}
+
 	resList := make([]types.VideoInfo, 0)
 	for _, item := range videos.VideoList {
 		resList = append(resList, types.VideoInfo{

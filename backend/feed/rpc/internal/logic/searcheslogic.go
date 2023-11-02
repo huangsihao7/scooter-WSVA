@@ -6,13 +6,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/feed/code"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
-	"io"
-	"log"
-
 	"github.com/zeromicro/go-zero/core/logx"
+	"io"
 )
 
 type SearchESLogic struct {
@@ -30,49 +29,35 @@ func NewSearchESLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SearchES
 }
 
 func (l *SearchESLogic) SearchES(in *feed.EsSearchReq) (*feed.EsSearchResp, error) {
-	// 创建ES client用于后续操作ES
 
 	//查找的内容
 	content := in.Content
-
 	query := fmt.Sprintf(`
 	{
 		"query": {
 			"multi_match": {
 				"query": "%s",
-				"fields": ["title", "name", "content"]
+				"fields": ["title","content","label"]
 			}
 		}
 	}
 	`, content)
+
 	body := bytes.NewBufferString(query)
-
 	response, err := l.svcCtx.Es.Client.Search(l.svcCtx.Es.Client.Search.WithIndex("video-index"), l.svcCtx.Es.Client.Search.WithBody(body))
-
-	//t.Log(response)
-	// 读取响应主体内容
 	bodyBytes, err := io.ReadAll(response.Body)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	var responses Response
 	err = json.Unmarshal(bodyBytes, &responses)
 	if err != nil {
-		return &feed.EsSearchResp{
-			StatusCode: constants.SearchServiceErrorCode,
-			StatusMsg:  constants.SearchServiceError,
-		}, nil
+		logx.Errorf("json解析错误")
+		return nil, err
 	}
 
-	// 使用结构体中的字段进行操作
-	took := responses.Took
-	timedOut := responses.TimedOut
 	totalHits := responses.Hits.Total.Value
-
-	log.Println("Took:", took)
-	log.Println("Timed Out:", timedOut)
-	log.Println("Total Hits:", totalHits)
 
 	reslists := make([]*feed.VideoInfo, 0)
 
@@ -80,23 +65,21 @@ func (l *SearchESLogic) SearchES(in *feed.EsSearchReq) (*feed.EsSearchResp, erro
 
 	for i := 0; i < totalHits; i++ {
 		videoIds = append(videoIds, responses.Hits.Hits[i].Source.VideoID)
-		curVideoID := responses.Hits.Hits[i].Source.VideoID
+	}
+	queryIds := removeDuplicates(videoIds)
+
+	for i := 0; i < len(queryIds); i++ {
+		curVideoID := queryIds[i]
 		video, err := l.svcCtx.VideoModel.FindOne(l.ctx, int64(curVideoID))
 		if err != nil {
-			return &feed.EsSearchResp{
-				StatusCode: constants.UnableToQueryVideoErrorCode,
-				StatusMsg:  constants.UnableToQueryVideoError,
-			}, err
+			return nil, code.FeedUnableToQueryVideoError
 		}
 		userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
 			UserId:  int64(in.UserId),
 			ActorId: int64(video.AuthorId),
 		})
 		if err != nil {
-			return &feed.EsSearchResp{
-				StatusCode: constants.UnableToQueryUserErrorCode,
-				StatusMsg:  constants.UnableToQueryUserError,
-			}, err
+			return nil, code.FeedUnableToQueryUserError
 		}
 		IsFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.UserId), int64(curVideoID))
 		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.UserId), int64(curVideoID))
@@ -136,6 +119,7 @@ func (l *SearchESLogic) SearchES(in *feed.EsSearchReq) (*feed.EsSearchResp, erro
 		StatusMsg:  constants.ServiceOK,
 		VideoList:  reslists,
 	}, nil
+
 }
 
 // 接受搜索结果
@@ -166,4 +150,21 @@ type Response struct {
 			} `json:"_source"`
 		} `json:"hits"`
 	} `json:"hits"`
+}
+
+func removeDuplicates(nums []int) []int {
+	// 创建一个map用于存储元素是否已经存在
+	seen := make(map[int]bool)
+	result := []int{}
+
+	// 迭代原始数组
+	for _, num := range nums {
+		// 如果元素不存在于map中，则将其添加到结果数组中，并将其标记为已存在
+		if !seen[num] {
+			result = append(result, num)
+			seen[num] = true
+		}
+	}
+
+	return result
 }

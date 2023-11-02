@@ -19,6 +19,7 @@ type VideoEsMsg struct {
 	//Name      string `json:"name"`
 	//Signature string `json:"signature"`
 	Content string `json:"content"`
+	Label   string `json:"label"`
 }
 
 type CanalArticleMsg struct {
@@ -37,6 +38,7 @@ type CanalArticleMsg struct {
 		Name          string `json:"name"`
 		Dec           string `json:"dec"`
 		Vid           string `json:"vid"`
+		Label         string `json:"label"`
 		//UpdatedAt     sql.NullTime   `gorm:"column:updated_at;type:datetime" json:"updated_at"`
 		//DeletedAt     sql.NullTime   `gorm:"column:deleted_at;type:datetime" json:"deleted_at"`
 		//Duration      sql.NullString `gorm:"column:duration;type:varchar(255);comment:视频时长" json:"duration"`
