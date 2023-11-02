@@ -262,30 +262,5 @@ const deleteFunc = (comment_id: number) => {
 </template>
 
 <style scoped lang="scss">
-.carousel-img {
-  width: 100%;
-  height: 240px;
-  object-fit: cover;
-}
 
-.short-carousel {
-  .video-com {
-    width: auto;
-    height: calc(100vh - 60px);
-  }
-}
-
-.wide-carousel {
-  .video-com {
-    width: calc(100vw - 560px);
-    height: calc(100vh - 60px);
-  }
-}
-
-.n-carousel__arrow-group {
-  bottom: 50px;
-}
-.n-carousel.n-carousel--right .n-carousel__arrow-group {
-  bottom: 100px;
-}
 </style>

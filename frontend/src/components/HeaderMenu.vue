@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 14:38:32
+ * @LastEditTime: 2023-11-02 15:52:10
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
@@ -217,6 +217,9 @@ const loggedMenuOptions: MenuOption[] = [
           placement: "bottom-start",
           showArrow: false,
           renderLabel: renderDropdownLabel,
+          style:{
+            width: "calc(20vw - 40px)"
+          }
         },
         [
           h(
@@ -507,9 +510,6 @@ watch(
   .n-menu-item:nth-child(3) {
     margin-left: auto;
   }
-}
-.n-dropdown-menu {
-    width: calc(20vw - 40px);
 }
 
 .header-menu-logout {
