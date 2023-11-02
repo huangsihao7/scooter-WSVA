@@ -268,7 +268,6 @@ onMounted(() => {
         :video="dplayerObj.video"
         :danmaku="dplayerObj.danmaku"
         :contextmenu="dplayerObj.contextmenu"
-        :highlight="dplayerObj.highlight"
         :video-index="props.index"
         :on-play-index="props.onplay"
       />

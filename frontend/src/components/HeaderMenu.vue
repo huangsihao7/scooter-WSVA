@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 13:48:52
+ * @LastEditTime: 2023-11-02 14:06:08
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
@@ -14,8 +14,10 @@ import {
   Component,
   reactive,
   onMounted,
+  VNodeChild
 } from "vue";
 import {
+  DropdownOption,
   NIcon,
   NMenu,
   NInput,
@@ -28,16 +30,15 @@ import {
   NModal,
   NFormItemRow,
   NDropdown,
+  useMessage
 } from "naive-ui";
-import { Trash } from "@vicons/ionicons5";
 import type { MenuOption } from "naive-ui";
-import { Search, Add } from "@vicons/ionicons5";
+import { Search, Add, Trash } from "@vicons/ionicons5";
 import { userStore } from "@/stores/user";
 import { videoStore } from "@/stores/video";
 import { routeStore } from "@/stores/route";
 import { login, register } from "@/apis/login";
 import router from "@/router";
-import { useMessage } from "naive-ui";
 import PostVedio from "@/components/video/PostVideo.vue";
 import { historyStore } from "@/stores/historySearch";
 
@@ -51,14 +52,17 @@ const menuClass = ref<string>("");
 const searchContent = ref<string>("");
 // 历史列表是否可见
 const historyTabVisible = ref<boolean>(true);
-
+// 搜索的历史记录数据
+const dropOptions = ref<DropdownOption[]>();
+// 投稿表单数据
+const isVideoFormVisible = ref<boolean>(false);
 // 登录表单数据
 const loginFormVisible = ref<boolean>(false);
+
 const loginForm = reactive({
   phoneNum: "",
   pwd: "",
 });
-
 // 注册表单数据
 const registerForm = reactive({
   phoneNum: "",
@@ -67,13 +71,11 @@ const registerForm = reactive({
 });
 
 onMounted(() => {
+  renderHistory()
   menuClass.value = userStore().token
     ? "header-menu-login"
     : "header-menu-logout";
 });
-
-// 投稿表单数据
-const isVideoFormVisible = ref<boolean>(false);
 
 // 渲染图标
 function renderIcon(icon: Component) {
@@ -99,10 +101,10 @@ const doSearch = ( isHistory: boolean, historyValue?: string) => {
   if (historyStore().historyData.length > 5) {
     historyStore().historyData.shift(); // 移除第一条数据
   }
-  if (historyStore().historyData)
-    if (routeStore().name != "search") {
-      router.push({ name: "search" });
-    }
+  if (routeStore().name != "search") {
+    router.push({ name: "search" });
+  }
+  renderHistory()
 };
 
 //投稿渲染
@@ -136,8 +138,9 @@ function renderAvatar(avatarSrc: string) {
       "",
     );
 }
-const dropOptions = ref<DropdownOption[]>();
-onMounted(() => {
+
+// 渲染历史记录数据
+const renderHistory = () =>{
   let hisChild = historyStore().historyData
   let deleteChild = {
     label: '删除历史记录',
@@ -155,10 +158,20 @@ onMounted(() => {
       children: children
     },
   ];
-});
+}
 
-import type { VNodeChild } from "vue";
-import type { DropdownOption } from "naive-ui";
+// 删除历史记录
+const doDelete = () =>{
+  historyStore().historyData = []
+  dropOptions.value = [
+    {
+      type: "group",
+      label: "历史记录",
+      key: "main",
+      children: []
+    },
+  ];
+}
 
 // 渲染历史记录标签
 const renderDropdownLabel = (option: DropdownOption) => {
@@ -168,7 +181,7 @@ const renderDropdownLabel = (option: DropdownOption) => {
   return h(
     "a",
     {
-      onClick:()=>{doSearch(true,option.key?.toString())}
+      onClick:()=>{option.key =='delete'? doDelete() : doSearch(true,option.key?.toString())}
     },
     {
       default: () => option.label as VNodeChild,
@@ -360,7 +373,6 @@ watch(
     }
   },
 );
-
 watch(
   () => loginFormVisible.value,
   (newValue: any) => {
