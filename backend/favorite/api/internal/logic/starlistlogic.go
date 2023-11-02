@@ -3,7 +3,6 @@ package logic
 import (
 	"context"
 	"encoding/json"
-	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/favorite/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/favorite/api/internal/types"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
@@ -26,17 +25,12 @@ func NewStarListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *StarList
 }
 
 func (l *StarListLogic) StarList(req *types.ListReq) (resp *types.ListResp, err error) {
-	// todo: add your logic here and delete this line
-	//token 解析
+
 	usrId, _ := l.ctx.Value("uid").(json.Number).Int64()
 
 	res, err := l.svcCtx.Favor.StarList(l.ctx, &favorite.StarListRequest{UserId: usrId, ActorId: req.UserId})
-	if res.StatusCode != constants.ServiceOKCode {
-		return &types.ListResp{
-			StatusCode: int(res.StatusCode),
-			StatusMsg:  res.StatusMsg,
-			VideoList:  nil,
-		}, nil
+	if err != nil {
+		return nil, err
 	}
 
 	resLists := make([]types.VideoInfo, 0)

@@ -20,7 +20,7 @@ import (
 
 var configFile = flag.String("f", "etc/feed-dev.yaml", "the config file")
 
-// feed rpc
+// feed
 func main() {
 	flag.Parse()
 	logx.DisableStat()

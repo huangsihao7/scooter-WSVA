@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/pkg/interceptors"
+	"github.com/zeromicro/go-zero/core/logx"
 
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/internal/server"
@@ -22,7 +23,7 @@ var configFile = flag.String("f", "etc/user-dev.yaml", "the config file")
 // user rpc
 func main() {
 	flag.Parse()
-
+	logx.DisableStat()
 	var c config.Config
 	conf.MustLoad(*configFile, &c, conf.UseEnv())
 	ctx := svc.NewServiceContext(c)

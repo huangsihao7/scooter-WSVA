@@ -29,9 +29,6 @@ type (
 	Favorite interface {
 		FavoriteAction(ctx context.Context, in *FavoriteActionRequest, opts ...grpc.CallOption) (*FavoriteActionResponse, error)
 		FavoriteList(ctx context.Context, in *FavoriteListRequest, opts ...grpc.CallOption) (*FavoriteListResponse, error)
-		GetVideoFavoriteCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error)
-		GetUserFavoriteCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error)
-		GetUserTotalFavoritedCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error)
 		StarAction(ctx context.Context, in *StarActionRequest, opts ...grpc.CallOption) (*StarActionResponse, error)
 		StarList(ctx context.Context, in *StarListRequest, opts ...grpc.CallOption) (*StarListResponse, error)
 	}
@@ -55,21 +52,6 @@ func (m *defaultFavorite) FavoriteAction(ctx context.Context, in *FavoriteAction
 func (m *defaultFavorite) FavoriteList(ctx context.Context, in *FavoriteListRequest, opts ...grpc.CallOption) (*FavoriteListResponse, error) {
 	client := favorite.NewFavoriteClient(m.cli.Conn())
 	return client.FavoriteList(ctx, in, opts...)
-}
-
-func (m *defaultFavorite) GetVideoFavoriteCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error) {
-	client := favorite.NewFavoriteClient(m.cli.Conn())
-	return client.GetVideoFavoriteCount(ctx, in, opts...)
-}
-
-func (m *defaultFavorite) GetUserFavoriteCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error) {
-	client := favorite.NewFavoriteClient(m.cli.Conn())
-	return client.GetUserFavoriteCount(ctx, in, opts...)
-}
-
-func (m *defaultFavorite) GetUserTotalFavoritedCount(ctx context.Context, in *QueryId, opts ...grpc.CallOption) (*QueryCount, error) {
-	client := favorite.NewFavoriteClient(m.cli.Conn())
-	return client.GetUserTotalFavoritedCount(ctx, in, opts...)
 }
 
 func (m *defaultFavorite) StarAction(ctx context.Context, in *StarActionRequest, opts ...grpc.CallOption) (*StarActionResponse, error) {

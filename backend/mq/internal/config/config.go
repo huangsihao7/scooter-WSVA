@@ -22,4 +22,5 @@ type Config struct {
 		Username  string
 		Password  string
 	}
+	KqVideoConsumerConf kq.KqConf
 }

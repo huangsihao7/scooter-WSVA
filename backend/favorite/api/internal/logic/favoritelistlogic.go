@@ -6,8 +6,6 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/favorite/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/favorite/api/internal/types"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
-	"log"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -26,12 +24,13 @@ func NewFavoriteListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Favo
 }
 
 func (l *FavoriteListLogic) FavoriteList(req *types.ListReq) (resp *types.ListResp, err error) {
-	// todo: add your logic here and delete this line
-	//token 解析
+
 	usrId, _ := l.ctx.Value("uid").(json.Number).Int64()
 
 	res, err := l.svcCtx.Favor.FavoriteList(l.ctx, &favorite.FavoriteListRequest{UserId: usrId, ActorId: req.UserId})
-	log.Println(res)
+	if err != nil {
+		return nil, err
+	}
 
 	resLists := make([]types.VideoInfo, 0)
 
@@ -72,8 +71,4 @@ func (l *FavoriteListLogic) FavoriteList(req *types.ListReq) (resp *types.ListRe
 		VideoList:  resLists,
 	}, nil
 
-	//return &types.ListResp{
-	//	StatusCode: constants.ServiceOKCode,
-	//	StatusMsg:  constants.ServiceOK,
-	//}, nil
 }

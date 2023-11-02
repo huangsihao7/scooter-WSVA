@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"fmt"
 	"github.com/go-redis/redis_rate/v10"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/favorite/code"
@@ -18,7 +17,10 @@ import (
 	"time"
 )
 
-const chatActionMaxQPS = 1
+const (
+	FavorActionMaxQPS = 1
+	FavoriteLimitKey  = "FavoriteLimit"
+)
 
 type FavoriteActionLogic struct {
 	ctx    context.Context
@@ -38,11 +40,12 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 
 	userId := in.UserId
 	videoId := in.VideoId
+	actionType := in.ActionType
 
-	// Rate limiting
+	// 限流
 	limiter := redis_rate.NewLimiter(l.svcCtx.RedisClient)
-	limiterKey := strconv.FormatInt(userId, 10) + "favorite"
-	limiterRes, err := limiter.Allow(l.ctx, limiterKey, redis_rate.PerSecond(chatActionMaxQPS))
+	limiterKey := strconv.FormatInt(userId, 10) + FavoriteLimitKey
+	limiterRes, err := limiter.Allow(l.ctx, limiterKey, redis_rate.PerSecond(FavorActionMaxQPS))
 	if err != nil {
 		l.Logger.Errorf("[favorite limiter] err ", err)
 	}
@@ -51,15 +54,11 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		return nil, code.FavoriteLimitError
 	}
 
-	actionType := in.ActionType
-	fmt.Println("actionType:", actionType)
-
-	// Check if user exists
 	//检查用户id 是否能存在
 	_, err = l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			log.Println("用户不存在")
+			log.Println("点赞用户不存在")
 			return nil, code.FavoriteUserIdEmptyError
 		}
 		return nil, err
@@ -68,13 +67,13 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 	_, err = l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			log.Println("视频不存在")
+			log.Println("点赞视频不存在")
 			return nil, code.FavoriteVideoIdEmptyError
 		}
 		return nil, err
 	}
 
-	//在redis中查找的值
+	//定义redis中查找的值
 	value := strconv.FormatInt(userId, 10) + "#" + strconv.FormatInt(videoId, 10)
 
 	switch actionType {
@@ -139,12 +138,8 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 			})
 			return err
 		})
-		//if err != nil {
-		//	l.Logger.Errorf("[Follow] Transaction error: %v", err)
-		//	return nil, err
-		//}
 		if err != nil {
-			l.Logger.Errorf("[Follow] Transaction error: %v", err)
+			l.Logger.Errorf("[Favorite] Transaction error: %v", err)
 			return nil, err
 		}
 		//添加到redis
