@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 19:56:57
+ * @LastEditTime: 2023-11-02 20:31:58
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\App.vue
 -->
@@ -10,14 +10,26 @@
 import { RouterView } from "vue-router";
 import SubMenu from "./components/SubMenu.vue";
 import HeaderMenu from "./components/HeaderMenu.vue";
+import { ref, onMounted } from "vue";
 import {
   NConfigProvider,
   NLayout,
   NLayoutHeader,
   NLayoutSider,
   NMessageProvider,
+  NModal
 } from "naive-ui";
 import themeOverrides from "./theme";
+import { userStore } from "./stores/user";
+let showModal = ref<boolean>(false)
+const onPositiveClick = () =>{
+  showModal.value = false
+}
+onMounted(() => {
+  if(!userStore().isLoggedIn){
+    showModal.value = true
+  }
+})
 </script>
 
 <template>
@@ -39,6 +51,20 @@ import themeOverrides from "./theme";
           </NLayout>
         </NLayout>
       </div>
+      <n-modal
+      class="modal-prompt"
+        v-model:show="showModal"
+        :mask-closable="false"
+        preset="dialog"
+        title="提醒"
+        :showIcon = false
+        :closable = false
+        positive-text="好的"
+        @positive-click="onPositiveClick"
+      >
+      <p>1.未登录用户仅可浏览<span>10</span>条视频，并仅开放视频<span>分享</span>和<span>下载</span>功能；</p>
+      <p>2.视频切换支持三种方式：<span>上下滚轮滚动</span>，<span>右下方按钮切换</span>，<span>键盘上下键切换</span>。</p>
+    </n-modal>
     </NMessageProvider>
   </NConfigProvider>
 </template>
@@ -59,6 +85,13 @@ import themeOverrides from "./theme";
   height: calc(100vh - 60px);
 }
 
+/* .modal-prompt{
+  width: 50% !important;
+} */
+
+span{
+  font-weight: bold;
+}
 .main {
   padding: 0;
   background-color: #ffffff;
