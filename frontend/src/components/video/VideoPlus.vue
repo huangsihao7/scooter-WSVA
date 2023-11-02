@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 19:07:30
+ * @LastEditTime: 2023-11-02 19:37:50
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -50,7 +50,7 @@ const dplayerObj = reactive({
     url: props.video.play_url, //视频地址
     type: "mp4",
     customType: {
-      customHls: function (video: any, player: any) {
+      customHls: function (video: any) {
         const hls = new Hls(); //实例化Hls  用于解析m3u8
         hls.loadSource(video.src);
         hls.attachMedia(video);

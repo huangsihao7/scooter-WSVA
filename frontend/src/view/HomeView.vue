@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-05-08 15:29:52
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 19:30:50
+ * @LastEditTime: 2023-11-02 19:34:19
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\view\HomeView.vue
 -->
@@ -11,7 +11,7 @@ import VideoList from "@/components/VideoList.vue";
 </script>
 
 <template>
-  <VideoList :video-list-type="0" />
+  <VideoList  :video-list-type="0" />
 </template>
 
 <style scoped></style>

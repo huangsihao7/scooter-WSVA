@@ -41,6 +41,7 @@ const recommendlists = ref<any>();
 // 添加评论的内容
 const addComment = ref<string>("");
 
+// 获取视频
 onMounted(() => {
   let vid = videoId.value.toString();
   let vidNum = parseInt(vid);
