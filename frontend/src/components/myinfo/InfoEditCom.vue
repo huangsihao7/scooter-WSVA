@@ -202,7 +202,6 @@ const cancelCallback = () => {
 
 // 修改资料
 const submitCallback = () => {
-  // TODO: 修改上传
   let userInfo = formValue.value;
   updateUserInfo(
     userInfo.name,

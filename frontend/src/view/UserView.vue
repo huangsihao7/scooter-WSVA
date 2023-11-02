@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-05-08 15:29:52
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-30 22:35:45
+ * @LastEditTime: 2023-11-02 16:09:33
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\view\UserView.vue
 -->
@@ -16,6 +16,7 @@ import { userStore } from "@/stores/user";
 const route = useRoute();
 const userId = computed(() => route.params.id);
 const passUserId = ref<any>();
+
 onMounted(() => {
   if (userId.value) {
     passUserId.value = userId.value;
@@ -28,6 +29,7 @@ onMounted(() => {
 const updateUserId = (userId: number) => {
   console.log(userId);
 };
+
 </script>
 
 <template>

@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 18:45:11
+ * @LastEditTime: 2023-11-02 18:28:33
  * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\myHeaderCom.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyHeaderCom.vue
 -->
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
@@ -14,15 +14,15 @@ import { NAvatar, NButton, NDivider, NGrid, NGridItem, NIcon } from "naive-ui";
 import InfoEditCom from "./InfoEditCom.vue";
 import { CashOutline as CashIcon } from "@vicons/ionicons5";
 import { useRouter } from "vue-router";
+import { routeStore } from "@/stores/route";
 
 interface propsType {
   userId: number;
 }
 
 const props = defineProps<propsType>();
-const avatar = userStore().avatar;
+// 用户头像信息
 const userInfo = ref<any>({
-  background_image: userStore().avatar,
 });
 const editVisible = ref<boolean>(false);
 const router = useRouter();
@@ -35,11 +35,14 @@ const getUserInfoFunc = () => {
   let uid_num = parseInt(uid);
   getUserInfo(uid_num).then((res: any) => {
     userInfo.value = res.user;
-    userStore().name = res.user.name;
-    userStore().avatar = res.user.avatar;
-    userStore().gender = res.user.gender;
-    userStore().signature = res.user.signature;
-    userStore().background_image = res.user.background_image;
+    let routeName = routeStore().name;
+    if(routeName == 'user'){
+      userStore().name = res.user.name;
+      userStore().avatar = res.user.avatar;
+      userStore().gender = res.user.gender;
+      userStore().signature = res.user.signature;
+      userStore().background_image = res.user.background_image;
+    }
   });
 };
 
@@ -52,11 +55,23 @@ onMounted(() => {
   getUserInfoFunc();
 });
 
+// 跳转到关注的人的列表
 const goFollowing = () => {
-  console.log("go", props.userId);
-  // emit("userid-update", props.userId);
-  router.push({ name: "following", params: { id: props.userId } });
+  routeStore().name = "follows";
+  router.push({ name: "follows" , params: { id: props.userId } });
 };
+
+// 跳到粉丝列表
+const goFollowers = () =>{
+  routeStore().name = "followers";
+  router.push({ name: "followers" , params: { id: props.userId } });
+}
+
+// 跳到朋友列表
+const goFriends = () =>{
+  routeStore().name = "friends";
+  router.push({ name: "friends" , params: { id: props.userId } });
+}
 </script>
 
 <template>
@@ -71,7 +86,7 @@ const goFollowing = () => {
   >
     <NGrid>
       <NGridItem :span="4">
-        <NAvatar :src="avatar" round />
+        <NAvatar :src="userInfo.avatar" round />
       </NGridItem>
       <NGridItem v-if="userInfo" :span="20" class="info-tab">
         <p class="name">{{ userInfo.name }}</p>
@@ -81,11 +96,15 @@ const goFollowing = () => {
             关注 {{ userInfo.follow_count }}
           </NButton>
           <NDivider vertical />
-          <NButton color="#606266" text>
+          <NButton color="#606266" text @click="goFollowers">
             粉丝 {{ userInfo.follower_count }}
           </NButton>
           <NDivider vertical />
-          <NButton color="#606266" text>
+          <NButton color="#606266" text @click="goFriends">
+            朋友 {{ userInfo.follower_count }}
+          </NButton>
+          <NDivider vertical />
+          <NButton color="#606266" text >
             获赞 {{ userInfo.favorite_count }}
           </NButton>
         </div>

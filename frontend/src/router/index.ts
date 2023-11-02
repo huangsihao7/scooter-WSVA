@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:49:44
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 13:59:10
+ * @LastEditTime: 2023-11-02 16:38:10
  * @Description: 路由表
  * @FilePath: \scooter-WSVA\frontend\src\router\index.ts
  */
@@ -18,11 +18,13 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      // 用户资料页面
       path: "/user",
       name: "user",
       component: () => import("../view/UserView.vue"),
     },
     {
+      // 用户关注的人
       path: "/follow",
       name: "follow",
       component: () => import("../view/FollowView.vue"),
@@ -58,10 +60,32 @@ const router = createRouter({
       component: () => import("../view/ClassifiedView.vue"),
     },
     {
-      path: "/following/:id",
-      name: "following",
+      // 某个人的个人资料页面
+      path: "/userinfo/:id",
+      name: "userinfo",
       props: true,
       component: () => import("../view/UserView.vue"),
+    },
+    {
+      // 关注的人的卡片列表
+      path: "/follows/:id",
+      name: "follows",
+      props: true,
+      component: () => import("../view/FollowView.vue"),
+    },
+    {
+      // 粉丝的卡片列表
+      path: "/followers/:id",
+      name: "followers",
+      props: true,
+      component: () => import("../view/FollowView.vue"),
+    },
+    {
+      // 朋友的卡片列表
+      path: "/friends/:id",
+      name: "friends",
+      props: true,
+      component: () => import("../view/FollowView.vue"),
     },
     {
       path: "/video/:id",
