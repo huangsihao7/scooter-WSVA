@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-05-08 15:29:52
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 16:03:55
+ * @LastEditTime: 2023-11-02 16:09:33
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\view\UserView.vue
 -->
@@ -29,6 +29,7 @@ onMounted(() => {
 const updateUserId = (userId: number) => {
   console.log(userId);
 };
+
 </script>
 
 <template>

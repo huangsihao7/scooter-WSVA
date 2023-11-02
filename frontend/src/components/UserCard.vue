@@ -2,14 +2,13 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 14:47:38
+ * @LastEditTime: 2023-11-02 17:10:32
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
-import { userStore } from "@/stores/user";
-import { getFollowList, canclefollowOne, followOne } from "@/apis/follow";
+import { getFollowsList, getFollowersList, getFriendsList, canclefollowOne, followOne } from "@/apis/follow";
 import { useRouter } from "vue-router";
 import {
   useMessage,
@@ -21,33 +20,66 @@ import {
   NEmpty,
 } from "naive-ui";
 import { FollowCardType } from "@/apis/interface";
+import { routeStore } from "@/stores/route";
+
+interface propsType{
+  cardType: string,
+  userId: number
+}
+const props = defineProps<propsType>()
 const message = useMessage();
 const router = useRouter();
-const folllowList = ref<FollowCardType[]>([]);
+// 用户列表渲染数据
+const usersList = ref<FollowCardType[]>([]);
 
 // 获取关注的人的信息卡片
 onMounted(() => {
-  getFollowList(userStore().user_id).then((res: any) => {
-    folllowList.value = res.list;
-    if (folllowList.value) {
-      folllowList.value.forEach((element: any) => {
-        element.isfollowed = true;
+  console.log(props.userId, props.cardType, 'cardType')
+  let userId = props.userId
+  switch (props.cardType) {
+    case 'friends':
+      getFriendsList(userId).then((res: any) => {
+        usersList.value = res.list;
+        if (usersList.value) {
+          usersList.value.forEach((element: any) => {
+            element.isfriends = true;
+          });
+        }
       });
-    }
-  });
+      break;
+    case 'followers':
+      getFollowersList(userId).then((res: any) => {
+        usersList.value = res.list;
+      });
+    break;
+    case 'follows':
+      getFollowsList(userId).then((res: any) => {
+        usersList.value = res.list;
+        if (usersList.value) {
+          usersList.value.forEach((element: any) => {
+            element.isfollowed = true;
+          });
+        }
+      });
+    break;
+  }
+  
 });
 
 // 跳转视频
 const handleShowVedio = (info: FollowCardType) => {
   const video_id = info.video_id;
+  routeStore().name = "video";
   router.push({ name: "video", params: { id: video_id } });
 };
 
 // 跳转到关注人的页面
 const handleShowUser = (userId: number) => {
-  router.push({ name: "following", params: { id: userId } });
+  routeStore().name = "userinfo";
+  router.push({ name: "userinfo", params: { id: userId } });
 };
 
+// 取消关注
 const cancleFollow = (item: any, _index: any) => {
   if (item.isfollowed) {
     canclefollowOne(item.id).then((res: any) => {
@@ -69,16 +101,13 @@ const cancleFollow = (item: any, _index: any) => {
     });
     item.isfollowed = true;
   }
-
-  // item.isfollowed = false
-  // TODO 取消关注接口
 };
 </script>
 
 <template>
   <!-- <ElSpace wrap> -->
   <NGrid class="space" x-gap="12" :cols="4">
-    <NGi v-for="(info, index) in folllowList" :key="index">
+    <NGi v-for="(info, index) in usersList" :key="index">
       <NCard class="card" style="padding: 0" :hoverable="true">
         <template #cover>
           <img
@@ -103,8 +132,11 @@ const cancleFollow = (item: any, _index: any) => {
           />
           <div class="other-info">
             <span class="name">{{ info.name }}</span>
-            <NButton class="btn" @click="cancleFollow(info, index)">
-              {{ info.is_follow == true ? "已关注" : "关注" }}
+            <NButton class="btn" v-if="cardType=='follows'" @click="cancleFollow(info, index)">
+              {{ info.is_follow ? "已关注" : "关注" }}
+            </NButton>
+            <NButton class="btn" v-if="cardType=='friends'" @click="cancleFollow(info, index)">
+              {{ info.is_friends ? "已互关" : "关注" }}
             </NButton>
             <p class="sig">{{ info.signature }}</p>
           </div>

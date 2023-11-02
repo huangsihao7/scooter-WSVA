@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 11:32:07
+ * @LastEditTime: 2023-11-02 16:08:52
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -105,9 +105,10 @@ const handleLikeBtn = () => {
     }
     thisVideo.value.is_favorite = !thisVideo.value.is_favorite;
   }
-  // TODO: 发请求
   doFavourite(props.video.video_id, action_type).then((res: any) => {
-    console.log(res);
+    if(res.status_code!=200){
+      message.error(res.status_msg)
+    }
   });
 };
 

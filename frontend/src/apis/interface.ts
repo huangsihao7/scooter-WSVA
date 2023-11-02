@@ -62,7 +62,8 @@ interface FollowCardType {
   total_favorited: number;
   work_count: number;
   favorite_count: number;
-  is_follow: boolean;
+  is_follow?: boolean;
+  is_friends?: boolean;
   phoneNum?: string;
   background_image: string;
   cover_url: string;

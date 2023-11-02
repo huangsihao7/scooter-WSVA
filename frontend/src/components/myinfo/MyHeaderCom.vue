@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 18:45:11
+ * @LastEditTime: 2023-11-02 16:46:49
  * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\myHeaderCom.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyHeaderCom.vue
 -->
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
@@ -14,6 +14,7 @@ import { NAvatar, NButton, NDivider, NGrid, NGridItem, NIcon } from "naive-ui";
 import InfoEditCom from "./InfoEditCom.vue";
 import { CashOutline as CashIcon } from "@vicons/ionicons5";
 import { useRouter } from "vue-router";
+import { routeStore } from "@/stores/route";
 
 interface propsType {
   userId: number;
@@ -52,11 +53,21 @@ onMounted(() => {
   getUserInfoFunc();
 });
 
+// 跳转到关注的人的列表
 const goFollowing = () => {
-  console.log("go", props.userId);
-  // emit("userid-update", props.userId);
-  router.push({ name: "following", params: { id: props.userId } });
+  routeStore().name = "follows";
+  router.push({ name: "follows" , params: { id: props.userId } });
 };
+
+const goFollowers = () =>{
+  routeStore().name = "followers";
+  router.push({ name: "followers" , params: { id: props.userId } });
+}
+
+const goFriends = () =>{
+  routeStore().name = "friends";
+  router.push({ name: "friends" , params: { id: props.userId } });
+}
 </script>
 
 <template>
@@ -81,11 +92,15 @@ const goFollowing = () => {
             关注 {{ userInfo.follow_count }}
           </NButton>
           <NDivider vertical />
-          <NButton color="#606266" text>
+          <NButton color="#606266" text @click="goFollowers">
             粉丝 {{ userInfo.follower_count }}
           </NButton>
           <NDivider vertical />
-          <NButton color="#606266" text>
+          <NButton color="#606266" text @click="goFriends">
+            朋友 {{ userInfo.follower_count }}
+          </NButton>
+          <NDivider vertical />
+          <NButton color="#606266" text >
             获赞 {{ userInfo.favorite_count }}
           </NButton>
         </div>
