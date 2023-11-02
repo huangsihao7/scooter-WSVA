@@ -30,7 +30,7 @@ build:
 	cd relation/api && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/relation_api" relation.go
 	# comment
 	cd comment/rpc && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/comment_rpc" comment.go
-	cd comment/api && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/comment_api" comment.go
+	cd comment/api && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../output/comment_api" comment.go
 	# MQ
 	cd mq && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/mq_api" mq.go
 	# label
