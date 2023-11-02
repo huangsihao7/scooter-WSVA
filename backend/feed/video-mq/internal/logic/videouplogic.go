@@ -37,7 +37,7 @@ func (l *ThumbupLogic) Consume(key, val string) error {
 		return err
 	}
 
-	keywords := []string{"title", "content", "name", "dec"}
+	keywords := []string{"title", "content", "name", "dec", "label"}
 
 	flag := true
 	for _, keyword := range keywords {
@@ -87,12 +87,11 @@ func (l *ThumbupLogic) BatchUpSertToEs(ctx context.Context, data []*types.VideoE
 		if err != nil {
 			return err
 		}
-
+		//DocumentID: fmt.Sprintf("%d", d.VideoId),
 		payload := fmt.Sprintf(`{"doc":%s,"doc_as_upsert":true}`, string(v))
 		err = bi.Add(ctx, esutil.BulkIndexerItem{
-			Action:     "update",
-			DocumentID: fmt.Sprintf("%d", d.VideoId),
-			Body:       strings.NewReader(payload),
+			Action: "create",
+			Body:   strings.NewReader(payload),
 			OnSuccess: func(ctx context.Context, item esutil.BulkIndexerItem, item2 esutil.BulkIndexerResponseItem) {
 			},
 			OnFailure: func(ctx context.Context, item esutil.BulkIndexerItem, item2 esutil.BulkIndexerResponseItem, err error) {
@@ -115,52 +114,27 @@ func (l *ThumbupLogic) articleOperate(msg *types.CanalArticleMsg) error {
 	var esData []*types.VideoEsMsg
 	for _, d := range msg.Data {
 
-		//favoriteCount, _ := strconv.ParseInt(d.FavoriteCount, 10, 64)
-		//commentCount, _ := strconv.ParseInt(d.CommentCount, 10, 64)
-		//starCount, _ := strconv.ParseInt(d.StarCount, 10, 64)
-		//category, _ := strconv.ParseInt(d.Category, 10, 64)
-
 		videoId, _ := strconv.ParseInt(d.Id, 10, 64)
-
-		//redis 代码
-		//t, err := time.ParseInLocation("2006-01-02 15:04:05", d.CreatedAt, time.Local)
-		//publishTimeKey := articlesKey(d.AuthorId, 0)
-		//likeNumKey := articlesKey(d.AuthorId, 1)
-
-		//switch status {
-		//case types.ArticleStatusVisible:
-		//	b, _ := l.svcCtx.BizRedis.ExistsCtx(l.ctx, publishTimeKey)
-		//	if b {
-		//		_, err = l.svcCtx.BizRedis.ZaddCtx(l.ctx, publishTimeKey, t.Unix(), d.ID)
-		//		if err != nil {
-		//			l.Logger.Errorf("ZaddCtx key: %s req: %v error: %v", publishTimeKey, d, err)
-		//		}
-		//	}
-		//	b, _ = l.svcCtx.BizRedis.ExistsCtx(l.ctx, likeNumKey)
-		//	if b {
-		//		_, err = l.svcCtx.BizRedis.ZaddCtx(l.ctx, likeNumKey, likNum, d.ID)
-		//		if err != nil {
-		//			l.Logger.Errorf("ZaddCtx key: %s req: %v error: %v", likeNumKey, d, err)
-		//		}
-		//	}
-		//case types.ArticleStatusUserDelete:
-		//	_, err = l.svcCtx.BizRedis.ZremCtx(l.ctx, publishTimeKey, d.ID)
-		//	if err != nil {
-		//		l.Logger.Errorf("ZremCtx key: %s req: %v error: %v", publishTimeKey, d, err)
-		//	}
-		//	_, err = l.svcCtx.BizRedis.ZremCtx(l.ctx, likeNumKey, d.ID)
-		//	if err != nil {
-		//		l.Logger.Errorf("ZremCtx key: %s req: %v error: %v", likeNumKey, d, err)
-		//	}
-		//}
-		if len(d.Content) > 0 {
-			videoId, _ = strconv.ParseInt(d.Vid, 10, 64)
+		if len(d.Title) != 0 {
+			esData = append(esData, &types.VideoEsMsg{
+				VideoId: videoId,
+				Title:   d.Title,
+			})
 		}
-		esData = append(esData, &types.VideoEsMsg{
-			VideoId: videoId,
-			Title:   d.Title,
-			Content: d.Content,
-		})
+		if len(d.Content) != 0 {
+			videoId, _ = strconv.ParseInt(d.Vid, 10, 64)
+			esData = append(esData, &types.VideoEsMsg{
+				VideoId: videoId,
+				Content: d.Content,
+			})
+		}
+		if len(d.Label) != 0 {
+			videoId, _ = strconv.ParseInt(d.Vid, 10, 64)
+			esData = append(esData, &types.VideoEsMsg{
+				VideoId: videoId,
+				Label:   d.Label,
+			})
+		}
 	}
 
 	err := l.BatchUpSertToEs(l.ctx, esData)
