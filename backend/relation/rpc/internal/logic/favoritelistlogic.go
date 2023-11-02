@@ -30,14 +30,13 @@ func (l *FavoriteListLogic) FavoriteList(in *relation.FavoriteListReq) (*relatio
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return &relation.FavoriteListResp{
-				StatusCode: constants.UserDoNotExistedCode,
-				StatusMsg:  constants.UserDoNotExisted,
+				StatusCode: constants.ServiceOKCode,
+				StatusMsg:  constants.ServiceOK,
+				List:       nil,
 			}, nil
 		} else {
-			return &relation.FavoriteListResp{
-				StatusCode: constants.UnableToGetFollowListErrorCode,
-				StatusMsg:  constants.UnableToGetFollowListError,
-			}, nil
+			l.Logger.Error("数据库查询用户关注列表错")
+			return nil, err
 		}
 	}
 
@@ -48,10 +47,8 @@ func (l *FavoriteListLogic) FavoriteList(in *relation.FavoriteListReq) (*relatio
 			ActorId: int64(item.FollowingId),
 		})
 		if err != nil {
-			return &relation.FavoriteListResp{
-				StatusCode: constants.UnableToGetFollowListErrorCode,
-				StatusMsg:  constants.UnableToGetFollowListError,
-			}, nil
+			l.Logger.Error("查询用户信息错")
+			return nil, err
 		}
 		var coverUrl string
 		var vid int64

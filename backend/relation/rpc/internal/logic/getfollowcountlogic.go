@@ -27,10 +27,8 @@ func NewGetFollowCountLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 func (l *GetFollowCountLogic) GetFollowCount(in *relation.FollowCountReq) (*relation.FollowCountResp, error) {
 	count, err := l.svcCtx.RelationModel.GetFollowCount(l.ctx, in.Uid)
 	if err != nil {
-		return &relation.FollowCountResp{
-			StatusCode: constants.UnableToGetFollowCountErrorCode,
-			StatusMsg:  constants.UnableToGetFollowCountError,
-		}, nil
+		l.Logger.Error("获取关注数失败")
+		return nil, err
 	}
 	return &relation.FollowCountResp{
 		Count:      count,

@@ -28,10 +28,8 @@ func (l *IsFollowingLogic) IsFollowing(in *relation.IsFollowingReq) (*relation.I
 	// todo: add your logic here and delete this line
 	flag, err := l.svcCtx.RelationModel.IsFollowing(l.ctx, in.ActorId, in.UserId)
 	if err != nil {
-		return &relation.IsFollowingResp{
-			StatusCode: constants.UnableToGetIsFollowErrorCode,
-			StatusMsg:  constants.UnableToGetIsFollowCountError,
-		}, nil
+		l.Logger.Error("获取是否关注失败")
+		return nil, err
 	}
 	return &relation.IsFollowingResp{
 		StatusCode: constants.ServiceOKCode,

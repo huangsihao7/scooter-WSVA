@@ -31,14 +31,13 @@ func (l *FriendListLogic) FriendList(in *relation.FriendListReq) (*relation.Frie
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return &relation.FriendListResp{
-				StatusCode: constants.UserDoNotExistedCode,
-				StatusMsg:  constants.UserDoNotExisted,
+				StatusCode: constants.ServiceOKCode,
+				StatusMsg:  constants.ServiceOK,
+				List:       nil,
 			}, nil
 		} else {
-			return &relation.FriendListResp{
-				StatusCode: constants.UnableToGetFriendListErrorCode,
-				StatusMsg:  constants.UnableToGetFriendListError,
-			}, nil
+			l.Logger.Error("数据库查询用户关注列表错")
+			return nil, err
 		}
 	}
 
@@ -49,10 +48,8 @@ func (l *FriendListLogic) FriendList(in *relation.FriendListReq) (*relation.Frie
 			ActorId: int64(item.FollowerId),
 		})
 		if err != nil {
-			return &relation.FriendListResp{
-				StatusCode: constants.UnableToGetFriendListErrorCode,
-				StatusMsg:  constants.UnableToGetFriendListError,
-			}, nil
+			l.Logger.Error("查询用户信息错")
+			return nil, err
 		}
 		var coverUrl string
 		var vid int64

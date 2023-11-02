@@ -3,7 +3,6 @@ package logic
 import (
 	"context"
 	"encoding/json"
-	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/relation"
 
 	"github.com/huangsihao7/scooter-WSVA/relation/api/internal/svc"
@@ -33,11 +32,8 @@ func (l *FriendListLogic) FriendList(req *types.FriendListReq) (resp *types.Frie
 		ActUser: req.Uid,
 	})
 
-	if list.StatusCode != constants.ServiceOKCode {
-		return &types.FriendListResp{
-			StatusCode: int(list.StatusCode),
-			StatusMsg:  list.StatusMsg,
-		}, nil
+	if err != nil {
+		return nil, err
 	}
 	resList := make([]types.UserInfo, 0)
 	for _, item := range list.List {

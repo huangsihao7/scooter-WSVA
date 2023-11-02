@@ -44,7 +44,6 @@ func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
 	if password != res.Password {
 		log.Println("密码错误")
 		return nil, code.UserNotExistError
-
 	}
 
 	return &user.LoginResponse{
