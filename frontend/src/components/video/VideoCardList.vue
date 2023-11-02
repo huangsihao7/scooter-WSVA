@@ -2,14 +2,14 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 19:58:48
+ * @LastEditTime: 2023-11-02 16:02:54
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardList.vue
  * @Description: 
 -->
 <script lang="ts" setup>
 import { onMounted } from "vue";
 import { NButton, NCard, NEllipsis, NIcon, NTag } from "naive-ui";
-import { Heart, Play, TrashBin } from "@vicons/ionicons5";
+import { Heart, Play, Trash } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
 import { useRouter } from "vue-router";
 import { myDeleteVideo } from "@/apis/video";
@@ -64,7 +64,7 @@ onMounted(() => {
       @click="deleteVideo(info)"
     >
       <template #icon>
-        <NIcon><TrashBin /></NIcon>
+        <NIcon><Trash /></NIcon>
       </template>
     </NButton>
     <div class="video-space" style="position: relative" @click="GetVideoLink">

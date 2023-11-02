@@ -15,7 +15,7 @@
   >
     <NTabPane name="work" tab="作品">
       <NScrollbar style="max-height: 50vh">
-        <VideoCard :is-scroll="false" :videos="videos" :deletable="true" />
+        <VideoCard :is-scroll="false" :videos="videos" :deletable="deletable" />
       </NScrollbar>
     </NTabPane>
     <NTabPane name="favourite" tab="喜欢">
@@ -40,7 +40,8 @@ import { NScrollbar, NTabPane, NTabs } from "naive-ui";
 import VideoCard from "../VideoCard.vue";
 import { getHistoryVideosListReq, userVideoListReq } from "@/apis/video";
 import { userFavouriteListReq, userStarListReq } from "@/apis/favourite";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
+import { userStore } from "@/stores/user";
 
 const videos = ref<Array<any>>([]);
 
@@ -48,11 +49,14 @@ interface propsType {
   userId: number;
 }
 
+const deletable = computed(()=>(props.userId==userStore().user_id)?true:false)
 const props = defineProps<propsType>();
 const myid = ref<number>(-1);
+
 onMounted(() => {
   getMyWork();
 });
+
 const getMyWork = () => {
   let uid = props.userId.toString();
   let uid_num = parseInt(uid);
@@ -61,21 +65,25 @@ const getMyWork = () => {
     videos.value = res.video_list;
   });
 };
+
 const getMyFavourite = () => {
   userFavouriteListReq(myid.value).then((res: any) => {
     videos.value = res.video_list;
   });
 };
+
 const getMyCollect = () => {
   userStarListReq(myid.value).then((res: any) => {
     videos.value = res.video_list;
   });
 };
+
 const getMyHistory = () => {
   getHistoryVideosListReq().then((res: any) => {
     videos.value = res.video_list;
   });
 };
+
 const handleUpdate = (paneName: string) => {
   if (paneName === "work") {
     getMyWork();
@@ -87,6 +95,7 @@ const handleUpdate = (paneName: string) => {
     getMyHistory();
   }
 };
+
 </script>
 <style>
 

@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 15:26:18
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 15:42:49
+ * @LastEditTime: 2023-11-02 15:54:52
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\PostVideo.vue
 -->
@@ -87,8 +87,7 @@ const handlePostVideo = () => {
     ).then((res: any) => {
       fileUploadRef.value.clear();
       titleIptRef.value.clear();
-      message.success("上传成功");
-      console.log(res);
+      message.success(res.status_msg);
     });
     emit("visible-update", false);
   }
