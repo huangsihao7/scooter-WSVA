@@ -78,8 +78,10 @@ type (
 		FriendCount     int64  `json:"friend_count"`
 	}
 	UserUploadResponse {
-		Url      string `json:"url"`
-		CoverUrl string `json:"coverUrl"`
+		Url        string `json:"url"`
+		CoverUrl   string `json:"coverUrl"`
+		StatusCode int    `json:"status_code"`
+		StatusMsg  string `json:"status_msg"`
 	}
 )
 

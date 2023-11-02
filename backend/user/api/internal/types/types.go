@@ -75,6 +75,8 @@ type User struct {
 }
 
 type UserUploadResponse struct {
-	Url      string `json:"url"`
-	CoverUrl string `json:"coverUrl"`
+	Url        string `json:"url"`
+	CoverUrl   string `json:"coverUrl"`
+	StatusCode int    `json:"status_code"`
+	StatusMsg  string `json:"status_msg"`
 }

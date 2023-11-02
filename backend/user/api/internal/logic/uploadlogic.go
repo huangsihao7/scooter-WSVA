@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/common/crypt"
 	"github.com/huangsihao7/scooter-WSVA/user/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/user/api/internal/types"
@@ -71,9 +72,7 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 	operationManager := storage.NewOperationManager(mac, &cfg)
 	fopVframe := fmt.Sprintf("vframe/jpg/offset/1|saveas/%s",
 		storage.EncodedEntry(bucket, strings.TrimSuffix(key, filepath.Ext(key))+".jpg"))
-
 	fops := fopVframe
-
 	_, err = operationManager.Pfop(bucket, key, fops, "", "", true)
 	if err != nil {
 		l.Logger.Error("截帧失败")
@@ -86,7 +85,9 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 	println(ret.PersistentID)
 
 	return &types.UserUploadResponse{
-		CoverUrl: coverUrl,
-		Url:      fileURL,
+		StatusCode: constants.ServiceOKCode,
+		StatusMsg:  constants.ServiceOK,
+		CoverUrl:   coverUrl,
+		Url:        fileURL,
 	}, nil
 }

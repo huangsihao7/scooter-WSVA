@@ -15,7 +15,7 @@ import (
 )
 
 func QiNiuGet(url string) ([]byte, error) {
-	// 发起 GET 请求
+	// 发起 GET
 	response, err := http.Get(url)
 	if err != nil {
 		fmt.Println("请求失败:", err.Error())
