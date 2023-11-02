@@ -64,12 +64,12 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 	uint32followerCount := uint32(followerCount)
 
 	//查询点赞视频数
-	favorCount, err := l.svcCtx.FavorModel.GetFavoriteCount(l.ctx, actionId)
+	favorCount, err := l.svcCtx.VideoModel.GetFavoriteCount(l.ctx, actionId)
 	if err != nil {
 		l.Logger.Errorf("获取获赞数量出错" + err.Error())
 		return nil, err
 	}
-	uint32favorCount := uint32(len(favorCount))
+	uint32favorCount := uint32(favorCount)
 
 	//查询视频获赞数
 	favorVideoCount, err := l.svcCtx.FavorModel.GetVideoCount(l.ctx, actionId)
