@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
-	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 	"github.com/huangsihao7/scooter-WSVA/label/rpc/label"
 	"github.com/huangsihao7/scooter-WSVA/mq/api/internal/svc"
@@ -69,7 +68,7 @@ func (l *UploadFile) Consume(key, val string) error {
 		VideoId:     videoInfo.Id,
 		CommentText: uploadRes.Data.Summary,
 	})
-	if err != nil || commentRes.StatusCode != constants.ServiceOKCode {
+	if err != nil {
 		fmt.Println("评论错误:", commentRes.StatusMsg, err)
 		return err
 	}
