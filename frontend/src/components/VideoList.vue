@@ -122,20 +122,20 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
         }
       });
     }
-    if (videos.value) {
-      getCommentList(videos.value[currentIndex].video_id).then((res: any) => {
-        if (res.comment_list[0]) {
-          commentlists.value = res.comment_list;
+  }
+  if (videos.value) {
+    getCommentList(videos.value[currentIndex].video_id).then((res: any) => {
+      if (res.comment_list[0]) {
+        commentlists.value = res.comment_list;
+      }
+    });
+    getRecommendVideosList(videos.value[currentIndex].video_id).then(
+      (res: any) => {
+        if (res.video_list[0]) {
+          recommendlists.value = res.video_list;
         }
-      });
-      getRecommendVideosList(videos.value[currentIndex].video_id).then(
-        (res: any) => {
-          if (res.video_list[0]) {
-            recommendlists.value = res.video_list;
-          }
-        },
-      );
-    }
+      },
+    );
   }
 };
 
@@ -151,6 +151,7 @@ const formattedDate = () => {
   return formattedDate;
 };
 
+// 发布评论接口
 const doCommentApi = () => {
   doComment(videoStore().video_id, 1, addComment.value, 0).then((res: any) => {
     let userInfo = userStore();
@@ -187,6 +188,7 @@ const postComment = (e: any) => {
   }
 };
 
+// 点击事件发布评论
 const postCommentByBtn = () => {
   doCommentApi();
 };

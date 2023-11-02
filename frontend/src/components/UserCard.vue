@@ -2,12 +2,12 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 20:59:48
+ * @LastEditTime: 2023-11-02 22:17:07
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch, reactive } from "vue";
 import { getFollowsList, getFollowersList, getFriendsList, canclefollowOne, followOne } from "@/apis/follow";
 import { useRouter } from "vue-router";
 import {
@@ -18,6 +18,7 @@ import {
   NGrid,
   NGi,
   NEmpty,
+  NEllipsis
 } from "naive-ui";
 import { FollowCardType } from "@/apis/interface";
 import { routeStore } from "@/stores/route";
@@ -29,7 +30,7 @@ const props = defineProps<propsType>()
 const message = useMessage();
 const router = useRouter();
 // 用户列表渲染数据
-const usersList = ref<FollowCardType[]>([]);
+const usersList = reactive<Array<FollowCardType>>([]);
 const cardType = ref<string>()
 
 function getLastSegmentFromRoute(route: string): string {
@@ -37,19 +38,25 @@ function getLastSegmentFromRoute(route: string): string {
   return segments[segments.length - 1];
 }
 
-// 获取关注的人的信息卡片
-onMounted(() => {
-  let path = window.location.href;
-  let curRoute= getLastSegmentFromRoute(path);
-  routeStore().name =curRoute;
-  cardType.value = curRoute
+function getSecondSegmentFromRoute(route: string): string {
+  const segments = route.split("/");
+  return segments[segments.length - 2];
+}
+
+watch(()=>routeStore().name,
+(newValue:any)=>{
+  getUserCardsInfo(newValue)
+})
+
+const getUserCardsInfo = (finalRoute: string) =>{
   let userId = props.userId
-  switch (curRoute) {
+  switch (finalRoute) {
     case 'friends':
       getFriendsList(userId).then((res: any) => {
-        usersList.value = res.list;
-        if (usersList.value) {
-          usersList.value.forEach((element: any) => {
+        usersList.splice(0, usersList.length, ...res.list);
+        console.log(usersList)
+        if (usersList) {
+          usersList.forEach((element: any) => {
             element.isfriends = true;
           });
         }
@@ -57,31 +64,47 @@ onMounted(() => {
       break;
     case 'followers':
       getFollowersList(userId).then((res: any) => {
-        usersList.value = res.list;
+        usersList.splice(0, usersList.length, ...res.list);
       });
     break;
     case 'follows':
       getFollowsList(userId).then((res: any) => {
-        usersList.value = res.list;
-        if (usersList.value) {
-          usersList.value.forEach((element: any) => {
-            element.isfollowed = true;
+        usersList.splice(0, usersList.length, ...res.list);
+        if (usersList) {
+          usersList.forEach((element: any) => {
+            element.is_follow = true;
           });
         }
       });
     break;
     case 'follow':
       getFollowsList(userId).then((res: any) => {
-        usersList.value = res.list;
-        if (usersList.value) {
-          usersList.value.forEach((element: any) => {
-            element.isfollowed = true;
+        usersList.splice(0, usersList.length, ...res.list);
+        if (usersList) {
+          usersList.forEach((element: any) => {
+            element.is_follow = true;
           });
         }
       });
     break;
   }
-  
+}
+
+// 获取关注的人的信息卡片
+onMounted(() => {
+  let path = window.location.href;
+  console.log(path)
+  let lastRoute = getLastSegmentFromRoute(path);
+  let secondRoute = getSecondSegmentFromRoute(path);
+  let finalRoute = ''
+  if (lastRoute === "follow") {
+    finalRoute = lastRoute
+  } else if (secondRoute === "friends" || secondRoute === "followers" || secondRoute === "follows") {
+    finalRoute = secondRoute
+  }
+  routeStore().name = finalRoute;
+  cardType.value = finalRoute
+  getUserCardsInfo(finalRoute)
 });
 
 // 跳转视频
@@ -99,24 +122,24 @@ const handleShowUser = (userId: number) => {
 
 // 取消关注
 const cancleFollow = (item: any, _index: any) => {
-  if (item.isfollowed) {
+  if (item.is_follow) {
     canclefollowOne(item.id).then(() => {
         message.success("取消关注成功");
         window.location.reload()
     });
-    item.isfollowed = false;
+    item.is_follow = false;
   } else {
     followOne(item.id).then(() => {
         message.success("关注成功");
     });
-    item.isfollowed = true;
+    item.is_follow = true;
   }
 };
 </script>
 
 <template>
   <!-- <ElSpace wrap> -->
-  <NGrid class="space" x-gap="12" :cols="4">
+  <NGrid class="space" :x-gap="12" cols="2 s:3 m:4 l:5 xl:6 2xl:7" responsive="screen">
     <NGi v-for="(info, index) in usersList" :key="index">
       <NCard class="card" style="padding: 0" :hoverable="true">
         <template #cover>
@@ -141,8 +164,13 @@ const cancleFollow = (item: any, _index: any) => {
             @click="handleShowUser(info.id)"
           />
           <div class="other-info">
-            <span class="name">{{ info.name }}</span>
+            <span class="name">
+              <NEllipsis expand-trigger="click" line-clamp="1" :tooltip="false">{{ info.name }}</NEllipsis>
+            </span>
             <NButton class="btn" v-if="cardType=='follows'" @click="cancleFollow(info, index)">
+              {{ info.is_follow ? "已关注" : "关注" }}
+            </NButton>
+            <NButton class="btn" v-if="cardType=='follow'" @click="cancleFollow(info, index)">
               {{ info.is_follow ? "已关注" : "关注" }}
             </NButton>
             <NButton class="btn" v-if="cardType=='friends'" @click="cancleFollow(info, index)">
@@ -161,13 +189,12 @@ const cancleFollow = (item: any, _index: any) => {
   margin: 2vh 2vw;
 }
 .card {
-  height: 30vh;
+  height: 35vh;
   width: 100%;
 
   .header-info {
     display: flex;
     margin-top: 20px;
-    height: 8vh;
     .other-info {
       margin-left: 16px;
       .name {
@@ -176,6 +203,9 @@ const cancleFollow = (item: any, _index: any) => {
       }
       .btn {
         margin-left: 16px;
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
       }
       .sig {
         text-align: left;
@@ -185,7 +215,7 @@ const cancleFollow = (item: any, _index: any) => {
 
   .img {
     width: 100%;
-    height: calc(22vh - 40px);
+    height: calc(30vh - 40px);
     object-fit: fill;
   }
   .empty {

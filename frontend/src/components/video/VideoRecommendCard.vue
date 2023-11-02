@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NCard, NImage } from "naive-ui";
-import { NButton, NIcon } from "naive-ui";
+import { NButton, NIcon, NEllipsis } from "naive-ui";
 import { Heart } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
 interface propsType {
@@ -18,7 +18,12 @@ const props = defineProps<propsType>();
   >
     <NImage width="100" :src="video.cover_url" preview-disabled />
     <div class="video-info">
-      <span class="title">{{ video.title }}</span>
+      <span class="title">
+        <NEllipsis expand-trigger="click" line-clamp="2" :tooltip="false">
+          {{ video.title }}
+        </NEllipsis>
+        
+      </span>
       <div class="footer">
         <div class="like">
           <NButton class="btn" text color="#3f3f3f">
@@ -37,6 +42,7 @@ const props = defineProps<propsType>();
 <style lang="scss">
 .video-card {
   height: 100%;
+  margin-top: 10px;
   .n-card__content {
     display: flex;
     flex-direction: row;
