@@ -40,7 +40,7 @@ func (m *FavoriteModel) FindByUserId(ctx context.Context, userId int64, limit in
 }
 func (m *FavoriteModel) GetVideoCount(ctx context.Context, uid int64) ([]*Favorites, error) {
 	var favorites []*Favorites
-	err := m.db.WithContext(ctx).Where("vid = ?", uid).Find(&favorites).Error
+	err := m.db.WithContext(ctx).Where("uid = ?", uid).Find(&favorites).Error
 	if err != nil {
 		return nil, err
 	}

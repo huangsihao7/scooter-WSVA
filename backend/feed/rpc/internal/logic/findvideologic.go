@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
@@ -68,6 +69,13 @@ func (l *FindVideoLogic) FindVideo(in *feed.FindVideoReq) (*feed.FindVideoResp, 
 		StarCount:     uint32(video.StarCount),
 		IsStar:        IsStar,
 		Duration:      video.Duration.String,
+	}
+	err = l.svcCtx.HistoryModel.Insert(l.ctx, &gmodel.History{
+		Uid: uint(in.Uid),
+		Vid: int(in.Vid),
+	})
+	if err != nil {
+		l.Logger.Error("插入历史记录失败")
 	}
 	return &feed.FindVideoResp{
 		StatusCode: constants.ServiceOKCode,
