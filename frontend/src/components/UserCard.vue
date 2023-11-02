@@ -53,6 +53,7 @@ const cancleFollow = (item: any, _index: any) => {
     canclefollowOne(item.id).then((res: any) => {
       if (res.status_code == 200) {
         message.success("取消关注成功");
+        window.location.reload()
       } else {
         message.error(res.status_msg);
       }

@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 14:06:08
+ * @LastEditTime: 2023-11-02 14:38:32
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
@@ -82,6 +82,8 @@ function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
 
+const searchHistoryNum = ref<number>(0)
+
 // 搜索时把搜索记录保存
 const doSearch = ( isHistory: boolean, historyValue?: string) => {
   let searchValue = ''
@@ -95,8 +97,9 @@ const doSearch = ( isHistory: boolean, historyValue?: string) => {
   }
   let child = {
     label: searchValue,
-    key: searchValue
+    key: searchHistoryNum.value.toString()
   };
+  searchHistoryNum.value ++;
   historyStore().historyData.push(child);
   if (historyStore().historyData.length > 5) {
     historyStore().historyData.shift(); // 移除第一条数据
@@ -181,7 +184,7 @@ const renderDropdownLabel = (option: DropdownOption) => {
   return h(
     "a",
     {
-      onClick:()=>{option.key =='delete'? doDelete() : doSearch(true,option.key?.toString())}
+      onClick:()=>{option.key =='delete'? doDelete() : doSearch(true,option.label?.toString())}
     },
     {
       default: () => option.label as VNodeChild,
@@ -495,13 +498,18 @@ watch(
   }
   .n-menu-item:nth-child(1) .n-menu-item-content {
     width: 160px;
+    
   }
+  
   .n-menu-item:nth-child(2) .n-menu-item-content {
     width: 20vw;
   }
   .n-menu-item:nth-child(3) {
     margin-left: auto;
   }
+}
+.n-dropdown-menu {
+    width: calc(20vw - 40px);
 }
 
 .header-menu-logout {
@@ -534,9 +542,7 @@ watch(
   background-color: #409eff;
 }
 
-.n-dropdown-menu {
-  width: calc(20vw - 40px);
-}
+
 
 .post-btn {
   margin: auto;
