@@ -90,6 +90,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 			}, nil
 		}
 		return &comment.CommentActionResponse{
+			CommentId:  int64(newComment.Id),
 			StatusCode: constants.ServiceOKCode,
 			StatusMsg:  constants.ServiceOK,
 		}, nil
