@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 16:46:49
+ * @LastEditTime: 2023-11-02 18:28:33
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyHeaderCom.vue
 -->
@@ -21,9 +21,8 @@ interface propsType {
 }
 
 const props = defineProps<propsType>();
-const avatar = userStore().avatar;
+// 用户头像信息
 const userInfo = ref<any>({
-  background_image: userStore().avatar,
 });
 const editVisible = ref<boolean>(false);
 const router = useRouter();
@@ -36,11 +35,14 @@ const getUserInfoFunc = () => {
   let uid_num = parseInt(uid);
   getUserInfo(uid_num).then((res: any) => {
     userInfo.value = res.user;
-    userStore().name = res.user.name;
-    userStore().avatar = res.user.avatar;
-    userStore().gender = res.user.gender;
-    userStore().signature = res.user.signature;
-    userStore().background_image = res.user.background_image;
+    let routeName = routeStore().name;
+    if(routeName == 'user'){
+      userStore().name = res.user.name;
+      userStore().avatar = res.user.avatar;
+      userStore().gender = res.user.gender;
+      userStore().signature = res.user.signature;
+      userStore().background_image = res.user.background_image;
+    }
   });
 };
 
@@ -59,11 +61,13 @@ const goFollowing = () => {
   router.push({ name: "follows" , params: { id: props.userId } });
 };
 
+// 跳到粉丝列表
 const goFollowers = () =>{
   routeStore().name = "followers";
   router.push({ name: "followers" , params: { id: props.userId } });
 }
 
+// 跳到朋友列表
 const goFriends = () =>{
   routeStore().name = "friends";
   router.push({ name: "friends" , params: { id: props.userId } });
@@ -82,7 +86,7 @@ const goFriends = () =>{
   >
     <NGrid>
       <NGridItem :span="4">
-        <NAvatar :src="avatar" round />
+        <NAvatar :src="userInfo.avatar" round />
       </NGridItem>
       <NGridItem v-if="userInfo" :span="20" class="info-tab">
         <p class="name">{{ userInfo.name }}</p>
