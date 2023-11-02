@@ -53,7 +53,7 @@ func (l *SearchESLogic) SearchES(in *feed.EsSearchReq) (*feed.EsSearchResp, erro
 	var responses Response
 	err = json.Unmarshal(bodyBytes, &responses)
 	if err != nil {
-		logx.Errorf("json解析错误")
+		l.Logger.Error(err.Error())
 		return nil, err
 	}
 

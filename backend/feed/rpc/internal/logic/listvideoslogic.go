@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/feed/code"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 	"gorm.io/gorm"
 
@@ -30,7 +31,8 @@ func (l *ListVideosLogic) ListVideos(in *feed.ListFeedRequest) (*feed.ListFeedRe
 	Feeds, err := l.svcCtx.VideoModel.FindFeeds(l.ctx)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, nil
+			l.Logger.Error("视频不存在")
+			return nil, code.FeedUnableToQueryVideoError
 		} else {
 			l.Logger.Error("数据库查询错误")
 			return nil, err

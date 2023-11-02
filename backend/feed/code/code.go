@@ -7,6 +7,6 @@ import (
 var (
 	FeedUnableToQueryUserError     = xcode.New(20001, "无法查找用户信息")
 	FeedUnableToQueryVideoError    = xcode.New(20002, "无法查找视频信息")
-	FavoriteServiceCancelError     = xcode.New(20004, "点赞记录不存在,无法取消点赞")
-	FavoriteInvalidActionTypeError = xcode.New(20005, "无效的点赞操作")
+	FeedRecommendServiceInnerError = xcode.New(20003, "删除视频推荐服务内部错误")
+	FeedDeleteVideoDbError         = xcode.New(20004, "删除视频数据库内部错误")
 )
