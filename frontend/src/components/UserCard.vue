@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 11:20:22
+ * @LastEditTime: 2023-11-02 14:47:38
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -154,47 +154,4 @@ const cancleFollow = (item: any, _index: any) => {
   }
 }
 
-.box-card {
-  margin-top: 15px;
-  margin-left: 10px;
-
-  .el-card__body {
-    .el-image {
-      width: 100%;
-      height: 30vh;
-    }
-
-    .play-btn {
-      width: 100%;
-      text-align: center;
-      position: relative;
-      bottom: 125px;
-      top: 35.5%;
-      z-index: 2;
-      font-size: 50px;
-    }
-  }
-
-  .card-header {
-    margin-top: 15px;
-    display: flex;
-    justify-content: left;
-
-    .avatar,
-    span,
-    p,
-    .el-button {
-      margin-left: 10px;
-    }
-
-    span {
-      font-weight: bold;
-      font-size: 1.2rem;
-    }
-
-    p {
-      font-size: 0.8rem;
-    }
-  }
-}
 </style>

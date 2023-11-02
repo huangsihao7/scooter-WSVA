@@ -228,40 +228,9 @@ const submitCallback = () => {
 </script>
 
 <style scoped>
-.dialog-footer button:first-child {
-  margin-right: 10px;
-}
-
 .form-area {
   margin-top: 30px;
 }
 
-.avatar-uploader .avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
-}
 
-.avatar-uploader .el-upload {
-  border: 1px dashed var(--el-border-color);
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: var(--el-transition-duration-fast);
-}
-
-.avatar-uploader .el-upload:hover {
-  border-color: var(--el-color-primary);
-}
-
-.el-icon.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 100px;
-  height: 10vh;
-  border: 2px dotted #b7daff;
-  border-radius: 25px;
-  text-align: center;
-}
 </style>

@@ -2,16 +2,16 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 15:26:18
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-10-31 22:13:18
+ * @LastEditTime: 2023-11-02 15:42:49
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\PostVideo.vue
 -->
 <script setup lang="ts">
 import { reactive, onMounted, ref, computed } from "vue";
-import { NUpload, NUploadDragger, NIcon, NText } from "naive-ui";
+import { NUpload, NUploadDragger, NIcon, NText, NModal, NForm, NFormItemRow, NInput, NButton, NSelect } from "naive-ui";
 import { baseURL } from "@/axios";
 import type { UploadFileInfo } from "naive-ui";
-import { CloudUpload } from "@vicons/ionicons5";
+import { CloudUpload, DiceOutline, Dice } from "@vicons/ionicons5";
 import { userStore } from "@/stores/user";
 import { postVideo } from "@/apis/video";
 import { useMessage } from "naive-ui";
@@ -78,23 +78,33 @@ const getClassifyList = () => {};
 
 // 点击投稿的回调函数
 const handlePostVideo = () => {
-  postVideo(
+  if(videoForm.url!='' && videoForm.coverUrl!='' && videoForm.title!='' && videoForm.category){
+    postVideo(
     videoForm.url,
     videoForm.coverUrl,
     videoForm.title,
     videoForm.category,
-  ).then((res: any) => {
-    fileUploadRef.value.clear();
-    titleIptRef.value.clear();
-    message.success("上传成功");
-    console.log(res);
-  });
-  emit("visible-update", false);
+    ).then((res: any) => {
+      fileUploadRef.value.clear();
+      titleIptRef.value.clear();
+      message.success("上传成功");
+      console.log(res);
+    });
+    emit("visible-update", false);
+  }
+  else if(videoForm.url!='' || videoForm.coverUrl!=''){
+    message.error('请等待视频上传完成后重试')
+  }
+  else{
+    message.error('请完整填写视频信息')
+  }
+  
 };
+
 
 const handleCancelVideo = () => {
   emit("visible-update", false);
-};
+}
 
 // 上传前的回调，判断视频大小等
 const beforeUpload = (data: {
@@ -134,7 +144,6 @@ const handleFinish = ({
   file: UploadFileInfo;
   event?: ProgressEvent;
 }) => {
-  console.log("111111", file, event);
   if (event && event.target) {
     let res: any = event.target;
     if (res.response) {
@@ -153,28 +162,33 @@ function uploadHeader() {
     Authorization: token.value,
   };
 }
+
+const selectVisible = ref<boolean>(false)
+
 </script>
 
 <template>
-  <ElDialog
-    v-model="formVisible"
-    title="投稿视频"
-    :show-close="false"
-    :close-on-click-modal="false"
-    width="30%"
-  >
-    <ElForm label-position="right" :model="videoForm" label-width="50px">
-      <ElFormItem label="描述">
-        <ElInput
-          ref="titleIptRef"
-          v-model="videoForm.title"
-          clearable
-          autosize
-          type="textarea"
+  <NModal
+      v-model:show="formVisible"
+      class="custom-card"
+      preset="card"
+      title="投稿视频"
+      :closable="false"
+      size="huge"
+      :bordered="false"
+      width="30%"
+    >
+    <NForm :model="videoForm" label-placement="left">
+      <NFormItemRow label="描述">
+        <NInput
+          v-model:value="videoForm.title"
           placeholder="请输入"
+          autocomplete="off"
+          clearable
+          type="textarea"
         />
-      </ElFormItem>
-      <ElFormItem label="上传">
+      </NFormItemRow>
+      <NFormItemRow label="上传">
         <NUpload
           ref="fileUploadRef"
           multiple
@@ -195,29 +209,45 @@ function uploadHeader() {
             </NText>
           </NUploadDragger>
         </NUpload>
-      </ElFormItem>
-      <ElFormItem label="分类">
-        <ElSelect v-model="videoForm.category" class="m-2" placeholder="选择">
-          <ElOption
-            v-for="item in classifyList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </ElSelect>
-      </ElFormItem>
-    </ElForm>
-    <template #footer>
-      <span class="dialog-footer">
-        <ElButton @click="handleCancelVideo">取消</ElButton>
-        <ElButton type="primary" @click="handlePostVideo"> 发布 </ElButton>
-      </span>
-    </template>
-  </ElDialog>
+      </NFormItemRow>
+      <NFormItemRow label="分类">
+        <n-select v-model:show="selectVisible" v-model:value="videoForm.category" placeholder="分类" :options="classifyList">
+          <template #arrow>
+            <transition name="slide-left">
+              <Dice v-if="selectVisible" />
+              <DiceOutline v-else />
+            </transition>
+          </template>
+        </n-select>
+      </NFormItemRow>
+    </NForm>
+    <div class="footer">
+      <NButton class="post-btn" type="primary" block secondary strong @click="handlePostVideo">
+        发布
+      </NButton>
+      <NButton class="cancle-btn"  block secondary strong @click="handleCancelVideo">
+        取消
+      </NButton>
+    </div>
+  </NModal>
 </template>
 
 <style scoped>
 .el-select {
   width: 100%;
+}
+
+.footer{
+  display: flex;
+  width: 100%;
+  .cancle-btn{
+    width: 45%;
+    
+  }
+
+  .post-btn{
+    width: 45%;
+    margin-right: 10%;
+  }
 }
 </style>

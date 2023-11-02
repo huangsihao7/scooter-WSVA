@@ -220,11 +220,4 @@ onBeforeMount(() => {
   height: 100%;
 }
 
-.el-menu-vertical-demo {
-  height: 100%;
-}
-
-.el-menu-item .submenu-text {
-  margin-left: 20px;
-}
 </style>
