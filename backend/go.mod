@@ -5,9 +5,9 @@ go 1.19
 require (
 	github.com/elastic/go-elasticsearch/v8 v8.10.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/golang/protobuf v1.5.3
 	github.com/pkg/errors v0.9.1
 	github.com/qiniu/go-sdk/v7 v7.18.2
-	github.com/stretchr/testify v1.8.4
 	github.com/zeromicro/go-queue v1.1.8
 	github.com/zeromicro/go-zero v1.6.0
 	go.opentelemetry.io/otel v1.19.0
@@ -42,7 +42,6 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/mock v1.6.0 // indirect
-	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
@@ -63,7 +62,6 @@ require (
 	github.com/openzipkin/zipkin-go v0.4.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.0 // indirect
 	github.com/pierrec/lz4/v4 v4.1.17 // indirect
-	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v1.17.0 // indirect
 	github.com/prometheus/client_model v0.4.1-0.20230718164431-9a2bf3000d16 // indirect
 	github.com/prometheus/common v0.44.0 // indirect

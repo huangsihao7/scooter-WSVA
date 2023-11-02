@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"github.com/huangsihao7/scooter-WSVA/favorite/code"
 	"github.com/huangsihao7/scooter-WSVA/favorite/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/internal/svc"
 	model2 "github.com/huangsihao7/scooter-WSVA/feed/gmodel"
+	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logc"
 	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/gorm"
@@ -43,10 +45,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			log.Println("用户不存在")
-			return &favorite.FavoriteActionResponse{
-				StatusCode: constants.UserDoNotExistedCode,
-				StatusMsg:  constants.UserDoNotExisted,
-			}, nil
+			return nil, code.FavoriteUserIdEmptyError
 		}
 		return nil, err
 	}
@@ -55,10 +54,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			log.Println("视频不存在")
-			return &favorite.FavoriteActionResponse{
-				StatusCode: constants.UnableToQueryVideoErrorCode,
-				StatusMsg:  constants.UnableToQueryVideoError,
-			}, nil
+			return nil, code.FavoriteVideoIdEmptyError
 		}
 		return nil, err
 	}
@@ -78,10 +74,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		if exist {
 			// 记录存在
 			logx.Infof("点赞记录存在")
-			return &favorite.FavoriteActionResponse{
-				StatusCode: constants.FavoriteServiceDuplicateCode,
-				StatusMsg:  constants.FavoriteServiceDuplicateError,
-			}, nil
+			return nil, code.FavoriteServiceDuplicateError
 		} else {
 			//redis 记录不命中
 			//去数据库查找
@@ -97,10 +90,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 				if err != nil {
 					logc.Error(l.ctx, err)
 				}
-				return &favorite.FavoriteActionResponse{
-					StatusCode: constants.FavoriteServiceDuplicateCode,
-					StatusMsg:  constants.FavoriteServiceDuplicateError,
-				}, nil
+				return nil, code.FavoriteServiceDuplicateError
 			}
 		}
 		// 事务
@@ -132,7 +122,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 				Category:      videoDetail.Category,
 				Duration:      videoDetail.Duration,
 			})
-			return err
+			return errors.New("自定义错误")
 		})
 		//if err != nil {
 		//	l.Logger.Errorf("[Follow] Transaction error: %v", err)
@@ -140,15 +130,13 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		//}
 		if err != nil {
 			l.Logger.Errorf("[Follow] Transaction error: %v", err)
-			return &favorite.FavoriteActionResponse{
-				StatusCode: constants.FavoriteServiceErrorCode,
-				StatusMsg:  constants.FavoriteServiceError,
-			}, nil
+			return nil, err
 		}
 		//添加到redis
 		_, err = l.svcCtx.BizRedis.SaddCtx(l.ctx, constants.RedisFavoriteRelationKey, value, time.Second*10)
 		if err != nil {
 			logc.Error(l.ctx, err)
+			return nil, err
 		}
 
 		return &favorite.FavoriteActionResponse{
@@ -173,18 +161,11 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 			//去数据库查找
 			isFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, userId, videoId)
 			if err != nil && err != gorm.ErrRecordNotFound {
-				//内部错误
-				return &favorite.FavoriteActionResponse{
-					StatusCode: constants.FavoriteServiceErrorCode,
-					StatusMsg:  constants.FavoriteServiceError,
-				}, nil
+				return nil, err
 			}
 			if isFavorite == false {
 				logx.Infof("删除的记录不存在")
-				return &favorite.FavoriteActionResponse{
-					StatusCode: constants.FavoriteServiceCancelCode,
-					StatusMsg:  constants.FavoriteServiceCancelError,
-				}, nil
+				return nil, code.FavoriteServiceCancelError
 			}
 			if isFavorite == true {
 				//重新写入缓存中
@@ -225,10 +206,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		//
 		if err != nil {
 			l.Logger.Errorf("[Follow] Transaction error: %v", err)
-			return &favorite.FavoriteActionResponse{
-				StatusCode: constants.FavoriteServiceErrorCode,
-				StatusMsg:  constants.FavoriteServiceError,
-			}, nil
+			return nil, err
 		}
 
 		//删除缓存
@@ -244,8 +222,5 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 
 	}
 
-	return &favorite.FavoriteActionResponse{
-		StatusCode: 500,
-		StatusMsg:  "invalid actionType",
-	}, nil
+	return nil, code.FavoriteInvalidActionTypeError
 }

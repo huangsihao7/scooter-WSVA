@@ -3,12 +3,14 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/huangsihao7/scooter-WSVA/pkg/xcode"
+	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
 
 	"github.com/huangsihao7/scooter-WSVA/favorite/api/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/favorite/api/internal/handler"
 	"github.com/huangsihao7/scooter-WSVA/favorite/api/internal/svc"
-
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
 )
@@ -17,11 +19,12 @@ var configFile = flag.String("f", "etc/favorite-api-dev.yaml", "the config file"
 
 func main() {
 	flag.Parse()
+	logx.DisableStat()
 
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
-	server := rest.MustNewServer(c.RestConf, rest.WithCustomCors(nil, func(w http.ResponseWriter) {
+	server := rest.MustNewServer(c.RestConf, rest.WithUnauthorizedCallback(handler.JwtUnauthorizedResult), rest.WithCustomCors(nil, func(w http.ResponseWriter) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Headers", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH")
@@ -32,6 +35,9 @@ func main() {
 
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
+
+	// 自定义错误处理方法
+	httpx.SetErrorHandler(xcode.ErrHandler)
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()

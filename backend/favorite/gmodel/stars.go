@@ -65,3 +65,13 @@ func (m *StarModel) Delete(ctx context.Context, stars *Stars) error {
 func (m *StarModel) DeleteByVid(ctx context.Context, vid int64) error {
 	return m.db.WithContext(ctx).Where("vid = ?", vid).Delete(&Stars{}).Error
 }
+
+//func (m *StarModel) IncrID(ctx context.Context, stars *Stars) error {
+//	err := m.db.WithContext(ctx).First(stars)
+//	if err != nil {
+//		return err.Error
+//	}
+//	stars.Id += 1
+//
+//	return m.db.Save(stars).Error
+//}

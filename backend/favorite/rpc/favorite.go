@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/huangsihao7/scooter-WSVA/pkg/interceptors"
 	"github.com/zeromicro/go-zero/core/logx"
 
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
@@ -35,7 +36,8 @@ func main() {
 		}
 	})
 	defer s.Stop()
-
+	//自定义拦截器
+	s.AddUnaryInterceptors(interceptors.ServerErrorInterceptor())
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
 	s.Start()
 }
