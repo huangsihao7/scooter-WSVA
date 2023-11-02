@@ -39,7 +39,7 @@ func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
 		return nil, err
 	}
 
-	// 判断密码是否正确
+	// 判断密码是否
 	password := crypt.PasswordEncrypt(l.svcCtx.Config.Salt, in.Password)
 	if password != res.Password {
 		log.Println("密码错误")
