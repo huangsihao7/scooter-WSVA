@@ -2,12 +2,11 @@ package logic
 
 import (
 	"context"
-	"github.com/huangsihao7/scooter-WSVA/common/constants"
-	"gorm.io/gorm"
-	"log"
-
+	"github.com/huangsihao7/scooter-WSVA/comment/code"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/internal/svc"
+	"github.com/huangsihao7/scooter-WSVA/common/constants"
+	"gorm.io/gorm"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -27,30 +26,23 @@ func NewDanMuListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DanMuLi
 }
 
 func (l *DanMuListLogic) DanMuList(in *comment.DanmuListRequest) (*comment.DanmuListResponse, error) {
-	logx.DisableStat()
-	// todo: add your logic here and delete this line
+
 	videoId := in.VideoId
 
 	// 检查视频id 是否存在
 	_, err := l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			log.Println("视频不存在")
-			return &comment.DanmuListResponse{
-				StatusCode: constants.UserVideosDoNotExistedCode,
-				StatusMsg:  constants.FindUserVideosError,
-			}, nil
+			l.Logger.Errorf("弹幕视频不存在")
+			return nil, code.DanMuVideoIdEmptyError
 		}
 		return nil, err
 	}
 
 	res, err := l.svcCtx.DanmuModel.FindsByVideoId(l.ctx, videoId)
 	if err != nil {
-		logx.Infof(err.Error())
-		return &comment.DanmuListResponse{
-			StatusCode: constants.DanmuCanNotEmptyCode,
-			StatusMsg:  constants.DanmuCanNotEmptyError,
-		}, nil
+		l.Logger.Error(err.Error())
+		return nil, err
 	}
 	danmuList := make([]*comment.DanMu, 0)
 	for i := 0; i < len(res); i++ {
@@ -62,6 +54,7 @@ func (l *DanMuListLogic) DanMuList(in *comment.DanmuListRequest) (*comment.Danmu
 		}
 		danmuList = append(danmuList, singleinfo)
 	}
+
 	return &comment.DanmuListResponse{
 		StatusCode: constants.ServiceOKCode,
 		StatusMsg:  constants.ServiceOK,

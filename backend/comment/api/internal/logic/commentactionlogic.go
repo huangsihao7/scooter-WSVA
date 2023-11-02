@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"encoding/json"
+	"github.com/huangsihao7/scooter-WSVA/comment/code"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
 
@@ -28,24 +29,28 @@ func NewCommentActionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Com
 
 func (l *CommentActionLogic) CommentAction(req *types.ActionReq) (resp *types.ActionResp, err error) {
 
-	//验证token是否有效
-	//token 解析
+	if req.ActionType == 1 && req.CommentText == "" {
+		return nil, code.CommentIsEmptyError
+	}
 	usrId, _ := l.ctx.Value("uid").(json.Number).Int64()
+
 	if req.ActionType == 1 {
 		format.Feedback("comment", int(req.VideoId), int(usrId))
 	}
-	com, err := l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
+	res, err := l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
 		UserId:      usrId,
 		ActionType:  req.ActionType,
 		VideoId:     req.VideoId,
 		CommentText: req.CommentText,
 		CommentId:   req.CommentId,
 	})
-
-	output := &types.ActionResp{
-		CommentId:  com.CommentId,
-		StatusCode: int(com.StatusCode),
-		StatusMsg:  com.StatusMsg,
+	if err != nil {
+		return nil, err
 	}
-	return output, nil
+
+	return &types.ActionResp{
+		CommentId:  res.CommentId,
+		StatusCode: int(res.StatusCode),
+		StatusMsg:  res.StatusMsg,
+	}, nil
 }

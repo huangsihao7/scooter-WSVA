@@ -2,7 +2,7 @@ package logic
 
 import (
 	"context"
-	"errors"
+	"github.com/huangsihao7/scooter-WSVA/comment/code"
 	"github.com/huangsihao7/scooter-WSVA/comment/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/internal/svc"
@@ -41,18 +41,20 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(in.UserId))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			log.Println("用户不存在")
-			return nil, errors.New("评论用户不存在")
+			l.Logger.Errorf("评论用户不存在")
+			return nil, code.CommentUserIdEmptyError
 		}
+		l.Logger.Errorf(err.Error())
 		return nil, err
 	}
 	// 检查视频id 是否存在
 	videoDetail, err := l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			log.Println("视频不存在")
-			return nil, errors.New("评论视频不存在")
+			l.Logger.Errorf("评论视频不存在")
+			return nil, code.CommentVideoIdEmptyError
 		}
+		l.Logger.Errorf(err.Error())
 		return nil, err
 	}
 
@@ -66,7 +68,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 		}
 		err := l.svcCtx.CommentModel.Insert(l.ctx, &newComment)
 		if err != nil {
-			log.Println(err.Error())
+			l.Logger.Errorf(err.Error())
 			return nil, err
 		}
 		//添加video的评论数
@@ -83,12 +85,10 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 			Duration:      videoDetail.Duration,
 		})
 		if err != nil {
-			log.Println(err.Error())
-			return &comment.CommentActionResponse{
-				StatusCode: constants.UnableToCreateCommentErrorCode,
-				StatusMsg:  constants.UnableToCreateCommentError,
-			}, nil
+			l.Logger.Errorf(err.Error())
+			return nil, err
 		}
+
 		return &comment.CommentActionResponse{
 			CommentId:  int64(newComment.Id),
 			StatusCode: constants.ServiceOKCode,
@@ -96,7 +96,19 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 		}, nil
 		//删除评论
 	case 2:
-		err := l.svcCtx.CommentModel.Delete(l.ctx, commentId)
+
+		//判断删除的评论在不在
+		err := l.svcCtx.CommentModel.IsCommentExist(l.ctx, in.CommentId)
+		if err != nil {
+			if err == gorm.ErrRecordNotFound {
+				l.Logger.Errorf("评论不存在,无法删除")
+				return nil, code.CommentNotExistError
+			}
+			l.Logger.Errorf(err.Error())
+			return nil, err
+		}
+
+		err = l.svcCtx.CommentModel.Delete(l.ctx, commentId)
 		if err != nil {
 			log.Println(err.Error())
 			return nil, err
@@ -116,10 +128,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 		})
 		if err != nil {
 			log.Println(err.Error())
-			return &comment.CommentActionResponse{
-				StatusCode: constants.UnableToCreateCommentErrorCode,
-				StatusMsg:  constants.UnableToCreateCommentError,
-			}, nil
+			return nil, err
 		}
 		return &comment.CommentActionResponse{
 			StatusCode: constants.ServiceOKCode,
@@ -127,8 +136,5 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 		}, nil
 	}
 
-	return &comment.CommentActionResponse{
-		StatusCode: constants.UnableToCreateCommentErrorCode,
-		StatusMsg:  constants.UnableToCreateCommentError,
-	}, nil
+	return nil, code.CommentInvalidActionTypeError
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/huangsihao7/scooter-WSVA/comment/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/comment/api/internal/types"
+	"github.com/huangsihao7/scooter-WSVA/comment/code"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -24,10 +25,13 @@ func NewDanmuActionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Danmu
 }
 
 func (l *DanmuActionLogic) DanmuAction(req *types.DanmuActionReq) (resp *types.DanmuActionResp, err error) {
-	// todo: add your logic here and delete this line
-	//验证token是否有效
-	//token 解析
-	//userId, _ := l.ctx.Value("uid").(json.Number).Int64()
+
+	if len(req.DanmuText) == 0 {
+		return nil, code.DanMuContextError
+	}
+	if req.SendTime == 0 || req.SendTime < 0 {
+		return nil, code.DanMuTimeError
+	}
 
 	res, err := l.svcCtx.Commenter.DanMuAction(l.ctx, &comment.DanmuActionRequest{
 		UserId:    req.Author,
@@ -36,10 +40,7 @@ func (l *DanmuActionLogic) DanmuAction(req *types.DanmuActionReq) (resp *types.D
 		SendTime:  req.SendTime,
 	})
 	if err != nil {
-		return &types.DanmuActionResp{
-			StatusCode: constants.UnableToQueryCommentErrorCode,
-			StatusMsg:  constants.UnableToCreateCommentError,
-		}, err
+		return nil, err
 	}
 	return &types.DanmuActionResp{
 		StatusCode: constants.ServiceOKCode,
