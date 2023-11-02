@@ -3,6 +3,7 @@ package gmodel
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"gorm.io/gorm"
 )
 
@@ -40,9 +41,26 @@ func (m *HistoryModel) FindHistorys(ctx context.Context, uid int64) ([]*History,
 	}
 }
 func (m *HistoryModel) Insert(ctx context.Context, data *History) error {
+	var his History
+	result := m.db.WithContext(ctx).Where("uid = ? AND vid = ?", data.Uid, data.Vid).First(&his)
+	if result.Error != nil && !errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return result.Error
+	}
+
+	if result.RowsAffected > 0 {
+		// 存在匹配的记录，执行删除操作
+		result = m.db.WithContext(ctx).Delete(&his)
+		if result.Error != nil {
+			return result.Error
+		}
+	}
 	err := m.db.WithContext(ctx).Create(data).Error
 	return err
 }
 func (m *HistoryModel) DeleteByVid(ctx context.Context, vid int64) error {
-	return m.db.WithContext(ctx).Where("vid = ?", vid).Delete(&History{}).Error
+	err := m.db.WithContext(ctx).Where("vid = ?", vid).Delete(&History{}).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil
+	}
+	return err
 }

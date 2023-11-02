@@ -63,7 +63,11 @@ func (m *StarModel) Delete(ctx context.Context, stars *Stars) error {
 	return m.db.WithContext(ctx).Where("uid = ? AND vid = ?", stars.Uid, stars.Vid).Delete(&Stars{}).Error
 }
 func (m *StarModel) DeleteByVid(ctx context.Context, vid int64) error {
-	return m.db.WithContext(ctx).Where("vid = ?", vid).Delete(&Stars{}).Error
+	err := m.db.WithContext(ctx).Where("vid = ?", vid).Delete(&Stars{}).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil
+	}
+	return err
 }
 
 //func (m *StarModel) IncrID(ctx context.Context, stars *Stars) error {

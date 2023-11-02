@@ -75,5 +75,9 @@ func (m *FavoriteModel) Insert(ctx context.Context, data *Favorites) error {
 	return m.db.WithContext(ctx).Create(data).Error
 }
 func (m *FavoriteModel) DeleteByVid(ctx context.Context, vid int64) error {
-	return m.db.WithContext(ctx).Where("vid = ?", vid).Delete(&Favorites{}).Error
+	err := m.db.WithContext(ctx).Where("vid = ?", vid).Delete(&Favorites{}).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil
+	}
+	return err
 }
