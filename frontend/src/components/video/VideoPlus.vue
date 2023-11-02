@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 16:08:52
+ * @LastEditTime: 2023-11-02 19:07:30
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -51,7 +51,6 @@ const dplayerObj = reactive({
     type: "mp4",
     customType: {
       customHls: function (video: any, player: any) {
-        console.log(player);
         const hls = new Hls(); //实例化Hls  用于解析m3u8
         hls.loadSource(video.src);
         hls.attachMedia(video);
@@ -131,14 +130,15 @@ const handleCollectBtn = () => {
     thisVideo.value.is_star = !thisVideo.value.is_star;
   }
   doStar(props.video.video_id, action_type).then((res: any) => {
-    console.log(res);
+    if(res.status_code != 200){
+      message.error(res.status_msg)
+    }
   });
 };
 
 // 评论按钮的操作
 const handleCommentBtn = () => {
   commentVisible.value = !commentVisible.value;
-  console.log("2222222222", thisVideo);
   emit("comment-visible-update", thisVideo);
 };
 
@@ -159,7 +159,6 @@ const handleShareBtn = () => {
       if (action === "confirm") {
         instance.confirmButtonText = "复制中...";
         instance.confirmButtonLoading = true;
-        console.log("action", action);
         copy(url);
         copyFlag.value = true;
         setTimeout(() => {
@@ -172,7 +171,6 @@ const handleShareBtn = () => {
       }
     },
     callback: () => {
-      console.log("cpf", copyFlag.value);
       if (copyFlag.value) {
         message.success("复制成功");
         copyFlag.value = false;
@@ -195,7 +193,6 @@ const handleDownloadBtn = () => {
     if (url != "") {
       let title = thisVideo.value.title.toString();
       const downItem: DownloadType = { url: url, title: title };
-      console.log(downItem);
       message.info("正在下载");
       downLoad(downItem);
     } else {
@@ -246,7 +243,9 @@ const updateFollow = (flag: boolean) => {
     message.error("关注失败");
   }
   doFollow(props.video.author.id, action).then((res: any) => {
-    console.log(res);
+    if(res.status_code != 200){
+      message.error(res.status_msg)
+    }
   });
 };
 

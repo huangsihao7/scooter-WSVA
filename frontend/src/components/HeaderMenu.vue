@@ -227,7 +227,6 @@ const loggedMenuOptions: MenuOption[] = [
             {
               modelValue: searchContent.value,
               onUpdateValue: (value: any) => {
-                console.log("hhh", value);
                 searchContent.value = value;
               },
               class: "h-input",
@@ -362,7 +361,6 @@ const getPostVideoForm = () => {
 // 投稿完成后的回调
 const updateVisible = (flag: boolean) => {
   isVideoFormVisible.value = flag;
-  console.log("callback", flag);
 };
 
 // 路由选择index标志

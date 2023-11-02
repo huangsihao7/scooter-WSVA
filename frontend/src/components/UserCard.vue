@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 18:57:39
+ * @LastEditTime: 2023-11-02 19:18:16
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -23,7 +23,6 @@ import { FollowCardType } from "@/apis/interface";
 import { routeStore } from "@/stores/route";
 
 interface propsType{
-  cardType: string,
   userId: number
 }
 const props = defineProps<propsType>()
@@ -31,6 +30,7 @@ const message = useMessage();
 const router = useRouter();
 // 用户列表渲染数据
 const usersList = ref<FollowCardType[]>([]);
+const cardType = ref<string>()
 
 function getLastSegmentFromRoute(route: string): string {
   const segments = route.split("/");
@@ -39,10 +39,10 @@ function getLastSegmentFromRoute(route: string): string {
 
 // 获取关注的人的信息卡片
 onMounted(() => {
-  console.log(props.userId, props.cardType, 'cardType')
   let path = window.location.href;
   let curRoute= getLastSegmentFromRoute(path);
-  routeStore().name =curRoute
+  routeStore().name =curRoute;
+  cardType.value = curRoute
   let userId = props.userId
   switch (curRoute) {
     case 'friends':
