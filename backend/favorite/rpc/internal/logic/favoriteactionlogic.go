@@ -9,7 +9,6 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/internal/svc"
 	model2 "github.com/huangsihao7/scooter-WSVA/feed/gmodel"
-	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logc"
 	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/gorm"
@@ -109,7 +108,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 				return err
 			}
 			//增加video的点赞数
-			err = l.svcCtx.VideoModel.Update(l.ctx, &model2.Videos{
+			err = model2.NewVideoModel(tx).Update(l.ctx, &model2.Videos{
 				Id:            uint(videoId),
 				AuthorId:      videoDetail.AuthorId,
 				Title:         videoDetail.Title,
@@ -122,7 +121,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 				Category:      videoDetail.Category,
 				Duration:      videoDetail.Duration,
 			})
-			return errors.New("自定义错误")
+			return err
 		})
 		//if err != nil {
 		//	l.Logger.Errorf("[Follow] Transaction error: %v", err)
@@ -174,7 +173,7 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		}
 		// 事务
 		err = l.svcCtx.DB.Transaction(func(tx *gorm.DB) error {
-			videoDetail, err := l.svcCtx.VideoModel.FindOne(l.ctx, videoId)
+			videoDetail, err := model2.NewVideoModel(tx).FindOne(l.ctx, videoId)
 			if err != nil {
 				return err
 			}
@@ -182,9 +181,9 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 			if err != nil {
 				return err
 			}
-			//增加video的点赞数
+			//减少video的点赞数
 			favoriteCount := videoDetail.FavoriteCount - 1
-			err = l.svcCtx.VideoModel.Update(l.ctx, &model2.Videos{
+			err = model2.NewVideoModel(tx).Update(l.ctx, &model2.Videos{
 				Id:            uint(videoId),
 				AuthorId:      videoDetail.AuthorId,
 				Title:         videoDetail.Title,
@@ -199,13 +198,8 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 			})
 			return err
 		})
-		//if err != nil {
-		//	l.Logger.Errorf("[Follow] Transaction error: %v", err)
-		//	return nil, err
-		//}
-		//
 		if err != nil {
-			l.Logger.Errorf("[Follow] Transaction error: %v", err)
+			l.Logger.Errorf("[favorite] Transaction error: %v", err)
 			return nil, err
 		}
 
@@ -221,6 +215,6 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 		}, nil
 
 	}
-
 	return nil, code.FavoriteInvalidActionTypeError
+
 }
