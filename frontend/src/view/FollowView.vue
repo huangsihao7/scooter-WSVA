@@ -12,12 +12,13 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { userStore } from "@/stores/user";
 const route = useRoute();
-const userId = computed(() => route.params.id?parseInt(route.params.id.toString()):userStore().user_id);
-
+const userId = computed(() =>
+  route.params.id ? parseInt(route.params.id.toString()) : userStore().user_id,
+);
 </script>
 
 <template>
-  <UserCard :userId="userId" />
+  <UserCard :user-id="userId" />
 </template>
 
 <style scoped></style>

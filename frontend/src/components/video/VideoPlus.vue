@@ -104,8 +104,7 @@ const handleLikeBtn = () => {
     }
     thisVideo.value.is_favorite = !thisVideo.value.is_favorite;
   }
-  doFavourite(props.video.video_id, action_type).then(() => {
-  });
+  doFavourite(props.video.video_id, action_type).then(() => {});
 };
 
 // 收藏按钮的操作
@@ -126,8 +125,7 @@ const handleCollectBtn = () => {
     }
     thisVideo.value.is_star = !thisVideo.value.is_star;
   }
-  doStar(props.video.video_id, action_type).then(() => {
-  });
+  doStar(props.video.video_id, action_type).then(() => {});
 };
 
 // 评论按钮的操作
@@ -236,8 +234,7 @@ const updateFollow = (flag: boolean) => {
   } else {
     message.error("关注失败");
   }
-  doFollow(props.video.author.id, action).then(() => {
-  });
+  doFollow(props.video.author.id, action).then(() => {});
 };
 
 const likeAnimateClass = ref<String>("");
@@ -246,7 +243,7 @@ const commentAnimateClass = ref<String>("");
 const shareAnimateClass = ref<String>("");
 const commentVisible = ref<boolean>(false);
 const shareVisible = ref<boolean>(false);
-const logedFlag = computed(()=>!userStore().isLoggedIn)
+const logedFlag = computed(() => !userStore().isLoggedIn);
 onMounted(() => {
   thisVideo.value = props.video;
 });
@@ -342,7 +339,13 @@ onMounted(() => {
         </div>
         <div class="comment">
           <div :class="commentAnimateClass">
-            <NButton class="btn" :disabled="logedFlag" text color="#fff" @click="handleCommentBtn">
+            <NButton
+              class="btn"
+              :disabled="logedFlag"
+              text
+              color="#fff"
+              @click="handleCommentBtn"
+            >
               <NIcon>
                 <ChatbubbleEllipses />
               </NIcon>

@@ -34,8 +34,8 @@ const GetVideoLink = () => {};
 // 删除我的视频
 const deleteVideo = (info: any) => {
   myDeleteVideo(info.video_id).then(() => {
-      message.success("删除成功");
-      window.location.reload();
+    message.success("删除成功");
+    window.location.reload();
   });
 };
 

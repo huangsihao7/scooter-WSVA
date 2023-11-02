@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
 import {
   NCarousel,
   NDrawer,
@@ -8,24 +9,22 @@ import {
   NInput,
   NTabPane,
   NIcon,
-  NButton
+  NButton,
 } from "naive-ui";
-import VideoPlus from "@/components/video/VideoPlus.vue";
-import { onMounted, ref } from "vue";
-import CommentListCom from "@/components/comment/CommentListCom.vue";
+import { ArrowUpCircle } from "@vicons/ionicons5";
 import {
   getRecommendVideos,
   getPopularVideos,
   getRecommendVideosList,
-getVideosList,
+  getVideosList,
 } from "@/apis/video";
-import { UserType, VideoType } from "@/apis/interface";
+import { UserType, VideoType, CommentType } from "@/apis/interface";
 import { getCommentList, doComment } from "@/apis/comment";
-import { videoStore } from "@/stores/video";
-import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
-import { CommentType } from "@/apis/interface";
 import { userStore } from "@/stores/user";
-import { ArrowUpCircle } from "@vicons/ionicons5";
+import { videoStore } from "@/stores/video";
+import VideoPlus from "@/components/video/VideoPlus.vue";
+import CommentListCom from "@/components/comment/CommentListCom.vue";
+import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
 
 interface propsType {
   videoListType: number;
@@ -56,38 +55,36 @@ const visitedIndex = ref<number>(-1);
 
 // 获取视频队列
 onMounted(() => {
-  if(userStore().isLoggedIn){
+  if (userStore().isLoggedIn) {
     if (props.videoListType == 0) {
       getRecommendVideos(0, 0).then((res: any) => {
         videos.value = res.video_list;
       });
-    } else{
+    } else {
       getPopularVideos(0, 0).then((res: any) => {
         videos.value = res.video_list;
       });
     }
     visitedIndex.value = 0;
-  }
-  else{
+  } else {
     // 游客试看功能 前10条
-    getVideosList().then((res:any)=>{
-      if(res.status_code == 200){
-        let loadNum = res.video_list.length>10?10:res.video_list.length
-        videos.value = res.video_list.slice(0, loadNum)
+    getVideosList().then((res: any) => {
+      if (res.status_code == 200) {
+        let loadNum = res.video_list.length > 10 ? 10 : res.video_list.length;
+        videos.value = res.video_list.slice(0, loadNum);
       }
-    })
+    });
   }
 });
-
 
 // 更新评论区可见状态
 const updateVisible = (thisVideo: any) => {
   drawerVisible.value = !drawerVisible.value;
   getCommentList(thisVideo.value.video_id).then((res: any) => {
-      commentlists.value = res.comment_list;
+    commentlists.value = res.comment_list;
   });
   getRecommendVideosList(thisVideo.value.video_id).then((res: any) => {
-      recommendlists.value = res.video_list;
+    recommendlists.value = res.video_list;
   });
 };
 
@@ -270,6 +267,4 @@ const deleteFunc = (comment_id: number) => {
   </NDrawer>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

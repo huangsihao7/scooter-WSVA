@@ -22,7 +22,6 @@ const props = defineProps<propsType>();
         <NEllipsis expand-trigger="click" line-clamp="2" :tooltip="false">
           {{ video.title }}
         </NEllipsis>
-        
       </span>
       <div class="footer">
         <div class="like">

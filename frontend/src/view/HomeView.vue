@@ -11,7 +11,7 @@ import VideoList from "@/components/VideoList.vue";
 </script>
 
 <template>
-  <VideoList  :video-list-type="0" />
+  <VideoList :video-list-type="0" />
 </template>
 
 <style scoped></style>

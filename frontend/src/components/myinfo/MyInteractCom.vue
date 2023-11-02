@@ -49,7 +49,9 @@ interface propsType {
   userId: number;
 }
 
-const deletable = computed(()=>(props.userId==userStore().user_id)?true:false)
+const deletable = computed(() =>
+  props.userId == userStore().user_id ? true : false,
+);
 const props = defineProps<propsType>();
 const myid = ref<number>(-1);
 
@@ -95,8 +97,5 @@ const handleUpdate = (paneName: string) => {
     getMyHistory();
   }
 };
-
 </script>
-<style>
-
-</style>
+<style></style>

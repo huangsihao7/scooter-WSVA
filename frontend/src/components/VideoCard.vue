@@ -7,7 +7,6 @@
  * @FilePath: \scooter-WSVA\frontend\src\components\VideoCard.vue
 -->
 <script lang="ts" setup>
-import { onMounted } from "vue";
 import { NScrollbar, NSpace } from "naive-ui";
 import VideoCardList from "@/components/video/VideoCardList.vue";
 interface propsType {
@@ -16,10 +15,6 @@ interface propsType {
   deletable?: boolean;
 }
 const props = defineProps<propsType>();
-
-onMounted(() => {
-  //info.content
-});
 </script>
 
 <template>
@@ -34,10 +29,8 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-
 .card-space {
   overflow: scroll-y;
   max-height: calc(100vh - 60px);
 }
-
 </style>

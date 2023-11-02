@@ -32,8 +32,8 @@ const emit = defineEmits(["delete-comment"]);
 const deleteMyComment = () => {
   let comment_id = props.comment.comment_id;
   doComment(videoStore().video_id, 2, "", comment_id).then(() => {
-      message.success("删除成功");
-      emit("delete-comment", comment_id);
+    message.success("删除成功");
+    emit("delete-comment", comment_id);
   });
 };
 </script>

@@ -8,9 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { routeStore } from "@/stores/route";
 import { Component, h, onBeforeMount, ref } from "vue";
-
 import type { MenuOption } from "naive-ui";
 import { NIcon, NMenu } from "naive-ui";
 import { RouterLink } from "vue-router";
@@ -25,11 +23,11 @@ import {
   PlanetSharp as CartoonIcon,
   Rocket as HotIcon,
 } from "@vicons/ionicons5";
+import { routeStore } from "@/stores/route";
 
-function renderIcon(icon: Component) {
-  return () => h(NIcon, null, { default: () => h(icon) });
-}
+const defaultActive = ref<any>("");
 
+//菜单
 const menuOptions: MenuOption[] = [
   {
     label: () =>
@@ -195,7 +193,10 @@ const menuOptions: MenuOption[] = [
   },
 ];
 
-const defaultActive = ref<any>("");
+// 渲染图标
+function renderIcon(icon: Component) {
+  return () => h(NIcon, null, { default: () => h(icon) });
+}
 
 // 获取当前页面的末尾路由
 function getLastSegmentFromRoute(route: string): string {
@@ -203,11 +204,13 @@ function getLastSegmentFromRoute(route: string): string {
   return segments[segments.length - 1];
 }
 
+// 更新值
 const handleUpdateValue = (key: string) => {
   let keyStr = JSON.stringify(key);
   routeStore().name = keyStr.replace(/"/g, "");
 };
 
+// 挂载之前获取路由
 onBeforeMount(() => {
   let path = window.location.href;
   defaultActive.value = getLastSegmentFromRoute(path);
@@ -219,5 +222,4 @@ onBeforeMount(() => {
 .tac {
   height: 100%;
 }
-
 </style>

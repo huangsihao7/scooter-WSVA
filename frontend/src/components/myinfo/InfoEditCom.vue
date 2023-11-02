@@ -209,14 +209,14 @@ const submitCallback = () => {
     userInfo.signature,
     userInfo.background,
   ).then(() => {
-      userStore().name = userInfo.name;
-      userStore().gender = userInfo.gender;
-      userStore().avatar = userInfo.avatar;
-      userStore().signature = userInfo.signature;
-      userStore().background_image = userInfo.background;
-      message.success("修改成功");
-      cancelCallback();
-      window.location.reload();
+    userStore().name = userInfo.name;
+    userStore().gender = userInfo.gender;
+    userStore().avatar = userInfo.avatar;
+    userStore().signature = userInfo.signature;
+    userStore().background_image = userInfo.background;
+    message.success("修改成功");
+    cancelCallback();
+    window.location.reload();
   });
 };
 </script>
@@ -225,6 +225,4 @@ const submitCallback = () => {
 .form-area {
   margin-top: 30px;
 }
-
-
 </style>

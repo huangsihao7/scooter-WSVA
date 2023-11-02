@@ -22,8 +22,7 @@ interface propsType {
 
 const props = defineProps<propsType>();
 // 用户头像信息
-const userInfo = ref<any>({
-});
+const userInfo = ref<any>({});
 const editVisible = ref<boolean>(false);
 const router = useRouter();
 
@@ -35,7 +34,7 @@ const getUserInfoFunc = () => {
   getUserInfo(uid_num).then((res: any) => {
     userInfo.value = res.user;
     let routeName = routeStore().name;
-    if(routeName == 'user'){
+    if (routeName == "user") {
       userStore().name = res.user.name;
       userStore().avatar = res.user.avatar;
       userStore().gender = res.user.gender;
@@ -57,20 +56,20 @@ onMounted(() => {
 // 跳转到关注的人的列表
 const goFollowing = () => {
   routeStore().name = "follows";
-  router.push({ name: "follows" , params: { id: props.userId } });
+  router.push({ name: "follows", params: { id: props.userId } });
 };
 
 // 跳到粉丝列表
-const goFollowers = () =>{
+const goFollowers = () => {
   routeStore().name = "followers";
-  router.push({ name: "followers" , params: { id: props.userId } });
-}
+  router.push({ name: "followers", params: { id: props.userId } });
+};
 
 // 跳到朋友列表
-const goFriends = () =>{
+const goFriends = () => {
   routeStore().name = "friends";
-  router.push({ name: "friends" , params: { id: props.userId } });
-}
+  router.push({ name: "friends", params: { id: props.userId } });
+};
 </script>
 
 <template>
@@ -103,13 +102,13 @@ const goFriends = () =>{
             朋友 {{ userInfo.follower_count }}
           </NButton>
           <NDivider vertical />
-          <NButton color="#606266" text >
+          <NButton color="#606266" text>
             获赞 {{ userInfo.favorite_count }}
           </NButton>
         </div>
         <NButton
-          strong
           v-if="userInfo.id == userStore().user_id"
+          strong
           round
           class="edit-info"
           color="#409eff85"

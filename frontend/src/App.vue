@@ -17,19 +17,19 @@ import {
   NLayoutHeader,
   NLayoutSider,
   NMessageProvider,
-  NModal
+  NModal,
 } from "naive-ui";
 import themeOverrides from "./theme";
 import { userStore } from "./stores/user";
-let showModal = ref<boolean>(false)
-const onPositiveClick = () =>{
-  showModal.value = false
-}
+let showModal = ref<boolean>(false);
+const onPositiveClick = () => {
+  showModal.value = false;
+};
 onMounted(() => {
-  if(!userStore().isLoggedIn){
-    showModal.value = true
+  if (!userStore().isLoggedIn) {
+    showModal.value = true;
   }
-})
+});
 </script>
 
 <template>
@@ -51,20 +51,24 @@ onMounted(() => {
           </NLayout>
         </NLayout>
       </div>
-      <n-modal
-      class="modal-prompt"
+      <NModal
         v-model:show="showModal"
+        class="modal-prompt"
         :mask-closable="false"
         preset="dialog"
         title="提醒"
-        :showIcon = false
-        :closable = false
+        :show-icon="false"
+        :closable="false"
         positive-text="好的"
         @positive-click="onPositiveClick"
       >
-      <p>1.未登录用户仅可浏览<span>10</span>条视频，并仅开放视频<span>分享</span>和<span>下载</span>功能；</p>
-      <p>2.视频切换支持三种方式：<span>上下滚轮滚动</span>，<span>右下方按钮切换</span>，<span>键盘上下键切换</span>。</p>
-    </n-modal>
+        <p>
+          1.未登录用户仅可浏览<span>10</span>条视频，并仅开放视频<span>分享</span>和<span>下载</span>功能；
+        </p>
+        <p>
+          2.视频切换支持三种方式：<span>上下滚轮滚动</span>，<span>右下方按钮切换</span>，<span>键盘上下键切换</span>。
+        </p>
+      </NModal>
     </NMessageProvider>
   </NConfigProvider>
 </template>
@@ -89,7 +93,7 @@ onMounted(() => {
   width: 50% !important;
 } */
 
-span{
+span {
   font-weight: bold;
 }
 .main {

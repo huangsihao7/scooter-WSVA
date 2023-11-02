@@ -17,7 +17,7 @@ import {
   NTabPane,
   NInput,
   NIcon,
-  NButton
+  NButton,
 } from "naive-ui";
 import { getVideoById } from "@/apis/video";
 import { useRoute } from "vue-router";
@@ -47,7 +47,7 @@ onMounted(() => {
   let vid = videoId.value.toString();
   let vidNum = parseInt(vid);
   getVideoById(vidNum).then((res: any) => {
-      video.value = res.video_info;
+    video.value = res.video_info;
   });
 });
 
@@ -122,7 +122,6 @@ const deleteFunc = (comment_id: number) => {
 const postCommentByBtn = () => {
   doCommentApi();
 };
-
 </script>
 
 <template>
@@ -153,10 +152,11 @@ const postCommentByBtn = () => {
       <NDrawerContent :native-scrollbar="false">
         <NTabs type="line" animated>
           <NTabPane name="comment" tab="评论">
-            <CommentListCom 
-            v-if="commentlists"
-            :commentlists="commentlists"
-            @delete-comment="deleteFunc" />
+            <CommentListCom
+              v-if="commentlists"
+              :commentlists="commentlists"
+              @delete-comment="deleteFunc"
+            />
           </NTabPane>
           <NTabPane name="recommend" tab="相关推荐">
             <VideoRecommendCard :recommendlists="recommendlists" />
@@ -170,13 +170,13 @@ const postCommentByBtn = () => {
             placeholder="留下精彩的评论吧"
             @keydown="postComment"
           >
-          <template #suffix>
-            <NButton text @click="postCommentByBtn">
-              <template #icon>
-                <NIcon :component="ArrowUpCircle" />
-              </template>
-            </NButton>
-          </template>
+            <template #suffix>
+              <NButton text @click="postCommentByBtn">
+                <template #icon>
+                  <NIcon :component="ArrowUpCircle" />
+                </template>
+              </NButton>
+            </template>
           </NInput>
         </template>
       </NDrawerContent>

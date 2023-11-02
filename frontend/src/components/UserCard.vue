@@ -2,14 +2,12 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 22:17:07
+ * @LastEditTime: 2023-11-02 22:58:15
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
 <script lang="ts" setup>
 import { ref, onMounted, watch, reactive } from "vue";
-import { getFollowsList, getFollowersList, getFriendsList, canclefollowOne, followOne } from "@/apis/follow";
-import { useRouter } from "vue-router";
 import {
   useMessage,
   NCard,
@@ -18,43 +16,58 @@ import {
   NGrid,
   NGi,
   NEmpty,
-  NEllipsis
+  NEllipsis,
 } from "naive-ui";
+import { useRouter } from "vue-router";
 import { FollowCardType } from "@/apis/interface";
+import {
+  getFollowsList,
+  getFollowersList,
+  getFriendsList,
+  canclefollowOne,
+  followOne,
+} from "@/apis/follow";
 import { routeStore } from "@/stores/route";
 
-interface propsType{
-  userId: number
+interface propsType {
+  userId: number;
 }
-const props = defineProps<propsType>()
+const props = defineProps<propsType>();
 const message = useMessage();
 const router = useRouter();
 // 用户列表渲染数据
 const usersList = reactive<Array<FollowCardType>>([]);
-const cardType = ref<string>()
+// 卡片类型
+const cardType = ref<string>();
 
+// 获取路由最后一个数
 function getLastSegmentFromRoute(route: string): string {
   const segments = route.split("/");
   return segments[segments.length - 1];
 }
 
+// 获取路由倒数第二个数
 function getSecondSegmentFromRoute(route: string): string {
   const segments = route.split("/");
   return segments[segments.length - 2];
 }
 
-watch(()=>routeStore().name,
-(newValue:any)=>{
-  getUserCardsInfo(newValue)
-})
+// 监听路由变化信息
+watch(
+  () => routeStore().name,
+  (newValue: any) => {
+    getUserCardsInfo(newValue);
+  },
+);
 
-const getUserCardsInfo = (finalRoute: string) =>{
-  let userId = props.userId
+// 获取用户卡片信息接口
+const getUserCardsInfo = (finalRoute: string) => {
+  let userId = props.userId;
   switch (finalRoute) {
-    case 'friends':
+    case "friends":
       getFriendsList(userId).then((res: any) => {
         usersList.splice(0, usersList.length, ...res.list);
-        console.log(usersList)
+        console.log(usersList);
         if (usersList) {
           usersList.forEach((element: any) => {
             element.isfriends = true;
@@ -62,12 +75,12 @@ const getUserCardsInfo = (finalRoute: string) =>{
         }
       });
       break;
-    case 'followers':
+    case "followers":
       getFollowersList(userId).then((res: any) => {
         usersList.splice(0, usersList.length, ...res.list);
       });
-    break;
-    case 'follows':
+      break;
+    case "follows":
       getFollowsList(userId).then((res: any) => {
         usersList.splice(0, usersList.length, ...res.list);
         if (usersList) {
@@ -76,8 +89,8 @@ const getUserCardsInfo = (finalRoute: string) =>{
           });
         }
       });
-    break;
-    case 'follow':
+      break;
+    case "follow":
       getFollowsList(userId).then((res: any) => {
         usersList.splice(0, usersList.length, ...res.list);
         if (usersList) {
@@ -86,25 +99,29 @@ const getUserCardsInfo = (finalRoute: string) =>{
           });
         }
       });
-    break;
+      break;
   }
-}
+};
 
 // 获取关注的人的信息卡片
 onMounted(() => {
   let path = window.location.href;
-  console.log(path)
+  console.log(path);
   let lastRoute = getLastSegmentFromRoute(path);
   let secondRoute = getSecondSegmentFromRoute(path);
-  let finalRoute = ''
+  let finalRoute = "";
   if (lastRoute === "follow") {
-    finalRoute = lastRoute
-  } else if (secondRoute === "friends" || secondRoute === "followers" || secondRoute === "follows") {
-    finalRoute = secondRoute
+    finalRoute = lastRoute;
+  } else if (
+    secondRoute === "friends" ||
+    secondRoute === "followers" ||
+    secondRoute === "follows"
+  ) {
+    finalRoute = secondRoute;
   }
   routeStore().name = finalRoute;
-  cardType.value = finalRoute
-  getUserCardsInfo(finalRoute)
+  cardType.value = finalRoute;
+  getUserCardsInfo(finalRoute);
 });
 
 // 跳转视频
@@ -124,13 +141,13 @@ const handleShowUser = (userId: number) => {
 const cancleFollow = (item: any, _index: any) => {
   if (item.is_follow) {
     canclefollowOne(item.id).then(() => {
-        message.success("取消关注成功");
-        window.location.reload()
+      message.success("取消关注成功");
+      window.location.reload();
     });
     item.is_follow = false;
   } else {
     followOne(item.id).then(() => {
-        message.success("关注成功");
+      message.success("关注成功");
     });
     item.is_follow = true;
   }
@@ -138,8 +155,12 @@ const cancleFollow = (item: any, _index: any) => {
 </script>
 
 <template>
-  <!-- <ElSpace wrap> -->
-  <NGrid class="space" :x-gap="12" cols="2 s:3 m:4 l:5 xl:6 2xl:7" responsive="screen">
+  <NGrid
+    class="space"
+    :x-gap="12"
+    cols="2 s:3 m:4 l:5 xl:6 2xl:7"
+    responsive="screen"
+  >
     <NGi v-for="(info, index) in usersList" :key="index">
       <NCard class="card" style="padding: 0" :hoverable="true">
         <template #cover>
@@ -165,15 +186,29 @@ const cancleFollow = (item: any, _index: any) => {
           />
           <div class="other-info">
             <span class="name">
-              <NEllipsis expand-trigger="click" line-clamp="1" :tooltip="false">{{ info.name }}</NEllipsis>
+              <NEllipsis expand-trigger="click" line-clamp="1" :tooltip="false">
+                {{ info.name }}
+              </NEllipsis>
             </span>
-            <NButton class="btn" v-if="cardType=='follows'" @click="cancleFollow(info, index)">
+            <NButton
+              v-if="cardType == 'follows'"
+              class="btn"
+              @click="cancleFollow(info, index)"
+            >
               {{ info.is_follow ? "已关注" : "关注" }}
             </NButton>
-            <NButton class="btn" v-if="cardType=='follow'" @click="cancleFollow(info, index)">
+            <NButton
+              v-if="cardType == 'follow'"
+              class="btn"
+              @click="cancleFollow(info, index)"
+            >
               {{ info.is_follow ? "已关注" : "关注" }}
             </NButton>
-            <NButton class="btn" v-if="cardType=='friends'" @click="cancleFollow(info, index)">
+            <NButton
+              v-if="cardType == 'friends'"
+              class="btn"
+              @click="cancleFollow(info, index)"
+            >
               {{ info.is_friends ? "已互关" : "关注" }}
             </NButton>
             <p class="sig">{{ info.signature }}</p>
@@ -225,5 +260,4 @@ const cancleFollow = (item: any, _index: any) => {
     top: 30%;
   }
 }
-
 </style>

@@ -8,7 +8,18 @@
 -->
 <script setup lang="ts">
 import { reactive, onMounted, ref, computed } from "vue";
-import { NUpload, NUploadDragger, NIcon, NText, NModal, NForm, NFormItemRow, NInput, NButton, NSelect } from "naive-ui";
+import {
+  NUpload,
+  NUploadDragger,
+  NIcon,
+  NText,
+  NModal,
+  NForm,
+  NFormItemRow,
+  NInput,
+  NButton,
+  NSelect,
+} from "naive-ui";
 import { baseURL } from "@/axios";
 import type { UploadFileInfo } from "naive-ui";
 import { CloudUpload, DiceOutline, Dice } from "@vicons/ionicons5";
@@ -78,32 +89,33 @@ const getClassifyList = () => {};
 
 // 点击投稿的回调函数
 const handlePostVideo = () => {
-  if(videoForm.url!='' && videoForm.coverUrl!='' && videoForm.title!='' && videoForm.category){
+  if (
+    videoForm.url != "" &&
+    videoForm.coverUrl != "" &&
+    videoForm.title != "" &&
+    videoForm.category
+  ) {
     postVideo(
-    videoForm.url,
-    videoForm.coverUrl,
-    videoForm.title,
-    videoForm.category,
+      videoForm.url,
+      videoForm.coverUrl,
+      videoForm.title,
+      videoForm.category,
     ).then((res: any) => {
       fileUploadRef.value.clear();
       titleIptRef.value.clear();
       message.success(res.status_message);
     });
     emit("visible-update", false);
+  } else if (videoForm.url != "" || videoForm.coverUrl != "") {
+    message.error("请等待视频上传完成后重试");
+  } else {
+    message.error("请完整填写视频信息");
   }
-  else if(videoForm.url!='' || videoForm.coverUrl!=''){
-    message.error('请等待视频上传完成后重试')
-  }
-  else{
-    message.error('请完整填写视频信息')
-  }
-  
 };
-
 
 const handleCancelVideo = () => {
   emit("visible-update", false);
-}
+};
 
 // 上传前的回调，判断视频大小等
 const beforeUpload = (data: {
@@ -162,21 +174,20 @@ function uploadHeader() {
   };
 }
 
-const selectVisible = ref<boolean>(false)
-
+const selectVisible = ref<boolean>(false);
 </script>
 
 <template>
   <NModal
-      v-model:show="formVisible"
-      class="custom-card"
-      preset="card"
-      title="投稿视频"
-      :closable="false"
-      size="huge"
-      :bordered="false"
-      width="30%"
-    >
+    v-model:show="formVisible"
+    class="custom-card"
+    preset="card"
+    title="投稿视频"
+    :closable="false"
+    size="huge"
+    :bordered="false"
+    width="30%"
+  >
     <NForm :model="videoForm" label-placement="left">
       <NFormItemRow label="描述">
         <NInput
@@ -210,21 +221,39 @@ const selectVisible = ref<boolean>(false)
         </NUpload>
       </NFormItemRow>
       <NFormItemRow label="分类">
-        <n-select v-model:show="selectVisible" v-model:value="videoForm.category" placeholder="分类" :options="classifyList">
+        <NSelect
+          v-model:show="selectVisible"
+          v-model:value="videoForm.category"
+          placeholder="分类"
+          :options="classifyList"
+        >
           <template #arrow>
-            <transition name="slide-left">
+            <Transition name="slide-left">
               <Dice v-if="selectVisible" />
               <DiceOutline v-else />
-            </transition>
+            </Transition>
           </template>
-        </n-select>
+        </NSelect>
       </NFormItemRow>
     </NForm>
     <div class="footer">
-      <NButton class="post-btn" type="primary" block secondary strong @click="handlePostVideo">
+      <NButton
+        class="post-btn"
+        type="primary"
+        block
+        secondary
+        strong
+        @click="handlePostVideo"
+      >
         发布
       </NButton>
-      <NButton class="cancle-btn"  block secondary strong @click="handleCancelVideo">
+      <NButton
+        class="cancle-btn"
+        block
+        secondary
+        strong
+        @click="handleCancelVideo"
+      >
         取消
       </NButton>
     </div>
@@ -236,15 +265,14 @@ const selectVisible = ref<boolean>(false)
   width: 100%;
 }
 
-.footer{
+.footer {
   display: flex;
   width: 100%;
-  .cancle-btn{
+  .cancle-btn {
     width: 45%;
-    
   }
 
-  .post-btn{
+  .post-btn {
     width: 45%;
     margin-right: 10%;
   }

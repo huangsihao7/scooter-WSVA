@@ -11,7 +11,7 @@ export const relationStore = defineStore({
   id: "relation",
   state: () => ({
     to_user_id: -1,
-    type:-1
+    type: -1,
   }),
-  persist: true
+  persist: true,
 });

@@ -7,15 +7,7 @@
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
 <script lang="ts" setup>
-import {
-  watch,
-  h,
-  ref,
-  Component,
-  reactive,
-  onMounted,
-  VNodeChild
-} from "vue";
+import { watch, h, ref, Component, reactive, onMounted, VNodeChild } from "vue";
 import {
   DropdownOption,
   NIcon,
@@ -30,7 +22,7 @@ import {
   NModal,
   NFormItemRow,
   NDropdown,
-  useMessage
+  useMessage,
 } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import { Search, Add, Trash } from "@vicons/ionicons5";
@@ -71,7 +63,7 @@ const registerForm = reactive({
 });
 
 onMounted(() => {
-  renderHistory()
+  renderHistory();
   menuClass.value = userStore().token
     ? "header-menu-login"
     : "header-menu-logout";
@@ -82,24 +74,23 @@ function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
 
-const searchHistoryNum = ref<number>(0)
+const searchHistoryNum = ref<number>(0);
 
 // 搜索时把搜索记录保存
-const doSearch = ( isHistory: boolean, historyValue?: string) => {
-  let searchValue = ''
-  if(isHistory && historyValue){
+const doSearch = (isHistory: boolean, historyValue?: string) => {
+  let searchValue = "";
+  if (isHistory && historyValue) {
     searchValue = historyValue;
     videoStore().search_value = searchValue;
-  }
-  else{
+  } else {
     searchValue = searchContent.value;
     videoStore().search_value = searchValue;
   }
   let child = {
     label: searchValue,
-    key: searchHistoryNum.value.toString()
+    key: searchHistoryNum.value.toString(),
   };
-  searchHistoryNum.value ++;
+  searchHistoryNum.value++;
   historyStore().historyData.push(child);
   if (historyStore().historyData.length > 5) {
     historyStore().historyData.shift(); // 移除第一条数据
@@ -107,7 +98,7 @@ const doSearch = ( isHistory: boolean, historyValue?: string) => {
   if (routeStore().name != "search") {
     router.push({ name: "search" });
   }
-  renderHistory()
+  renderHistory();
 };
 
 //投稿渲染
@@ -143,38 +134,40 @@ function renderAvatar(avatarSrc: string) {
 }
 
 // 渲染历史记录数据
-const renderHistory = () =>{
-  let hisChild = historyStore().historyData
+const renderHistory = () => {
+  let hisChild = historyStore().historyData;
   let deleteChild = {
-    label: '删除历史记录',
-    key: 'delete',
-    icon: renderIcon(Trash)
+    label: "删除历史记录",
+    key: "delete",
+    icon: renderIcon(Trash),
   };
   let children = [];
   children[0] = deleteChild;
-  hisChild.forEach((item:any)=>{children.push(item)})
+  hisChild.forEach((item: any) => {
+    children.push(item);
+  });
   dropOptions.value = [
     {
       type: "group",
       label: "历史记录",
       key: "main",
-      children: children
+      children: children,
     },
   ];
-}
+};
 
 // 删除历史记录
-const doDelete = () =>{
-  historyStore().historyData = []
+const doDelete = () => {
+  historyStore().historyData = [];
   dropOptions.value = [
     {
       type: "group",
       label: "历史记录",
       key: "main",
-      children: []
+      children: [],
     },
   ];
-}
+};
 
 // 渲染历史记录标签
 const renderDropdownLabel = (option: DropdownOption) => {
@@ -184,7 +177,11 @@ const renderDropdownLabel = (option: DropdownOption) => {
   return h(
     "a",
     {
-      onClick:()=>{option.key =='delete'? doDelete() : doSearch(true,option.label?.toString())}
+      onClick: () => {
+        option.key == "delete"
+          ? doDelete()
+          : doSearch(true, option.label?.toString());
+      },
     },
     {
       default: () => option.label as VNodeChild,
@@ -217,9 +214,9 @@ const loggedMenuOptions: MenuOption[] = [
           placement: "bottom-start",
           showArrow: false,
           renderLabel: renderDropdownLabel,
-          style:{
-            width: "calc(20vw - 40px)"
-          }
+          style: {
+            width: "calc(20vw - 40px)",
+          },
         },
         [
           h(
@@ -325,7 +322,7 @@ const doRegister = () => {
       defaultAvatar,
       defaultBg,
     ).then(() => {
-        message.success("注册成功");
+      message.success("注册成功");
     });
   } else {
     message.error("密码不一致，请重试");
@@ -495,9 +492,8 @@ watch(
   }
   .n-menu-item:nth-child(1) .n-menu-item-content {
     width: 160px;
-    
   }
-  
+
   .n-menu-item:nth-child(2) .n-menu-item-content {
     width: 20vw;
   }
@@ -535,8 +531,6 @@ watch(
 .aaa {
   background-color: #409eff;
 }
-
-
 
 .post-btn {
   margin: auto;

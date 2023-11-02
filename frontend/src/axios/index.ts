@@ -10,7 +10,7 @@
 import axios, { type AxiosRequestHeaders } from "axios";
 import router from "@/router";
 import { userStore } from "@/stores/user";
-import { createDiscreteApi } from 'naive-ui'
+import { createDiscreteApi } from "naive-ui";
 
 // const baseURl = 'http://127.0.0.1:8080';
 const baseURL = "http://172.22.121.53:7070";
@@ -18,7 +18,7 @@ const service = axios.create({
   baseURL: baseURL,
   timeout: 15000, // 请求超时时间
 });
-const { message } = createDiscreteApi(['message'])
+const { message } = createDiscreteApi(["message"]);
 
 // const { token } = storeToRefs('user')
 
@@ -39,8 +39,8 @@ service.interceptors.request.use(
 
 //  response拦截器
 service.interceptors.response.use((response) => {
-  console.log(response)
-  console.log(response.data)
+  console.log(response);
+  console.log(response.data);
   if (response.data.status_code === 200) {
     return response.data;
   } else if (response.status === 401) {
@@ -51,8 +51,8 @@ service.interceptors.response.use((response) => {
     userStore().avatar = "";
     userStore().phoneNum = "";
     userStore().gender = 1;
-    userStore().signature = '';
-    userStore().background_image = '';
+    userStore().signature = "";
+    userStore().background_image = "";
     router.push("/");
     return Promise.reject();
   } else {

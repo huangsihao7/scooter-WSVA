@@ -24,18 +24,12 @@ onMounted(() => {
     passUserId.value = userStore().user_id;
   }
 });
-
-
-
 </script>
 
 <template>
   <div class="user">
     <div class="header">
-      <MyHeaderCom
-        v-if="passUserId"
-        :user-id="passUserId"
-      />
+      <MyHeaderCom v-if="passUserId" :user-id="passUserId" />
     </div>
     <div class="interaction">
       <MyInteractCom v-if="passUserId" :user-id="passUserId" />
