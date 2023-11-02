@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 00:03:18
+ * @LastEditTime: 2023-11-02 12:39:43
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
@@ -47,9 +47,9 @@ const message = useMessage();
 const activeIndex = ref("");
 // 登录登出样式
 const menuClass = ref<string>("");
-// 搜索str
-const inputstr = ref<string>("");
-const historyList = ref<Array<string>>([]);
+// 搜索内容
+const searchContent = ref<string>("");
+// 历史列表是否可见
 const historyTabVisible = ref<boolean>(true);
 
 // 登录表单数据
@@ -59,16 +59,11 @@ const loginForm = reactive({
   pwd: "",
 });
 
+// 注册表单数据
 const registerForm = reactive({
   phoneNum: "",
   pwd: "",
   repeatPwd: "",
-});
-
-// TODO: history search 挂载渲染早，不能这么写
-onBeforeMount(() => {
-  historyList.value = ["1111", "222222"];
-  console.log(historyList.value, historyList.value[0]);
 });
 
 onMounted(() => {
@@ -85,9 +80,17 @@ function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
 
-const doSearch = () => {
-  let searchValue = inputstr.value;
-  videoStore().search_value = searchValue;
+// 搜索时把搜索记录保存
+const doSearch = ( isHistory: boolean, historyValue?: string) => {
+  let searchValue = ''
+  if(isHistory && historyValue){
+    searchValue = historyValue;
+    videoStore().search_value = searchValue;
+  }
+  else{
+    searchValue = searchContent.value;
+    videoStore().search_value = searchValue;
+  }
   let child = {
     label: searchValue,
     key: searchValue,
@@ -148,6 +151,7 @@ onMounted(() => {
 import type { VNodeChild } from "vue";
 import type { DropdownOption } from "naive-ui";
 
+// 渲染历史记录标签
 const renderDropdownLabel = (option: DropdownOption) => {
   if (option.type === "group") {
     return option.label as VNodeChild;
@@ -155,8 +159,7 @@ const renderDropdownLabel = (option: DropdownOption) => {
   return h(
     "a",
     {
-      href: "",
-      target: "_blank",
+      onClick:()=>{doSearch(true,option.label)}
     },
     {
       default: () => option.label as VNodeChild,
@@ -194,17 +197,17 @@ const loggedMenuOptions: MenuOption[] = [
           h(
             NInput,
             {
-              modelValue: inputstr.value,
+              modelValue: searchContent.value,
               onUpdateValue: (value: any) => {
                 console.log("hhh", value);
-                inputstr.value = value;
+                searchContent.value = value;
               },
               class: "h-input",
               round: true,
               placeholder: "搜索",
               onKeydown: (e) => {
                 if (e.key == "Enter") {
-                  doSearch();
+                  doSearch(false);
                 }
               },
               onFocus: () => {
@@ -237,7 +240,6 @@ const loggedMenuOptions: MenuOption[] = [
     ],
   },
 ];
-
 const notLogmenuOptions: MenuOption[] = [
   {
     label: () =>
@@ -368,33 +370,6 @@ watch(
       mode="horizontal"
       :options="userStore().isLoggedIn ? loggedMenuOptions : notLogmenuOptions"
     />
-    <!-- <ElDialog v-model="loginFormVisible" title="登录" width="30%">
-        <ElForm :model="form">
-          <ElFormItem label="账号" :label-width="formLabelWidth">
-            <ElInput
-              v-model="form.phoneNum"
-              autocomplete="off"
-              placeholder="输入账号"
-              clearable
-            />
-          </ElFormItem>
-          <ElFormItem label="密码" :label-width="formLabelWidth">
-            <ElInput
-              v-model="form.pwd"
-              autocomplete="off"
-              type="password"
-              placeholder="输入密码"
-              show-password
-              clearable
-            />
-          </ElFormItem>
-        </ElForm>
-        <template #footer>
-          <span class="dialog-footer">
-            <ElButton type="primary" @click="doLogin"> 登录 </ElButton>
-          </span>
-        </template>
-    </ElDialog> -->
     <NModal
       v-model:show="loginFormVisible"
       class="custom-card"
