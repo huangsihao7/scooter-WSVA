@@ -1,4 +1,4 @@
-package mqs
+package logic
 
 import (
 	"context"
@@ -7,8 +7,8 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/feed"
 	"github.com/huangsihao7/scooter-WSVA/label/rpc/label"
-	"github.com/huangsihao7/scooter-WSVA/mq/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
+	"github.com/huangsihao7/scooter-WSVA/mq/internal/svc"
 	"github.com/zeromicro/go-zero/core/logx"
 	"net/url"
 	"strconv"

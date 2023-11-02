@@ -4,12 +4,14 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/favorite/api/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favoriteclient"
 	"github.com/huangsihao7/scooter-WSVA/pkg/interceptors"
+	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
 )
 
 type ServiceContext struct {
-	Config config.Config
-	Favor  favoriteclient.Favorite // 手动代码
+	Config  config.Config
+	Favor   favoriteclient.Favorite
+	Limiter rest.Middleware
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {

@@ -3,11 +3,10 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/huangsihao7/scooter-WSVA/mq/api/internal/mqs"
+	"github.com/huangsihao7/scooter-WSVA/mq/internal/config"
+	"github.com/huangsihao7/scooter-WSVA/mq/internal/logic"
+	"github.com/huangsihao7/scooter-WSVA/mq/internal/svc"
 	"github.com/zeromicro/go-zero/core/service"
-
-	"github.com/huangsihao7/scooter-WSVA/mq/api/internal/config"
-	"github.com/huangsihao7/scooter-WSVA/mq/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -30,7 +29,7 @@ func main() {
 	defer serviceGroup.Stop()
 
 	//循环
-	for _, mq := range mqs.Consumers(c, ctx, svcCtx) {
+	for _, mq := range logic.Consumers(c, ctx, svcCtx) {
 		serviceGroup.Add(mq)
 	}
 

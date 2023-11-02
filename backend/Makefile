@@ -14,9 +14,6 @@ doc:
 	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/relation.json -host 172.22.121.53:7070" -api relation/api/relation.api -dir .
 	# comment
 	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/comment.json -host 172.22.121.53:7070" -api comment/api/comment.api -dir .
-	# mq
-	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/mq.json -host 172.22.121.53:7070" -api mq/api/mq.api -dir .
-
 build:
 	mkdir -p output
 	# user
@@ -33,8 +30,8 @@ build:
 	cd relation/api && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/relation_api" relation.go
 	# comment
 	cd comment/rpc && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/comment_rpc" comment.go
-	cd comment/api && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/comment_api" comment.go
+	cd comment/api && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../output/comment_api" comment.go
 	# MQ
-	cd mq/api && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/mq_api" mq.go
+	cd mq && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/mq_api" mq.go
 	# label
 	cd label/rpc && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/label_rpc" label.go

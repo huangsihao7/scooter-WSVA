@@ -12,6 +12,7 @@ import (
 	"github.com/zeromicro/go-zero/core/service"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type ThumbupLogic struct {
@@ -87,11 +88,12 @@ func (l *ThumbupLogic) BatchUpSertToEs(ctx context.Context, data []*types.VideoE
 		if err != nil {
 			return err
 		}
-		//DocumentID: fmt.Sprintf("%d", d.VideoId),
+
 		payload := fmt.Sprintf(`{"doc":%s,"doc_as_upsert":true}`, string(v))
 		err = bi.Add(ctx, esutil.BulkIndexerItem{
-			Action: "create",
-			Body:   strings.NewReader(payload),
+			Action:     "update",
+			DocumentID: fmt.Sprintf("%d", time.Now().UnixMicro()),
+			Body:       strings.NewReader(payload),
 			OnSuccess: func(ctx context.Context, item esutil.BulkIndexerItem, item2 esutil.BulkIndexerResponseItem) {
 			},
 			OnFailure: func(ctx context.Context, item esutil.BulkIndexerItem, item2 esutil.BulkIndexerResponseItem, err error) {
