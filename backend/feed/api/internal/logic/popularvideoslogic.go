@@ -64,6 +64,7 @@ func (l *PopularVideosLogic) PopularVideos(req *types.PopularVideosListReq) (res
 				WorkCount:       *item.Author.WorkCount,
 				FavoriteCount:   *item.Author.FavoriteCount,
 				IsFollow:        item.Author.IsFollow,
+				FriendCount:     item.Author.FriendCount,
 			},
 			PlayUrl:       item.PlayUrl,
 			CoverUrl:      item.CoverUrl,

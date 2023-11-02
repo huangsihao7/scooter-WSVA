@@ -55,6 +55,7 @@ func (l *FindVideoLogic) FindVideo(in *feed.FindVideoReq) (*feed.FindVideoResp, 
 		WorkCount:       userRpcRes.User.WorkCount,
 		FavoriteCount:   userRpcRes.User.FavoriteCount,
 		Gender:          userRpcRes.User.Gender,
+		FriendCount:     userRpcRes.User.FriendCount,
 	}
 	videoInfo := &feed.VideoInfo{
 		Id:            uint32(in.Vid),

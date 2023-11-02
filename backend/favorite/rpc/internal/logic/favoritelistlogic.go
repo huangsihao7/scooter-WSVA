@@ -105,6 +105,7 @@ func (l *FavoriteListLogic) FavoriteList(in *favorite.FavoriteListRequest) (*fav
 			TotalFavorited: userInfo.User.TotalFavorited,
 			WorkCount:      userInfo.User.WorkCount,
 			FavoriteCount:  userInfo.User.FavoriteCount,
+			FriendCount:    userInfo.User.FriendCount,
 		}
 
 		videoInfo := &favorite.Video{

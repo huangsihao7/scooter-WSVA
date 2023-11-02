@@ -31,6 +31,7 @@ type UserInfo struct {
 	IsFollow        bool   `json:"is_follow"`
 	CoverUrl        string `json:"cover_url"`
 	VideoId         int64  `json:"video_id"`
+	FriendCount     int64  `json:"friend_count"`
 }
 
 type FavoriteListResp struct {

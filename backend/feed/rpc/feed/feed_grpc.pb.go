@@ -40,7 +40,6 @@ const (
 type FeedClient interface {
 	CreateVideo(ctx context.Context, in *CreateVideoRequest, opts ...grpc.CallOption) (*CreateVideoResponse, error)
 	ListVideo(ctx context.Context, in *ListVideoRequest, opts ...grpc.CallOption) (*ListVideoResponse, error)
-	// rpc CountVideo(CountVideoRequest) returns (CountVideoResponse) {}
 	ListVideosByRecommend(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 	ListVideos(ctx context.Context, in *ListFeedRequest, opts ...grpc.CallOption) (*ListFeedResponse, error)
 	ListCategoryVideos(ctx context.Context, in *CategoryFeedRequest, opts ...grpc.CallOption) (*CategoryFeedResponse, error)
@@ -185,7 +184,6 @@ func (c *feedClient) FindVideo(ctx context.Context, in *FindVideoReq, opts ...gr
 type FeedServer interface {
 	CreateVideo(context.Context, *CreateVideoRequest) (*CreateVideoResponse, error)
 	ListVideo(context.Context, *ListVideoRequest) (*ListVideoResponse, error)
-	// rpc CountVideo(CountVideoRequest) returns (CountVideoResponse) {}
 	ListVideosByRecommend(context.Context, *ListFeedRequest) (*ListFeedResponse, error)
 	ListVideos(context.Context, *ListFeedRequest) (*ListFeedResponse, error)
 	ListCategoryVideos(context.Context, *CategoryFeedRequest) (*CategoryFeedResponse, error)

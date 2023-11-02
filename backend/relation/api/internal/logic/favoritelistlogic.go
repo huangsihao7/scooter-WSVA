@@ -52,6 +52,7 @@ func (l *FavoriteListLogic) FavoriteList(req *types.FavoriteListReq) (resp *type
 			IsFollow:        item.IsFollow,
 			CoverUrl:        item.CoverUrl,
 			VideoId:         item.VideoId,
+			FriendCount:     item.FriendCount,
 		})
 	}
 	return &types.FavoriteListResp{

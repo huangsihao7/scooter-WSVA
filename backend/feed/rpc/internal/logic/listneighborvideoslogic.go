@@ -69,6 +69,7 @@ func (l *ListNeighborVideosLogic) ListNeighborVideos(in *feed.NeighborsReq) (*fe
 			WorkCount:       userRpcRes.User.WorkCount,
 			FavoriteCount:   userRpcRes.User.FavoriteCount,
 			Gender:          userRpcRes.User.Gender,
+			FriendCount:     userRpcRes.User.FriendCount,
 		}
 		IsFavorite, _ := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.Uid), int64(video.Id))
 		IsStar, _ := l.svcCtx.StarModel.IsStarExist(l.ctx, int64(in.Uid), int64(video.Id))

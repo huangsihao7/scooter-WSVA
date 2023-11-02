@@ -64,6 +64,7 @@ message User {
    optional uint32 work_count = 10; //作品数量
    optional uint32 favorite_count = 11; //点赞数量
    uint32 gender = 12; // 用户名称
+   int64 friend_count=13;
 }
 message ListFeedRequest {
     uint32 actor_id = 1;

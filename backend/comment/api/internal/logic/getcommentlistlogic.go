@@ -48,6 +48,7 @@ func (l *GetCommentListLogic) GetCommentList(req *types.ListReq) (resp *types.Li
 			TotalFavorited: *res.CommentList[i].User.TotalFavorited,
 			WorkCount:      *res.CommentList[i].User.WorkCount,
 			FavoriteCount:  *res.CommentList[i].User.FavoriteCount,
+			FriendCount:    res.CommentList[i].User.FriendCount,
 		}
 		commentDetail := types.CommentInfo{
 			CommentId:  res.CommentList[i].Id,

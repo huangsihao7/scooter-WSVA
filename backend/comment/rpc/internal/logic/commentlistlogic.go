@@ -78,6 +78,7 @@ func (l *CommentListLogic) CommentList(in *comment.CommentListRequest) (*comment
 			TotalFavorited: userInfo.User.TotalFavorited,
 			WorkCount:      userInfo.User.WorkCount,
 			FavoriteCount:  userInfo.User.FavoriteCount,
+			FriendCount:    userInfo.User.FriendCount,
 		}
 		res := &comment.Comment{
 			Id:         int64(comments[i].Id),

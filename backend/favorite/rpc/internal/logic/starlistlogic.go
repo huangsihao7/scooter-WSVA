@@ -102,6 +102,7 @@ func (l *StarListLogic) StarList(in *favorite.StarListRequest) (*favorite.StarLi
 			TotalFavorited:  userInfo.User.TotalFavorited,
 			WorkCount:       userInfo.User.WorkCount,
 			FavoriteCount:   userInfo.User.FavoriteCount,
+			FriendCount:     userInfo.User.FriendCount,
 		}
 
 		videoInfo := &favorite.Video{

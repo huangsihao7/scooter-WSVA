@@ -52,6 +52,7 @@ func (l *FriendListLogic) FriendList(req *types.FriendListReq) (resp *types.Frie
 			IsFollow:        item.IsFollow,
 			CoverUrl:        item.CoverUrl,
 			VideoId:         item.VideoId,
+			FriendCount:     item.FriendCount,
 		})
 	}
 	return &types.FriendListResp{

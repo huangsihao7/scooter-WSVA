@@ -50,6 +50,7 @@ func (l *ListVideoLogic) ListVideo(in *feed.ListVideoRequest) (*feed.ListVideoRe
 		WorkCount:       userRpcRes.User.WorkCount,
 		FavoriteCount:   userRpcRes.User.FavoriteCount,
 		Gender:          userRpcRes.User.Gender,
+		FriendCount:     userRpcRes.User.FriendCount,
 	}
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range Feeds {

@@ -96,6 +96,7 @@ func (l *SearchESLogic) SearchES(in *feed.EsSearchReq) (*feed.EsSearchResp, erro
 			WorkCount:       userRpcRes.User.WorkCount,
 			FavoriteCount:   userRpcRes.User.FavoriteCount,
 			Gender:          userRpcRes.User.Gender,
+			FriendCount:     userRpcRes.User.FriendCount,
 		}
 		videoInfo := &feed.VideoInfo{
 			Id:            uint32(curVideoID),

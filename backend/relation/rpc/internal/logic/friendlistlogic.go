@@ -76,6 +76,7 @@ func (l *FriendListLogic) FriendList(in *relation.FriendListReq) (*relation.Frie
 			TotalFavorited:  *one.User.TotalFavorited,
 			WorkCount:       *one.User.WorkCount,
 			FavoriteCount:   *one.User.FavoriteCount,
+			FriendCount:     one.User.FriendCount,
 		})
 	}
 	return &relation.FriendListResp{

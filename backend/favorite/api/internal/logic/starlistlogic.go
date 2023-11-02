@@ -48,6 +48,7 @@ func (l *StarListLogic) StarList(req *types.ListReq) (resp *types.ListResp, err 
 			TotalFavorited: *res.VideoList[i].Author.TotalFavorited,
 			WorkCount:      *res.VideoList[i].Author.WorkCount,
 			FavoriteCount:  *res.VideoList[i].Author.FavoriteCount,
+			FriendCount:    res.VideoList[i].Author.FriendCount,
 		}
 		videoDetail := types.VideoInfo{
 			VideoId:       res.VideoList[i].Id,

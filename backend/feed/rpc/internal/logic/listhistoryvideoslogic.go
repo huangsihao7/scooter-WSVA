@@ -57,6 +57,7 @@ func (l *ListHistoryVideosLogic) ListHistoryVideos(in *feed.HistoryReq) (*feed.H
 			WorkCount:       userRpcRes.User.WorkCount,
 			FavoriteCount:   userRpcRes.User.FavoriteCount,
 			Gender:          userRpcRes.User.Gender,
+			FriendCount:     userRpcRes.User.FriendCount,
 		}
 		IsFavorite, err := l.svcCtx.FavorModel.IsFavorite(l.ctx, int64(in.Uid), int64(item.Id))
 		if err != nil {

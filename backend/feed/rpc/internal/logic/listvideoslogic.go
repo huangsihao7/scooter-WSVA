@@ -55,6 +55,7 @@ func (l *ListVideosLogic) ListVideos(in *feed.ListFeedRequest) (*feed.ListFeedRe
 			WorkCount:       userRpcRes.User.WorkCount,
 			FavoriteCount:   userRpcRes.User.FavoriteCount,
 			Gender:          userRpcRes.User.Gender,
+			FriendCount:     userRpcRes.User.FriendCount,
 		}
 
 		VideoList = append(VideoList, &feed.VideoInfo{

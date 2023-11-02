@@ -52,6 +52,7 @@ func (l *FollowerListLogic) FollowerList(req *types.FollowerListReq) (resp *type
 			IsFollow:        item.IsFollow,
 			CoverUrl:        item.CoverUrl,
 			VideoId:         item.VideoId,
+			FriendCount:     item.FriendCount,
 		})
 	}
 	return &types.FollowerListResp{

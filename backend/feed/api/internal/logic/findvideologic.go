@@ -53,6 +53,7 @@ func (l *FindVideoLogic) FindVideo(req *types.FindVideoByIdReq) (resp *types.Fin
 				WorkCount:       *video.Video.Author.WorkCount,
 				FavoriteCount:   *video.Video.Author.FavoriteCount,
 				IsFollow:        video.Video.Author.IsFollow,
+				FriendCount:     video.Video.Author.FriendCount,
 			},
 			PlayUrl:       video.Video.PlayUrl,
 			CoverUrl:      video.Video.CoverUrl,

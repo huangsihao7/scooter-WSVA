@@ -35,6 +35,7 @@ message UserInfo{
   uint32 total_favorited = 13; //获赞数量
   uint32 work_count = 14; //作品数量
   uint32 favorite_count = 15; //点赞数量
+  int64 friend_count=16;
 }
 message FavoriteListResp{
   repeated UserInfo list=1;

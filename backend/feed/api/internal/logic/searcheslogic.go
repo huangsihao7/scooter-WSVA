@@ -55,6 +55,7 @@ func (l *SearchEsLogic) SearchEs(req *types.SearchEsReq) (resp *types.SearchEsRe
 				WorkCount:       *item.Author.WorkCount,
 				FavoriteCount:   *item.Author.FavoriteCount,
 				IsFollow:        item.Author.IsFollow,
+				FriendCount:     item.Author.FriendCount,
 			},
 			PlayUrl:       item.PlayUrl,
 			CoverUrl:      item.CoverUrl,
