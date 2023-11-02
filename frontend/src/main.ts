@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 22:40:46
+ * @LastEditTime: 2023-11-03 00:35:13
  * @Description:
  * @FilePath: \scooter-WSVA\frontend\src\main.ts
  */
@@ -16,8 +16,6 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import "element-plus/dist/index.css";
 import "./style.css";
 import "animate.css";
-import "./mock/index";
-// import { service } from './axios/index';
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -32,4 +30,3 @@ app.use(pinia);
 app.use(ElementPlus);
 app.use(router);
 app.mount("#app");
-// app.config.globalProperties.$axios=service;  //配置axios的全局引用
