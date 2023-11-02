@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-05-08 15:29:52
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 19:16:47
+ * @LastEditTime: 2023-11-02 21:59:40
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\view\FollowView.vue
 -->
@@ -18,7 +18,6 @@ const userId = computed(() => route.params.id?parseInt(route.params.id.toString(
 
 <template>
   <UserCard :userId="userId" />
-
   <!-- <UserCard v-if="cardType!='follow'" :cardType="cardType" :userId="userId"/>
   <UserCard v-else cardType='follow' :userId="userStore().user_id"/> -->
 </template>

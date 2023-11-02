@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 21:33:38
+ * @LastEditTime: 2023-11-02 21:55:40
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -38,14 +38,29 @@ function getLastSegmentFromRoute(route: string): string {
   return segments[segments.length - 1];
 }
 
+function getSecondSegmentFromRoute(route: string): string {
+  const segments = route.split("/");
+  return segments[segments.length - 2];
+}
+
 // 获取关注的人的信息卡片
 onMounted(() => {
+  console.log('userId11111111111111111111111111')
   let path = window.location.href;
-  let curRoute= getLastSegmentFromRoute(path);
-  routeStore().name =curRoute;
-  cardType.value = curRoute
+  console.log(path)
+
+  let lastRoute = getLastSegmentFromRoute(path);
+  let secondRoute = getSecondSegmentFromRoute(path);
+  let finalRoute = ''
+  if (lastRoute === "follow") {
+    finalRoute = lastRoute
+  } else if (secondRoute === "friends" || secondRoute === "followers" || secondRoute === "follows") {
+    finalRoute = secondRoute
+  }
+  routeStore().name = finalRoute;
+  cardType.value = finalRoute
   let userId = props.userId
-  switch (curRoute) {
+  switch (finalRoute) {
     case 'friends':
       getFriendsList(userId).then((res: any) => {
         usersList.value = res.list;
