@@ -3,11 +3,10 @@ package logic
 import (
 	"context"
 	"encoding/json"
-	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
-	"log"
-
 	"github.com/huangsihao7/scooter-WSVA/favorite/api/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/favorite/api/internal/types"
+	"github.com/huangsihao7/scooter-WSVA/favorite/rpc/favorite"
+	"log"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -72,4 +71,9 @@ func (l *FavoriteListLogic) FavoriteList(req *types.ListReq) (resp *types.ListRe
 		StatusMsg:  res.StatusMsg,
 		VideoList:  resLists,
 	}, nil
+
+	//return &types.ListResp{
+	//	StatusCode: constants.ServiceOKCode,
+	//	StatusMsg:  constants.ServiceOK,
+	//}, nil
 }

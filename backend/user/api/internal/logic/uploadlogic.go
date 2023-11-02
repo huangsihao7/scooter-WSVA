@@ -30,44 +30,6 @@ func NewUploadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UploadLogi
 	}
 }
 
-//func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse, err error) {
-//	// todo: add your logic here and delete this line
-//	//req.ParseMultipartForm(200 * 1024 * 1024)
-//	file, handler, err := req.FormFile("file")
-//	if err != nil {
-//		return nil, err
-//	}
-//	defer file.Close()
-//
-//	// 创建七牛云的上传凭证
-//	putPolicy := storage.PutPolicy{
-//		Scope: l.svcCtx.Config.Bucket,
-//	}
-//	mac := qbox.NewMac(l.svcCtx.Config.AccessKey, l.svcCtx.Config.SecretKey)
-//	uploadToken := putPolicy.UploadToken(mac)
-//
-//	// 设置上传配置
-//	cfg := storage.Config{}
-//	//formUploader := storage.NewFormUploader(&cfg)
-//	formUploader := storage.NewResumeUploaderV2(&cfg)
-//	ret := storage.PutRet{}
-//	putExtra := storage.RputV2Extra{}
-//	// 上传文件
-//
-//	err = formUploader.PutWithoutKey(context.Background(), &ret, uploadToken, file, handler.Size, &putExtra)
-//	if err != nil {
-//		return nil, err
-//	}
-//	baseURL := "s327crbzf.hn-bkt.clouddn.com" // 替换为您的文件访问域名
-//	fileURL := baseURL + "/" + ret.Key
-//	//deadline := time.Now().Add(time.Second * 3600).Unix() //1小时有效期
-//	//privateAccessURL := storage.MakePrivateURL(mac, baseURL, ret.Key, deadline)
-//	// 返回上传成功的信息
-//	return &types.UserUploadResponse{
-//		Url: fileURL,
-//	}, nil
-//}
-
 func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse, err error) {
 	accessKey := l.svcCtx.Config.AccessKey
 	secretKey := l.svcCtx.Config.SecretKey
@@ -86,7 +48,7 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 
 	putPolicy := storage.PutPolicy{
 		Scope:               bucket,
-		PersistentOps:       "avthumb/mp4/wmImage/aHR0cDovL3Rlc3QtMi5xaW5pdWRuLmNvbS9sb2dvLnBuZw==/wmGravity/NorthWest|saveas/" + saceas,
+		PersistentOps:       "avthumb/mp4/wmImage/aHR0cDovL3MzZWplbjBnMi5oZC1ia3QuY2xvdWRkbi5jb20vbG9nLnBuZw==/wmGravity/NorthWest|saveas/" + saceas,
 		PersistentNotifyURL: "http://fake.com/qiniu/notify",
 	}
 	upToken := putPolicy.UploadToken(mac)

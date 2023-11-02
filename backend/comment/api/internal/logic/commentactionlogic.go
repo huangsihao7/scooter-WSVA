@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
-	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
 
 	"github.com/huangsihao7/scooter-WSVA/comment/api/internal/svc"
@@ -35,22 +34,18 @@ func (l *CommentActionLogic) CommentAction(req *types.ActionReq) (resp *types.Ac
 	if req.ActionType == 1 {
 		format.Feedback("comment", int(req.VideoId), int(usrId))
 	}
-	_, err = l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
+	com, err := l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
 		UserId:      usrId,
 		ActionType:  req.ActionType,
 		VideoId:     req.VideoId,
 		CommentText: req.CommentText,
 		CommentId:   req.CommentId,
 	})
-	if err != nil {
-		return &types.ActionResp{
-			StatusCode: constants.UnableToQueryCommentErrorCode,
-			StatusMsg:  constants.UnableToCreateCommentError,
-		}, err
-	}
+
 	output := &types.ActionResp{
-		StatusCode: constants.ServiceOKCode,
-		StatusMsg:  constants.ServiceOK,
+		CommentId:  com.CommentId,
+		StatusCode: int(com.StatusCode),
+		StatusMsg:  com.StatusMsg,
 	}
 	return output, nil
 }

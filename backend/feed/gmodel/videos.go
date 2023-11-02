@@ -132,5 +132,6 @@ func (m *VideoModel) FindOne(ctx context.Context, id int64) (*Videos, error) {
 }
 func (m *VideoModel) Update(ctx context.Context, data *Videos) error {
 	err := m.db.WithContext(ctx).Model(&Videos{}).Where("id = ?", data.Id).Updates(data).Error
+	m.db.Save(data)
 	return err
 }

@@ -7,17 +7,19 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/pkg/orm"
 	gmodel2 "github.com/huangsihao7/scooter-WSVA/user/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/usesrv"
+	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/zrpc"
 )
 
 type ServiceContext struct {
 	c          config.Config
 	UserModel  *gmodel2.UserModel
+	VideoModel *gmodel3.VideoModel
 	UserRpc    usesrv.UseSrv
 	DB         *orm.DB
 	FavorModel *gmodel.FavoriteModel
 	StarModel  *gmodel.StarModel
-	VideoModel *gmodel3.VideoModel
+	BizRedis   *redis.Redis
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -35,5 +37,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		FavorModel: gmodel.NewFavoriteModel(db.DB),
 		StarModel:  gmodel.NewStarModel(db.DB),
 		VideoModel: gmodel3.NewVideoModel(db.DB),
+		BizRedis:   redis.MustNewRedis(c.BizRedis),
 	}
 }

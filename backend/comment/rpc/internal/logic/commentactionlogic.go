@@ -80,6 +80,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 			CommentCount:  videoDetail.CommentCount + 1,
 			Category:      videoDetail.Category,
 			CreatedAt:     videoDetail.CreatedAt,
+			Duration:      videoDetail.Duration,
 		})
 		if err != nil {
 			log.Println(err.Error())
@@ -89,6 +90,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 			}, nil
 		}
 		return &comment.CommentActionResponse{
+			CommentId:  int64(newComment.Id),
 			StatusCode: constants.ServiceOKCode,
 			StatusMsg:  constants.ServiceOK,
 		}, nil
@@ -110,6 +112,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 			CommentCount:  videoDetail.CommentCount - 1,
 			Category:      videoDetail.Category,
 			CreatedAt:     videoDetail.CreatedAt,
+			Duration:      videoDetail.Duration,
 		})
 		if err != nil {
 			log.Println(err.Error())

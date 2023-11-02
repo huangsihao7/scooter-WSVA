@@ -9,6 +9,7 @@ type ActionReq struct {
 }
 
 type ActionResp struct {
+	CommentId  int64  `json:"comment_id"`
 	StatusCode int    `json:"status_code"`
 	StatusMsg  string `json:"status_msg"`
 }

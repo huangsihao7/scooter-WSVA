@@ -73,6 +73,7 @@ func (l *UploadFile) Consume(key, val string) error {
 		fmt.Println("评论错误:", commentRes.StatusMsg, err)
 		return err
 	}
+	fmt.Println("插入评论成功")
 	//调用标签接口，将标签存入数据库
 	InsertLabelRes, err := l.svcCtx.Labeler.InsertLabel(l.ctx, &label.InsertLabelReq{
 		VideoId: videoInfo.Id,
@@ -82,6 +83,7 @@ func (l *UploadFile) Consume(key, val string) error {
 		fmt.Println("往数据库插入标签错误", err)
 		return err
 	}
+	fmt.Println("插入标签成功")
 	totalSeconds := int(uploadRes.Data.Duration) // 将总秒数转换为整数
 
 	minutes := totalSeconds / 60
