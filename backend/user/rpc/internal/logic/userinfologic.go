@@ -79,6 +79,13 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 	}
 	uint32FavorVideoCount := uint32(len(favorVideoCount))
 
+	friends, err := l.svcCtx.RelationModel.FindFriend(l.ctx, actionId)
+	if err != nil {
+		l.Logger.Errorf("获取朋友数量出错" + err.Error())
+		return nil, err
+	}
+	friendCount := len(friends)
+
 	//查询A是否关注B
 	isFavorite := false
 	//如果查询的是自己 那就不做这个查询了
@@ -109,6 +116,7 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 		IsFollow:        isFavorite,
 		WorkCount:       &workCount,
 		BackgroundImage: &res.BackgroundUrl,
+		FriendCount:     int64(friendCount),
 	}
 	return &user.UserInfoResponse{
 		User:       &users,

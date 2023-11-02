@@ -48,6 +48,7 @@ func (l *UserInfoLogic) UserInfo(req *types.UserInfoReq) (resp *types.UserInfoRe
 		WorkCount:       *res.User.WorkCount,
 		IsFollow:        res.User.IsFollow,
 		BackgroundImage: *res.User.BackgroundImage,
+		FriendCount:     res.User.FriendCount,
 	}
 	return &types.UserInfoResponse{
 		StatusCode: int(res.StatusCode),

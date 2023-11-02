@@ -71,6 +71,7 @@ type User struct {
 	WorkCount       uint32 `json:"work_count"`
 	FavoriteCount   uint32 `json:"favorite_count"`
 	IsFollow        bool   `json:"is_follow"`
+	FriendCount     int64  `json:"friend_count"`
 }
 
 type UserUploadResponse struct {

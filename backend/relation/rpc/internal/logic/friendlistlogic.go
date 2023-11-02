@@ -40,12 +40,12 @@ func (l *FriendListLogic) FriendList(in *relation.FriendListReq) (*relation.Frie
 			return nil, err
 		}
 	}
-
+	println(friend)
 	List := make([]*relation.UserInfo, 0)
 	for _, item := range friend {
 		one, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
 			UserId:  in.Uid,
-			ActorId: int64(item.FollowerId),
+			ActorId: int64(item.FollowingId),
 		})
 		if err != nil {
 			l.Logger.Error("查询用户信息错")
