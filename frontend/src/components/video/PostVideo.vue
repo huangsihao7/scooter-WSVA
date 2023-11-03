@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 15:26:18
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 23:21:27
+ * @LastEditTime: 2023-11-03 23:27:05
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\PostVideo.vue
 -->
@@ -51,7 +51,6 @@ const videoForm = reactive({
 });
 // 上传绑定
 const fileUploadRef = ref();
-const titleIptRef = ref();
 
 // 分类下拉框数据
 const classifyList = ref<Array<ClassifyList>>([
@@ -104,6 +103,7 @@ const handlePostVideo = () => {
       fileUploadRef.value.clear();
       videoForm.title = "";
       message.success(res.status_message);
+      window.location.reload();
     });
     emit("visible-update", false);
   } else if (videoForm.url != "" || videoForm.coverUrl != "") {

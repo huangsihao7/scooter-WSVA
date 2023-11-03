@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 19:14:05
+ * @LastEditTime: 2023-11-03 23:28:03
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
@@ -358,7 +358,6 @@ const getPostVideoForm = () => {
 // 投稿完成后的回调
 const updateVisible = (flag: boolean) => {
   isVideoFormVisible.value = flag;
-  window.location.reload();
 };
 
 // 数字判断
