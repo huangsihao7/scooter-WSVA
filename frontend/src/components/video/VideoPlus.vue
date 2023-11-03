@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 14:18:26
+ * @LastEditTime: 2023-11-03 19:20:52
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -125,8 +125,11 @@ const handleLikeBtn = () => {
 const handleCollectBtn = () => {
   let action_type = -1;
   if (thisVideo) {
-    if (!thisVideo?.star_count) {
+    if (!thisVideo.is_star) {
+      console.log('starcount',thisVideo.star_count)
       thisVideo.star_count++;
+      console.log('starcount2',thisVideo.star_count)
+
       action_type = 1;
     } else {
       thisVideo.star_count--;
@@ -356,7 +359,7 @@ const handleCopy = () => {
               </NIcon>
             </NButton>
           </div>
-          <p>{{ props.video.star_count }}</p>
+          <p>{{ thisVideo.star_count }}</p>
         </div>
         <div class="share">
           <div :class="shareAnimateClass">
