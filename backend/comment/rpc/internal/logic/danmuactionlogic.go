@@ -31,6 +31,7 @@ func (l *DanMuActionLogic) DanMuAction(in *comment.DanmuActionRequest) (*comment
 	videoId := in.VideoId
 
 	//检查用户id 是否能存在
+	println("-----------------")
 	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -50,7 +51,7 @@ func (l *DanMuActionLogic) DanMuAction(in *comment.DanmuActionRequest) (*comment
 		l.Logger.Errorf(err.Error())
 		return nil, err
 	}
-
+	println("-----------------")
 	//添加弹幕到数据库
 	err = l.svcCtx.DanmuModel.Insert(l.ctx, &gmodel.Danmu{
 		Uid:      uint(userId),

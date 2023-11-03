@@ -17,6 +17,7 @@ type ServiceContext struct {
 	Feeder            feedclient.Feed
 	KqPusherJobClient *kq.Pusher
 	Es                *es.Es
+	KqPusherClient    *kq.Pusher
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -31,5 +32,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			Username:  c.Es.Username,
 			Password:  c.Es.Password,
 		}),
+		KqPusherClient: kq.NewPusher(c.KqPusherConf.Brokers, c.KqPusherConf.Topic),
 	}
 }

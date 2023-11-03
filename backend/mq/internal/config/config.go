@@ -23,4 +23,8 @@ type Config struct {
 		Password  string
 	}
 	KqVideoConsumerConf kq.KqConf
+	KqPusherConf        struct {
+		Brokers []string
+		Topic   string
+	}
 }

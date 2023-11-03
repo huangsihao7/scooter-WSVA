@@ -46,7 +46,11 @@ func (m *CommentModel) Delete(ctx context.Context, id int64) error {
 	return m.db.WithContext(ctx).Delete(&Comments{}, id).Error
 }
 func (m *CommentModel) DeleteByVid(ctx context.Context, vid int64) error {
-	return m.db.WithContext(ctx).Where("vid = ?", vid).Delete(&Comments{}).Error
+	err := m.db.WithContext(ctx).Where("vid = ?", vid).Delete(&Comments{}).Error
+	if err == gorm.ErrRecordNotFound {
+		return nil
+	}
+	return err
 }
 
 func (m *CommentModel) IsCommentExist(ctx context.Context, id int64) error {

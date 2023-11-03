@@ -12,6 +12,10 @@ KqConsumerConf:
   Consumers: 8
   Processors: 8
 
+KqPusherConf:
+  Brokers:
+    - 172.22.121.54:9092
+  Topic: uploadVideos
 Comment:
   Etcd:
     Hosts:

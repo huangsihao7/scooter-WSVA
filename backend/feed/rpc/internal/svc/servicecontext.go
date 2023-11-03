@@ -13,11 +13,11 @@ import (
 )
 
 type ServiceContext struct {
-	Config             config.Config
-	HistoryModel       *gmodel.HistoryModel
-	FavorModel         *gmodel2.FavoriteModel
-	UserRpc            usesrv.UseSrv
-	KqPusherClient     *kq.Pusher
+	Config       config.Config
+	HistoryModel *gmodel.HistoryModel
+	FavorModel   *gmodel2.FavoriteModel
+	UserRpc      usesrv.UseSrv
+
 	DB                 *orm.DB
 	VideoModel         *gmodel.VideoModel
 	StarModel          *gmodel2.StarModel
@@ -36,10 +36,10 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		MaxLifetime:  c.DB.MaxLifetime,
 	})
 	return &ServiceContext{
-		Config:             c,
-		FavorModel:         gmodel2.NewFavoriteModel(db.DB),
-		UserRpc:            usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
-		KqPusherClient:     kq.NewPusher(c.KqPusherConf.Brokers, c.KqPusherConf.Topic),
+		Config:     c,
+		FavorModel: gmodel2.NewFavoriteModel(db.DB),
+		UserRpc:    usesrv.NewUseSrv(zrpc.MustNewClient(c.UserRpc)),
+
 		VideoModel:         gmodel.NewVideoModel(db.DB),
 		StarModel:          gmodel2.NewStarModel(db.DB),
 		KqPusherTestClient: kq.NewPusher(c.KqPusherTesTConf.Brokers, c.KqPusherTesTConf.Topic),

@@ -37,6 +37,9 @@ type PopularResp struct {
 
 type JobBody struct {
 	Job string `json:"job"`
+	Id  int64  `json:"id"`
+	Url string `json:"url"`
+	Uid int64  `json:"uid"`
 }
 
 type SafeResponse struct {

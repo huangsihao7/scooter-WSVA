@@ -48,27 +48,13 @@ func (l *CreateVideoLogic) CreateVideo(in *feed.CreateVideoRequest) (*feed.Creat
 	JobId := common.IsSafeJobId(in.Url, strconv.Itoa(int(newVideo.Id)))
 
 	//将文件信息传入mq
-	messagekq := format.UploadFile{
+	jobKq := format.JobBody{
+		Job: JobId,
 		Id:  int64(newVideo.Id),
 		Url: in.Url,
 		Uid: int64(newVideo.AuthorId),
 	}
-	jobKq := format.JobBody{
-		Job: JobId,
-	}
 
-	// 发送kafka消息，异步
-	threading.GoSafe(func() {
-		data, err := json.Marshal(messagekq)
-		if err != nil {
-			l.Logger.Errorf("[Video] marshal msg: %v error: %v", messagekq, err)
-			return
-		}
-		err = l.svcCtx.KqPusherClient.Push(string(data))
-		if err != nil {
-			l.Logger.Errorf("[Video] kq push data: %s error: %v", data, err)
-		}
-	})
 	threading.GoSafe(func() {
 		data, err := json.Marshal(jobKq)
 		if err != nil {

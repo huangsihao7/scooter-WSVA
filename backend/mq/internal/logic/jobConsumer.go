@@ -8,6 +8,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"github.com/huangsihao7/scooter-WSVA/mq/internal/svc"
 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/threading"
 	"strconv"
 	"time"
 )
@@ -67,6 +68,19 @@ func (l *ParseJob) Consume(key, val string) error {
 			return nil
 
 		} else {
+			messagekq := format.UploadFile{
+				Id:  job.Id,
+				Url: job.Url,
+				Uid: job.Uid,
+			}
+			// 发送kafka消息，异步
+			threading.GoSafe(func() {
+				data, err := json.Marshal(messagekq)
+				if err != nil {
+					return
+				}
+				err = l.svcCtx.KqPusherClient.Push(string(data))
+			})
 			println("审核通过")
 			return nil
 		}
