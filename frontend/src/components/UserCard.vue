@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 19:16:28
+ * @LastEditTime: 2023-11-03 19:52:10
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -157,7 +157,7 @@ const cancleFollow = (item: any, _index: any) => {
 
 <template>
   <NGrid
-    v-if="usersList"
+    v-if="usersList.length != 0"
     class="space"
     :x-gap="12"
     cols="2 s:3 m:4 l:5 xl:6 2xl:7"
@@ -219,7 +219,7 @@ const cancleFollow = (item: any, _index: any) => {
       </NCard>
     </NGi>
   </NGrid>
-  <NEmpty description="没有用户哦~去别处看看吧~">
+  <NEmpty v-else  description="没有用户哦~去别处看看吧~">
     <template #icon>
       <NIcon>
         <PersonAddOutline />

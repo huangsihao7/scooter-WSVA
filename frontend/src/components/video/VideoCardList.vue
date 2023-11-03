@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 16:02:54
+ * @LastEditTime: 2023-11-03 19:51:34
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardList.vue
  * @Description: 
 -->
@@ -44,7 +44,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <NCard v-for="(info, index) in props.videos" :key="index" class="box-card">
+  <NCard hoverable v-for="(info, index) in props.videos" :key="index" class="box-card">
     <template #cover>
       <img
         class="image-css"
@@ -66,13 +66,13 @@ onMounted(() => {
       </template>
     </NButton>
     <div class="video-space" style="position: relative" @click="GetVideoLink">
-      <NTag class="time" round :bordered="false" type="info">
+      <NTag class="time" round :bordered="false" :color="{ color: '#e6e6e64a' }">
         {{ info.duration }}
         <template #icon>
           <NIcon color="#fff" :component="Play" />
         </template>
       </NTag>
-      <NTag class="like" round :bordered="false" type="error">
+      <NTag class="like" round :bordered="false" :color="{ color: '#f93b3b4a' }">
         {{ info.favorite_count }}
         <template #icon>
           <NIcon color="#fff" :component="Heart" />
@@ -156,7 +156,7 @@ onMounted(() => {
     position: absolute;
     // bottom: 40px;
     bottom: 10px;
-    left: 10px;
+    left: 0;
     color: white;
   }
 
@@ -164,7 +164,7 @@ onMounted(() => {
     position: absolute;
     // bottom: 40px;
     bottom: 10px;
-    right: 10px;
+    right: 0;
     color: white;
   }
 
