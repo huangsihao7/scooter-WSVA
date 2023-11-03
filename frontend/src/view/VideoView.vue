@@ -172,12 +172,11 @@ const postCommentByBtn = () => {
         </NTabs>
         <template #footer>
           <NInput
-            maxlength="50"
+            maxlength="30"
             show-count
-            type="textarea"
+            round
             v-model:value="addComment"
             class="comment-input"
-            round
             placeholder="留下精彩的评论吧"
             @keydown="postComment"
           >
