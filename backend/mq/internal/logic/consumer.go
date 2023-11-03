@@ -119,7 +119,7 @@ func (l *UploadFile) Consume(key, val string) error {
 		// 将请求体编码为JSON字节
 		jsonData, err := json.Marshal(requestBody)
 		if err != nil {
-			fmt.Println("JSON编码失败:", err)
+			fmt.Println("JSON编码失败 :", err)
 			return
 		}
 		post, err := format.QiNiuPost(postbaseurl, jsonData)
