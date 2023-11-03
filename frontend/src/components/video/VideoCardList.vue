@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 19:51:34
+ * @LastEditTime: 2023-11-03 22:12:30
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardList.vue
  * @Description: 
 -->
@@ -107,7 +107,7 @@ onMounted(() => {
 @media (max-width: 1200px) {
   /* 在这里设置适应小屏幕的样式规则 */
   .box-card {
-    width: calc((100vw - 260px) / 4);
+    width: calc((100vw - 260px) / 2);
   }
   .title-eli {
     max-width: calc((100vw - 360px) / 4);
@@ -117,14 +117,14 @@ onMounted(() => {
 @media (min-width: 1200px) and (max-width: 1800px) {
   /* 在这里设置适应中等屏幕的样式规则 */
   .box-card {
-    width: calc((100vw - 260px) / 6);
+    width: calc((100vw - 260px) / 4);
   }
 }
 
 /* 在页面宽度大于1200px时应用以下样式 */
 @media (min-width: 1800px) {
   .box-card {
-    width: calc((100vw - 260px) / 7);
+    width: calc((100vw - 260px) / 6);
   }
 }
 
@@ -140,11 +140,11 @@ onMounted(() => {
   .image-css {
     width: 100%;
     object-fit: fill;
-    height: 30vh;
+    height: 50vh;
   }
 
   .n-card .n-card-cover img {
-    height: 30vh;
+    height: 60vh;
   }
 
   .video-space {
