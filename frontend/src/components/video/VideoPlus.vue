@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 20:13:43
+ * @LastEditTime: 2023-11-03 00:59:52
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -11,7 +11,7 @@
 import Dplayer from "@/components/video/VideoCom.vue";
 import Hls from "hls.js";
 import { computed, onMounted, reactive, ref } from "vue";
-import { NAvatar, NButton, NIcon, useMessage } from "naive-ui";
+import { NAvatar, NButton, NIcon, useMessage, useDialog, createDiscreteApi  } from "naive-ui";
 import {
   Add,
   ArrowRedo,
@@ -134,41 +134,52 @@ const handleCommentBtn = () => {
   emit("comment-visible-update", thisVideo);
 };
 
+const sleep = () => new Promise((resolve) => setTimeout(resolve, 300))
+// const dialog = useDialog()
+const { dialog } = createDiscreteApi(["dialog"]);
 // 分享按钮的操作
 const handleShareBtn = () => {
-  shareVisible.value = !shareVisible.value;
+  shareVisible.value = true;
   let currentUrl: string = window.location.href;
   let firstSegment: string = currentUrl.substring(
     0,
     currentUrl.indexOf("/", 8),
   );
-  let id = thisVideo.value?.video_id;
-  let url = firstSegment + "/video/" + id;
-  ElMessageBox.alert(url, "分享", {
-    confirmButtonText: "复制",
-    center: true,
-    beforeClose: (action, instance, done) => {
-      if (action === "confirm") {
-        instance.confirmButtonText = "复制中...";
-        instance.confirmButtonLoading = true;
-        copy(url);
-        copyFlag.value = true;
-        setTimeout(() => {
-          instance.confirmButtonLoading = false;
-          done();
-        }, 300);
-      } else {
-        copyFlag.value = false;
-        done();
-      }
-    },
-    callback: () => {
-      if (copyFlag.value) {
-        message.success("复制成功");
-        copyFlag.value = false;
-      }
-    },
-  });
+  let url = firstSegment + "/video/" + props.video.video_id;
+  // ElMessageBox.alert(url, "分享", {
+  //   confirmButtonText: "复制",
+  //   center: true,
+  //   beforeClose: (action, instance, done) => {
+  //     if (action === "confirm") {
+  //       instance.confirmButtonText = "复制中...";
+  //       instance.confirmButtonLoading = true;
+  //       copy(url);
+  //       copyFlag.value = true;
+  //       setTimeout(() => {
+  //         instance.confirmButtonLoading = false;
+  //         done();
+  //       }, 300);
+  //     } else {
+  //       copyFlag.value = false;
+  //       done();
+  //     }
+  //   },
+  //   callback: () => {
+  //     if (copyFlag.value) {
+  //       message.success("复制成功");
+  //       copyFlag.value = false;
+  //     }
+  //   },
+  // });
+  dialog.success({
+          title: '分享',
+          content: url,
+          positiveText: '复制',
+          onPositiveClick: () => {
+            copy(url);
+          }
+        })
+  
 };
 
 // 视频下载函数
@@ -409,9 +420,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .video-container {
-  .el-button {
-    z-index: 9999;
-  }
 
   .dplayer {
     width: calc(100vw - 160px);

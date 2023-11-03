@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 15:26:18
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 15:54:52
+ * @LastEditTime: 2023-11-03 00:36:41
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\PostVideo.vue
 -->
@@ -192,6 +192,8 @@ const selectVisible = ref<boolean>(false);
       <NFormItemRow label="描述">
         <NInput
           v-model:value="videoForm.title"
+          maxlength="50"
+          show-count
           placeholder="请输入"
           autocomplete="off"
           clearable
@@ -261,9 +263,6 @@ const selectVisible = ref<boolean>(false);
 </template>
 
 <style scoped>
-.el-select {
-  width: 100%;
-}
 
 .footer {
   display: flex;

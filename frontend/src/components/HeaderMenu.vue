@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 15:52:10
+ * @LastEditTime: 2023-11-03 11:55:57
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
@@ -356,6 +356,9 @@ const updateVisible = (flag: boolean) => {
   isVideoFormVisible.value = flag;
 };
 
+// 数字判断
+const onlyAllowNumber =(value: string) => !value || /^\d+$/.test(value);
+
 // 路由选择index标志
 watch(
   () => activeIndex.value,
@@ -407,9 +410,11 @@ watch(
         <NTabPane name="login" tab="登录">
           <NForm :model="loginForm">
             <NFormItemRow label="手机号">
-              <NInput
+              <NInput 
                 v-model:value="loginForm.phoneNum"
-                placeholder="请输入"
+                maxlength="9"
+                :allow-input="onlyAllowNumber"
+                placeholder="请输入数字"
                 autocomplete="off"
                 clearable
               />
@@ -418,6 +423,7 @@ watch(
               <NInput
                 v-model:value="loginForm.pwd"
                 autocomplete="off"
+                maxlength="30"
                 type="password"
                 placeholder="请输入"
                 show-password
@@ -435,13 +441,16 @@ watch(
               <NInput
                 v-model:value="registerForm.phoneNum"
                 autocomplete="off"
-                placeholder="请输入"
+                maxlength="9"
+                :allow-input="onlyAllowNumber"
+                placeholder="请输入数字"
                 clearable
               />
             </NFormItemRow>
             <NFormItemRow label="密码">
               <NInput
                 v-model:value="registerForm.pwd"
+                maxlength="30"
                 autocomplete="off"
                 type="password"
                 placeholder="请输入"
@@ -452,6 +461,7 @@ watch(
             <NFormItemRow label="重复密码">
               <NInput
                 v-model:value="registerForm.repeatPwd"
+                maxlength="30"
                 autocomplete="off"
                 type="password"
                 placeholder="请输入"

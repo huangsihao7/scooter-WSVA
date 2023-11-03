@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-31 18:42:57
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 22:29:38
+ * @LastEditTime: 2023-11-03 11:59:25
  * @Description: 查看某个特定video
  * @FilePath: \scooter-WSVA\frontend\src\view\VideoView.vue
 -->
@@ -164,6 +164,9 @@ const postCommentByBtn = () => {
         </NTabs>
         <template #footer>
           <NInput
+            maxlength="50"
+            show-count
+            type="textarea"
             v-model:value="addComment"
             class="comment-input"
             round

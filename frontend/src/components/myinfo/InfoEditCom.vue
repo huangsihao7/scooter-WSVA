@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-29 17:10:06
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 19:06:19
+ * @LastEditTime: 2023-11-03 11:58:57
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\InfoEditCom.vue
 -->
@@ -65,7 +65,8 @@
         </NUpload>
       </NFormItem>
       <NFormItem label="昵称">
-        <NInput v-model:value="formValue.name" placeholder="请输入姓名" />
+        <NInput maxlength="8"
+          show-count v-model:value="formValue.name" placeholder="请输入姓名" />
       </NFormItem>
 
       <NFormItem label="性别">
@@ -76,7 +77,8 @@
         />
       </NFormItem>
       <NFormItem label="简介">
-        <NInput v-model:value="formValue.signature" placeholder="请输入简介" />
+        <NInput maxlength="50"
+          show-count v-model:value="formValue.signature" placeholder="请输入简介" />
       </NFormItem>
     </NForm>
   </NModal>

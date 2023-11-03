@@ -248,6 +248,9 @@ const deleteFunc = (comment_id: number) => {
       </NTabs>
       <template #footer>
         <NInput
+          maxlength="50"
+          show-count
+          type="textarea"
           v-model:value="addComment"
           class="comment-input"
           round
