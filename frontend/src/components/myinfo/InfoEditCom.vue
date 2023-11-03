@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-29 17:10:06
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 11:58:57
+ * @LastEditTime: 2023-11-03 18:39:39
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\InfoEditCom.vue
 -->
@@ -93,7 +93,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, ref, reactive } from "vue";
 import {
   FormInst,
   NForm,
@@ -122,12 +122,12 @@ const props = defineProps<propsType>();
 const emit = defineEmits(["visible-update"]);
 const formRef = ref<FormInst | null>(null);
 const visibel = computed(() => props.isVisible);
-const formValue = ref({
-  name: "",
-  gender: 0,
-  signature: "",
-  background: "",
-  avatar: "",
+const formValue = reactive({
+  name: userStore().name,
+  gender: userStore().gender,
+  signature: userStore().signature,
+  background: userStore().background_image,
+  avatar: userStore().avatar,
 });
 const genderOptions = [
   {
@@ -139,14 +139,6 @@ const genderOptions = [
     value: 0,
   },
 ];
-
-onMounted(() => {
-  formValue.value.name = userStore().name;
-  formValue.value.gender = userStore().gender;
-  formValue.value.signature = userStore().signature;
-  formValue.value.background = userStore().background_image;
-  formValue.value.avatar = userStore().avatar;
-});
 
 // 上传限制
 const beforeAvatarUpload = (data: {
@@ -187,7 +179,7 @@ const handleBgFinish = ({
   console.log(file);
   const response = (event?.target as XMLHttpRequest)?.response;
   let responseJson = JSON.parse(response);
-  formValue.value.background = responseJson.url;
+  formValue.background = responseJson.url;
 };
 
 // 获取头像url
@@ -201,7 +193,7 @@ const handleAvatarFinish = ({
   console.log(file);
   const response = (event?.target as XMLHttpRequest)?.response;
   let responseJson = JSON.parse(response);
-  formValue.value.avatar = responseJson.url;
+  formValue.avatar = responseJson.url;
 };
 
 // 模态框取消回调
@@ -211,7 +203,7 @@ const cancelCallback = () => {
 
 // 修改资料
 const submitCallback = () => {
-  let userInfo = formValue.value;
+  let userInfo = formValue;
   updateUserInfo(
     userInfo.name,
     userInfo.gender,

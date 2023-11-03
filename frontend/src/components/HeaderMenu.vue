@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 11:55:57
+ * @LastEditTime: 2023-11-03 19:14:05
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
 -->
@@ -294,7 +294,11 @@ const doLogin = () => {
       userStore().user_id = res.user_id;
       userStore().isLoggedIn = true;
       userStore().phoneNum = loginForm.phoneNum;
+      userStore().name = res.name;
       userStore().avatar = res.avatar;
+      userStore().gender = res.gender;
+      userStore().signature = res.signature;
+      userStore().background_image = res.background_image;
       message.success("登录成功");
       loginFormVisible.value = false;
       window.location.reload();
