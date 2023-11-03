@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 21:43:27
+ * @LastEditTime: 2023-11-03 12:02:55
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyHeaderCom.vue
 -->
@@ -99,7 +99,7 @@ const goFriends = () => {
           </NButton>
           <NDivider vertical />
           <NButton color="#606266" text @click="goFriends">
-            朋友 {{ userInfo.follower_count }}
+            朋友 {{ userInfo.friend_count }}
           </NButton>
           <NDivider vertical />
           <NButton color="#606266" text>
