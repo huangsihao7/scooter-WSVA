@@ -67,6 +67,25 @@ func (l *UploadFile) Consume(key, val string) error {
 		commentdata = uploadRes.Data.Text
 	}
 	go func() {
+		totalSeconds := int(uploadRes.Data.Duration) // 将总秒数转换为整数
+
+		minutes := totalSeconds / 60
+		remainingSeconds := totalSeconds % 60
+
+		// 格式化分钟和秒的字符串
+		minutesStr := strconv.Itoa(minutes)
+		secondsStr := strconv.Itoa(remainingSeconds)
+
+		durationFormat := minutesStr + ":" + secondsStr
+		duration, err := l.svcCtx.Feeder.VideoDuration(l.ctx, &feed.VideoDurationReq{
+			Duration: durationFormat,
+			VideoId:  uint32(videoInfo.Id),
+		})
+		if err != nil {
+			fmt.Println(duration.StatusMsg)
+			return
+		}
+		fmt.Println("插入时长成功")
 		commentRes, err := l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
 			UserId:      12,
 			ActionType:  1,
@@ -107,26 +126,6 @@ func (l *UploadFile) Consume(key, val string) error {
 		// 打印响应内容
 		fmt.Println(string(post))
 	}()
-	go func() {
-		totalSeconds := int(uploadRes.Data.Duration) // 将总秒数转换为整数
 
-		minutes := totalSeconds / 60
-		remainingSeconds := totalSeconds % 60
-
-		// 格式化分钟和秒的字符串
-		minutesStr := strconv.Itoa(minutes)
-		secondsStr := strconv.Itoa(remainingSeconds)
-
-		durationFormat := minutesStr + ":" + secondsStr
-		duration, err := l.svcCtx.Feeder.VideoDuration(l.ctx, &feed.VideoDurationReq{
-			Duration: durationFormat,
-			VideoId:  uint32(videoInfo.Id),
-		})
-		if err != nil {
-			fmt.Println(duration.StatusMsg)
-			return
-		}
-		fmt.Println("插入时长成功")
-	}()
 	return nil
 }
