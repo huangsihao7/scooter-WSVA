@@ -42,6 +42,9 @@ func (l *ParseJob) Consume(key, val string) error {
 		//未完成或者失败，放进队列
 		jobKq := format.JobBody{
 			Job: job.Job,
+			Id:  job.Id,
+			Url: job.Url,
+			Uid: job.Uid,
 		}
 		time.Sleep(5 * time.Second)
 		data, err := json.Marshal(jobKq)
