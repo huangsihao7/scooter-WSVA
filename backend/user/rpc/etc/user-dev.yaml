@@ -15,6 +15,7 @@ DB:
   MaxIdleConns: 10
   MaxOpenConns: 100
   ConnMaxLifetime: 3600
+RecommendUrl: http://172.22.121.54:8088
 #FavoriteRpc:
 #  Etcd:
 #    Hosts:

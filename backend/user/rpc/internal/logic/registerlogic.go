@@ -55,7 +55,7 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 			l.Logger.Errorf("插入数据库失败")
 			return nil, err
 		}
-		postbaseurl := "http://172.22.121.54:8088/api/user"
+		postbaseurl := l.svcCtx.Config.RecommendUrl + "/api/user"
 		userReq := format.UserGoresBody{UserId: fmt.Sprintf("%d", newUser.Id)}
 		jsonData, err := json.Marshal(userReq)
 		if err != nil {
