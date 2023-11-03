@@ -358,6 +358,7 @@ const getPostVideoForm = () => {
 // 投稿完成后的回调
 const updateVisible = (flag: boolean) => {
   isVideoFormVisible.value = flag;
+  window.location.reload();
 };
 
 // 数字判断
