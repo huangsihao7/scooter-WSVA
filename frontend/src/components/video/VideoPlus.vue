@@ -11,7 +11,7 @@
 import Dplayer from "@/components/video/VideoCom.vue";
 import Hls from "hls.js";
 import { computed, onMounted, reactive, ref } from "vue";
-import { NAvatar, NButton, NIcon, useMessage, useDialog, createDiscreteApi  } from "naive-ui";
+import { NAvatar, NButton, NIcon, useMessage, createDiscreteApi  } from "naive-ui";
 import {
   Add,
   ArrowRedo,
@@ -22,7 +22,6 @@ import {
   Download,
 } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
-import { ElMessageBox } from "element-plus";
 import useClipboard from "vue-clipboard3";
 import { doFavourite, doStar } from "@/apis/favourite";
 import { doFollow } from "@/apis/relation";
@@ -42,7 +41,6 @@ const emit = defineEmits(["comment-visible-update"]);
 
 const { toClipboard } = useClipboard();
 const thisVideo = ref<VideoType>();
-const copyFlag = ref<boolean>(false);
 const userId = computed(() => userStore().user_id);
 const dplayerObj = reactive({
   videoId: props.video.video_id,
@@ -134,7 +132,6 @@ const handleCommentBtn = () => {
   emit("comment-visible-update", thisVideo);
 };
 
-const sleep = () => new Promise((resolve) => setTimeout(resolve, 300))
 // const dialog = useDialog()
 const { dialog } = createDiscreteApi(["dialog"]);
 // 分享按钮的操作
