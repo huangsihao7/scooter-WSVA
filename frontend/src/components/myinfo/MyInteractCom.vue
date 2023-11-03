@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 19:13:22
+ * @LastEditTime: 2023-11-03 22:39:18
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyInteractCom.vue
 -->
@@ -10,13 +10,10 @@
   <NTabs
     default-value="work"
     justify-content="space-evenly"
-    type="line"
     @update-value="handleUpdate"
   >
     <NTabPane name="work" tab="作品">
-      <NScrollbar  v-if="!showEmpty" style="max-height: 50vh">
-        <VideoCard :is-scroll="false" :videos="videos" :deletable="deletable" />
-      </NScrollbar>
+      <VideoCard v-if="!showEmpty" :is-scroll="false" :videos="videos" :deletable="deletable" />
       <NEmpty v-else description="没有发布过视频哦~">
         <template #icon>
           <NIcon>
@@ -26,9 +23,7 @@
       </NEmpty>
     </NTabPane>
     <NTabPane name="favourite" tab="喜欢">
-      <NScrollbar v-if="!showEmpty" style="max-height: 50vh">
-        <VideoCard :is-scroll="false" :videos="videos" />
-      </NScrollbar>
+      <VideoCard v-if="!showEmpty" :is-scroll="false" :videos="videos" />
       <NEmpty v-else description="没有喜欢的视频哦~">
         <template #icon>
           <NIcon>
@@ -38,9 +33,7 @@
       </NEmpty>
     </NTabPane>
     <NTabPane name="collect" tab="收藏">
-      <NScrollbar  v-if="!showEmpty" style="max-height: 50vh">
-        <VideoCard :is-scroll="false" :videos="videos" />
-      </NScrollbar>
+      <VideoCard  v-if="!showEmpty" :is-scroll="false" :videos="videos" />
       <NEmpty v-else description="没有收藏的视频哦~">
         <template #icon>
           <NIcon>
@@ -50,9 +43,7 @@
       </NEmpty>
     </NTabPane>
     <NTabPane name="history" tab="观看历史">
-      <NScrollbar  v-if="!showEmpty" style="max-height: 50vh">
-        <VideoCard :is-scroll="false" :videos="videos" />
-      </NScrollbar>
+      <VideoCard v-if="!showEmpty" :is-scroll="false" :videos="videos" />
       <NEmpty v-else description="没有浏览过视频哦~">
         <template #icon>
           <NIcon>
@@ -64,7 +55,7 @@
   </NTabs>
 </template>
 <script lang="ts" setup>
-import { NScrollbar, NTabPane, NTabs, NEmpty, NIcon } from "naive-ui";
+import { NTabPane, NTabs, NEmpty, NIcon } from "naive-ui";
 import VideoCard from "../VideoCard.vue";
 import { getHistoryVideosListReq, userVideoListReq } from "@/apis/video";
 import { userFavouriteListReq, userStarListReq } from "@/apis/favourite";

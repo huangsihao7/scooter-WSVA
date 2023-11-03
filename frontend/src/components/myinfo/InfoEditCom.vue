@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-29 17:10:06
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 18:39:39
+ * @LastEditTime: 2023-11-03 23:06:49
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\InfoEditCom.vue
 -->
@@ -83,7 +83,8 @@
       <NFormItem label="简介">
         <NInput
           v-model:value="formValue.signature"
-          maxlength="50"
+          maxlength="150"
+          type="textarea"
           show-count
           placeholder="请输入简介"
         />

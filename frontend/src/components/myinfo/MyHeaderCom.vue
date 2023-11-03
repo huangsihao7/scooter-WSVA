@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 18:31:59
+ * @LastEditTime: 2023-11-03 23:04:50
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyHeaderCom.vue
 -->
@@ -77,11 +77,12 @@ const goFriends = () => {
     class="header"
     :style="{
       'background-image':
-        'linear-gradient( to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)), url(' +
+        'linear-gradient( 100deg , rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)), url(' +
         userInfo.background_image +
         ')',
     }"
   >
+  <div class="sub-header">
     <NGrid>
       <NGridItem :span="4">
         <NAvatar :src="userInfo.avatar" round />
@@ -106,23 +107,23 @@ const goFriends = () => {
             获赞 {{ userInfo.favorite_count }}
           </NButton>
         </div>
-        <NButton
-          v-if="userInfo.id == userStore().user_id"
-          strong
-          round
-          class="edit-info"
-          color="#409eff85"
-          @click="editVisible = true"
-        >
-          <template #icon>
-            <NIcon>
-              <CashIcon />
-            </NIcon>
-          </template>
-          编辑资料
-        </NButton>
       </NGridItem>
     </NGrid>
+    <NButton
+      v-if="userInfo.id == userStore().user_id"
+      strong
+      round
+      class="edit-info"
+      color="#409eff85"
+      @click="editVisible = true"
+    >
+      <template #icon>
+        <NIcon>
+          <CashIcon />
+        </NIcon>
+      </template>
+      编辑资料
+    </NButton>
     <InfoEditCom
       v-if="userInfo"
       :user-info="userInfo"
@@ -130,58 +131,70 @@ const goFriends = () => {
       @visible-update="UpdateVisible"
     />
   </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
+.edit-info {
+      // position: absolute;
+      // top: 70px;
+      // right: calc(10vw + 20px);
+      // float: right;
+      margin-right: 20px;
+  }
+
 .header {
-  background-color: aquamarine;
   text-align: left;
   display: flex;
-  padding: 3vh 0;
-  border-radius: 25px;
+  padding: 2vh 0;
+  // border-radius: 25px;
   background: no-repeat center top / 100% 100%;
-
-  .n-avatar {
-    float: right;
-    font-size: 5rem;
-    width: calc((80vw - 260px) / 6);
-    height: calc((80vw - 260px) / 6);
-  }
-
-  .info-tab {
+  .sub-header{
+    text-align: left;
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-
-    .edit-info {
-      position: absolute;
-      top: 70px;
-      right: calc(10vw + 20px);
+    background: #ffffff24;
+    backdrop-filter: blur(5px);
+    border-radius: 25px;
+    margin:0 2vw;
+    padding: 2vh 2vw;
+    .n-avatar {
+      float: right;
+      font-size: 5rem;
+      width: calc((80vw - 260px) / 6);
+      height: calc((80vw - 260px) / 6);
     }
 
-    p,
-    .follow {
-      margin: 10px 20px;
-      display: block;
-    }
+    .info-tab {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
 
-    p {
-      width: calc(100% - 40px);
-      margin: 10px 20px;
-    }
+      
+      p,
+      .follow {
+        margin: 10px 20px;
+        display: block;
+      }
 
-    .follow {
-      .n-button {
-        padding-right: 10px;
+      p {
+        width: calc(100% - 40px);
+        margin: 10px 20px;
+      }
+
+      .follow {
+        .n-button {
+          padding-right: 10px;
+        }
+      }
+
+      p:nth-child(1) {
+        color: black;
+        font-size: 2.5rem;
+        font-weight: bold;
       }
     }
-
-    p:nth-child(1) {
-      color: black;
-      font-size: 2.5rem;
-      font-weight: bold;
-    }
   }
+  
 }
 
 .header > div {
