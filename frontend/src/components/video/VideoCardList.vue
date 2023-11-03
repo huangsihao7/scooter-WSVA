@@ -180,12 +180,13 @@ onMounted(() => {
     .other-info {
       position: absolute;
       bottom: 0;
+      width: 100%;
       .name {
         display: inline-block;
         font-weight: 400;
         font-size: 0.8rem;
         color: rgb(95, 95, 95);
-        width: 45%;
+        width: 37%;
       }
       .date {
         display: inline-block;

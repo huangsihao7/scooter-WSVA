@@ -102,7 +102,7 @@ const handlePostVideo = () => {
       videoForm.category,
     ).then((res: any) => {
       fileUploadRef.value.clear();
-      titleIptRef.value.clear();
+      titleIptRef.value = '';
       message.success(res.status_message);
     });
     emit("visible-update", false);
