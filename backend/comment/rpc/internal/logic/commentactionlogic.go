@@ -33,7 +33,6 @@ func NewCommentActionLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Com
 
 func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*comment.CommentActionResponse, error) {
 	logx.DisableStat()
-	// todo: add your logic here and delete this line
 	userId := in.UserId
 	videoId := in.VideoId
 	contents := in.CommentText
@@ -65,7 +64,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 	//添加评论
 	case 1:
 		contUrl := url.QueryEscape(contents)
-		CommentSafeUrl := "http://172.22.121.54:8000/api/v1/speech/commentSentimentAnalysis?comment=" + contUrl
+		CommentSafeUrl := l.svcCtx.Config.AIUrl + "/api/v1/speech/commentSentimentAnalysis?comment=" + contUrl
 		println(CommentSafeUrl)
 		get, err := format.QiNiuGet(CommentSafeUrl)
 		if err != nil {

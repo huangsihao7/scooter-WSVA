@@ -45,7 +45,7 @@ func (l *CreateVideoLogic) CreateVideo(in *feed.CreateVideoRequest) (*feed.Creat
 		return nil, err
 	}
 
-	JobId := common.IsSafeJobId(in.Url, strconv.Itoa(int(newVideo.Id)))
+	JobId := common.IsSafeJobId(in.Url, strconv.Itoa(int(newVideo.Id)), l.svcCtx.Config.AccessKey, l.svcCtx.Config.SecretKey)
 
 	//将文件信息传入mq
 	jobKq := format.JobBody{

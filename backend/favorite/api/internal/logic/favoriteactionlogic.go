@@ -29,7 +29,7 @@ func (l *FavoriteActionLogic) FavoriteAction(req *types.ActionReq) (resp *types.
 
 	userId, _ := l.ctx.Value("uid").(json.Number).Int64()
 	if req.ActionType == 1 {
-		format.Feedback("like", int(req.VideoId), int(userId))
+		format.Feedback(l.svcCtx.Config.RecommendUrl, "like", int(req.VideoId), int(userId))
 	}
 	//请求服务
 	r, err := l.svcCtx.Favor.FavoriteAction(l.ctx, &favorite.FavoriteActionRequest{

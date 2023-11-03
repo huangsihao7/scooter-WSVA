@@ -35,7 +35,7 @@ func (l *CommentActionLogic) CommentAction(req *types.ActionReq) (resp *types.Ac
 	usrId, _ := l.ctx.Value("uid").(json.Number).Int64()
 
 	if req.ActionType == 1 {
-		format.Feedback("comment", int(req.VideoId), int(usrId))
+		format.Feedback(l.svcCtx.Config.RecommendUrl, "comment", int(req.VideoId), int(usrId))
 	}
 	res, err := l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
 		UserId:      usrId,

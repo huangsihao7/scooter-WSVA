@@ -33,7 +33,7 @@ func (l *ParseJob) Consume(key, val string) error {
 		fmt.Println("解析 JSON 失败:", err.Error())
 		return err
 	}
-	status, vid, suggestion, err := format.GetJobBack(job.Job)
+	status, vid, suggestion, err := format.GetJobBack(job.Job, l.svcCtx.Config.SecretKey, l.svcCtx.Config.AccessKey)
 	if err != nil {
 		println(err)
 		return err

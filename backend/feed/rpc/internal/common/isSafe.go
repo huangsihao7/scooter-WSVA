@@ -15,8 +15,7 @@ type Job struct {
 	Job string `json:"job"`
 }
 
-func IsSafeJobId(ImageUrl string, vid string) string {
-	secretKey := "4hf0lBad0AFg_IaShAN14JD3IbcEg8Xn4DPSX3fY"
+func IsSafeJobId(ImageUrl string, vid string, secretKey string, accessKey string) string {
 	method := "POST"
 	path := "/v3/video/censor"
 	host := "ai.qiniuapi.com"
@@ -29,7 +28,7 @@ func IsSafeJobId(ImageUrl string, vid string) string {
 	// Base64 编码签名
 	encodedSign := base64.URLEncoding.EncodeToString(sign)
 	// 添加 Authorization 头部
-	authorization := "Qiniu cipx2awPLz7XNduXeJPtbWoTEQj7PWnV_2O727ew:" + encodedSign // 替换为你的 Authorization 值
+	authorization := "Qiniu " + accessKey + ":" + encodedSign // 替换为你的 Authorization 值
 
 	// 创建请求体的字节缓冲
 	reqBody := bytes.NewBuffer([]byte(bodyStr))

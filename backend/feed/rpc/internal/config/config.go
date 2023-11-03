@@ -26,4 +26,8 @@ type Config struct {
 		Username  string
 		Password  string
 	}
+	SecretKey    string
+	AccessKey    string
+	AIUrl        string
+	RecommendUrl string
 }

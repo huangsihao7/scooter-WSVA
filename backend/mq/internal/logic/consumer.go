@@ -36,7 +36,7 @@ func (l *UploadFile) Consume(key, val string) error {
 		fmt.Println("解析 JSON 失败:", err.Error())
 		return err
 	}
-	baseurl := "http://172.22.121.54:8000/api/v1/speech/video2keywordAndSummary"
+	baseurl := l.svcCtx.Config.AIUrl + "/api/v1/speech/video2keywordAndSummary"
 
 	// 发起 GET 请求
 	parsedURL, err := url.Parse(videoInfo.Url)
@@ -110,7 +110,7 @@ func (l *UploadFile) Consume(key, val string) error {
 		}
 		fmt.Println("插入标签成功")
 		//调用post请求，将视频id与标签存入推荐系统
-		postbaseurl := "http://172.22.121.54:8088/api/item"
+		postbaseurl := l.svcCtx.Config.RecommendUrl + "/api/item"
 		requestBody := format.VideosGoresBody{
 			ItemId:    fmt.Sprintf("%d", videoInfo.Id),
 			Labels:    uploadRes.Data.Keywords,
