@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 12:29:02
+ * @LastEditTime: 2023-11-03 13:18:15
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -197,7 +197,7 @@ const handleShareBtn = () => {
   // });
   const d = dialog.success({
     title: '分享',
-    content: '分享链接：'+url,
+    content: '分享链接：'+ url,
     positiveText: '复制',
     onPositiveClick: () => {
       d.loading = true
