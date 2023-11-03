@@ -7,11 +7,11 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
+	StatusCode  int    `json:"status_code"`
+	StatusMsg   string `json:"status_msg"`
 	Avatar      string `json:"avatar"`
 	AccessToken string `json:"accessToken"`
 	UserID      int64  `json:"user_id"`
-	StatusCode  int    `json:"status_code"`
-	StatusMsg   string `json:"status_msg"`
 }
 
 type RegisterRequest struct {
@@ -30,9 +30,9 @@ type RegisterResponse struct {
 }
 
 type UploadImageResponse struct {
-	Url        string `json:"url"`
 	StatusCode int    `json:"status_code"`
 	StatusMsg  string `json:"status_msg"`
+	Url        string `json:"url"`
 }
 
 type UpdateRequest struct {
@@ -75,8 +75,8 @@ type User struct {
 }
 
 type UserUploadResponse struct {
-	Url        string `json:"url"`
-	CoverUrl   string `json:"coverUrl"`
 	StatusCode int    `json:"status_code"`
 	StatusMsg  string `json:"status_msg"`
+	Url        string `json:"url"`
+	CoverUrl   string `json:"coverUrl"`
 }
