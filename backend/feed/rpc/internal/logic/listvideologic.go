@@ -29,7 +29,11 @@ func (l *ListVideoLogic) ListVideo(in *feed.ListVideoRequest) (*feed.ListVideoRe
 	Feeds, err := l.svcCtx.VideoModel.FindOwnFeed(l.ctx, int64(in.ToUid))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, nil
+			return &feed.ListVideoResponse{
+				StatusCode: constants.ServiceOKCode,
+				StatusMsg:  constants.ServiceOK,
+				VideoList:  nil,
+			}, nil
 		} else {
 			l.Logger.Error("数据库查找失败", err.Error())
 			return nil, err
