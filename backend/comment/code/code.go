@@ -15,4 +15,5 @@ var (
 	DanMuContextError             = xcode.New(50008, "弹幕内容不能为空")
 	DanMuTimeError                = xcode.New(50009, "弹幕时间不能为空")
 	CommentIsEmptyError           = xcode.New(50010, "评论内容不能为空")
+	CommentIsUnSafeError          = xcode.New(50011, "评论内容不合法")
 )

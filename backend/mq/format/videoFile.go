@@ -55,3 +55,6 @@ type SafeResponse struct {
 		} `json:"result"`
 	} `json:"result"`
 }
+type CommentSafeResp struct {
+	Data bool `json:"data"`
+}

@@ -2,14 +2,17 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/huangsihao7/scooter-WSVA/comment/code"
 	"github.com/huangsihao7/scooter-WSVA/comment/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/comment"
 	"github.com/huangsihao7/scooter-WSVA/comment/rpc/internal/svc"
 	constants "github.com/huangsihao7/scooter-WSVA/common/constants"
 	gmodel3 "github.com/huangsihao7/scooter-WSVA/feed/gmodel"
+	"github.com/huangsihao7/scooter-WSVA/mq/format"
 	"gorm.io/gorm"
 	"log"
+	"net/url"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -61,12 +64,31 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 	switch actionType {
 	//添加评论
 	case 1:
+		contUrl := url.QueryEscape(contents)
+		CommentSafeUrl := "http://172.22.121.54:8000/api/v1/speech/commentSentimentAnalysis?comment=" + contUrl
+		println(CommentSafeUrl)
+		get, err := format.QiNiuGet(CommentSafeUrl)
+		if err != nil {
+			println("err url", err.Error())
+			return nil, err
+		}
+		var Issafe format.CommentSafeResp
+		println(string(get))
+		err = json.Unmarshal(get, &Issafe)
+		if err != nil {
+
+			println("err json", err.Error())
+			return nil, err
+		}
+		if !Issafe.Data {
+			return nil, code.CommentIsUnSafeError
+		}
 		newComment := gmodel.Comments{
 			Uid:     uint(userId),
 			Vid:     uint(videoId),
 			Content: contents,
 		}
-		err := l.svcCtx.CommentModel.Insert(l.ctx, &newComment)
+		err = l.svcCtx.CommentModel.Insert(l.ctx, &newComment)
 		if err != nil {
 			l.Logger.Errorf(err.Error())
 			return nil, err
