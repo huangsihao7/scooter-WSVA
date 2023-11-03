@@ -88,7 +88,7 @@ func (l *UploadFile) Consume(key, val string) error {
 		fmt.Println("插入时长成功")
 		commentRes, err := l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
 			UserId:      12,
-			ActionType:  1,
+			ActionType:  3,
 			VideoId:     videoInfo.Id,
 			CommentText: commentdata,
 		})
