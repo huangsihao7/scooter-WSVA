@@ -65,8 +65,12 @@
         </NUpload>
       </NFormItem>
       <NFormItem label="昵称">
-        <NInput maxlength="8"
-          show-count v-model:value="formValue.name" placeholder="请输入姓名" />
+        <NInput
+          v-model:value="formValue.name"
+          maxlength="8"
+          show-count
+          placeholder="请输入姓名"
+        />
       </NFormItem>
 
       <NFormItem label="性别">
@@ -77,8 +81,12 @@
         />
       </NFormItem>
       <NFormItem label="简介">
-        <NInput maxlength="50"
-          show-count v-model:value="formValue.signature" placeholder="请输入简介" />
+        <NInput
+          v-model:value="formValue.signature"
+          maxlength="50"
+          show-count
+          placeholder="请输入简介"
+        />
       </NFormItem>
     </NForm>
   </NModal>

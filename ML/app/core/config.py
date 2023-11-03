@@ -57,6 +57,12 @@ class Settings(BaseSettings):
 {"|".join(KEYWORD_TYPES)}
 下面是视频文本内容:
 """
+
+    SENTIMENT_AYALYSIS_PROMPT: str = """
+您将获得一段文本，您的任务是判断文本的情感倾向，正向文本请返回正向，负向文本请返回负向。
+请直接输出情感倾向；
+下面是文本内容:
+"""
     CACHE_ROOT_DIR: str = tempfile.mkdtemp()
     DEVICE: str = "cuda"
 

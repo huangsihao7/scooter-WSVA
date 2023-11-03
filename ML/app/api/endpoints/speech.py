@@ -110,6 +110,21 @@ def _textkeyword(text: str) -> List[str]:
     return keyword
 
 
+def sentiment_analysis(text: str) -> bool:
+    sentiment = sparkAPI.ask(
+        [
+            {
+                "role": "user",
+                "content": settings.SENTIMENT_AYALYSIS_PROMPT + text,
+            }
+        ]
+    )
+    logger.info(f"情感分析结果:{sentiment}")
+    if "负向" in sentiment:
+        return False
+    return True
+
+
 @router.get("/video2text", response_model=str)
 async def video2text(
     *,
@@ -167,3 +182,14 @@ async def video2keywordAndSummary(
     return VideoSummaryKeyword(
         keywords=keywords, summary=summary, text=text, duration=duration
     )
+
+
+@router.get("/commentSentimentAnalysis", response_model=bool)
+async def comment_sentiment_analysis(
+    *,
+    comment: str,
+):
+    """
+    评论情感分析
+    """
+    return sentiment_analysis(text=comment)
