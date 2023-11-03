@@ -23,7 +23,9 @@ func main() {
 	flag.Parse()
 
 	var c config.Config
+
 	conf.MustLoad(*configFile, &c)
+	c.Timeout = 30000
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {

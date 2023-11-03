@@ -76,7 +76,6 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 		println(string(get))
 		err = json.Unmarshal(get, &Issafe)
 		if err != nil {
-
 			println("err json", err.Error())
 			return nil, err
 		}
@@ -118,7 +117,6 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 		}, nil
 		//删除评论
 	case 2:
-
 		//判断删除的评论在不在
 		err := l.svcCtx.CommentModel.IsCommentExist(l.ctx, in.CommentId)
 		if err != nil {
@@ -156,6 +154,40 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 			StatusCode: constants.ServiceOKCode,
 			StatusMsg:  constants.ServiceOK,
 			CommentId:  commentId,
+		}, nil
+	case 3:
+		newComment := gmodel.Comments{
+			Uid:     uint(userId),
+			Vid:     uint(videoId),
+			Content: contents,
+		}
+		err = l.svcCtx.CommentModel.Insert(l.ctx, &newComment)
+		if err != nil {
+			l.Logger.Errorf(err.Error())
+			return nil, err
+		}
+		//添加video的评论数
+		err = l.svcCtx.VideoModel.Update(l.ctx, &gmodel3.Videos{
+			Id:            uint(videoId),
+			AuthorId:      videoDetail.AuthorId,
+			Title:         videoDetail.Title,
+			CoverUrl:      videoDetail.CoverUrl,
+			PlayUrl:       videoDetail.PlayUrl,
+			FavoriteCount: videoDetail.FavoriteCount,
+			CommentCount:  videoDetail.CommentCount + 1,
+			Category:      videoDetail.Category,
+			CreatedAt:     videoDetail.CreatedAt,
+			Duration:      videoDetail.Duration,
+		})
+		if err != nil {
+			l.Logger.Errorf(err.Error())
+			return nil, err
+		}
+
+		return &comment.CommentActionResponse{
+			CommentId:  int64(newComment.Id),
+			StatusCode: constants.ServiceOKCode,
+			StatusMsg:  constants.ServiceOK,
 		}, nil
 	}
 

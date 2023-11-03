@@ -47,9 +47,13 @@ func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
 	}
 
 	return &user.LoginResponse{
-		StatusCode: constants.ServiceOKCode,
-		StatusMsg:  constants.ServiceOK,
-		UserId:     int64(res.Id),
-		Avatar:     res.Avatar,
+		StatusCode:      constants.ServiceOKCode,
+		StatusMsg:       constants.ServiceOK,
+		UserId:          int64(res.Id),
+		Avatar:          res.Avatar,
+		Name:            res.Name,
+		Gender:          int64(res.Gender),
+		BackgroundImage: res.BackgroundUrl,
+		Signature:       res.Dec,
 	}, nil
 }

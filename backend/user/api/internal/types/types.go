@@ -7,11 +7,15 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	StatusCode  int    `json:"status_code"`
-	StatusMsg   string `json:"status_msg"`
-	Avatar      string `json:"avatar"`
-	AccessToken string `json:"accessToken"`
-	UserID      int64  `json:"user_id"`
+	StatusCode      int    `json:"status_code"`
+	StatusMsg       string `json:"status_msg"`
+	Avatar          string `json:"avatar"`
+	AccessToken     string `json:"accessToken"`
+	UserID          int64  `json:"user_id"`
+	Name            string `json:"name"`
+	Gender          uint32 `json:"gender"`
+	Signature       string `json:"signature"`
+	BackgroundImage string `json:"background_image"` //用户个人页顶部大图
 }
 
 type RegisterRequest struct {
