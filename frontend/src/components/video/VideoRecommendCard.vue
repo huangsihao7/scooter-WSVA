@@ -1,3 +1,11 @@
+<!--
+ * @Author: Xu Ning
+ * @Date: 2023-10-31 20:58:41
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-11-03 23:15:21
+ * @Description: 
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoRecommendCard.vue
+-->
 <script setup lang="ts">
 import { NCard, NImage } from "naive-ui";
 import { NButton, NIcon, NEllipsis } from "naive-ui";
@@ -16,7 +24,7 @@ const props = defineProps<propsType>();
     class="video-card"
     hoverable
   >
-    <NImage width="100" :src="video.cover_url" preview-disabled />
+    <NImage width="100" v-lazy="video.cover_url"  preview-disabled />
     <div class="video-info">
       <span class="title">
         <NEllipsis expand-trigger="click" line-clamp="2" :tooltip="false">
@@ -49,7 +57,6 @@ const props = defineProps<propsType>();
   }
 
   .n-image {
-    // float: left;
     width: 100px;
     height: 100px;
   }

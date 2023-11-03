@@ -1,14 +1,15 @@
 /*
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
- * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-11-03 16:33:05
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-11-03 23:09:26
  * @Description:
- * @FilePath: /scooter-WSVA/frontend/src/main.ts
+ * @FilePath: \scooter-WSVA\frontend\src\main.ts
  */
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import VueLazyLoad from 'vue3-lazyload'
 import App from "./App.vue";
 import router from "./router/index";
 import "./style.css";
@@ -18,5 +19,8 @@ const pinia = createPinia();
 const app = createApp(App);
 pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
+app.use(VueLazyLoad, {
+    // options...
+})
 app.use(router);
 app.mount("#app");
