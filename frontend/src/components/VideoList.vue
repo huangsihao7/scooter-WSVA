@@ -197,7 +197,7 @@ const deleteFunc = (comment_id: number) => {
   );
 };
 
-const tabValue = ref<string>('')
+const tabValue = ref<string>('comment')
 
 </script>
 
