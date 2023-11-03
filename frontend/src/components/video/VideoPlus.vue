@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 13:18:15
+ * @LastEditTime: 2023-11-03 13:34:14
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -11,7 +11,7 @@
 import Dplayer from "@/components/video/VideoCom.vue";
 import Hls from "hls.js";
 import { computed, onMounted, reactive, ref } from "vue";
-import { NAvatar, NButton, NIcon, useMessage, createDiscreteApi  } from "naive-ui";
+import { NAvatar, NButton, NIcon, useMessage, createDiscreteApi, NAlert, NDialog  } from "naive-ui";
 import {
   Add,
   ArrowRedo,
@@ -157,20 +157,23 @@ const handleCollectBtn = () => {
 // 评论按钮的操作
 const handleCommentBtn = () => {
   commentVisible.value = !commentVisible.value;
-  emit("comment-visible-update", thisVideo);
+  emit("comment-visible-update", thisVideo.video_id);
 };
 
-
-// 分享按钮的操作
-const handleShareBtn = () => {
-  shareVisible.value = true;
+const url = computed(()=>{
   let currentUrl: string = window.location.href;
   let firstSegment: string = currentUrl.substring(
     0,
     currentUrl.indexOf("/", 8),
   );
-  let url = firstSegment + "/video/" + props.video.video_id;
-  // ElMessageBox.alert(url, "分享", {
+  return firstSegment + "/video/" + props.video.video_id;
+})
+
+// 分享按钮的操作
+const handleShareBtn = () => {
+  shareVisible.value = true;
+
+  // ElMessageBox.alert(url.value, "分享", {
   //   confirmButtonText: "复制",
   //   center: true,
   //   beforeClose: (action, instance, done) => {
@@ -208,6 +211,37 @@ const handleShareBtn = () => {
       })
     }
   })
+};
+
+const confirmButtonText = ref('复制');
+const confirmButtonLoading = ref(false);
+const copyFlag = ref(false);
+
+const beforeClose = (action:any, done:any) => {
+  if (action === 'confirm') {
+    confirmButtonText.value = '复制中...';
+    confirmButtonLoading.value = true;
+    copy(url.value);
+    copyFlag.value = true;
+    setTimeout(() => {
+      confirmButtonLoading.value = false;
+      done();
+    }, 300);
+  } else {
+    copyFlag.value = false;
+    done();
+  }
+};
+
+const callback = () => {
+  if (copyFlag.value) {
+    message.success('复制成功');
+    copyFlag.value = false;
+  }
+};
+
+const handleConfirm = () => {
+  // 执行确认操作
 };
 
 // 视频下载函数
@@ -429,6 +463,25 @@ const updateFollow = (flag: boolean) => {
             </NButton>
           </div>
         </div>
+        <NDialog
+          title="分享"
+          type="info"
+          :centered="true"
+          :before-close="beforeClose"
+          @close="callback"
+        >
+            <div>{{ url }}</div>
+          <template #action>
+            <n-button
+              type="primary"
+              :loading="confirmButtonLoading"
+              :disabled="confirmButtonLoading"
+              @click="handleConfirm"
+            >
+              {{ confirmButtonText }}
+            </n-button>
+          </template>
+        </NDialog>
       </div>
     </div>
   </div>

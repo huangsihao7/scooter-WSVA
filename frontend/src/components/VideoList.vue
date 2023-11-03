@@ -78,12 +78,12 @@ onMounted(() => {
 });
 
 // 更新评论区可见状态
-const updateVisible = (thisVideo: any) => {
+const updateVisible = (video_id: any) => {
   drawerVisible.value = !drawerVisible.value;
-  getCommentList(thisVideo.value.video_id).then((res: any) => {
+  getCommentList(video_id).then((res: any) => {
     commentlists.value = res.comment_list;
   });
-  getRecommendVideosList(thisVideo.value.video_id).then((res: any) => {
+  getRecommendVideosList(video_id).then((res: any) => {
     recommendlists.value = res.video_list;
   });
 };

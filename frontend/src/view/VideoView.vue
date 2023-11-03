@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-31 18:42:57
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 11:59:25
+ * @LastEditTime: 2023-11-03 13:32:37
  * @Description: 查看某个特定video
  * @FilePath: \scooter-WSVA\frontend\src\view\VideoView.vue
 -->
@@ -54,12 +54,12 @@ onMounted(() => {
 });
 
 // 更新评论区可见状态
-const updateVisible = (thisVideo: any) => {
+const updateVisible = (video_id: number) => {
   drawerVisible.value = !drawerVisible.value;
-  getCommentList(thisVideo.value.video_id).then((res: any) => {
+  getCommentList(video_id).then((res: any) => {
     commentlists.value = res.comment_list;
   });
-  getRecommendVideosList(thisVideo.value.video_id).then((res: any) => {
+  getRecommendVideosList(video_id).then((res: any) => {
     recommendlists.value = res.video_list;
   });
 };
