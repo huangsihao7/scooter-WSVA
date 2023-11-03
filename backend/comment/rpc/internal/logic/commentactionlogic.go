@@ -133,6 +133,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 		return &comment.CommentActionResponse{
 			StatusCode: constants.ServiceOKCode,
 			StatusMsg:  constants.ServiceOK,
+			CommentId:  commentId,
 		}, nil
 	}
 

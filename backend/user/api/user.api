@@ -13,11 +13,11 @@ type (
 		Password string `json:"password"`
 	}
 	LoginResponse {
+		StatusCode  int    `json:"status_code"`
+		StatusMsg   string `json:"status_msg"`
 		Avatar      string `json:"avatar"`
 		AccessToken string `json:"accessToken"`
 		UserID      int64  `json:"user_id"`
-		StatusCode  int    `json:"status_code"`
-		StatusMsg   string `json:"status_msg"`
 	}
 
 	// 用户登录
@@ -37,9 +37,9 @@ type (
 		StatusMsg  string `json:"status_msg"`
 	}
 	UploadImageResponse {
-		Url        string `json:"url"`
 		StatusCode int    `json:"status_code"`
 		StatusMsg  string `json:"status_msg"`
+		Url        string `json:"url"`
 	}
 	// 用户编辑信息
 	UpdateRequest {
@@ -78,10 +78,10 @@ type (
 		FriendCount     int64  `json:"friend_count"`
 	}
 	UserUploadResponse {
-		Url        string `json:"url"`
-		CoverUrl   string `json:"coverUrl"`
 		StatusCode int    `json:"status_code"`
 		StatusMsg  string `json:"status_msg"`
+		Url        string `json:"url"`
+		CoverUrl   string `json:"coverUrl"`
 	}
 )
 
