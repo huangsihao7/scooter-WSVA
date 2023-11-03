@@ -10,7 +10,7 @@
 <script lang="ts" setup>
 import Dplayer from "@/components/video/VideoCom.vue";
 import Hls from "hls.js";
-import { computed, onMounted, reactive, ref, watch } from "vue";
+import { computed, reactive, ref } from "vue";
 import { NAvatar, NButton, NIcon, useMessage, NModal, NSpin  } from "naive-ui";
 import {
   Add,
@@ -61,8 +61,6 @@ const thisVideo = reactive<VideoType>({
   duration: props.video.duration,
 });
 const userId = computed(() => userStore().user_id);
-// const dialog = useDialog()
-const copyFlag = computed(()=>copied)
 const dplayerObj = reactive({
   videoId: props.video.video_id,
   video: {
@@ -92,6 +90,15 @@ const dplayerObj = reactive({
     },
   ],
 });
+// 分享链接
+const url = computed(()=>{
+  let currentUrl: string = window.location.href;
+  let firstSegment: string = currentUrl.substring(
+    0,
+    currentUrl.indexOf("/", 8),
+  );
+  return firstSegment + "/video/" + props.video.video_id;
+})
 
 // 喜欢按钮的操作
 const handleLikeBtn = () => {
@@ -141,61 +148,10 @@ const handleCommentBtn = () => {
   emit("comment-visible-update", thisVideo.video_id);
 };
 
-const url = computed(()=>{
-  let currentUrl: string = window.location.href;
-  let firstSegment: string = currentUrl.substring(
-    0,
-    currentUrl.indexOf("/", 8),
-  );
-  return firstSegment + "/video/" + props.video.video_id;
-})
-
-
-
 // 分享按钮的操作
 const handleShareBtn = () => {
   shareVisible.value = true;
-
-  // ElMessageBox.alert(url.value, "分享", {
-  //   confirmButtonText: "复制",
-  //   center: true,
-  //   beforeClose: (action, instance, done) => {
-  //     if (action === "confirm") {
-  //       instance.confirmButtonText = "复制中...";
-  //       instance.confirmButtonLoading = true;
-  //       copy(url);
-  //       copyFlag.value = true;
-  //       setTimeout(() => {
-  //         instance.confirmButtonLoading = false;
-  //         done();
-  //       }, 300);
-  //     } else {
-  //       copyFlag.value = false;
-  //       done();
-  //     }
-  //   },
-  //   callback: () => {
-  //     if (copyFlag.value) {
-  //       message.success("复制成功");
-  //       copyFlag.value = false;
-  //     }
-  //   },
-  // });
-  // dialog.success({
-  //   title: '分享',
-  //   content: '分享链接：'+ url.value,
-  //   positiveText: '复制',
-  //   onPositiveClick: () => {
-  //     copy(url.value);
-  //     // return new Promise((resolve) => {
-  //     //   sleep().then(()=>{
-  //     //     // copy(url);
-  //     //   }).then(resolve)
-  //     // })
-  //   }
-  // })
 };
-
 
 // 视频下载函数
 const handleDownloadBtn = () => {
@@ -263,6 +219,7 @@ const updateFollow = (flag: boolean) => {
   doFollow(props.video.author.id, action).then(() => {});
 };
 
+// 链接复制成功回调
 const handleCopy = () =>{
   copy(url.value)
   message.success('复制成功')
