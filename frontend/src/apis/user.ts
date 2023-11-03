@@ -1,3 +1,11 @@
+/*
+ * @Author: Xu Ning
+ * @Date: 2023-10-28 13:48:11
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-11-03 16:58:11
+ * @Description: 
+ * @FilePath: \scooter-WSVA\frontend\src\apis\user.ts
+ */
 import { service } from "@/axios";
 
 export function getUserInfo(uid: number) {
