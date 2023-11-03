@@ -11,7 +11,7 @@
 import Dplayer from "@/components/video/VideoCom.vue";
 import Hls from "hls.js";
 import { computed, reactive, ref } from "vue";
-import { NAvatar, NButton, NIcon, useMessage, NModal, NSpin  } from "naive-ui";
+import { NAvatar, NButton, NIcon, useMessage, NModal, NSpin } from "naive-ui";
 import {
   Add,
   ArrowRedo,
@@ -27,8 +27,8 @@ import { doFollow } from "@/apis/relation";
 import { userStore } from "@/stores/user";
 import { baseURL } from "@/axios";
 import { DownloadType } from "@/apis/interface";
-import { useClipboard } from '@vueuse/core'
-const {  copy, copied } = useClipboard()
+import { useClipboard } from "@vueuse/core";
+const { copy, copied } = useClipboard();
 interface propsType {
   video: VideoType;
   index: number;
@@ -91,14 +91,14 @@ const dplayerObj = reactive({
   ],
 });
 // 分享链接
-const url = computed(()=>{
+const url = computed(() => {
   let currentUrl: string = window.location.href;
   let firstSegment: string = currentUrl.substring(
     0,
     currentUrl.indexOf("/", 8),
   );
   return firstSegment + "/video/" + props.video.video_id;
-})
+});
 
 // 喜欢按钮的操作
 const handleLikeBtn = () => {
@@ -220,12 +220,11 @@ const updateFollow = (flag: boolean) => {
 };
 
 // 链接复制成功回调
-const handleCopy = () =>{
-  copy(url.value)
-  message.success('复制成功')
-  shareVisible.value = false
-}
-
+const handleCopy = () => {
+  copy(url.value);
+  message.success("复制成功");
+  shareVisible.value = false;
+};
 </script>
 
 <template>
@@ -252,9 +251,7 @@ const handleCopy = () =>{
             <NAvatar round size="medium" :src="thisVideo.author.avatar" />
           </div>
           <NButton
-            v-if="
-              !thisVideo.author.is_follow && thisVideo.author.id != userId
-            "
+            v-if="!thisVideo.author.is_follow && thisVideo.author.id != userId"
             color="#ffa51d8f"
             class="avatar-btn animate__bounceIn"
             size="tiny"
@@ -379,21 +376,14 @@ const handleCopy = () =>{
             </NButton>
           </div>
         </div>
-        <NModal 
-          v-model:show="shareVisible" 
-          preset="dialog" 
-          title="分享">
-          分享链接:{{url}} 
+        <NModal v-model:show="shareVisible" preset="dialog" title="分享">
+          分享链接:{{ url }}
           <template #action>
             <NSpin v-if="copied">
-              <NButton round >
-                复制中
-              </NButton>
+              <NButton round> 复制中 </NButton>
             </NSpin>
-            <NButton v-else round @click="handleCopy">
-                复制
-              </NButton>
-          </template>        
+            <NButton v-else round @click="handleCopy"> 复制 </NButton>
+          </template>
         </NModal>
       </div>
     </div>
@@ -402,7 +392,6 @@ const handleCopy = () =>{
 
 <style scoped lang="scss">
 .video-container {
-
   .dplayer {
     width: calc(100vw - 160px);
     height: calc(100vh - 60px);

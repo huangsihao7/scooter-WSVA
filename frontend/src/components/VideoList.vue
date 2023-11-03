@@ -248,10 +248,10 @@ const deleteFunc = (comment_id: number) => {
       </NTabs>
       <template #footer>
         <NInput
+          v-model:value="addComment"
           maxlength="30"
           show-count
           round
-          v-model:value="addComment"
           class="comment-input"
           placeholder="留下精彩的评论吧"
           @keydown="postComment"

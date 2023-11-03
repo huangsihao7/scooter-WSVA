@@ -102,7 +102,7 @@ const handlePostVideo = () => {
       videoForm.category,
     ).then((res: any) => {
       fileUploadRef.value.clear();
-      titleIptRef.value = '';
+      titleIptRef.value = "";
       message.success(res.status_message);
     });
     emit("visible-update", false);
@@ -263,7 +263,6 @@ const selectVisible = ref<boolean>(false);
 </template>
 
 <style scoped>
-
 .footer {
   display: flex;
   width: 100%;

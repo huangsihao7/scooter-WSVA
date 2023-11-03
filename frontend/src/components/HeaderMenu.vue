@@ -357,7 +357,7 @@ const updateVisible = (flag: boolean) => {
 };
 
 // 数字判断
-const onlyAllowNumber =(value: string) => !value || /^\d+$/.test(value);
+const onlyAllowNumber = (value: string) => !value || /^\d+$/.test(value);
 
 // 路由选择index标志
 watch(
@@ -410,7 +410,7 @@ watch(
         <NTabPane name="login" tab="登录">
           <NForm :model="loginForm">
             <NFormItemRow label="手机号">
-              <NInput 
+              <NInput
                 v-model:value="loginForm.phoneNum"
                 maxlength="9"
                 :allow-input="onlyAllowNumber"
