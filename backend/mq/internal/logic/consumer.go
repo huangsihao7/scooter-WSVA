@@ -62,61 +62,71 @@ func (l *UploadFile) Consume(key, val string) error {
 	// 打印响应内容
 	fmt.Println(string(body))
 	//调用评论rpc接口，将摘要存进评论
-	commentRes, err := l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
-		UserId:      12,
-		ActionType:  1,
-		VideoId:     videoInfo.Id,
-		CommentText: uploadRes.Data.Summary,
-	})
-	if err != nil {
-		fmt.Println("评论错误:", commentRes.StatusMsg, err)
-		return err
+	commentdata := uploadRes.Data.Summary
+	if commentdata == "" {
+		commentdata = uploadRes.Data.Text
 	}
-	fmt.Println("插入评论成功")
+	go func() {
+		commentRes, err := l.svcCtx.Commenter.CommentAction(l.ctx, &comment.CommentActionRequest{
+			UserId:      12,
+			ActionType:  1,
+			VideoId:     videoInfo.Id,
+			CommentText: commentdata,
+		})
+		if err != nil {
+			fmt.Println("评论错误:", commentRes.StatusMsg, err)
+			return
+		}
+		fmt.Println("插入评论成功")
+	}()
 	//调用标签接口，将标签存入数据库
-	InsertLabelRes, err := l.svcCtx.Labeler.InsertLabel(l.ctx, &label.InsertLabelReq{
-		VideoId: videoInfo.Id,
-		Label:   uploadRes.Data.Keywords,
-	})
-	if !InsertLabelRes.Success {
-		fmt.Println("往数据库插入标签错误", err)
-		return err
-	}
-	fmt.Println("插入标签成功")
-	totalSeconds := int(uploadRes.Data.Duration) // 将总秒数转换为整数
+	go func() {
+		InsertLabelRes, err := l.svcCtx.Labeler.InsertLabel(l.ctx, &label.InsertLabelReq{
+			VideoId: videoInfo.Id,
+			Label:   uploadRes.Data.Keywords,
+		})
+		if !InsertLabelRes.Success {
+			fmt.Println("往数据库插入标签错误", err)
+			return
+		}
+		fmt.Println("插入标签成功")
+		//调用post请求，将视频id与标签存入推荐系统
+		postbaseurl := "http://172.22.121.54:8088/api/item"
+		requestBody := format.VideosGoresBody{
+			ItemId:    fmt.Sprintf("%d", videoInfo.Id),
+			Labels:    uploadRes.Data.Keywords,
+			Timestamp: time.Now(),
+		}
+		// 将请求体编码为JSON字节
+		jsonData, err := json.Marshal(requestBody)
+		if err != nil {
+			fmt.Println("JSON编码失败:", err)
+			return
+		}
+		post, err := format.QiNiuPost(postbaseurl, jsonData)
+		// 打印响应内容
+		fmt.Println(string(post))
+	}()
+	go func() {
+		totalSeconds := int(uploadRes.Data.Duration) // 将总秒数转换为整数
 
-	minutes := totalSeconds / 60
-	remainingSeconds := totalSeconds % 60
+		minutes := totalSeconds / 60
+		remainingSeconds := totalSeconds % 60
 
-	// 格式化分钟和秒的字符串
-	minutesStr := strconv.Itoa(minutes)
-	secondsStr := strconv.Itoa(remainingSeconds)
+		// 格式化分钟和秒的字符串
+		minutesStr := strconv.Itoa(minutes)
+		secondsStr := strconv.Itoa(remainingSeconds)
 
-	durationFormat := minutesStr + ":" + secondsStr
-	duration, err := l.svcCtx.Feeder.VideoDuration(l.ctx, &feed.VideoDurationReq{
-		Duration: durationFormat,
-		VideoId:  uint32(videoInfo.Id),
-	})
-	if err != nil {
-		fmt.Println(duration.StatusMsg)
-		return err
-	}
-	//调用post请求，将视频id与标签存入推荐系统
-	postbaseurl := "http://172.22.121.54:8088/api/item"
-	requestBody := format.VideosGoresBody{
-		ItemId:    fmt.Sprintf("%d", videoInfo.Id),
-		Labels:    uploadRes.Data.Keywords,
-		Timestamp: time.Now(),
-	}
-
-	// 将请求体编码为JSON字节
-	jsonData, err := json.Marshal(requestBody)
-	if err != nil {
-		fmt.Println("JSON编码失败:", err)
-		return err
-	}
-	post, err := format.QiNiuPost(postbaseurl, jsonData)
-	// 打印响应内容
-	fmt.Println(string(post))
+		durationFormat := minutesStr + ":" + secondsStr
+		duration, err := l.svcCtx.Feeder.VideoDuration(l.ctx, &feed.VideoDurationReq{
+			Duration: durationFormat,
+			VideoId:  uint32(videoInfo.Id),
+		})
+		if err != nil {
+			fmt.Println(duration.StatusMsg)
+			return
+		}
+		fmt.Println("插入时长成功")
+	}()
 	return nil
 }
