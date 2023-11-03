@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 00:59:52
+ * @LastEditTime: 2023-11-03 12:29:02
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -38,10 +38,34 @@ interface propsType {
 const message = useMessage();
 const props = defineProps<propsType>();
 const emit = defineEmits(["comment-visible-update"]);
-
+const likeAnimateClass = ref<String>("");
+const collectAnimateClass = ref<String>("");
+const commentAnimateClass = ref<String>("");
+const shareAnimateClass = ref<String>("");
+const commentVisible = ref<boolean>(false);
+const shareVisible = ref<boolean>(false);
+const logedFlag = computed(() => !userStore().isLoggedIn);
 const { toClipboard } = useClipboard();
-const thisVideo = ref<VideoType>();
+const thisVideo = reactive<VideoType>({
+  video_id: props.video.video_id,
+  author: props.video.author,
+  play_url: props.video.play_url,
+  cover_url: props.video.cover_url,
+  favorite_count: props.video.favorite_count,
+  comment_count: props.video.comment_count,
+  is_favorite: props.video.is_favorite,
+  title: props.video.title,
+  create_time: props.video.create_time,
+  is_star: props.video.is_star,
+  star_count: props.video.star_count,
+  share_count: props.video.share_count,
+  duration: props.video.duration,
+});
 const userId = computed(() => userStore().user_id);
+// const dialog = useDialog()
+const { dialog } = createDiscreteApi(["dialog"]);
+const sleep = () => new Promise((resolve) => setTimeout(resolve, 1000))
+
 const dplayerObj = reactive({
   videoId: props.video.video_id,
   video: {
@@ -72,6 +96,10 @@ const dplayerObj = reactive({
   ],
 });
 
+onMounted(() => {
+
+});
+
 // 复制分享链接
 const copy = async (msg: any) => {
   try {
@@ -87,20 +115,20 @@ const copy = async (msg: any) => {
 // 喜欢按钮的操作
 const handleLikeBtn = () => {
   let action_type = -1;
-  if (thisVideo.value) {
-    if (!thisVideo.value?.is_favorite) {
-      thisVideo.value.favorite_count++;
+  if (thisVideo) {
+    if (!thisVideo.is_favorite) {
+      thisVideo.favorite_count++;
       action_type = 1;
     } else {
-      thisVideo.value.favorite_count--;
+      thisVideo.favorite_count--;
       action_type = 2;
     }
-    if (!thisVideo.value?.is_favorite) {
+    if (!thisVideo?.is_favorite) {
       likeAnimateClass.value = "animate__heartBeat";
     } else {
       likeAnimateClass.value = "";
     }
-    thisVideo.value.is_favorite = !thisVideo.value.is_favorite;
+    thisVideo.is_favorite = !thisVideo.is_favorite;
   }
   doFavourite(props.video.video_id, action_type).then(() => {});
 };
@@ -108,20 +136,20 @@ const handleLikeBtn = () => {
 // 收藏按钮的操作
 const handleCollectBtn = () => {
   let action_type = -1;
-  if (thisVideo.value) {
-    if (!thisVideo.value?.star_count) {
-      thisVideo.value.star_count++;
+  if (thisVideo) {
+    if (!thisVideo?.star_count) {
+      thisVideo.star_count++;
       action_type = 1;
     } else {
-      thisVideo.value.star_count--;
+      thisVideo.star_count--;
       action_type = 2;
     }
-    if (!thisVideo.value?.is_star) {
+    if (!thisVideo?.is_star) {
       collectAnimateClass.value = "animate__heartBeat";
     } else {
       collectAnimateClass.value = "";
     }
-    thisVideo.value.is_star = !thisVideo.value.is_star;
+    thisVideo.is_star = !thisVideo.is_star;
   }
   doStar(props.video.video_id, action_type).then(() => {});
 };
@@ -132,8 +160,7 @@ const handleCommentBtn = () => {
   emit("comment-visible-update", thisVideo);
 };
 
-// const dialog = useDialog()
-const { dialog } = createDiscreteApi(["dialog"]);
+
 // 分享按钮的操作
 const handleShareBtn = () => {
   shareVisible.value = true;
@@ -168,21 +195,25 @@ const handleShareBtn = () => {
   //     }
   //   },
   // });
-  dialog.success({
-          title: '分享',
-          content: url,
-          positiveText: '复制',
-          onPositiveClick: () => {
-            copy(url);
-          }
-        })
-  
+  const d = dialog.success({
+    title: '分享',
+    content: '分享链接：'+url,
+    positiveText: '复制',
+    onPositiveClick: () => {
+      d.loading = true
+      return new Promise((resolve) => {
+        sleep().then(()=>{
+          copy(url);
+        }).then(resolve)
+      })
+    }
+  })
 };
 
 // 视频下载函数
 const handleDownloadBtn = () => {
-  if (thisVideo.value) {
-    let videoUrl = thisVideo.value.play_url;
+  if (thisVideo) {
+    let videoUrl = thisVideo.play_url;
     const lastDotIndex = videoUrl.lastIndexOf(".");
     let url = "";
     if (lastDotIndex !== -1) {
@@ -191,7 +222,7 @@ const handleDownloadBtn = () => {
       url = beforeDot + "-1." + afterDot;
     }
     if (url != "") {
-      let title = thisVideo.value.title.toString();
+      let title = thisVideo.title.toString();
       const downItem: DownloadType = { url: url, title: title };
       message.info("正在下载");
       downLoad(downItem);
@@ -235,26 +266,16 @@ function downLoad(item: DownloadType) {
 // 关注的操作
 const updateFollow = (flag: boolean) => {
   let action = flag ? 1 : 2;
-  if (flag && thisVideo.value) {
-    thisVideo.value.author.is_follow = flag;
-  } else if (!flag && thisVideo.value) {
-    thisVideo.value.author.is_follow = flag;
+  if (flag && thisVideo) {
+    thisVideo.author.is_follow = flag;
+  } else if (!flag && thisVideo) {
+    thisVideo.author.is_follow = flag;
   } else {
     message.error("关注失败");
   }
   doFollow(props.video.author.id, action).then(() => {});
 };
 
-const likeAnimateClass = ref<String>("");
-const collectAnimateClass = ref<String>("");
-const commentAnimateClass = ref<String>("");
-const shareAnimateClass = ref<String>("");
-const commentVisible = ref<boolean>(false);
-const shareVisible = ref<boolean>(false);
-const logedFlag = computed(() => !userStore().isLoggedIn);
-onMounted(() => {
-  thisVideo.value = props.video;
-});
 </script>
 
 <template>
@@ -278,11 +299,11 @@ onMounted(() => {
       <div class="video-interaction-box">
         <div class="avatar">
           <div>
-            <NAvatar round size="medium" :src="thisVideo?.author.avatar" />
+            <NAvatar round size="medium" :src="thisVideo.author.avatar" />
           </div>
           <NButton
             v-if="
-              !thisVideo?.author.is_follow && thisVideo?.author.id != userId
+              !thisVideo.author.is_follow && thisVideo.author.id != userId
             "
             color="#ffa51d8f"
             class="avatar-btn animate__bounceIn"
@@ -299,7 +320,7 @@ onMounted(() => {
           </NButton>
           <NButton
             v-else-if="
-              thisVideo?.author.is_follow && thisVideo?.author.id != userId
+              thisVideo.author.is_follow && thisVideo.author.id != userId
             "
             color="#ffa51d8f"
             class="avatar-btn animate__bounceIn"
@@ -319,7 +340,7 @@ onMounted(() => {
         <div class="like">
           <div :class="likeAnimateClass">
             <NButton
-              v-if="thisVideo?.is_favorite"
+              v-if="thisVideo.is_favorite"
               class="btn"
               :disabled="logedFlag"
               text
@@ -343,7 +364,7 @@ onMounted(() => {
               </NIcon>
             </NButton>
           </div>
-          <p>{{ thisVideo?.favorite_count }}</p>
+          <p>{{ thisVideo.favorite_count }}</p>
         </div>
         <div class="comment">
           <div :class="commentAnimateClass">
@@ -359,12 +380,12 @@ onMounted(() => {
               </NIcon>
             </NButton>
           </div>
-          <p>{{ props.video.comment_count }}</p>
+          <p>{{ thisVideo.comment_count }}</p>
         </div>
         <div class="collect">
           <div :class="collectAnimateClass">
             <NButton
-              v-if="thisVideo?.is_star"
+              v-if="thisVideo.is_star"
               class="btn"
               :disabled="logedFlag"
               text
@@ -398,7 +419,6 @@ onMounted(() => {
               </NIcon>
             </NButton>
           </div>
-          <!-- <p>{{ thisVideo?.share_count }}</p> -->
         </div>
         <div class="share">
           <div :class="shareAnimateClass">
@@ -408,7 +428,6 @@ onMounted(() => {
               </NIcon>
             </NButton>
           </div>
-          <!-- <p>{{ thisVideo?.share_count }}</p> -->
         </div>
       </div>
     </div>
