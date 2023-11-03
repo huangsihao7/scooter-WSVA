@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 19:52:10
+ * @LastEditTime: 2023-11-03 22:07:44
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -17,7 +17,8 @@ import {
   NGi,
   NEmpty,
   NEllipsis,
-NIcon,
+  NScrollbar,
+  NIcon,
 } from "naive-ui";
 import { useRouter } from "vue-router";
 import { FollowCardType } from "@/apis/interface";
@@ -156,76 +157,84 @@ const cancleFollow = (item: any, _index: any) => {
 </script>
 
 <template>
-  <NGrid
-    v-if="usersList.length != 0"
-    class="space"
-    :x-gap="12"
-    cols="2 s:3 m:4 l:5 xl:6 2xl:7"
-    responsive="screen"
-  >
-    <NGi v-for="(info, index) in usersList" :key="index">
-      <NCard class="card" style="padding: 0" :hoverable="true">
-        <template #cover>
-          <img
-            v-if="info.cover_url"
-            class="img"
-            :src="info.cover_url"
-            @click="handleShowVedio(info)"
-          />
-          <NEmpty
-            v-else
-            class="empty"
-            description="Ta最近没有发布视频哦"
-          ></NEmpty>
-        </template>
-        <div class="header-info">
-          <NAvatar
-            class="avatar"
-            round
-            :size="60"
-            :src="info.avatar"
-            @click="handleShowUser(info.id)"
-          />
-          <div class="other-info">
-            <span class="name">
-              <NEllipsis expand-trigger="click" line-clamp="1" :tooltip="false">
-                {{ info.name }}
-              </NEllipsis>
-            </span>
-            <NButton
-              v-if="cardType == 'follows'"
-              class="btn"
-              @click="cancleFollow(info, index)"
-            >
-              {{ info.is_follow ? "已关注" : "关注" }}
-            </NButton>
-            <NButton
-              v-if="cardType == 'follow'"
-              class="btn"
-              @click="cancleFollow(info, index)"
-            >
-              {{ info.is_follow ? "已关注" : "关注" }}
-            </NButton>
-            <NButton
-              v-if="cardType == 'friends'"
-              class="btn"
-              @click="cancleFollow(info, index)"
-            >
-              {{ info.is_friends ? "已互关" : "关注" }}
-            </NButton>
-            <p class="sig">{{ info.signature }}</p>
+  <NScrollbar style="max-height: calc(100vh - 60px)">
+  <div class="space">
+    
+    <NGrid
+      v-if="usersList.length != 0"
+      :x-gap="12"
+      cols="2 s:2 m:3 l:4 xl:5 2xl:7"
+      responsive="screen"
+    >
+      <NGi v-for="(info, index) in usersList" :key="index">
+        <NCard class="card" style="padding: 0" :hoverable="true">
+          <template #cover>
+            <img
+              v-if="info.cover_url"
+              class="img"
+              :src="info.cover_url"
+              @click="handleShowVedio(info)"
+            />
+            <NEmpty
+              v-else
+              class="empty"
+              description="Ta最近没有发布视频哦"
+            ></NEmpty>
+          </template>
+          <div class="header-info">
+            <NAvatar
+              class="avatar"
+              strong secondary round
+              :size="60"
+              :src="info.avatar"
+              @click="handleShowUser(info.id)"
+            />
+            <div class="other-info">
+              <span class="name">
+                <NEllipsis expand-trigger="click" line-clamp="1" :tooltip="false">
+                  {{ info.name }}
+                </NEllipsis>
+              </span>
+              <NButton
+              strong secondary round
+                v-if="cardType == 'follows'"
+                class="btn"
+                @click="cancleFollow(info, index)"
+              >
+                {{ info.is_follow ? "已关注" : "关注" }}
+              </NButton>
+              <NButton
+              strong round secondary
+                v-if="cardType == 'follow'"
+                class="btn"
+                @click="cancleFollow(info, index)"
+              >
+                {{ info.is_follow ? "已关注" : "关注" }}
+              </NButton>
+              <NButton
+              strong secondary round
+                v-if="cardType == 'friends'"
+                class="btn"
+                @click="cancleFollow(info, index)"
+              >
+                {{ info.is_friends ? "已互关" : "关注" }}
+              </NButton>
+              <p class="sig">{{ info.signature }}</p>
+            </div>
           </div>
-        </div>
-      </NCard>
-    </NGi>
-  </NGrid>
-  <NEmpty v-else  description="没有用户哦~去别处看看吧~">
-    <template #icon>
-      <NIcon>
-        <PersonAddOutline />
-      </NIcon>
-    </template>
-  </NEmpty>
+        </NCard>
+      </NGi>
+    </NGrid>
+    <NEmpty v-else  description="没有用户哦~去别处看看吧~">
+      <template #icon>
+        <NIcon>
+          <PersonAddOutline />
+        </NIcon>
+      </template>
+    </NEmpty>
+  
+  </div>
+</NScrollbar>
 </template>
 
 <style lang="scss" scoped>
@@ -233,7 +242,7 @@ const cancleFollow = (item: any, _index: any) => {
   margin: 2vh 2vw;
 }
 .card {
-  height: 35vh;
+  height: 60vh;
   width: 100%;
 
   .header-info {
@@ -259,7 +268,7 @@ const cancleFollow = (item: any, _index: any) => {
 
   .img {
     width: 100%;
-    height: calc(30vh - 40px);
+    height: calc(55vh - 40px);
     object-fit: fill;
   }
   .empty {

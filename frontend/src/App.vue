@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 20:31:58
+ * @LastEditTime: 2023-11-03 21:22:02
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\App.vue
 -->
@@ -93,12 +93,29 @@ onMounted(() => {
   width: 50% !important;
 } */
 
+.n-layout-header{
+  box-shadow: 9px 9px 9px 10px rgb(172 215 255 / 26%);
+  background-color: #ffffff;
+  /* background-image: linear-gradient(133deg, #ffffff 12%, #d6e4ff 100%); */
+
+}
+
+.n-layout-sider{
+  box-shadow: 9px 2px 4px linear-gradient(180deg, #ffffff 0%, #d6e4ff 100%);
+  background-color: #ffffff;
+  background-image: linear-gradient(227deg, #ffffff 42%, #d6e4ff 100%);
+
+}
+
 span {
   font-weight: bold;
 }
 .main {
   padding: 0;
+  /* background: transparent; */
+  /* background: no-repeat url(https://p-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/test.png) var(--color-bg-b0); */
+
   background-color: #ffffff;
-  background-image: linear-gradient(133deg, #ffffff 12%, #d6e4ff 100%);
+  background-image: linear-gradient(133deg, #ffffff 12%, #b4ceff 100%);
 }
 </style>
