@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 13:34:14
+ * @LastEditTime: 2023-11-03 14:18:26
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -10,8 +10,8 @@
 <script lang="ts" setup>
 import Dplayer from "@/components/video/VideoCom.vue";
 import Hls from "hls.js";
-import { computed, onMounted, reactive, ref } from "vue";
-import { NAvatar, NButton, NIcon, useMessage, createDiscreteApi, NAlert, NDialog  } from "naive-ui";
+import { computed, onMounted, reactive, ref, watch } from "vue";
+import { NAvatar, NButton, NIcon, useMessage, NModal, NSpin  } from "naive-ui";
 import {
   Add,
   ArrowRedo,
@@ -22,13 +22,13 @@ import {
   Download,
 } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
-import useClipboard from "vue-clipboard3";
 import { doFavourite, doStar } from "@/apis/favourite";
 import { doFollow } from "@/apis/relation";
 import { userStore } from "@/stores/user";
 import { baseURL } from "@/axios";
 import { DownloadType } from "@/apis/interface";
-
+import { useClipboard } from '@vueuse/core'
+const {  copy, copied } = useClipboard()
 interface propsType {
   video: VideoType;
   index: number;
@@ -45,7 +45,6 @@ const shareAnimateClass = ref<String>("");
 const commentVisible = ref<boolean>(false);
 const shareVisible = ref<boolean>(false);
 const logedFlag = computed(() => !userStore().isLoggedIn);
-const { toClipboard } = useClipboard();
 const thisVideo = reactive<VideoType>({
   video_id: props.video.video_id,
   author: props.video.author,
@@ -63,9 +62,7 @@ const thisVideo = reactive<VideoType>({
 });
 const userId = computed(() => userStore().user_id);
 // const dialog = useDialog()
-const { dialog } = createDiscreteApi(["dialog"]);
-const sleep = () => new Promise((resolve) => setTimeout(resolve, 1000))
-
+const copyFlag = computed(()=>copied)
 const dplayerObj = reactive({
   videoId: props.video.video_id,
   video: {
@@ -95,22 +92,6 @@ const dplayerObj = reactive({
     },
   ],
 });
-
-onMounted(() => {
-
-});
-
-// 复制分享链接
-const copy = async (msg: any) => {
-  try {
-    // 复制
-    await toClipboard(msg);
-    // 复制成功
-  } catch (e) {
-    // 复制失败
-    message.error("复制失败");
-  }
-};
 
 // 喜欢按钮的操作
 const handleLikeBtn = () => {
@@ -169,6 +150,8 @@ const url = computed(()=>{
   return firstSegment + "/video/" + props.video.video_id;
 })
 
+
+
 // 分享按钮的操作
 const handleShareBtn = () => {
   shareVisible.value = true;
@@ -198,51 +181,21 @@ const handleShareBtn = () => {
   //     }
   //   },
   // });
-  const d = dialog.success({
-    title: '分享',
-    content: '分享链接：'+ url,
-    positiveText: '复制',
-    onPositiveClick: () => {
-      d.loading = true
-      return new Promise((resolve) => {
-        sleep().then(()=>{
-          copy(url);
-        }).then(resolve)
-      })
-    }
-  })
+  // dialog.success({
+  //   title: '分享',
+  //   content: '分享链接：'+ url.value,
+  //   positiveText: '复制',
+  //   onPositiveClick: () => {
+  //     copy(url.value);
+  //     // return new Promise((resolve) => {
+  //     //   sleep().then(()=>{
+  //     //     // copy(url);
+  //     //   }).then(resolve)
+  //     // })
+  //   }
+  // })
 };
 
-const confirmButtonText = ref('复制');
-const confirmButtonLoading = ref(false);
-const copyFlag = ref(false);
-
-const beforeClose = (action:any, done:any) => {
-  if (action === 'confirm') {
-    confirmButtonText.value = '复制中...';
-    confirmButtonLoading.value = true;
-    copy(url.value);
-    copyFlag.value = true;
-    setTimeout(() => {
-      confirmButtonLoading.value = false;
-      done();
-    }, 300);
-  } else {
-    copyFlag.value = false;
-    done();
-  }
-};
-
-const callback = () => {
-  if (copyFlag.value) {
-    message.success('复制成功');
-    copyFlag.value = false;
-  }
-};
-
-const handleConfirm = () => {
-  // 执行确认操作
-};
 
 // 视频下载函数
 const handleDownloadBtn = () => {
@@ -309,6 +262,12 @@ const updateFollow = (flag: boolean) => {
   }
   doFollow(props.video.author.id, action).then(() => {});
 };
+
+const handleCopy = () =>{
+  copy(url.value)
+  message.success('复制成功')
+  shareVisible.value = false
+}
 
 </script>
 
@@ -463,25 +422,22 @@ const updateFollow = (flag: boolean) => {
             </NButton>
           </div>
         </div>
-        <NDialog
-          title="分享"
-          type="info"
-          :centered="true"
-          :before-close="beforeClose"
-          @close="callback"
-        >
-            <div>{{ url }}</div>
+        <NModal 
+          v-model:show="shareVisible" 
+          preset="dialog" 
+          title="分享">
+          分享链接:{{url}} 
           <template #action>
-            <n-button
-              type="primary"
-              :loading="confirmButtonLoading"
-              :disabled="confirmButtonLoading"
-              @click="handleConfirm"
-            >
-              {{ confirmButtonText }}
-            </n-button>
-          </template>
-        </NDialog>
+            <NSpin v-if="copied">
+              <NButton round >
+                复制中
+              </NButton>
+            </NSpin>
+            <NButton v-else round @click="handleCopy">
+                复制
+              </NButton>
+          </template>        
+        </NModal>
       </div>
     </div>
   </div>

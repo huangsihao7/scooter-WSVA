@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 00:35:13
+ * @LastEditTime: 2023-11-03 13:59:25
  * @Description:
  * @FilePath: \scooter-WSVA\frontend\src\main.ts
  */
