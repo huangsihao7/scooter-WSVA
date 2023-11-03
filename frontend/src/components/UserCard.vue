@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 18:51:06
+ * @LastEditTime: 2023-11-03 19:16:28
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
 -->
@@ -219,7 +219,7 @@ const cancleFollow = (item: any, _index: any) => {
       </NCard>
     </NGi>
   </NGrid>
-  <NEmpty description="没有关注的用户哦~去别处看看吧~">
+  <NEmpty description="没有用户哦~去别处看看吧~">
     <template #icon>
       <NIcon>
         <PersonAddOutline />
