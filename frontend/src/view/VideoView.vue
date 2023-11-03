@@ -18,6 +18,7 @@ import {
   NInput,
   NIcon,
   NButton,
+  useMessage,
 } from "naive-ui";
 import { getVideoById } from "@/apis/video";
 import { useRoute } from "vue-router";
@@ -41,6 +42,7 @@ const commentlists = ref<any>();
 const recommendlists = ref<any>();
 // 添加评论的内容
 const addComment = ref<string>("");
+const message = useMessage()
 
 // 获取视频
 onMounted(() => {
@@ -64,32 +66,38 @@ const updateVisible = (thisVideo: any) => {
 
 // 发布评论接口
 const doCommentApi = () => {
-  doComment(videoStore().video_id, 1, addComment.value, 0).then((res: any) => {
-    let userInfo = userStore();
-    let userObj: UserType = {
-      id: userInfo.user_id,
-      name: userInfo.name,
-      gender: userInfo.gender,
-      avatar: userInfo.avatar,
-      signature: userInfo.signature,
-      phoneNum: userInfo.phoneNum,
-      background_image: userInfo.background_image,
-      follow_count: 0,
-      follower_count: 0,
-      total_favorited: 0,
-      work_count: 0,
-      favorite_count: 0,
-      is_follow: false,
-    };
-    let addCommentObj: CommentType = {
-      content: addComment.value,
-      create_date: formattedDate(),
-      user: userObj,
-      comment_id: res.comment_id,
-    };
-    commentlists.value?.push(addCommentObj);
-    addComment.value = "";
-  });
+  if(addComment.value!=''){
+    doComment(videoStore().video_id, 1, addComment.value, 0).then((res: any) => {
+      let userInfo = userStore();
+      let userObj: UserType = {
+        id: userInfo.user_id,
+        name: userInfo.name,
+        gender: userInfo.gender,
+        avatar: userInfo.avatar,
+        signature: userInfo.signature,
+        phoneNum: userInfo.phoneNum,
+        background_image: userInfo.background_image,
+        follow_count: 0,
+        follower_count: 0,
+        total_favorited: 0,
+        work_count: 0,
+        favorite_count: 0,
+        is_follow: false,
+      };
+      let addCommentObj: CommentType = {
+        content: addComment.value,
+        create_date: formattedDate(),
+        user: userObj,
+        comment_id: res.comment_id,
+      };
+      commentlists.value?.push(addCommentObj);
+      addComment.value = "";
+    });
+  }
+  else{
+    message.error('评论不能为空')
+  }
+  
 };
 
 // 发布评论
