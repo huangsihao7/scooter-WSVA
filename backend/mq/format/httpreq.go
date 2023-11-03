@@ -49,8 +49,8 @@ func QiNiuPost(url string, data []byte) ([]byte, error) {
 	return body, nil
 }
 
-func Feedback(feedType string, vid int, uid int) {
-	baseUrl := "http://172.22.121.54:8088/api/feedback"
+func Feedback(recommendUrl, feedType string, vid int, uid int) {
+	baseUrl := recommendUrl + "/api/feedback"
 	req := []map[string]interface{}{
 		{
 			"FeedbackType": feedType,
@@ -102,8 +102,7 @@ func DeleteHttp(url string) error {
 	}
 }
 
-func GetJobBack(job string) (status, vid, suggestion string, err error) {
-	secretKey := "4hf0lBad0AFg_IaShAN14JD3IbcEg8Xn4DPSX3fY"
+func GetJobBack(job, secretKey, accessKey string) (status, vid, suggestion string, err error) {
 	method := "GET"
 	path := "/v3/jobs/video/" + job
 	host := "ai.qiniuapi.com"
@@ -116,7 +115,7 @@ func GetJobBack(job string) (status, vid, suggestion string, err error) {
 	key := base64.URLEncoding.EncodeToString(sign)
 	// 添加 Authorization 头部
 	url := "http://" + host + path
-	token := "Qiniu cipx2awPLz7XNduXeJPtbWoTEQj7PWnV_2O727ew:" + key
+	token := "Qiniu " + accessKey + ":" + key
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		fmt.Println("Error creating request:", err)

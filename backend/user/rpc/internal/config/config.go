@@ -15,4 +15,5 @@ type Config struct {
 		MaxIdleConns int `json:",default=100"`
 		MaxLifetime  int `json:",default=3600"`
 	}
+	RecommendUrl string
 }

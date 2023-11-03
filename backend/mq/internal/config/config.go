@@ -27,4 +27,8 @@ type Config struct {
 		Brokers []string
 		Topic   string
 	}
+	RecommendUrl string
+	AIUrl        string
+	SecretKey    string
+	AccessKey    string
 }

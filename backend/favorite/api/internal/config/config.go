@@ -11,4 +11,5 @@ type Config struct {
 	Auth     struct {
 		AccessSecret string
 	}
+	RecommendUrl string
 }

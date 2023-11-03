@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func Upload(file multipart.File, handler *multipart.FileHeader, AccessKey string, SecretKey string, bucket string) (string, error) {
+func Upload(file multipart.File, handler *multipart.FileHeader, AccessKey string, SecretKey string, bucket string, baseURL string) (string, error) {
 	filename := crypt.PasswordEncrypt(time.Now().String(), handler.Filename)
 	key := filename + ".jpg"
 	defer file.Close()
@@ -31,7 +31,6 @@ func Upload(file multipart.File, handler *multipart.FileHeader, AccessKey string
 	if err != nil {
 		return "", err
 	}
-	baseURL := "http://s327crbzf.hn-bkt.clouddn.com" // 替换为您的文件访问域名
 	fileURL := baseURL + "/" + key
 	//deadline := time.Now().Add(time.Second * 3600).Unix() //1小时有效期
 	//privateAccessURL := storage.MakePrivateURL(mac, baseURL, ret.Key, deadline)

@@ -31,7 +31,7 @@ func (l *StarActionLogic) StarAction(req *types.ActionReq) (resp *types.ActionRe
 	//token 解析
 	userId, _ := l.ctx.Value("uid").(json.Number).Int64()
 	if req.ActionType == 1 {
-		format.Feedback("star", int(req.VideoId), int(userId))
+		format.Feedback(l.svcCtx.Config.RecommendUrl, "star", int(req.VideoId), int(userId))
 	}
 	//请求服务
 	r, err := l.svcCtx.Favor.StarAction(l.ctx, &favorite.StarActionRequest{

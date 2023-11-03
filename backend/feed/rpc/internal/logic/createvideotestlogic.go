@@ -26,7 +26,6 @@ func NewCreateVideoTestLogic(ctx context.Context, svcCtx *svc.ServiceContext) *C
 }
 
 func (l *CreateVideoTestLogic) CreateVideoTest(in *feed.CreateVideoRequest) (*feed.CreateVideoResponse, error) {
-	// todo: add your logic here and delete this line
 	msg := &feed.CreateVideoRequest{
 		ActorId:  1,
 		CoverUrl: "www.123",

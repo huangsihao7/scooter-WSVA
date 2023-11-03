@@ -29,7 +29,7 @@ func NewUploadImgLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UploadI
 
 func (l *UploadImgLogic) UploadImg(req *http.Request) (resp *types.UploadImageResponse, err error) {
 	imgFile, imgHandler, err := req.FormFile("file")
-	imgUrl, err := common.Upload(imgFile, imgHandler, l.svcCtx.Config.AccessKey, l.svcCtx.Config.SecretKey, l.svcCtx.Config.Bucket)
+	imgUrl, err := common.Upload(imgFile, imgHandler, l.svcCtx.Config.AccessKey, l.svcCtx.Config.SecretKey, l.svcCtx.Config.Bucket, l.svcCtx.Config.OssUrl)
 	if err != nil {
 		return nil, code.UserUploadImgError
 	}

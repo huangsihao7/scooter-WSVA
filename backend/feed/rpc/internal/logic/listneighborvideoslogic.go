@@ -31,7 +31,7 @@ func NewListNeighborVideosLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 
 func (l *ListNeighborVideosLogic) ListNeighborVideos(in *feed.NeighborsReq) (*feed.NeighborsResp, error) {
 	//向推荐系统发起相关视频请求
-	baseurl := "http://172.22.121.54:8088/api/item"
+	baseurl := l.svcCtx.Config.RecommendUrl + "/api/item"
 	url := fmt.Sprintf("%s/%d/neighbors?n=10", baseurl, in.Vid)
 	getresponse, err := format.QiNiuGet(url)
 	if err != nil {
