@@ -196,6 +196,9 @@ const deleteFunc = (comment_id: number) => {
     (item: CommentType) => item.comment_id !== comment_id,
   );
 };
+
+const tabValue = ref<string>('')
+
 </script>
 
 <template>
@@ -234,7 +237,7 @@ const deleteFunc = (comment_id: number) => {
     to="#drawer-target"
   >
     <NDrawerContent :native-scrollbar="false">
-      <NTabs type="line" animated>
+      <NTabs type="line" v-model:value="tabValue" animated>
         <NTabPane name="comment" tab="评论">
           <CommentListCom
             v-if="commentlists"
@@ -246,7 +249,7 @@ const deleteFunc = (comment_id: number) => {
           <VideoRecommendCard :recommendlists="recommendlists" />
         </NTabPane>
       </NTabs>
-      <template #footer>
+      <template #footer v-if="tabValue=='comment'">
         <NInput
           v-model:value="addComment"
           maxlength="30"
