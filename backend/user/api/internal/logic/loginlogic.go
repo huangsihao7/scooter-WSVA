@@ -41,10 +41,14 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, 
 	accessToken, _ := jwtx.GetToken(l.svcCtx.Config.Auth.AccessSecret, now, accessExpire, res.UserId)
 
 	return &types.LoginResponse{
-		Avatar:      res.Avatar,
-		AccessToken: accessToken,
-		StatusCode:  int(res.StatusCode),
-		StatusMsg:   res.StatusMsg,
-		UserID:      res.UserId,
+		StatusCode:      int(res.StatusCode),
+		StatusMsg:       res.StatusMsg,
+		Avatar:          res.Avatar,
+		AccessToken:     accessToken,
+		UserID:          res.UserId,
+		Name:            res.Name,
+		Gender:          uint32(res.Gender),
+		Signature:       res.Signature,
+		BackgroundImage: res.BackgroundImage,
 	}, nil
 }
