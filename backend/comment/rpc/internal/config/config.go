@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/zrpc"
+	"github.com/zeromicro/zero-contrib/zrpc/registry/consul"
 )
 
 type Config struct {
@@ -16,5 +17,6 @@ type Config struct {
 		MaxIdleConns int `json:",default=100"`
 		MaxLifetime  int `json:",default=3600"`
 	}
-	AIUrl string
+	AIUrl  string
+	Consul consul.Conf
 }

@@ -1,6 +1,9 @@
 package config
 
-import "github.com/zeromicro/go-zero/zrpc"
+import (
+	"github.com/zeromicro/go-zero/zrpc"
+	"github.com/zeromicro/zero-contrib/zrpc/registry/consul"
+)
 
 type Config struct {
 	zrpc.RpcServerConf
@@ -30,4 +33,5 @@ type Config struct {
 	AccessKey    string
 	AIUrl        string
 	RecommendUrl string
+	Consul       consul.Conf
 }

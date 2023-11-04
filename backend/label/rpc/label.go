@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/zero-contrib/zrpc/registry/consul"
 
 	"github.com/huangsihao7/scooter-WSVA/label/rpc/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/label/rpc/internal/server"
@@ -32,6 +33,7 @@ func main() {
 			reflection.Register(grpcServer)
 		}
 	})
+	_ = consul.RegisterService(c.ListenOn, c.Consul)
 	defer s.Stop()
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)

@@ -11,9 +11,9 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/feed/api/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/feed/api/internal/handler"
 	"github.com/huangsihao7/scooter-WSVA/feed/api/internal/svc"
-
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
+	_ "github.com/zeromicro/zero-contrib/zrpc/registry/consul"
 )
 
 var configFile = flag.String("f", "etc/feed-api-dev.yaml", "the config file")
@@ -23,7 +23,6 @@ func main() {
 	logx.DisableStat()
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
-	c.Timeout = 30000
 	server := rest.MustNewServer(c.RestConf, rest.WithCustomCors(nil, func(w http.ResponseWriter) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Headers", "*")

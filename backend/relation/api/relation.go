@@ -10,6 +10,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/relation/api/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/relation/api/internal/handler"
 	"github.com/huangsihao7/scooter-WSVA/relation/api/internal/svc"
+	_ "github.com/zeromicro/zero-contrib/zrpc/registry/consul"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -21,7 +22,6 @@ func main() {
 	flag.Parse()
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
-	c.Timeout = 20000
 	server := rest.MustNewServer(c.RestConf, rest.WithCustomCors(nil, func(w http.ResponseWriter) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Headers", "*")

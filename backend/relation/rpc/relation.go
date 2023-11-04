@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/huangsihao7/scooter-WSVA/pkg/interceptors"
+	"github.com/zeromicro/zero-contrib/zrpc/registry/consul"
 
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/relation/rpc/internal/server"
@@ -13,6 +14,7 @@ import (
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/zrpc"
+	_ "github.com/zeromicro/zero-contrib/zrpc/registry/consul"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -23,7 +25,6 @@ func main() {
 	flag.Parse()
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
-	c.Timeout = 30000
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
@@ -33,6 +34,7 @@ func main() {
 			reflection.Register(grpcServer)
 		}
 	})
+	_ = consul.RegisterService(c.ListenOn, c.Consul)
 	defer s.Stop()
 	//自定义拦截器
 	s.AddUnaryInterceptors(interceptors.ServerErrorInterceptor())

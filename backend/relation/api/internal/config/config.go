@@ -11,5 +11,5 @@ type Config struct {
 		AccessSecret string
 		AccessExpire int64
 	}
-	Relation zrpc.RpcClientConf
+	RelationRpc zrpc.RpcClientConf
 }

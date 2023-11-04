@@ -1,16 +1,14 @@
 Name: feed.rpc
 ListenOn: 0.0.0.0:8011
-Etcd:
-  Hosts:
-  - 172.22.110.66:2444
+Timeout: 20000
+Consul:
+  Host: 172.22.110.66:8501
   Key: feed.rpc
 
 DataSource: root:8691136f0fc946ffb141307209d3143f@tcp(172.22.110.66:3310)/qiniu?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 UserRpc:
-  Etcd:
-    Hosts:
-      - 172.22.110.66:2444
-    Key: user.rpc
+  Target: consul://172.22.110.66:8501/user.rpc?wait=14s
+  Timeout: 20000
 
 
 DB:
