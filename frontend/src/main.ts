@@ -9,7 +9,7 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-import VueLazyLoad from 'vue3-lazyload'
+import VueLazyLoad from "vue3-lazyload";
 import App from "./App.vue";
 import router from "./router/index";
 import "./style.css";
@@ -19,6 +19,6 @@ const pinia = createPinia();
 const app = createApp(App);
 pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
-app.use(VueLazyLoad)
+app.use(VueLazyLoad,{});
 app.use(router);
 app.mount("#app");

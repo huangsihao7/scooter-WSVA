@@ -13,7 +13,12 @@
     @update-value="handleUpdate"
   >
     <NTabPane name="work" tab="作品">
-      <VideoCard v-if="!showEmpty" :is-scroll="false" :videos="videos" :deletable="deletable" />
+      <VideoCard
+        v-if="!showEmpty"
+        :is-scroll="false"
+        :videos="videos"
+        :deletable="deletable"
+      />
       <NEmpty v-else description="没有发布过视频哦~">
         <template #icon>
           <NIcon>
@@ -33,7 +38,7 @@
       </NEmpty>
     </NTabPane>
     <NTabPane name="collect" tab="收藏">
-      <VideoCard  v-if="!showEmpty" :is-scroll="false" :videos="videos" />
+      <VideoCard v-if="!showEmpty" :is-scroll="false" :videos="videos" />
       <NEmpty v-else description="没有收藏的视频哦~">
         <template #icon>
           <NIcon>
@@ -61,7 +66,12 @@ import { getHistoryVideosListReq, userVideoListReq } from "@/apis/video";
 import { userFavouriteListReq, userStarListReq } from "@/apis/favourite";
 import { onMounted, ref, computed } from "vue";
 import { userStore } from "@/stores/user";
-import { HeartDislike, EyeOff, VideocamOff, RemoveCircle } from "@vicons/ionicons5";
+import {
+  HeartDislike,
+  EyeOff,
+  VideocamOff,
+  RemoveCircle,
+} from "@vicons/ionicons5";
 
 const videos = ref<Array<any>>([]);
 
@@ -74,10 +84,9 @@ const deletable = computed(() =>
 );
 const props = defineProps<propsType>();
 const myid = ref<number>(-1);
-const showEmpty = ref<boolean>(false)
+const showEmpty = ref<boolean>(false);
 onMounted(() => {
   getMyWork();
-  
 });
 
 const getMyWork = () => {
@@ -86,8 +95,8 @@ const getMyWork = () => {
   myid.value = uid_num;
   userVideoListReq(myid.value).then((res: any) => {
     videos.value = res.video_list;
-    if(videos.value.length == 0){
-      showEmpty.value = true
+    if (videos.value.length == 0) {
+      showEmpty.value = true;
     }
   });
 };
@@ -95,8 +104,8 @@ const getMyWork = () => {
 const getMyFavourite = () => {
   userFavouriteListReq(myid.value).then((res: any) => {
     videos.value = res.video_list;
-    if(videos.value.length == 0){
-      showEmpty.value = true
+    if (videos.value.length == 0) {
+      showEmpty.value = true;
     }
   });
 };
@@ -104,8 +113,8 @@ const getMyFavourite = () => {
 const getMyCollect = () => {
   userStarListReq(myid.value).then((res: any) => {
     videos.value = res.video_list;
-    if(videos.value.length == 0){
-      showEmpty.value = true
+    if (videos.value.length == 0) {
+      showEmpty.value = true;
     }
   });
 };
@@ -113,14 +122,14 @@ const getMyCollect = () => {
 const getMyHistory = () => {
   getHistoryVideosListReq().then((res: any) => {
     videos.value = res.video_list;
-    if(videos.value.length == 0){
-      showEmpty.value = true
+    if (videos.value.length == 0) {
+      showEmpty.value = true;
     }
   });
 };
 
 const handleUpdate = (paneName: string) => {
-  showEmpty.value = false
+  showEmpty.value = false;
   if (paneName === "work") {
     getMyWork();
   } else if (paneName === "favourite") {

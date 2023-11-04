@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 7:08:43
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 13:45:23
+ * @LastEditTime: 2023-11-04 16:19:24
  * @FilePath: \scooter-WSVA\frontend\src\axios\index.ts
  * @Description:
  *

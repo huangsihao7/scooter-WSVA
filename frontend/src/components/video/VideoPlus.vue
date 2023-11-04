@@ -126,9 +126,9 @@ const handleCollectBtn = () => {
   let action_type = -1;
   if (thisVideo) {
     if (!thisVideo.is_star) {
-      console.log('starcount',thisVideo.star_count)
+      console.log("starcount", thisVideo.star_count);
       thisVideo.star_count++;
-      console.log('starcount2',thisVideo.star_count)
+      console.log("starcount2", thisVideo.star_count);
 
       action_type = 1;
     } else {

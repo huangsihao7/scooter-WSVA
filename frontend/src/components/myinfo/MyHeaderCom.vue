@@ -82,66 +82,66 @@ const goFriends = () => {
         ')',
     }"
   >
-  <div class="sub-header">
-    <NGrid>
-      <NGridItem :span="4">
-        <NAvatar :src="userInfo.avatar" round />
-      </NGridItem>
-      <NGridItem v-if="userInfo" :span="20" class="info-tab">
-        <p class="name">{{ userInfo.name }}</p>
-        <p class="signature">{{ userInfo.signature }}</p>
-        <div class="follow">
-          <NButton color="#606266" text @click="goFollowing">
-            关注 {{ userInfo.follow_count }}
-          </NButton>
-          <NDivider vertical />
-          <NButton color="#606266" text @click="goFollowers">
-            粉丝 {{ userInfo.follower_count }}
-          </NButton>
-          <NDivider vertical />
-          <NButton color="#606266" text @click="goFriends">
-            朋友 {{ userInfo.friend_count }}
-          </NButton>
-          <NDivider vertical />
-          <NButton color="#606266" text>
-            获赞 {{ userInfo.favorite_count }}
-          </NButton>
-        </div>
-      </NGridItem>
-    </NGrid>
-    <NButton
-      v-if="userInfo.id == userStore().user_id"
-      strong
-      round
-      class="edit-info"
-      color="#409eff85"
-      @click="editVisible = true"
-    >
-      <template #icon>
-        <NIcon>
-          <CashIcon />
-        </NIcon>
-      </template>
-      编辑资料
-    </NButton>
-    <InfoEditCom
-      v-if="userInfo"
-      :user-info="userInfo"
-      :is-visible="editVisible"
-      @visible-update="UpdateVisible"
-    />
-  </div>
+    <div class="sub-header">
+      <NGrid>
+        <NGridItem :span="4">
+          <NAvatar :src="userInfo.avatar" round />
+        </NGridItem>
+        <NGridItem v-if="userInfo" :span="20" class="info-tab">
+          <p class="name">{{ userInfo.name }}</p>
+          <p class="signature">{{ userInfo.signature }}</p>
+          <div class="follow">
+            <NButton color="#606266" text @click="goFollowing">
+              关注 {{ userInfo.follow_count }}
+            </NButton>
+            <NDivider vertical />
+            <NButton color="#606266" text @click="goFollowers">
+              粉丝 {{ userInfo.follower_count }}
+            </NButton>
+            <NDivider vertical />
+            <NButton color="#606266" text @click="goFriends">
+              朋友 {{ userInfo.friend_count }}
+            </NButton>
+            <NDivider vertical />
+            <NButton color="#606266" text>
+              获赞 {{ userInfo.favorite_count }}
+            </NButton>
+          </div>
+        </NGridItem>
+      </NGrid>
+      <NButton
+        v-if="userInfo.id == userStore().user_id"
+        strong
+        round
+        class="edit-info"
+        color="#409eff85"
+        @click="editVisible = true"
+      >
+        <template #icon>
+          <NIcon>
+            <CashIcon />
+          </NIcon>
+        </template>
+        编辑资料
+      </NButton>
+      <InfoEditCom
+        v-if="userInfo"
+        :user-info="userInfo"
+        :is-visible="editVisible"
+        @visible-update="UpdateVisible"
+      />
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .edit-info {
-      // position: absolute;
-      // top: 70px;
-      // right: calc(10vw + 20px);
-      // float: right;
-      margin-right: 20px;
-  }
+  // position: absolute;
+  // top: 70px;
+  // right: calc(10vw + 20px);
+  // float: right;
+  margin-right: 20px;
+}
 
 .header {
   text-align: left;
@@ -149,13 +149,13 @@ const goFriends = () => {
   padding: 2vh 0;
   // border-radius: 25px;
   background: no-repeat center top / 100% 100%;
-  .sub-header{
+  .sub-header {
     text-align: left;
     display: flex;
     background: #ffffff24;
     backdrop-filter: blur(5px);
     border-radius: 25px;
-    margin:0 2vw;
+    margin: 0 2vw;
     padding: 2vh 2vw;
     .n-avatar {
       float: right;
@@ -169,7 +169,6 @@ const goFriends = () => {
       flex-direction: column;
       justify-content: space-evenly;
 
-      
       p,
       .follow {
         margin: 10px 20px;
@@ -194,7 +193,6 @@ const goFriends = () => {
       }
     }
   }
-  
 }
 
 .header > div {

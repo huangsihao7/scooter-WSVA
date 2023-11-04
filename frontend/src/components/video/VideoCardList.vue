@@ -44,7 +44,12 @@ onMounted(() => {
 });
 </script>
 <template>
-  <NCard hoverable v-for="(info, index) in props.videos" :key="index" class="box-card">
+  <NCard
+    v-for="(info, index) in props.videos"
+    :key="index"
+    hoverable
+    class="box-card"
+  >
     <template #cover>
       <img
         class="image-css"
@@ -66,13 +71,23 @@ onMounted(() => {
       </template>
     </NButton>
     <div class="video-space" style="position: relative" @click="GetVideoLink">
-      <NTag class="time" round :bordered="false" :color="{ color: '#e6e6e64a' }">
+      <NTag
+        class="time"
+        round
+        :bordered="false"
+        :color="{ color: '#e6e6e64a' }"
+      >
         {{ info.duration }}
         <template #icon>
           <NIcon color="#fff" :component="Play" />
         </template>
       </NTag>
-      <NTag class="like" round :bordered="false" :color="{ color: '#f93b3b4a' }">
+      <NTag
+        class="like"
+        round
+        :bordered="false"
+        :color="{ color: '#f93b3b4a' }"
+      >
         {{ info.favorite_count }}
         <template #icon>
           <NIcon color="#fff" :component="Heart" />

@@ -9,7 +9,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     CommentCom: typeof import('./src/components/comment/CommentCom.vue')['default']
     CommentListCom: typeof import('./src/components/comment/CommentListCom.vue')['default']
-    EmptyStateCom: typeof import('./src/components/empty/EmptyStateCom.vue')['default']
     HeaderMenu: typeof import('./src/components/HeaderMenu.vue')['default']
     InfoEditCom: typeof import('./src/components/myinfo/InfoEditCom.vue')['default']
     MyHeaderCom: typeof import('./src/components/myinfo/MyHeaderCom.vue')['default']

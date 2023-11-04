@@ -24,7 +24,7 @@ const props = defineProps<propsType>();
     class="video-card"
     hoverable
   >
-    <NImage width="100" v-lazy="video.cover_url"  preview-disabled />
+    <NImage v-lazy="video.cover_url" width="100" preview-disabled />
     <div class="video-info">
       <span class="title">
         <NEllipsis expand-trigger="click" line-clamp="2" :tooltip="false">

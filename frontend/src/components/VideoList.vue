@@ -25,7 +25,7 @@ import { videoStore } from "@/stores/video";
 import VideoPlus from "@/components/video/VideoPlus.vue";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
 import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
-import { throttle } from 'lodash';
+import { throttle } from "lodash";
 
 interface propsType {
   videoListType: number;
@@ -184,13 +184,13 @@ const throttledDoComment = throttle(doCommentApi, 500);
 // 发布评论
 const postComment = (e: any) => {
   if (e.keyCode == 13 && addComment.value) {
-    throttledDoComment()
+    throttledDoComment();
   }
 };
 
 // 点击事件发布评论
 const postCommentByBtn = () => {
-  throttledDoComment()
+  throttledDoComment();
 };
 
 // 动态删除评论数据
@@ -200,8 +200,7 @@ const deleteFunc = (comment_id: number) => {
   );
 };
 
-const tabValue = ref<string>('comment')
-
+const tabValue = ref<string>("comment");
 </script>
 
 <template>
@@ -240,7 +239,7 @@ const tabValue = ref<string>('comment')
     to="#drawer-target"
   >
     <NDrawerContent :native-scrollbar="false">
-      <NTabs type="line" v-model:value="tabValue" animated>
+      <NTabs v-model:value="tabValue" type="line" animated>
         <NTabPane name="comment" tab="评论">
           <CommentListCom
             v-if="commentlists"
@@ -252,7 +251,7 @@ const tabValue = ref<string>('comment')
           <VideoRecommendCard :recommendlists="recommendlists" />
         </NTabPane>
       </NTabs>
-      <template #footer v-if="tabValue=='comment'">
+      <template v-if="tabValue == 'comment'" #footer>
         <NInput
           v-model:value="addComment"
           maxlength="30"

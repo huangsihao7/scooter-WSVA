@@ -12,7 +12,7 @@ import MyInteractCom from "@/components/myinfo/MyInteractCom.vue";
 import { useRoute } from "vue-router";
 import { computed, onMounted, ref } from "vue";
 import { userStore } from "@/stores/user";
-import { NScrollbar } from  'naive-ui'
+import { NScrollbar } from "naive-ui";
 
 const route = useRoute();
 const userId = computed(() => route.params.id);
@@ -28,8 +28,7 @@ onMounted(() => {
 </script>
 
 <template>
-  
-  <NScrollbar   style="max-height: calc(100vh- 60px)">
+  <NScrollbar style="max-height: calc(100vh- 60px)">
     <div class="user">
       <div class="header">
         <MyHeaderCom v-if="passUserId" :user-id="passUserId" />
@@ -42,10 +41,9 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-
 .user {
   // padding: 5vh 5vw 0 5vw;
-  
+
   .interaction {
     margin-top: 10px;
   }

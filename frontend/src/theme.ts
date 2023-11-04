@@ -15,13 +15,13 @@ const themeOverrides: GlobalThemeOverrides = {
     // primaryColorSuppl: '#4098FC'
   },
   Button: {
-      // textColor: 'red',
-      colorTarget:'red'
+    // textColor: 'red',
+    colorTarget: "red",
   },
-  Card:{
-    borderRadius:'25px',
-    color:'#eeeeee70'
-  }
+  Card: {
+    borderRadius: "25px",
+    color: "#eeeeee70",
+  },
 };
 
 export default themeOverrides;

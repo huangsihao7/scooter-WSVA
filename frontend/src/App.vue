@@ -35,7 +35,7 @@ onMounted(() => {
 <template>
   <!-- App.vue -->
   <NConfigProvider :theme-overrides="themeOverrides">
-    <NMessageProvider>
+    <NMessageProvider placement="top-right">
       <div class="common-layout">
         <NLayout class="common-layout">
           <NLayoutHeader class="header">
@@ -93,18 +93,16 @@ onMounted(() => {
   width: 50% !important;
 } */
 
-.n-layout-header{
+.n-layout-header {
   box-shadow: 9px 9px 9px 10px rgb(172 215 255 / 26%);
   background-color: #ffffff;
   /* background-image: linear-gradient(133deg, #ffffff 12%, #d6e4ff 100%); */
-
 }
 
-.n-layout-sider{
+.n-layout-sider {
   box-shadow: 9px 2px 4px linear-gradient(180deg, #ffffff 0%, #d6e4ff 100%);
   background-color: #ffffff;
   background-image: linear-gradient(227deg, #ffffff 42%, #d6e4ff 100%);
-
 }
 
 span {
