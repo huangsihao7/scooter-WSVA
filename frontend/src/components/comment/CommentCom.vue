@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 22:00:03
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 17:27:33
+ * @LastEditTime: 2023-11-04 21:09:28
  * @Description: 评论组件
  * @FilePath: \scooter-WSVA\frontend\src\components\comment\CommentCom.vue
 -->
@@ -16,7 +16,6 @@ import {
   NThing,
   NAvatar,
   useMessage,
-  NMessageProvider,
 } from "naive-ui";
 import { CommentType } from "@/apis/interface";
 import { userStore } from "@/stores/user";
@@ -76,7 +75,6 @@ const fake = () => {
           0
           <!-- {{ props.comment.likenum }} -->
         </NButton>
-        <NMessageProvider placement="top-right">
           <NButton size="small" @click="fake">
             <template #icon>
               <NIcon>
@@ -85,7 +83,6 @@ const fake = () => {
             </template>
             评论
           </NButton>
-        </NMessageProvider>
         <NButton
           v-if="props.comment.user.id == userStore().user_id"
           size="small"

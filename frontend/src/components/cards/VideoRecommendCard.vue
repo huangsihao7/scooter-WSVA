@@ -11,10 +11,18 @@ import { NCard, NImage } from "naive-ui";
 import { NButton, NIcon, NEllipsis } from "naive-ui";
 import { Heart } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
+import { routeStore } from "@/stores/route";
+import { useRouter } from "vue-router";
 interface propsType {
   recommendlists: Array<VideoType>;
 }
 const props = defineProps<propsType>();
+const router = useRouter();
+// 查看视频
+const goVideo = (video: VideoType) =>{
+  routeStore().name = "video";
+  router.push({ name: "video", params: { id: video.video_id } });
+}
 </script>
 
 <template>
@@ -24,7 +32,7 @@ const props = defineProps<propsType>();
     class="video-card"
     hoverable
   >
-    <NImage :src="video.cover_url" width="100" preview-disabled />
+    <NImage :src="video.cover_url" width="100" preview-disabled @click="goVideo(video)"/>
     <div class="video-info">
       <span class="title">
         <NEllipsis expand-trigger="click" line-clamp="2" :tooltip="false">

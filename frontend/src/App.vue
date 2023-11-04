@@ -35,7 +35,7 @@ onMounted(() => {
 <template>
   <!-- App.vue -->
   <NConfigProvider :theme-overrides="themeOverrides">
-    <NMessageProvider placement="top-right">
+    <NMessageProvider>
       <div class="common-layout">
         <NLayout class="common-layout">
           <NLayoutHeader class="header">

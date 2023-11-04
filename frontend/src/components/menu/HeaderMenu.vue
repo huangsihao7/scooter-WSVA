@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 20:26:43
+ * @LastEditTime: 2023-11-04 23:29:51
  * @Description: 顶部导航栏组件
  * @FilePath: \scooter-WSVA\frontend\src\components\Menu\HeaderMenu.vue
 -->
@@ -81,6 +81,9 @@ const doSearch = (isHistory: boolean, historyValue?: string) => {
   let searchValue = "";
   if (isHistory && historyValue) {
     searchValue = historyValue;
+    searchContent.value = historyValue;
+    console.log(searchContent.value)
+
     videoStore().search_value = searchValue;
   } else {
     searchValue = searchContent.value;
