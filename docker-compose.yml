@@ -1,0 +1,125 @@
+version: '3.8'
+
+services:
+  scooter-user-api:
+    build:
+      context: ./backend
+      dockerfile: deployments/user_api.Dockerfile
+    container_name: scooter-user-api
+    environment:
+      OSS_URL: 1234567fgdfdgsdfgdfgsgf
+    ports:
+      - 8890:8890
+    networks:
+      - scooter
+  scooter-nginx:
+    build:
+      context: ./scripts/nginx
+      # args:
+        # - HOST="127.0.0.1"
+    container_name: scooter-nginx
+    ports:
+      - 7070:7070
+    networks:
+      - scooter
+  scooter-ml:
+    build:
+      context: ML/
+    env_file:
+      - .env
+    container_name: scooter-ml
+    ports:
+      - 8000:8000
+    networks:
+      - scooter
+  mysql:
+    image: mysql:8
+    container_name: scooter-mysql
+    ports:
+      - 3306:3306
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time_zone='+8:00'
+    environment:
+      MYSQL_ROOT_PASSWORD: scooter
+      MYSQL_DATABASE: scooter
+      TZ: Asia/Shangha
+    networks:
+      - scooter
+    restart: unless-stopped
+  gorse:
+    image: zhenghaoz/gorse-in-one:0.4.14
+    container_name: scooter-gorse
+    restart: unless-stopped
+    ports:
+      - 8086:8086   # gRPC port
+      - 8088:8088   # HTTP port
+    environment:
+      # Use Redis as cache storage backend.
+      GORSE_CACHE_STORE: redis://scooter-redis:6379
+      # Use MySQL as data storage backend.
+      GORSE_DATA_STORE: mysql://root:scooter@tcp(scooter-mysql-gorse:3306)/gorse?parseTime=true
+    command: >
+      -c /etc/gorse/config.toml
+      --log-path /var/log/gorse/master.log
+      --cache-path /var/lib/gorse/master_cache.data
+    volumes:
+      # Mount the configuration file.
+      - ./scripts/gorse/config.toml:/etc/gorse/config.toml
+    networks:
+      - scooter
+    depends_on:
+      - mysql-gorse
+      - redis
+  mysql-gorse:
+    image: mysql:8
+    container_name: scooter-mysql-gorse
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time_zone='+8:00'
+    environment:
+      MYSQL_ROOT_PASSWORD: scooter
+      MYSQL_DATABASE: gorse
+      TZ: Asia/Shangha
+    networks:
+      - scooter
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    container_name: scooter-redis
+    ports:
+      - 6379:6379
+    networks:
+      - scooter
+    restart: unless-stopped
+  kafka:
+    image: 'bitnami/kafka:3.3.1'
+    container_name: scooter-kafka
+    ports:
+      - 9092:9092
+      - 9093:9093
+      - 9094:9094
+    environment:
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://scooter-kafka:9092
+      - KAFKA_CFG_BROKER_ID=1
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_KRAFT_CLUSTER_ID=r4zt_wrqTRuT7W2NJsB_GA
+  kafka-ui:
+    container_name: kafka-ui
+    image: 'provectuslabs/kafka-ui:latest'
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS=scooter-kafka:9092
+      - KAFKA_CLUSTERS_0_NAME=r4zt_wrqTRuT7W2NJsB_GA
+    depends_on:
+      - kafka
+
+networks:
+  scooter:
+    driver: bridge
+
+volumes:
+  scooter:

@@ -1,0 +1,489 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "host": "172.22.121.53:7070",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/user/login": {
+      "post": {
+        "operationId": "Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 用户登录",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/user/register": {
+      "post": {
+        "operationId": "Register",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RegisterResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 用户登录, 用户注册",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/user/update": {
+      "post": {
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 用户编辑信息",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/user/upload": {
+      "post": {
+        "operationId": "Upload",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserUploadResponse"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/user/uploadImg": {
+      "post": {
+        "operationId": "UploadImg",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UploadImageResponse"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/user/userinfo": {
+      "post": {
+        "summary": "user",
+        "operationId": "UserInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserInfoResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 用户信息",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserInfoReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "User"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "LoginRequest": {
+      "type": "object",
+      "properties": {
+        "mobile": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "title": "LoginRequest",
+      "required": [
+        "mobile",
+        "password"
+      ]
+    },
+    "LoginResponse": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status_msg": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "accessToken": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "background_image": {
+          "type": "string",
+          "description": "用户个人页顶部大图"
+        }
+      },
+      "title": "LoginResponse",
+      "required": [
+        "status_code",
+        "status_msg",
+        "avatar",
+        "accessToken",
+        "user_id",
+        "name",
+        "gender",
+        "signature",
+        "background_image"
+      ]
+    },
+    "RegisterRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "mobile": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "dec": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "background_image": {
+          "type": "string"
+        }
+      },
+      "title": "RegisterRequest",
+      "required": [
+        "name",
+        "gender",
+        "mobile",
+        "password",
+        "dec",
+        "avatar",
+        "background_image"
+      ]
+    },
+    "RegisterResponse": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status_msg": {
+          "type": "string"
+        }
+      },
+      "title": "RegisterResponse",
+      "required": [
+        "status_code",
+        "status_msg"
+      ]
+    },
+    "UpdateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "dec": {
+          "type": "string"
+        },
+        "background_image": {
+          "type": "string"
+        }
+      },
+      "title": "UpdateRequest"
+    },
+    "UpdateResponse": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status_msg": {
+          "type": "string"
+        }
+      },
+      "title": "UpdateResponse",
+      "required": [
+        "status_code",
+        "status_msg"
+      ]
+    },
+    "UploadImageResponse": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status_msg": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "title": "UploadImageResponse",
+      "required": [
+        "status_code",
+        "status_msg",
+        "url"
+      ]
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "background_image": {
+          "type": "string",
+          "description": "用户个人页顶部大图"
+        },
+        "follow_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "follower_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_favorited": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "work_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "favorite_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "is_follow": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "friend_count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "User",
+      "required": [
+        "id",
+        "name",
+        "avatar",
+        "gender",
+        "signature",
+        "background_image",
+        "follow_count",
+        "follower_count",
+        "total_favorited",
+        "work_count",
+        "favorite_count",
+        "is_follow",
+        "friend_count"
+      ]
+    },
+    "UserInfoReq": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "UserInfoReq",
+      "required": [
+        "uid"
+      ]
+    },
+    "UserInfoResponse": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status_msg": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        }
+      },
+      "title": "UserInfoResponse",
+      "required": [
+        "status_code",
+        "status_msg",
+        "user"
+      ]
+    },
+    "UserUploadResponse": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status_msg": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "coverUrl": {
+          "type": "string"
+        }
+      },
+      "title": "UserUploadResponse",
+      "required": [
+        "status_code",
+        "status_msg",
+        "url",
+        "coverUrl"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}

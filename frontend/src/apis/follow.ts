@@ -60,4 +60,3 @@ export function doFollow(to_user_id: number, action_type: number) {
     },
   });
 }
-

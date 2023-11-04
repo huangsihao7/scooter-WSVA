@@ -77,7 +77,7 @@ func (m *VideoModel) FindLastByUId(ctx context.Context, Uid int64) (*Videos, err
 }
 func (m *VideoModel) FindOwnFeed(ctx context.Context, uid int64) ([]*Videos, error) {
 	var resp []*Videos
-	err := m.db.WithContext(ctx).Where("author_id = ?", uid).Find(&resp).Error
+	err := m.db.WithContext(ctx).Where("author_id = ?", uid).Order("id DESC").Find(&resp).Error
 	switch err {
 	case nil:
 		return resp, nil
