@@ -102,7 +102,8 @@ onMounted(() => {
 .n-layout-sider {
   box-shadow: 9px 2px 4px linear-gradient(180deg, #ffffff 0%, #d6e4ff 100%);
   background-color: #ffffff;
-  background-image: linear-gradient(227deg, #ffffff 42%, #d6e4ff 100%);
+  /* background-image: linear-gradient(227deg, #ffffff 42%, #d6e4ff 100%); */
+  background-image: linear-gradient(to bottom, #ffffff 30%, #d6e4ff 100%);
 }
 
 span {
@@ -114,6 +115,7 @@ span {
   /* background: no-repeat url(https://p-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/test.png) var(--color-bg-b0); */
 
   background-color: #ffffff;
-  background-image: linear-gradient(133deg, #ffffff 12%, #b4ceff 100%);
+  /* background-image: linear-gradient(133deg, #ffffff 12%, #b4ceff 100%); */
+  background-image: linear-gradient(to bottom, #ffffff 30%, #d6e4ff 100%);
 }
 </style>

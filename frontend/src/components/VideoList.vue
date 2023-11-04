@@ -10,6 +10,7 @@ import {
   NTabPane,
   NIcon,
   NButton,
+NEmpty,
 } from "naive-ui";
 import { ArrowUpCircle } from "@vicons/ionicons5";
 import {
@@ -26,6 +27,7 @@ import VideoPlus from "@/components/video/VideoPlus.vue";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
 import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
 import { throttle } from "lodash";
+import { VideocamOff, ChatbubbleEllipses } from "@vicons/ionicons5";
 
 interface propsType {
   videoListType: number;
@@ -44,7 +46,7 @@ const videos = ref<Array<VideoType>>();
 // 默认预加载数
 const defaultLoad: number = 4;
 // 评论列表
-const commentlists = ref<Array<CommentType>>();
+const commentlists = ref<Array<CommentType>>([]);
 // 相关推荐列表
 const recommendlists = ref<any>();
 // 绑定轮播器
@@ -242,13 +244,27 @@ const tabValue = ref<string>("comment");
       <NTabs v-model:value="tabValue" type="line" animated>
         <NTabPane name="comment" tab="评论">
           <CommentListCom
-            v-if="commentlists"
+            v-if="commentlists.length != 0"
             :commentlists="commentlists"
             @delete-comment="deleteFunc"
           />
+          <NEmpty v-else description="还没有评论哦，快来抢沙发~">
+            <template #icon>
+              <NIcon>
+                <ChatbubbleEllipses />
+              </NIcon>
+            </template>
+          </NEmpty>
         </NTabPane>
         <NTabPane name="recommend" tab="相关推荐">
-          <VideoRecommendCard :recommendlists="recommendlists" />
+          <VideoRecommendCard v-if="recommendlists.length != 0" :recommendlists="recommendlists" />
+          <NEmpty v-else description="没有推荐的视频哦~去别处看看吧~">
+            <template #icon>
+              <NIcon>
+                <VideocamOff />
+              </NIcon>
+            </template>
+          </NEmpty>
         </NTabPane>
       </NTabs>
       <template v-if="tabValue == 'comment'" #footer>

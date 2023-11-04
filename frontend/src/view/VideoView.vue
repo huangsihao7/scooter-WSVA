@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-31 18:42:57
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 13:32:37
+ * @LastEditTime: 2023-11-04 16:57:54
  * @Description: 查看某个特定video
  * @FilePath: \scooter-WSVA\frontend\src\view\VideoView.vue
 -->
@@ -31,18 +31,20 @@ import { UserType } from "@/apis/interface";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
 import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
 import { ArrowUpCircle } from "@vicons/ionicons5";
+import { VideocamOff, ChatbubbleEllipses } from "@vicons/ionicons5";
 
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false);
 const route = useRoute();
 const videoId = computed(() => route.params.id);
 const video = ref<any>();
-const commentlists = ref<any>();
+  const commentlists = ref<Array<CommentType>>([]);
 // 相关推荐列表
 const recommendlists = ref<any>();
 // 添加评论的内容
 const addComment = ref<string>("");
 const message = useMessage();
+const tabValue = ref<string>("comment");
 
 // 获取视频
 onMounted(() => {
@@ -158,19 +160,33 @@ const postCommentByBtn = () => {
       to="#drawer-target"
     >
       <NDrawerContent :native-scrollbar="false">
-        <NTabs type="line" animated>
+        <NTabs v-model:value="tabValue" type="line" animated>
           <NTabPane name="comment" tab="评论">
             <CommentListCom
-              v-if="commentlists"
+              v-if="commentlists.length != 0"
               :commentlists="commentlists"
               @delete-comment="deleteFunc"
             />
+            <NEmpty v-else description="还没有评论哦，快来抢沙发~">
+              <template #icon>
+                <NIcon>
+                  <ChatbubbleEllipses />
+                </NIcon>
+              </template>
+            </NEmpty>
           </NTabPane>
           <NTabPane name="recommend" tab="相关推荐">
-            <VideoRecommendCard :recommendlists="recommendlists" />
+            <VideoRecommendCard v-if="recommendlists.length != 0" :recommendlists="recommendlists" />
+            <NEmpty v-else description="没有推荐的视频哦~去别处看看吧~">
+              <template #icon>
+                <NIcon>
+                  <VideocamOff />
+                </NIcon>
+              </template>
+            </NEmpty>
           </NTabPane>
         </NTabs>
-        <template #footer>
+        <template v-if="tabValue == 'comment'" #footer>
           <NInput
             v-model:value="addComment"
             maxlength="30"
@@ -180,7 +196,7 @@ const postCommentByBtn = () => {
             placeholder="留下精彩的评论吧"
             @keydown="postComment"
           >
-            <template #suffix>
+            <template #prefix>
               <NButton text @click="postCommentByBtn">
                 <template #icon>
                   <NIcon :component="ArrowUpCircle" />

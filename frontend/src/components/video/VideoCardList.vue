@@ -53,7 +53,7 @@ onMounted(() => {
     <template #cover>
       <img
         class="image-css"
-        :src="info.cover_url"
+        v-lazy="info.cover_url"
         alt="img"
         @click="handleShowVideo(info)"
       />

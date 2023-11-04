@@ -171,7 +171,7 @@ const cancleFollow = (item: any, _index: any) => {
               <img
                 v-if="info.cover_url"
                 class="img"
-                :src="info.cover_url"
+                v-lazy="info.cover_url"
                 @click="handleShowVedio(info)"
               />
               <NEmpty
