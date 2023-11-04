@@ -4,6 +4,7 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/zrpc"
+	"github.com/zeromicro/zero-contrib/zrpc/registry/consul"
 )
 
 type Config struct {
@@ -18,4 +19,5 @@ type Config struct {
 		MaxLifetime  int `json:",default=3600"`
 	}
 	BizRedis redis.RedisConf
+	Consul   consul.Conf
 }

@@ -13,7 +13,7 @@ type ServiceContext struct {
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
-	RelationRPC := zrpc.MustNewClient(c.Relation, zrpc.WithUnaryClientInterceptor(interceptors.ClientErrorInterceptor()))
+	RelationRPC := zrpc.MustNewClient(c.RelationRpc, zrpc.WithUnaryClientInterceptor(interceptors.ClientErrorInterceptor()))
 	return &ServiceContext{
 		Config:      c,
 		RelationRpc: relationclient.NewRelation(RelationRPC),

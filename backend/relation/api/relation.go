@@ -10,6 +10,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/relation/api/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/relation/api/internal/handler"
 	"github.com/huangsihao7/scooter-WSVA/relation/api/internal/svc"
+	_ "github.com/zeromicro/zero-contrib/zrpc/registry/consul"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"

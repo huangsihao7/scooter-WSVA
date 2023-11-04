@@ -17,20 +17,14 @@ KqPusherConf:
     - 172.22.121.54:9092
   Topic: uploadVideos
 Comment:
-  Etcd:
-    Hosts:
-      - 172.22.110.66:2444
-    Key: comment.rpc
+  Target: consul://172.22.110.66:8501/comment.rpc?wait=14s
+  Timeout: 20000
 Label:
-  Etcd:
-    Hosts:
-      - 172.22.110.66:2444
-    Key: label.rpc
+  Target: consul://172.22.110.66:8501/label.rpc?wait=14s
+  Timeout: 20000
 Feed:
-  Etcd:
-    Hosts:
-      - 172.22.110.66:2444
-    Key: feed.rpc
+  Target: consul://172.22.110.66:8501/feed.rpc?wait=14s
+  Timeout: 20000
 
 KqConsumerJobConf:
   Name: kqJobConsumer

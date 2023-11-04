@@ -11,9 +11,9 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/feed/api/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/feed/api/internal/handler"
 	"github.com/huangsihao7/scooter-WSVA/feed/api/internal/svc"
-
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
+	_ "github.com/zeromicro/zero-contrib/zrpc/registry/consul"
 )
 
 var configFile = flag.String("f", "etc/feed-api-dev.yaml", "the config file")
