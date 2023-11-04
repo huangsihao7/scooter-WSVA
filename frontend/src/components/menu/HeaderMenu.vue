@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 17:38:18
+ * @LastEditTime: 2023-11-04 19:32:28
  * @Description: 顶部导航栏组件
  * @FilePath: \scooter-WSVA\frontend\src\components\Menu\HeaderMenu.vue
 -->
@@ -270,7 +270,7 @@ const notLogmenuOptions: MenuOption[] = [
       h(
         NImage,
         {
-          src: "public/logo-svg.svg",
+          src: "/logo-svg.svg",
           width: 100,
           previewDisabled: true,
         },

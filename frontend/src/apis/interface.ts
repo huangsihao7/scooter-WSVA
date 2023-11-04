@@ -3,7 +3,7 @@
  * @Date: 2023-10-27 23:44:28
  * @LastEditors: Xu Ning
  * @LastEditTime: 2023-11-01 22:30:28
- * @Description:
+ * @Description: 数据结构
  * @FilePath: \scooter-WSVA\frontend\src\apis\interface.ts
  */
 

@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 7:08:43
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 16:19:24
+ * @LastEditTime: 2023-11-04 18:12:44
  * @FilePath: \scooter-WSVA\frontend\src\axios\index.ts
- * @Description:
+ * @Description: 请求配置
  *
  */
 import axios, { type AxiosRequestHeaders } from "axios";

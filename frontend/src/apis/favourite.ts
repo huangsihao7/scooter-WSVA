@@ -4,7 +4,7 @@
  * @LastEditors: huangsihao7 1057434651@qq.com
  * @LastEditTime: 2023-10-30 15:03:06
  * @FilePath: /scooter-WSVA/frontend/src/apis/favourite.ts
- * @Description:
+ * @Description: 喜欢操作接口
  */
 import { service } from "@/axios";
 

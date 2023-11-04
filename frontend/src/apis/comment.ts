@@ -3,7 +3,7 @@
  * @Date: 2023-10-29 22:43:26
  * @LastEditors: Xu Ning
  * @LastEditTime: 2023-11-01 12:37:49
- * @Description:
+ * @Description: 评论接口
  * @FilePath: \scooter-WSVA\frontend\src\apis\comment.ts
  */
 import { service } from "@/axios";

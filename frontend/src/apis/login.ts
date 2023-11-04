@@ -3,7 +3,7 @@
  * @Date: 2023-10-25 14:19:40
  * @LastEditors: Xu Ning
  * @LastEditTime: 2023-11-04 13:28:26
- * @Description:
+ * @Description: 登录接口
  * @FilePath: \scooter-WSVA\frontend\src\apis\login.ts
  */
 import { service } from "@/axios";

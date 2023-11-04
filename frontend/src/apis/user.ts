@@ -2,8 +2,8 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 13:48:11
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 16:58:11
- * @Description:
+ * @LastEditTime: 2023-11-04 18:09:03
+ * @Description: 用户接口
  * @FilePath: \scooter-WSVA\frontend\src\apis\user.ts
  */
 import { service } from "@/axios";
