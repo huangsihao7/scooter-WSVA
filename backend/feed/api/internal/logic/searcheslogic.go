@@ -66,6 +66,7 @@ func (l *SearchEsLogic) SearchEs(req *types.SearchEsReq) (resp *types.SearchEsRe
 			Title:         item.Title,
 			CreateTime:    item.CreateTime,
 			Duration:      item.Duration,
+			IsStar:        item.IsStar,
 		})
 	}
 	return &types.SearchEsResp{

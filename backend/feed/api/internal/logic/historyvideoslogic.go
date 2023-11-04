@@ -59,6 +59,7 @@ func (l *HistoryVideosLogic) HistoryVideos() (resp *types.HistoryVideosResp, err
 			Title:         item.Title,
 			CreateTime:    item.CreateTime,
 			Duration:      item.Duration,
+			IsStar:        item.IsStar,
 		})
 	}
 	return &types.HistoryVideosResp{

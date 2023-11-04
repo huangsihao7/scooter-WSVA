@@ -63,6 +63,7 @@ func (l *NeighborsVideosLogic) NeighborsVideos(req *types.NeighborsVideoReq) (re
 			Title:         item.Title,
 			CreateTime:    item.CreateTime,
 			Duration:      item.Duration,
+			IsStar:        item.IsStar,
 		})
 	}
 	return &types.NeighborsVideoResp{

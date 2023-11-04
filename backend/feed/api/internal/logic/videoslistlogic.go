@@ -58,6 +58,7 @@ func (l *VideosListLogic) VideosList() (resp *types.VideosListResp, err error) {
 			Title:         item.Title,
 			CreateTime:    item.CreateTime,
 			Duration:      item.Duration,
+			IsStar:        item.IsStar,
 		})
 	}
 	return &types.VideosListResp{

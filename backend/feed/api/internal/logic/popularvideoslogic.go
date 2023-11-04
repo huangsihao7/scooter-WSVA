@@ -75,6 +75,7 @@ func (l *PopularVideosLogic) PopularVideos(req *types.PopularVideosListReq) (res
 			Title:         item.Title,
 			CreateTime:    item.CreateTime,
 			Duration:      item.Duration,
+			IsStar:        item.IsStar,
 		})
 	}
 	return &types.PopularVideosListResp{

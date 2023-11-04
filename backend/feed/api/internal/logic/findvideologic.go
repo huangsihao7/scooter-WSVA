@@ -64,6 +64,7 @@ func (l *FindVideoLogic) FindVideo(req *types.FindVideoByIdReq) (resp *types.Fin
 			Title:         video.Video.Title,
 			CreateTime:    video.Video.CreateTime,
 			Duration:      video.Video.Duration,
+			IsStar:        video.Video.IsStar,
 		},
 	}, nil
 
