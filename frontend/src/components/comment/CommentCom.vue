@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 22:00:03
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 21:09:28
+ * @LastEditTime: 2023-11-05 00:26:59
  * @Description: 评论组件
  * @FilePath: \scooter-WSVA\frontend\src\components\comment\CommentCom.vue
 -->
@@ -21,6 +21,7 @@ import { CommentType } from "@/apis/interface";
 import { userStore } from "@/stores/user";
 import { doComment } from "@/apis/comment";
 import { videoStore } from "@/stores/video";
+import router from "@/router";
 
 interface propsType {
   comment: CommentType;
@@ -44,16 +45,17 @@ const deleteMyComment = () => {
   });
 };
 
-const fake = () => {
-  console.log("hiiiiiiiiiiiii");
-  message.error("aaa");
-};
+// 跳转用户页面
+const goUserPage = () =>{
+  let id = props.comment.user.id
+  router.push({ name: "userinfo", params: { id: id } });
+}
 </script>
 
 <template>
   <NThing class="comment" content-indented>
     <template v-if="avatar" #avatar>
-      <NAvatar round :src="props.comment.user.avatar"> </NAvatar>
+      <NAvatar round :src="props.comment.user.avatar" @click="goUserPage"> </NAvatar>
     </template>
     <template v-if="header" #header>
       <span class="name"> {{ props.comment.user.name }} </span>
@@ -75,7 +77,7 @@ const fake = () => {
           0
           <!-- {{ props.comment.likenum }} -->
         </NButton>
-          <NButton size="small" @click="fake">
+          <NButton size="small">
             <template #icon>
               <NIcon>
                 <ChatbubbleEllipses />
