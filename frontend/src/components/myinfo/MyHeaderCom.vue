@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 23:04:50
+ * @LastEditTime: 2023-11-04 16:45:21
  * @Description: 
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyHeaderCom.vue
 -->
@@ -146,17 +146,17 @@ const goFriends = () => {
 .header {
   text-align: left;
   display: flex;
-  padding: 2vh 0;
+  // padding: 2vh 0;
   // border-radius: 25px;
   background: no-repeat center top / 100% 100%;
   .sub-header {
     text-align: left;
     display: flex;
     background: #ffffff24;
-    backdrop-filter: blur(5px);
-    border-radius: 25px;
-    margin: 0 2vw;
-    padding: 2vh 2vw;
+    backdrop-filter: blur(3px);
+    // border-radius: 25px;
+    // margin: 0 2vw;
+    padding: 3vh 2vw;
     .n-avatar {
       float: right;
       font-size: 5rem;
