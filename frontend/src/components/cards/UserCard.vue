@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 17:44:45
+ * @LastEditTime: 2023-11-04 17:59:05
  * @Description: 用户卡片列表
  * @FilePath: \scooter-WSVA\frontend\src\components\cards\UserCard.vue
 -->
@@ -72,7 +72,7 @@ const getUserCardsInfo = (finalRoute: string) => {
         console.log(usersList);
         if (usersList) {
           usersList.forEach((element: any) => {
-            element.isfriends = true;
+            element.is_friends = true;
           });
         }
       });
