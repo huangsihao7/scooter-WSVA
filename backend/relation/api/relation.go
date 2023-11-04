@@ -19,7 +19,6 @@ var configFile = flag.String("f", "etc/relation.yaml", "the config file")
 
 func main() {
 	flag.Parse()
-
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 	c.Timeout = 20000

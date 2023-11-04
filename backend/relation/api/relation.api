@@ -57,7 +57,6 @@ type (
 @server(
 	jwt: Auth
 )
-//关系
 service relation {
 	@handler FavoriteAction
 	post /relation/action (actionReq) returns(actionResp)
