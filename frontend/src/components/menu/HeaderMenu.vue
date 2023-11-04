@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 19:32:28
+ * @LastEditTime: 2023-11-04 19:59:32
  * @Description: 顶部导航栏组件
  * @FilePath: \scooter-WSVA\frontend\src\components\Menu\HeaderMenu.vue
 -->
@@ -416,7 +416,7 @@ watch(
             <NFormItemRow label="手机号">
               <NInput
                 v-model:value="loginForm.phoneNum"
-                maxlength="9"
+                maxlength="11"
                 :allow-input="onlyAllowNumber"
                 placeholder="请输入数字"
                 autocomplete="off"
