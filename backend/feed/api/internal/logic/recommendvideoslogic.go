@@ -73,6 +73,7 @@ func (l *RecommendVideosLogic) RecommendVideos(req *types.RecommendVideosListReq
 			Title:         item.Title,
 			CreateTime:    item.CreateTime,
 			Duration:      item.Duration,
+			IsStar:        item.IsStar,
 		})
 	}
 	return &types.RecommendVideosListResp{
