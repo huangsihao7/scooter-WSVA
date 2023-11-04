@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 19:59:32
+ * @LastEditTime: 2023-11-04 20:26:43
  * @Description: 顶部导航栏组件
  * @FilePath: \scooter-WSVA\frontend\src\components\Menu\HeaderMenu.vue
 -->
@@ -445,7 +445,7 @@ watch(
               <NInput
                 v-model:value="registerForm.phoneNum"
                 autocomplete="off"
-                maxlength="9"
+                maxlength="11"
                 :allow-input="onlyAllowNumber"
                 placeholder="请输入数字"
                 clearable
