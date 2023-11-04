@@ -1,6 +1,7 @@
 Name: feed-api
 Host: 0.0.0.0
 Port: 8891
+Timeout: 20000
 Feed:
  Etcd:
    Hosts:

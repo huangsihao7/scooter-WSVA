@@ -21,7 +21,6 @@ func main() {
 	flag.Parse()
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
-	c.Timeout = 20000
 	server := rest.MustNewServer(c.RestConf, rest.WithCustomCors(nil, func(w http.ResponseWriter) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Headers", "*")

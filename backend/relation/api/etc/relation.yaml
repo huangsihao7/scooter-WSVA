@@ -1,6 +1,7 @@
 Name: relation
 Host: 0.0.0.0
 Port: 8893
+Timeout: 20000
 Relation:
   Etcd:
     Hosts:

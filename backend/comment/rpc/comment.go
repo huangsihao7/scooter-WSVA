@@ -25,7 +25,6 @@ func main() {
 	flag.Parse()
 	logx.DisableStat()
 	var c config.Config
-	c.Timeout = 20000
 	conf.MustLoad(*configFile, &c)
 	ctx := svc.NewServiceContext(c)
 

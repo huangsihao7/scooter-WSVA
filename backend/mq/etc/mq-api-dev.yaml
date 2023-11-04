@@ -1,7 +1,7 @@
 Name: mq-api
 Host: 0.0.0.0
 Port: 8895
-
+Timeout: 20000
 KqConsumerConf:
   Name: kqConsumer1
   Brokers:

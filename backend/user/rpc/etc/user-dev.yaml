@@ -1,5 +1,6 @@
 Name: user.rpc
 ListenOn: 0.0.0.0:8010
+Timeout: 20000
 Etcd:
   Hosts:
   - 172.22.110.66:2444

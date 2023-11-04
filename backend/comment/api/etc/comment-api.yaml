@@ -1,6 +1,7 @@
 Name: comment-api
 Host: 0.0.0.0
 Port: 8894
+Timeout: 20000
 Comment:
   Etcd:
     Hosts:

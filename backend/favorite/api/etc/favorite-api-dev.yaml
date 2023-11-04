@@ -1,6 +1,7 @@
 Name: favorite-api
 Host: 0.0.0.0
 Port: 8892
+Timeout: 20000
 Favorite:
   Etcd:
     Hosts:
