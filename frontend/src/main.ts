@@ -19,8 +19,6 @@ const pinia = createPinia();
 const app = createApp(App);
 pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
-app.use(VueLazyLoad, {
-    // options...
-})
+app.use(VueLazyLoad)
 app.use(router);
 app.mount("#app");

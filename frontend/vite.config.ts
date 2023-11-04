@@ -1,9 +1,9 @@
 /*
  * @Author: huangsihao7
  * @Date: 2023-10-29 11:31:39
- * @LastEditors: huangsihao7 1057434651@qq.com
- * @LastEditTime: 2023-11-03 16:33:42
- * @FilePath: /scooter-WSVA/frontend/vite.config.ts
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-11-04 15:03:23
+ * @FilePath: \scooter-WSVA\frontend\vite.config.ts
  * @Description: 
  */
 import { defineConfig } from 'vite'
@@ -12,17 +12,21 @@ import path from 'path'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import {viteMockServe} from "vite-plugin-mock";
 
 const resolve = (dir: string) => path.join(__dirname, dir)
-
 export default defineConfig({
   plugins: [vue(),
-  AutoImport({
-    resolvers: [ElementPlusResolver()],
-  }),
-  Components({
-    resolvers: [ElementPlusResolver()],
-  }),
+    viteMockServe({
+      mockPath: "./src/mock",
+      localEnabled: true,
+    }),
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()],
+    }),
   ],
   resolve: {
     alias: {

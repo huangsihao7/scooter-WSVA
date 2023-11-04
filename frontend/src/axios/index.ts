@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 7:08:43
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 17:32:36
+ * @LastEditTime: 2023-11-04 13:45:23
  * @FilePath: \scooter-WSVA\frontend\src\axios\index.ts
  * @Description:
  *
@@ -14,8 +14,6 @@ import { createDiscreteApi } from "naive-ui";
 
 // const baseURl = 'http://127.0.0.1:8080';
 const baseURL = "http://172.22.121.53:7070";
-// MockURL
-// const baseURL = "http://127.0.0.1:4523/m1/3533086-0-default";
 
 const service = axios.create({
   baseURL: baseURL,

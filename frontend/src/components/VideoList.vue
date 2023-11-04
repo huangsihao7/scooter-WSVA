@@ -25,6 +25,7 @@ import { videoStore } from "@/stores/video";
 import VideoPlus from "@/components/video/VideoPlus.vue";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
 import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
+import { throttle } from 'lodash';
 
 interface propsType {
   videoListType: number;
@@ -136,6 +137,8 @@ const updatePage = (currentIndex: number, lastIndex: number) => {
   }
 };
 
+const throttledUpdatePage = throttle(updatePage, 200);
+
 // 时间获取
 const formattedDate = () => {
   const currentDate = new Date();
@@ -177,17 +180,17 @@ const doCommentApi = () => {
     addComment.value = "";
   });
 };
-
+const throttledDoComment = throttle(doCommentApi, 500);
 // 发布评论
 const postComment = (e: any) => {
   if (e.keyCode == 13 && addComment.value) {
-    doCommentApi();
+    throttledDoComment()
   }
 };
 
 // 点击事件发布评论
 const postCommentByBtn = () => {
-  doCommentApi();
+  throttledDoComment()
 };
 
 // 动态删除评论数据
@@ -207,7 +210,7 @@ const tabValue = ref<string>('comment')
       id="drawer-target"
       ref="carouselRef"
       :loop="false"
-      :on-update:current-index="updatePage"
+      :on-update:current-index="throttledUpdatePage"
       class="wide-carousel"
       direction="vertical"
       dot-placement="right"
