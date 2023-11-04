@@ -55,7 +55,7 @@ func (m *FavoriteModel) IsFavorite(ctx context.Context, uid, vid int64) (bool, e
 
 func (m *FavoriteModel) FindOwnFavorites(ctx context.Context, uid int64) ([]*Favorites, error) {
 	var favorites []*Favorites
-	err := m.db.WithContext(ctx).Where("uid = ?", uid).Find(&favorites).Error
+	err := m.db.WithContext(ctx).Where("uid = ?", uid).Order("id DESC").Find(&favorites).Error
 	if err != nil {
 		return nil, err
 	}
