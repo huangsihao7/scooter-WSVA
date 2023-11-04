@@ -11,6 +11,7 @@ import (
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/svc"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/user"
 	"github.com/zeromicro/go-zero/core/logx"
+	"gorm.io/gorm"
 	"io"
 )
 
@@ -42,36 +43,37 @@ func (l *SearchESLogic) SearchES(in *feed.EsSearchReq) (*feed.EsSearchResp, erro
 		}
 	}
 	`, content)
-
 	body := bytes.NewBufferString(query)
 	response, err := l.svcCtx.Es.Client.Search(l.svcCtx.Es.Client.Search.WithIndex("video-index"), l.svcCtx.Es.Client.Search.WithBody(body))
+	if err != nil {
+		return nil, err
+	}
 	bodyBytes, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
 	}
-
 	var responses Response
 	err = json.Unmarshal(bodyBytes, &responses)
 	if err != nil {
 		l.Logger.Error(err.Error())
 		return nil, err
 	}
-
-	totalHits := responses.Hits.Total.Value
-
 	reslists := make([]*feed.VideoInfo, 0)
 
-	videoIds := []int{}
+	videoIds := make([]int, 0)
 
-	for i := 0; i < totalHits; i++ {
+	for i := 0; i < len(responses.Hits.Hits); i++ {
+		println(i)
 		videoIds = append(videoIds, responses.Hits.Hits[i].Source.VideoID)
 	}
 	queryIds := removeDuplicates(videoIds)
-
 	for i := 0; i < len(queryIds); i++ {
 		curVideoID := queryIds[i]
 		video, err := l.svcCtx.VideoModel.FindOne(l.ctx, int64(curVideoID))
 		if err != nil {
+			if err == gorm.ErrRecordNotFound {
+				continue
+			}
 			return nil, code.FeedUnableToQueryVideoError
 		}
 		userRpcRes, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
