@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 15:26:18
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 23:27:05
- * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\video\PostVideo.vue
+ * @LastEditTime: 2023-11-04 17:26:17
+ * @Description: 上传视频的弹窗组件
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\PostVideoCom.vue
 -->
 <script setup lang="ts">
 import { reactive, onMounted, ref, computed } from "vue";

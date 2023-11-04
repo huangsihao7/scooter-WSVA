@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 22:07:44
- * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\UserCard.vue
+ * @LastEditTime: 2023-11-04 17:44:45
+ * @Description: 用户卡片列表
+ * @FilePath: \scooter-WSVA\frontend\src\components\cards\UserCard.vue
 -->
 <script lang="ts" setup>
 import { ref, onMounted, watch, reactive } from "vue";
@@ -170,8 +170,8 @@ const cancleFollow = (item: any, _index: any) => {
             <template #cover>
               <img
                 v-if="info.cover_url"
-                class="img"
                 v-lazy="info.cover_url"
+                class="img"
                 @click="handleShowVedio(info)"
               />
               <NEmpty

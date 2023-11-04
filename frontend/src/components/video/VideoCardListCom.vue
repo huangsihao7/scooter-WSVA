@@ -2,9 +2,9 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 22:12:30
- * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardList.vue
- * @Description: 
+ * @LastEditTime: 2023-11-04 17:46:37
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardListCom.vue
+ * @Description: 卡片形式的视频信息展示组件
 -->
 <script lang="ts" setup>
 import { onMounted } from "vue";
@@ -52,8 +52,8 @@ onMounted(() => {
   >
     <template #cover>
       <img
-        class="image-css"
         v-lazy="info.cover_url"
+        class="image-css"
         alt="img"
         @click="handleShowVideo(info)"
       />

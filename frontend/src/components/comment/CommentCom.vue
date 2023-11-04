@@ -2,8 +2,8 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 22:00:03
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 21:02:07
- * @Description: 
+ * @LastEditTime: 2023-11-04 17:27:33
+ * @Description: 评论组件
  * @FilePath: \scooter-WSVA\frontend\src\components\comment\CommentCom.vue
 -->
 <script lang="ts" setup>

@@ -2,8 +2,8 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 23:09:26
- * @Description:
+ * @LastEditTime: 2023-11-04 17:48:29
+ * @Description: 配置挂载
  * @FilePath: \scooter-WSVA\frontend\src\main.ts
  */
 import { createApp } from "vue";
@@ -19,6 +19,6 @@ const pinia = createPinia();
 const app = createApp(App);
 pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
-app.use(VueLazyLoad,{});
+app.use(VueLazyLoad, {});
 app.use(router);
 app.mount("#app");

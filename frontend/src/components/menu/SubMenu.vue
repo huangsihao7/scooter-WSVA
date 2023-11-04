@@ -1,3 +1,11 @@
+<!--
+ * @Author: Xu Ning
+ * @Date: 2023-10-25 16:22:40
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-11-04 17:34:47
+ * @Description: 侧边导航栏组件
+ * @FilePath: \scooter-WSVA\frontend\src\components\menu\SubMenu.vue
+-->
 <template>
   <NMenu
     class="tac"

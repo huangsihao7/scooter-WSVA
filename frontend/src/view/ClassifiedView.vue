@@ -2,8 +2,8 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 20:05:39
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 14:07:55
- * @Description: 
+ * @LastEditTime: 2023-11-04 17:47:12
+ * @Description: 分类页面
  * @FilePath: \scooter-WSVA\frontend\src\view\ClassifiedView.vue
 -->
 
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import VideoCard from "@/components/VideoCard.vue";
+import VideoCard from "@/components/cards/VideoCard.vue";
 import { onMounted, ref, computed, watch } from "vue";
 import { VideoType } from "@/apis/interface";
 import { getCategoryVideosList, getVideosByKeyWords } from "@/apis/video";

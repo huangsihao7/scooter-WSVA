@@ -2,8 +2,8 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 22:39:18
- * @Description: 
+ * @LastEditTime: 2023-11-04 17:31:55
+ * @Description: 我的页面的视频信息展示组件
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyInteractCom.vue
 -->
 <template>
@@ -61,7 +61,7 @@
 </template>
 <script lang="ts" setup>
 import { NTabPane, NTabs, NEmpty, NIcon } from "naive-ui";
-import VideoCard from "../VideoCard.vue";
+import VideoCard from "../cards/VideoCard.vue";
 import { getHistoryVideosListReq, userVideoListReq } from "@/apis/video";
 import { userFavouriteListReq, userStarListReq } from "@/apis/favourite";
 import { onMounted, ref, computed } from "vue";

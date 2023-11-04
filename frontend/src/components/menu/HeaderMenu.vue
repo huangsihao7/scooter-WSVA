@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 16:05:56
- * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\HeaderMenu.vue
+ * @LastEditTime: 2023-11-04 17:38:18
+ * @Description: 顶部导航栏组件
+ * @FilePath: \scooter-WSVA\frontend\src\components\Menu\HeaderMenu.vue
 -->
 <script lang="ts" setup>
 import { watch, h, ref, Component, reactive, onMounted, VNodeChild } from "vue";
@@ -31,7 +31,7 @@ import { videoStore } from "@/stores/video";
 import { routeStore } from "@/stores/route";
 import { login, register } from "@/apis/login";
 import router from "@/router";
-import PostVedio from "@/components/video/PostVideo.vue";
+import PostVedioCom from "@/components/video/PostVideoCom.vue";
 import { historyStore } from "@/stores/historySearch";
 
 // 消息弹窗message
@@ -480,7 +480,7 @@ watch(
         </NTabPane>
       </NTabs>
     </NModal>
-    <PostVedio
+    <PostVedioCom
       :video-form-visible="isVideoFormVisible"
       @visible-update="updateVisible"
     />

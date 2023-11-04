@@ -1,3 +1,11 @@
+<!--
+ * @Author: huangsihao7
+ * @Date: 2023-10-30 11:17:41
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-11-04 17:40:04
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardListCom.vue
+ * @Description: 实现上下滑动的短视频组件
+-->
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import {
@@ -10,7 +18,7 @@ import {
   NTabPane,
   NIcon,
   NButton,
-NEmpty,
+  NEmpty,
 } from "naive-ui";
 import { ArrowUpCircle } from "@vicons/ionicons5";
 import {
@@ -25,7 +33,7 @@ import { userStore } from "@/stores/user";
 import { videoStore } from "@/stores/video";
 import VideoPlus from "@/components/video/VideoPlus.vue";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
-import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
+import VideoRecommendCard from "@/components/cards/VideoRecommendCard.vue";
 import { throttle } from "lodash";
 import { VideocamOff, ChatbubbleEllipses } from "@vicons/ionicons5";
 
@@ -257,7 +265,10 @@ const tabValue = ref<string>("comment");
           </NEmpty>
         </NTabPane>
         <NTabPane name="recommend" tab="相关推荐">
-          <VideoRecommendCard v-if="recommendlists.length != 0" :recommendlists="recommendlists" />
+          <VideoRecommendCard
+            v-if="recommendlists.length != 0"
+            :recommendlists="recommendlists"
+          />
           <NEmpty v-else description="没有推荐的视频哦~去别处看看吧~">
             <template #icon>
               <NIcon>

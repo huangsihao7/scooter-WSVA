@@ -3,7 +3,7 @@
  * @Date: 2023-05-08 15:29:52
  * @LastEditors: Xu Ning
  * @LastEditTime: 2023-11-03 22:46:17
- * @Description: 
+ * @Description: 我的页面
  * @FilePath: \scooter-WSVA\frontend\src\view\UserView.vue
 -->
 <script setup lang="ts">

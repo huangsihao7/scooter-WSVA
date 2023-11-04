@@ -2,8 +2,8 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 16:45:21
- * @Description: 
+ * @LastEditTime: 2023-11-04 17:25:45
+ * @Description: 我的页面的个人信息展示组件
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyHeaderCom.vue
 -->
 <script setup lang="ts">

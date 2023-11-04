@@ -2,8 +2,8 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 19:20:52
- * @Description: 
+ * @LastEditTime: 2023-11-04 17:27:00
+ * @Description: 加了侧边栏等效果的视频组件
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
 

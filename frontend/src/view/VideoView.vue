@@ -2,8 +2,8 @@
  * @Author: Xu Ning
  * @Date: 2023-10-31 18:42:57
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 16:57:54
- * @Description: 查看某个特定video
+ * @LastEditTime: 2023-11-04 17:48:04
+ * @Description: 查看某个特定video的页面
  * @FilePath: \scooter-WSVA\frontend\src\view\VideoView.vue
 -->
 <script setup lang="ts">
@@ -29,7 +29,7 @@ import { CommentType } from "@/apis/interface";
 import { userStore } from "@/stores/user";
 import { UserType } from "@/apis/interface";
 import CommentListCom from "@/components/comment/CommentListCom.vue";
-import VideoRecommendCard from "@/components/video/VideoRecommendCard.vue";
+import VideoRecommendCard from "@/components/cards/VideoRecommendCard.vue";
 import { ArrowUpCircle } from "@vicons/ionicons5";
 import { VideocamOff, ChatbubbleEllipses } from "@vicons/ionicons5";
 
@@ -38,7 +38,7 @@ const drawerVisible = ref<boolean>(false);
 const route = useRoute();
 const videoId = computed(() => route.params.id);
 const video = ref<any>();
-  const commentlists = ref<Array<CommentType>>([]);
+const commentlists = ref<Array<CommentType>>([]);
 // 相关推荐列表
 const recommendlists = ref<any>();
 // 添加评论的内容
@@ -176,7 +176,10 @@ const postCommentByBtn = () => {
             </NEmpty>
           </NTabPane>
           <NTabPane name="recommend" tab="相关推荐">
-            <VideoRecommendCard v-if="recommendlists.length != 0" :recommendlists="recommendlists" />
+            <VideoRecommendCard
+              v-if="recommendlists.length != 0"
+              :recommendlists="recommendlists"
+            />
             <NEmpty v-else description="没有推荐的视频哦~去别处看看吧~">
               <template #icon>
                 <NIcon>

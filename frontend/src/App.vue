@@ -2,14 +2,14 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 21:22:02
- * @Description: 
+ * @LastEditTime: 2023-11-04 17:48:10
+ * @Description: 入口
  * @FilePath: \scooter-WSVA\frontend\src\App.vue
 -->
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import SubMenu from "./components/SubMenu.vue";
-import HeaderMenu from "./components/HeaderMenu.vue";
+import SubMenu from "@/components/menu/SubMenu.vue";
+import HeaderMenu from "@/components/menu/HeaderMenu.vue";
 import { ref, onMounted } from "vue";
 import {
   NConfigProvider,

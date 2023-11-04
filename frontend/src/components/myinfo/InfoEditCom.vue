@@ -2,8 +2,8 @@
  * @Author: Xu Ning
  * @Date: 2023-10-29 17:10:06
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 23:06:49
- * @Description: 
+ * @LastEditTime: 2023-11-04 17:25:28
+ * @Description: 用户信息编辑弹窗
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\InfoEditCom.vue
 -->
 <template>

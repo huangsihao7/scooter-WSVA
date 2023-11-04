@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-31 20:58:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 23:15:21
- * @Description: 
- * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoRecommendCard.vue
+ * @LastEditTime: 2023-11-04 17:53:05
+ * @Description: 相关视频推荐卡片
+ * @FilePath: \scooter-WSVA\frontend\src\components\cards\VideoRecommendCard.vue
 -->
 <script setup lang="ts">
 import { NCard, NImage } from "naive-ui";
@@ -24,7 +24,6 @@ const props = defineProps<propsType>();
     class="video-card"
     hoverable
   >
-    
     <NImage :src="video.cover_url" width="100" preview-disabled />
     <div class="video-info">
       <span class="title">
@@ -41,7 +40,11 @@ const props = defineProps<propsType>();
           </NButton>
           <p>{{ video.favorite_count }}</p>
         </div>
-        <span> @ {{ video.author.name }}</span>
+        <span>
+          <NEllipsis style="max-width: 140px" :tooltip="true">
+            @ {{ video.author.name }}
+          </NEllipsis>
+        </span>
       </div>
     </div>
   </NCard>

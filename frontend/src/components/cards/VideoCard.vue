@@ -2,13 +2,13 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 14:47:13
- * @Description: 各个视频分类的视频卡片渲染
- * @FilePath: \scooter-WSVA\frontend\src\components\VideoCard.vue
+ * @LastEditTime: 2023-11-04 17:31:36
+ * @Description: 各个视频分类的视频卡片列表渲染
+ * @FilePath: \scooter-WSVA\frontend\src\components\cards\VideoCard.vue
 -->
 <script lang="ts" setup>
 import { NScrollbar, NSpace } from "naive-ui";
-import VideoCardList from "@/components/video/VideoCardList.vue";
+import VideoCardListCom from "@/components/video/VideoCardListCom.vue";
 interface propsType {
   isScroll: boolean;
   videos: any;
@@ -20,11 +20,11 @@ const props = defineProps<propsType>();
 <template>
   <NScrollbar v-if="props.isScroll" class="card-space">
     <NSpace wrap>
-      <VideoCardList :videos="props.videos" />
+      <VideoCardListCom :videos="props.videos" />
     </NSpace>
   </NScrollbar>
   <NSpace v-else wrap>
-    <VideoCardList :videos="props.videos" :deletable="$props.deletable" />
+    <VideoCardListCom :videos="props.videos" :deletable="$props.deletable" />
   </NSpace>
 </template>
 

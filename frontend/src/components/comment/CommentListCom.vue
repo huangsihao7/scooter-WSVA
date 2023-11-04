@@ -1,3 +1,11 @@
+<!--
+ * @Author: Xu Ning
+ * @Date: 2023-10-27 22:12:03
+ * @LastEditors: Xu Ning
+ * @LastEditTime: 2023-11-04 17:27:49
+ * @Description: 评论卡片列表
+ * @FilePath: \scooter-WSVA\frontend\src\components\comment\CommentListCom.vue
+-->
 <script lang="ts" setup>
 import CommentCom from "./CommentCom.vue";
 import { CommentType } from "@/apis/interface";
