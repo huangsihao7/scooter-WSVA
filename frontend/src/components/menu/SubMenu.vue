@@ -2,21 +2,22 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 17:34:47
+ * @LastEditTime: 2023-11-05 00:18:18
  * @Description: 侧边导航栏组件
- * @FilePath: \scooter-WSVA\frontend\src\components\menu\SubMenu.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\Menu\SubMenu.vue
 -->
 <template>
   <NMenu
     class="tac"
     :options="menuOptions"
     :default-value="defaultActive"
+    v-model:value="routeValue"
     @update:value="handleUpdateValue"
   />
 </template>
 
 <script lang="ts" setup>
-import { Component, h, onBeforeMount, ref } from "vue";
+import { Component, h, onBeforeMount, ref ,watch } from "vue";
 import type { MenuOption } from "naive-ui";
 import { NIcon, NMenu } from "naive-ui";
 import { RouterLink } from "vue-router";
@@ -34,7 +35,7 @@ import {
 import { routeStore } from "@/stores/route";
 
 const defaultActive = ref<any>("");
-
+const routeValue = ref<any>()
 //菜单
 const menuOptions: MenuOption[] = [
   {
@@ -218,11 +219,14 @@ const handleUpdateValue = (key: string) => {
   routeStore().name = keyStr.replace(/"/g, "");
 };
 
+watch(()=>routeStore().name,
+(newValue:any)=>routeValue.value = newValue)
+
 // 挂载之前获取路由
 onBeforeMount(() => {
   let path = window.location.href;
-  defaultActive.value = getLastSegmentFromRoute(path);
-  routeStore().name = defaultActive.value;
+  routeValue.value = getLastSegmentFromRoute(path);
+  routeStore().name = routeValue.value;
 });
 </script>
 

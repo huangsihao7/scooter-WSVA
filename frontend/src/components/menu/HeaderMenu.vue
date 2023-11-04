@@ -349,8 +349,10 @@ const doLogout = () => {
   userStore().background_image = "";
   userStore().user_id = -1;
   message.success("已退出");
-  router.push("/");
-  window.location.reload();
+  routeStore().name = 'rec'
+  router.push("/rec");
+  // window.location.reload();
+  
 };
 
 // 获取投稿dialogue
