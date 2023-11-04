@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  build-backend:
+    image: golang:1.20.3
+    volumes:
+      - ./:/build
+    entrypoint: sh -c "cd /build/backend && make download && make doc && make build"
+  build-frontend:
+    image: node:20.9.0-bullseye
+    volumes:
+      - ./:/build
+    entrypoint: sh -c "cd /build/frontend && npm install --registry=https://registry.npmmirror.com/ && npm run lint && npm run build"

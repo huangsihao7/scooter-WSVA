@@ -1,0 +1,60 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "host": "172.22.121.53:7070",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/null": {
+      "get": {
+        "operationId": "Null",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "mq-api"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "request": {
+      "type": "object",
+      "title": "request"
+    },
+    "response": {
+      "type": "object",
+      "title": "response"
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}

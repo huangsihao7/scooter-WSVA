@@ -16,5 +16,5 @@ type Config struct {
 	AccessKey string
 	SecretKey string
 	Bucket    string
-	OssUrl    string
+	OssUrl    string  `json:",env=OSS_URL"`
 }

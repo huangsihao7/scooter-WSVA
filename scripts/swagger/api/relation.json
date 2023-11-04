@@ -1,0 +1,370 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "host": "172.22.121.53:7070",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/relation/action": {
+      "post": {
+        "operationId": "FavoriteAction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/actionResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/actionReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "relation"
+        ]
+      }
+    },
+    "/relation/favoriteList": {
+      "get": {
+        "operationId": "FavoriteList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FavoriteListResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "relation"
+        ]
+      }
+    },
+    "/relation/followerList": {
+      "get": {
+        "operationId": "FollowerList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FollowerListResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "relation"
+        ]
+      }
+    },
+    "/relation/friendList": {
+      "get": {
+        "operationId": "FriendList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FriendListResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "relation"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "FavoriteListReq": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "FavoriteListReq",
+      "required": [
+        "uid"
+      ]
+    },
+    "FavoriteListResp": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status_msg": {
+          "type": "string"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserInfo"
+          }
+        }
+      },
+      "title": "FavoriteListResp",
+      "required": [
+        "status_code",
+        "status_msg",
+        "list"
+      ]
+    },
+    "FollowerListReq": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "FollowerListReq",
+      "required": [
+        "uid"
+      ]
+    },
+    "FollowerListResp": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status_msg": {
+          "type": "string"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserInfo"
+          }
+        }
+      },
+      "title": "FollowerListResp",
+      "required": [
+        "status_code",
+        "status_msg",
+        "list"
+      ]
+    },
+    "FriendListReq": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "FriendListReq",
+      "required": [
+        "uid"
+      ]
+    },
+    "FriendListResp": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status_msg": {
+          "type": "string"
+        },
+        "list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserInfo"
+          }
+        }
+      },
+      "title": "FriendListResp",
+      "required": [
+        "status_code",
+        "status_msg",
+        "list"
+      ]
+    },
+    "UserInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "mobile": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "dec": {
+          "type": "string"
+        },
+        "background_image": {
+          "type": "string"
+        },
+        "follow_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "follower_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_favorited": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "work_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "favorite_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "is_follow": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "cover_url": {
+          "type": "string"
+        },
+        "video_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "friend_count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "UserInfo",
+      "required": [
+        "id",
+        "name",
+        "gender",
+        "mobile",
+        "avatar",
+        "dec",
+        "background_image",
+        "follow_count",
+        "follower_count",
+        "total_favorited",
+        "work_count",
+        "favorite_count",
+        "is_follow",
+        "cover_url",
+        "video_id",
+        "friend_count"
+      ]
+    },
+    "actionReq": {
+      "type": "object",
+      "properties": {
+        "to_user_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "关注谁"
+        },
+        "action_type": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 1 关注 2 是取关 其他是报错"
+        }
+      },
+      "title": "actionReq",
+      "required": [
+        "to_user_id",
+        "action_type"
+      ]
+    },
+    "actionResp": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status_msg": {
+          "type": "string"
+        }
+      },
+      "title": "actionResp",
+      "required": [
+        "status_code",
+        "status_msg"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}

@@ -1,0 +1,450 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "host": "172.22.121.53:7070",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/comment/action": {
+      "post": {
+        "operationId": "CommentAction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/actionResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/actionReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "comment-api"
+        ]
+      }
+    },
+    "/comment/list": {
+      "get": {
+        "operationId": "GetCommentList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/listResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "video_id",
+            "description": " 视频id",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "comment-api"
+        ]
+      }
+    },
+    "/danmu/listv3": {
+      "get": {
+        "operationId": "GetDanmuList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DanmulistResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": " 视频id",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "comment-api"
+        ]
+      },
+      "post": {
+        "operationId": "DanmuAction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DanmuActionResp"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "弹幕功能",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DanmuActionReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "comment-api"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "CommentInfo": {
+      "type": "object",
+      "properties": {
+        "comment_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "content": {
+          "type": "string"
+        },
+        "create_date": {
+          "type": "string"
+        }
+      },
+      "title": "CommentInfo",
+      "required": [
+        "comment_id",
+        "user",
+        "content",
+        "create_date"
+      ]
+    },
+    "DanmuActionReq": {
+      "type": "object",
+      "properties": {
+        "author": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "color": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 视频id"
+        },
+        "text": {
+          "type": "string",
+          "description": " 用户填写的弹幕内容"
+        },
+        "time": {
+          "type": "number",
+          "format": "float",
+          "description": " 用户发送弹幕的时间段"
+        },
+        "token": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "DanmuActionReq",
+      "required": [
+        "author",
+        "color",
+        "id",
+        "text",
+        "time",
+        "token",
+        "type"
+      ]
+    },
+    "DanmuActionResp": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status_msg": {
+          "type": "string"
+        }
+      },
+      "title": "DanmuActionResp",
+      "required": [
+        "status_code",
+        "status_msg"
+      ]
+    },
+    "DanmuInfo": {
+      "type": "object",
+      "properties": {
+        "send_time": {
+          "type": "number",
+          "format": "float"
+        },
+        "is_ihow": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "video_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "content": {
+          "type": "string"
+        }
+      },
+      "title": "DanmuInfo",
+      "required": [
+        "send_time",
+        "is_ihow",
+        "user_id",
+        "video_id",
+        "content"
+      ]
+    },
+    "DanmulistReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 视频id"
+        }
+      },
+      "title": "DanmulistReq",
+      "required": [
+        "id"
+      ]
+    },
+    "DanmulistResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/[]interface"
+          }
+        }
+      },
+      "title": "DanmulistResp",
+      "required": [
+        "code",
+        "data"
+      ]
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "follow_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "follower_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_favorited": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "work_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "favorite_count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "is_follow": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "friend_count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "User",
+      "required": [
+        "id",
+        "name",
+        "gender",
+        "avatar",
+        "signature",
+        "follow_count",
+        "follower_count",
+        "total_favorited",
+        "work_count",
+        "favorite_count",
+        "is_follow",
+        "friend_count"
+      ]
+    },
+    "actionReq": {
+      "type": "object",
+      "properties": {
+        "video_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 视频id"
+        },
+        "action_type": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 1-发布评论，2-删除评论"
+        },
+        "comment_text": {
+          "type": "string",
+          "description": " 用户填写的评论内容，在action_type=1的时候使用"
+        },
+        "comment_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 要删除的评论id，在action_type=2的时候使用"
+        }
+      },
+      "title": "actionReq",
+      "required": [
+        "video_id",
+        "action_type",
+        "comment_text",
+        "comment_id"
+      ]
+    },
+    "actionResp": {
+      "type": "object",
+      "properties": {
+        "comment_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "status_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status_msg": {
+          "type": "string"
+        }
+      },
+      "title": "actionResp",
+      "required": [
+        "comment_id",
+        "status_code",
+        "status_msg"
+      ]
+    },
+    "listReq": {
+      "type": "object",
+      "properties": {
+        "video_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 视频id"
+        }
+      },
+      "title": "listReq",
+      "required": [
+        "video_id"
+      ]
+    },
+    "listResp": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status_msg": {
+          "type": "string"
+        },
+        "comment_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CommentInfo"
+          }
+        }
+      },
+      "title": "listResp",
+      "required": [
+        "status_code",
+        "status_msg",
+        "comment_list"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}
