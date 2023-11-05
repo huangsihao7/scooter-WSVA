@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-05 00:18:18
+ * @LastEditTime: 2023-11-05 20:58:13
  * @Description: 侧边导航栏组件
  * @FilePath: \scooter-WSVA\frontend\src\components\Menu\SubMenu.vue
 -->
@@ -22,6 +22,7 @@ import type { MenuOption } from "naive-ui";
 import { NIcon, NMenu } from "naive-ui";
 import { RouterLink } from "vue-router";
 import {
+  Videocam as VideocamIcon,
   Basketball as SportsIcon,
   Book as KnowledgeIcon,
   Diamond as RecIcon,
@@ -114,6 +115,23 @@ const menuOptions: MenuOption[] = [
       ),
     key: "hot",
     icon: renderIcon(HotIcon),
+  },
+  {
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            name: "live",
+            params: {
+              lang: "zh-CN",
+            },
+          },
+        },
+        { default: () => "直播" },
+      ),
+    key: "live",
+    icon: renderIcon(VideocamIcon),
   },
   {
     label: () =>

@@ -9,8 +9,12 @@ declare module 'vue' {
   export interface GlobalComponents {
     CommentCom: typeof import('./src/components/comment/CommentCom.vue')['default']
     CommentListCom: typeof import('./src/components/comment/CommentListCom.vue')['default']
+    copy: typeof import('./src/components/video/VideoCom copy.vue')['default']
     HeaderMenu: typeof import('./src/components/menu/HeaderMenu.vue')['default']
     InfoEditCom: typeof import('./src/components/myinfo/InfoEditCom.vue')['default']
+    LiveCarouselCom: typeof import('./src/components/video/LiveCarouselCom.vue')['default']
+    LiveCarouselCom2: typeof import('./src/components/video/LiveCarouselCom2.vue')['default']
+    LiveCom: typeof import('./src/components/video/LiveCom.vue')['default']
     MyHeaderCom: typeof import('./src/components/myinfo/MyHeaderCom.vue')['default']
     MyInteractCom: typeof import('./src/components/myinfo/MyInteractCom.vue')['default']
     PostVideoCom: typeof import('./src/components/video/PostVideoCom.vue')['default']

@@ -98,11 +98,11 @@ const router = createRouter({
       name: "search",
       component: () => import("../view/ClassifiedView.vue"),
     },
-    // {
-    //   path: "/mock",
-    //   name: "mock",
-    //   component: () => import("../view/MockTestView.vue"),
-    // },
+    {
+      path: "/live",
+      name: "live",
+      component: () => import("../view/LiveView.vue"),
+    },
     {
       path: "/",
       redirect: "/rec",

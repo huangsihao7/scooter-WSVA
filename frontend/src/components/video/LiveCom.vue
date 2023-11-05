@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-02 19:07:17
+ * @LastEditTime: 2023-11-05 20:21:21
  * @Description: 视频基础组件
- * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCom.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\LiveCom.vue
 -->
 
 <template>
@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import DPlayer from "dplayer";
 import Hls from "hls.js";
-import { onBeforeUnmount, onMounted, onUpdated, reactive, ref } from "vue";
+import { onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { videoStore } from "@/stores/video";
 
 const videoRef = ref();
@@ -191,32 +191,23 @@ onMounted(() => {
   if (props.subtitle.url) {
     player.subtitle = props.subtitle;
   }
-  if (props.danmaku) {
-    player.danmaku = props.danmaku;
-  }
-  if (props.videoIndex == 0) {
-    //自动播放开启
-    player.autoplay = true;
-    state.instance = new DPlayer(player);
-    videoStore().video_id = props.videoId;
-    // state.instance.video.play()
-  } else {
-    player.autoplay = false;
-    state.instance = new DPlayer(player);
-  }
+  player.autoplay = true;
+  state.instance = new DPlayer(player);
+  videoStore().video_id = props.videoId;
+
 });
 
-onUpdated(() => {
-  if (state.instance) {
-    // 如果需要播放的不是当前video 则暂停
-    if (props.onPlayIndex != props.videoIndex) {
-      state.instance.video.pause();
-    } else {
-      state.instance.video.play();
-      videoStore().video_id = props.videoId;
-    }
-  }
-});
+// onUpdated(() => {
+//   if (state.instance) {
+//     // 如果需要播放的不是当前video 则暂停
+//     if (props.onPlayIndex != props.videoIndex) {
+//       state.instance.video.pause();
+//     } else {
+//       state.instance.video.play();
+//       videoStore().video_id = props.videoId;
+//     }
+//   }
+// });
 
 // 销毁
 onBeforeUnmount(() => {
