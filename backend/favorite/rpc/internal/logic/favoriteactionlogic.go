@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"github.com/go-redis/redis_rate/v10"
 	"github.com/huangsihao7/scooter-WSVA/common/constants"
 	"github.com/huangsihao7/scooter-WSVA/favorite/code"
 	"github.com/huangsihao7/scooter-WSVA/favorite/gmodel"
@@ -42,20 +41,19 @@ func (l *FavoriteActionLogic) FavoriteAction(in *favorite.FavoriteActionRequest)
 	videoId := in.VideoId
 	actionType := in.ActionType
 
-	// 限流
-	limiter := redis_rate.NewLimiter(l.svcCtx.RedisClient)
-	limiterKey := strconv.FormatInt(userId, 10) + FavoriteLimitKey
-	limiterRes, err := limiter.Allow(l.ctx, limiterKey, redis_rate.PerSecond(FavorActionMaxQPS))
-	if err != nil {
-		l.Logger.Errorf("[favorite limiter] err ", err)
-	}
-	if limiterRes.Allowed == 0 {
-		l.Logger.Errorf("[favorite limiter] err ", err)
-		return nil, code.FavoriteLimitError
-	}
+	// 限流limiter := redis_rate.NewLimiter(l.svcCtx.RedisClient)
+	//	limiterKey := strconv.FormatInt(userId, 10) + FavoriteLimitKey
+	//	limiterRes, err := limiter.Allow(l.ctx, limiterKey, redis_rate.PerSecond(FavorActionMaxQPS))
+	//	if err != nil {
+	//		l.Logger.Errorf("[favorite limiter] err ", err)
+	//	}
+	//	if limiterRes.Allowed == 0 {
+	//		l.Logger.Errorf("[favorite limiter] err ", err)
+	//		return nil, code.FavoriteLimitError
+	//	}
 
 	//检查用户id 是否能存在
-	_, err = l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
+	_, err := l.svcCtx.UserModel.GetUserByID(l.ctx, uint(userId))
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			log.Println("点赞用户不存在")
