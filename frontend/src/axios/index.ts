@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 7:08:43
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 18:12:44
+ * @LastEditTime: 2023-11-05 16:52:18
  * @FilePath: \scooter-WSVA\frontend\src\axios\index.ts
  * @Description: 请求配置
  *
@@ -11,6 +11,7 @@ import axios, { type AxiosRequestHeaders } from "axios";
 import router from "@/router";
 import { userStore } from "@/stores/user";
 import { createDiscreteApi } from "naive-ui";
+import { routeStore } from "@/stores/route";
 
 // const baseURl = 'http://127.0.0.1:8080';
 const baseURL = "http://172.22.121.53:7070";
@@ -54,7 +55,9 @@ service.interceptors.response.use((response) => {
     userStore().gender = 1;
     userStore().signature = "";
     userStore().background_image = "";
-    router.push("/");
+    router.push("/rec");
+    routeStore().name = 'rec';
+    window.location.reload()
     return Promise.reject();
   } else {
     message.error(response.data.status_message);
