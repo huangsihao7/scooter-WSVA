@@ -82,7 +82,7 @@ const doSearch = (isHistory: boolean, historyValue?: string) => {
   if (isHistory && historyValue) {
     searchValue = historyValue;
     searchContent.value = historyValue;
-    console.log(searchContent.value)
+    console.log(searchContent.value);
 
     videoStore().search_value = searchValue;
   } else {
@@ -349,10 +349,9 @@ const doLogout = () => {
   userStore().background_image = "";
   userStore().user_id = -1;
   message.success("已退出");
-  routeStore().name = 'rec'
+  routeStore().name = "rec";
   router.push("/rec");
   // window.location.reload();
-  
 };
 
 // 获取投稿dialogue

@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-05 21:13:40
+ * @LastEditTime: 2023-11-05 22:57:48
  * @Description: 视频基础组件
  * @FilePath: \scooter-WSVA\frontend\src\components\live\LiveCom.vue
 -->
@@ -23,7 +23,7 @@ const state: any = reactive({
 });
 
 const props = defineProps({
-  userId: {
+  liveId: {
     type: Number,
     default: -1,
   },
@@ -108,7 +108,7 @@ const props = defineProps({
     // eslint-disable-next-line vue/require-valid-default-prop
     default: {},
   },
-  live:{
+  live: {
     type: Boolean,
     default: false,
   },
@@ -149,7 +149,7 @@ const props = defineProps({
 onMounted(() => {
   let player: any = {
     container: videoRef.value,
-    userId: props.userId,
+    liveId: props.liveId,
     preventClickToggle: props.preventClickToggle,
     pic: props.pic,
     autoplay: props.autoplay,
@@ -171,7 +171,8 @@ onMounted(() => {
   }
   player.autoplay = true;
   state.instance = new DPlayer(player);
-  liveStore().user_id = props.userId
+  liveStore().live_id = props.liveId;
+  liveStore().live_play_url = props.video.url;
 });
 
 // 销毁

@@ -56,8 +56,8 @@ service.interceptors.response.use((response) => {
     userStore().signature = "";
     userStore().background_image = "";
     router.push("/rec");
-    routeStore().name = 'rec';
-    window.location.reload()
+    routeStore().name = "rec";
+    window.location.reload();
     return Promise.reject();
   } else {
     message.error(response.data.status_message);

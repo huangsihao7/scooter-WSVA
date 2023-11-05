@@ -8,16 +8,16 @@
 -->
 <template>
   <NMenu
+    v-model:value="routeValue"
     class="tac"
     :options="menuOptions"
     :default-value="defaultActive"
-    v-model:value="routeValue"
     @update:value="handleUpdateValue"
   />
 </template>
 
 <script lang="ts" setup>
-import { Component, h, onBeforeMount, ref ,watch } from "vue";
+import { Component, h, onBeforeMount, ref, watch } from "vue";
 import type { MenuOption } from "naive-ui";
 import { NIcon, NMenu } from "naive-ui";
 import { RouterLink } from "vue-router";
@@ -36,7 +36,7 @@ import {
 import { routeStore } from "@/stores/route";
 
 const defaultActive = ref<any>("");
-const routeValue = ref<any>()
+const routeValue = ref<any>();
 //菜单
 const menuOptions: MenuOption[] = [
   {
@@ -237,8 +237,10 @@ const handleUpdateValue = (key: string) => {
   routeStore().name = keyStr.replace(/"/g, "");
 };
 
-watch(()=>routeStore().name,
-(newValue:any)=>routeValue.value = newValue)
+watch(
+  () => routeStore().name,
+  (newValue: any) => (routeValue.value = newValue),
+);
 
 // 挂载之前获取路由
 onBeforeMount(() => {

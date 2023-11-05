@@ -130,7 +130,7 @@ const props = defineProps({
     // eslint-disable-next-line vue/require-valid-default-prop
     default: {},
   },
-  live:{
+  live: {
     type: Boolean,
     default: false,
   },

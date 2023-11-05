@@ -15,9 +15,8 @@ const dplayerObj = reactive({
   live: true,
   videoId: 0,
   video: {
-    
     // url: 'http://kbs-dokdo.gscdn.com/dokdo_300/_definst_/dokdo_300.stream/playlist.m3u8', //视频地址
-    url: 'http://pili-live-hls.scooter.peterli.club/scooter/scooter-live.m3u8', //视频地址
+    url: "http://pili-live-hls.scooter.peterli.club/scooter/scooter-live.m3u8", //视频地址
     type: "customHls",
     customType: {
       customHls: function (video: any) {
@@ -27,24 +26,22 @@ const dplayerObj = reactive({
       },
     },
   },
- 
 });
 </script>
 
 <template>
   <div>
     <LiveCom
-        :video-id="dplayerObj.videoId"
-        :video="dplayerObj.video"
-        :live = "dplayerObj.live"
-      />
+      :video-id="dplayerObj.videoId"
+      :video="dplayerObj.video"
+      :live="dplayerObj.live"
+    />
   </div>
 </template>
 
 <style scoped lang="scss">
-
 .dplayer {
-    width: calc(100vw - 160px);
-    height: calc(100vh - 60px);
-  }
-  </style>
+  width: calc(100vw - 160px);
+  height: calc(100vh - 60px);
+}
+</style>

@@ -42,7 +42,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .user {
-
   .interaction {
     margin-top: 10px;
   }

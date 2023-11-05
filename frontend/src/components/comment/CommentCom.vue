@@ -9,14 +9,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { Heart, ChatbubbleEllipses, Trash } from "@vicons/ionicons5";
-import {
-  NIcon,
-  NButton,
-  NSpace,
-  NThing,
-  NAvatar,
-  useMessage,
-} from "naive-ui";
+import { NIcon, NButton, NSpace, NThing, NAvatar, useMessage } from "naive-ui";
 import { CommentType } from "@/apis/interface";
 import { userStore } from "@/stores/user";
 import { doComment } from "@/apis/comment";
@@ -46,16 +39,17 @@ const deleteMyComment = () => {
 };
 
 // 跳转用户页面
-const goUserPage = () =>{
-  let id = props.comment.user.id
+const goUserPage = () => {
+  let id = props.comment.user.id;
   router.push({ name: "userinfo", params: { id: id } });
-}
+};
 </script>
 
 <template>
   <NThing class="comment" content-indented>
     <template v-if="avatar" #avatar>
-      <NAvatar round :src="props.comment.user.avatar" @click="goUserPage"> </NAvatar>
+      <NAvatar round :src="props.comment.user.avatar" @click="goUserPage">
+      </NAvatar>
     </template>
     <template v-if="header" #header>
       <span class="name"> {{ props.comment.user.name }} </span>
@@ -77,14 +71,14 @@ const goUserPage = () =>{
           0
           <!-- {{ props.comment.likenum }} -->
         </NButton>
-          <NButton size="small">
-            <template #icon>
-              <NIcon>
-                <ChatbubbleEllipses />
-              </NIcon>
-            </template>
-            评论
-          </NButton>
+        <NButton size="small">
+          <template #icon>
+            <NIcon>
+              <ChatbubbleEllipses />
+            </NIcon>
+          </template>
+          评论
+        </NButton>
         <NButton
           v-if="props.comment.user.id == userStore().user_id"
           size="small"

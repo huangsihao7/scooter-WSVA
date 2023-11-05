@@ -2,18 +2,15 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-05 22:39:13
+ * @LastEditTime: 2023-11-05 22:49:43
  * @FilePath: \scooter-WSVA\frontend\src\components\live\LiveCardListCom.vue
  * @Description: 卡片形式的视频信息展示组件
 -->
 <script lang="ts" setup>
 import { onMounted } from "vue";
-import { NButton, NCard, NEllipsis, NIcon, NAvatar, NTag, NGrid, NGridItem } from "naive-ui";
-import { Heart, Play, Trash } from "@vicons/ionicons5";
+import { NCard, NEllipsis, NAvatar, NGrid, NGridItem } from "naive-ui";
 import { LiveType } from "@/apis/interface";
 import { useRouter } from "vue-router";
-import { Add } from "@vicons/ionicons5";
-import { useMessage } from "naive-ui";
 
 interface propsType {
   videos: any;
@@ -22,14 +19,19 @@ interface propsType {
 
 const props = defineProps<propsType>();
 const router = useRouter();
-const message = useMessage();
 
-const handleShowLive = (info: LiveType) => {
-  console.log('1111111111111111', info.user_id, info.live_play_url)
-  router.push({ name: "live", params: { id: info.id, url: info.live_play_url } });
+// 跳转直播
+const goLive = (info: LiveType) => {
+  router.push({
+    name: "live",
+    params: { id: info.uid, url: info.live_play_url },
+  });
 };
 
-
+// 跳转用户信息
+const goUserInfo = (info: LiveType) => {
+  router.push({ name: "userinfo", params: { id: info.uid } });
+};
 
 onMounted(() => {
   //info.content
@@ -47,25 +49,30 @@ onMounted(() => {
         v-lazy="info.live_cover_url"
         class="image-css"
         alt="img"
-        @click="handleShowLive(info)"
+        @click="goLive(info)"
       />
     </template>
     <div class="card-footer">
       <NGrid item-responsive :x-gap="12" responsive="screen" cols="4">
         <NGridItem>
-          <NAvatar  class="avatar" :src="info.avatar" round />
+          <NAvatar
+            class="avatar"
+            :src="info.avatar"
+            round
+            @click="goUserInfo(info)"
+          />
         </NGridItem>
-        <NGridItem  span="3">
+        <NGridItem span="3">
           <div class="content">
             <NEllipsis :tooltip="false">
               {{ info.signature }}
             </NEllipsis>
           </div>
-            <div class="name">
-              <NEllipsis :tooltip="false">
-                {{info.name }}
-              </NEllipsis>
-            </div>
+          <div class="name">
+            <NEllipsis :tooltip="false">
+              {{ info.name }}
+            </NEllipsis>
+          </div>
         </NGridItem>
       </NGrid>
     </div>
@@ -135,19 +142,20 @@ onMounted(() => {
 
   .card-footer {
     padding-top: 12px;
-    .avatar{
+    .avatar {
       height: 100%;
       width: auto;
     }
 
-    .content, .name{
+    .content,
+    .name {
       text-align: left;
     }
-    .content{
+    .content {
       font-weight: bold;
       color: #333333;
     }
-    .name{
+    .name {
       font-weight: 400;
       font-size: 0.8rem;
       color: rgb(95, 95, 95);

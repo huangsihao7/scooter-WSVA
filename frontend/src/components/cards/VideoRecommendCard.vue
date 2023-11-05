@@ -19,10 +19,10 @@ interface propsType {
 const props = defineProps<propsType>();
 const router = useRouter();
 // 查看视频
-const goVideo = (video: VideoType) =>{
+const goVideo = (video: VideoType) => {
   routeStore().name = "video";
   router.push({ name: "video", params: { id: video.video_id } });
-}
+};
 </script>
 
 <template>
@@ -32,7 +32,12 @@ const goVideo = (video: VideoType) =>{
     class="video-card"
     hoverable
   >
-    <NImage :src="video.cover_url" width="100" preview-disabled @click="goVideo(video)"/>
+    <NImage
+      :src="video.cover_url"
+      width="100"
+      preview-disabled
+      @click="goVideo(video)"
+    />
     <div class="video-info">
       <span class="title">
         <NEllipsis expand-trigger="click" line-clamp="2" :tooltip="false">
