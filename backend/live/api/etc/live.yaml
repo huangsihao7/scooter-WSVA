@@ -1,0 +1,10 @@
+Name: Live
+Host: 0.0.0.0
+Port: 8896
+Timeout: 20000
+Auth:
+  AccessSecret: uOvKLmVfztaXGpNYd4Z0I1SiT7MweJhl
+  AccessExpire: 86400
+LiveRpc:
+  Target: consul://172.22.110.66:8501/live.rpc?wait=14s
+  Timeout: 20000

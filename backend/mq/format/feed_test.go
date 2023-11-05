@@ -109,8 +109,3 @@ func TestSafe(t *testing.T) {
 	//
 	//fmt.Println(string(prettyJSON))
 }
-
-func TestFun(t *testing.T) {
-	s := "65409c11a2cfbcaec1d62dfd"
-	println(GetJobBack(s))
-}

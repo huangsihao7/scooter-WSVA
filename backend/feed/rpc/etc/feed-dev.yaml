@@ -5,7 +5,6 @@ Consul:
   Host: 172.22.110.66:8501
   Key: feed.rpc
 
-DataSource: root:8691136f0fc946ffb141307209d3143f@tcp(172.22.110.66:3310)/qiniu?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 UserRpc:
   Target: consul://172.22.110.66:8501/user.rpc?wait=14s
   Timeout: 20000

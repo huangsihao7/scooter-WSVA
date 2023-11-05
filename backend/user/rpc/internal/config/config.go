@@ -7,9 +7,7 @@ import (
 
 type Config struct {
 	zrpc.RpcServerConf
-	Salt string
-	//FavoriteRpc zrpc.RpcClientConf //手动代码 fweqfqw
-	//RelationRpc zrpc.RpcClientConf //手动代码
+	Salt   string
 	Consul consul.Conf
 	DB     struct {
 		DataSource   string

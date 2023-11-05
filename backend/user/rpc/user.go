@@ -24,6 +24,7 @@ var configFile = flag.String("f", "etc/user-dev.yaml", "the config file")
 func main() {
 	flag.Parse()
 	logx.DisableStat()
+	//logx.MustSetup(logx.LogConf{Mode: "file", Path: "./log"})
 	var c config.Config
 	conf.MustLoad(*configFile, &c, conf.UseEnv())
 	ctx := svc.NewServiceContext(c)

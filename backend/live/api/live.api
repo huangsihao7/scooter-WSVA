@@ -1,0 +1,38 @@
+type (
+	//开启直播
+	StartResp {
+		StatusCode int    `json:"status_code"`
+		StatusMsg  string `json:"status_msg"`
+		StreamUrl  string `json:"stream_url"`
+	}
+
+	//查询直播列表
+	LiveListResp {
+		StatusCode int    `json:"status_code"`
+		StatusMsg  string `json:"status_msg"`
+		UserList   []User `json:"user_list"`
+	}
+
+	User {
+		UId          int64  `json:"uid"`
+		Name         string `json:"name"`
+		Avatar       string `json:"avatar"`
+		Signature    string `json:"signature"`
+		IsFollow     bool   `json:"is_follow"`
+		LiveCoverUrl string `json:"live_cover_url"`
+		LiveUrl      string `json:"live_url"`
+	}
+)
+@server(
+	jwt: Auth
+)
+service Live {
+	//开启直播
+	@handler Start
+	get /live/start  returns (StartResp)
+
+	//查询直播列表
+	@handler LiveList
+	get /live/list returns (LiveListResp)
+
+}
