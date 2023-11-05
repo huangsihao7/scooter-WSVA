@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-05 20:21:10
+ * @LastEditTime: 2023-11-05 23:06:13
  * @FilePath: \scooter-WSVA\frontend\src\components\video\LiveCarouselCom.vue
  * @Description: 实现上下滑动的短视频组件
 -->
@@ -10,7 +10,7 @@
 import { reactive } from "vue";
 
 import Hls from "hls.js";
-import LiveCom from "@/components/video/LiveCom.vue";
+import LiveCom from "@/components/live/LiveCom.vue";
 const dplayerObj = reactive({
   live: true,
   videoId: 0,
