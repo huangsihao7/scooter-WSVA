@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-05 20:21:21
+ * @LastEditTime: 2023-11-05 21:13:40
  * @Description: 视频基础组件
- * @FilePath: \scooter-WSVA\frontend\src\components\video\LiveCom.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\live\LiveCom.vue
 -->
 
 <template>
@@ -15,7 +15,7 @@
 import DPlayer from "dplayer";
 import Hls from "hls.js";
 import { onBeforeUnmount, onMounted, reactive, ref } from "vue";
-import { videoStore } from "@/stores/video";
+import { liveStore } from "@/stores/live";
 
 const videoRef = ref();
 const state: any = reactive({
@@ -23,12 +23,7 @@ const state: any = reactive({
 });
 
 const props = defineProps({
-  // 是否是第一个视频
-  // firstStart:{
-  //   type: Boolean,
-  //   default: false
-  // },
-  videoId: {
+  userId: {
     type: Number,
     default: -1,
   },
@@ -88,27 +83,10 @@ const props = defineProps({
     },
   },
   // 在左上角展示一个 logo，你可以通过 CSS 调整它的大小和位置
-  // logo: {
-  //   type: String,
-  //   default: "http://127.0.0.1:8080/OIP-C.jpg",
-  // },
-  // 视频信息
-  // video: {
-  //   type: Object,
-  //   default: function () {
-  //     return {
-  //       url: "", //视频地址
-  //       type: "mp4",
-  //       customType: {
-  //         customHls: function (video: any, player: any) {
-  //           const hls = new Hls(); //实例化Hls  用于解析m3u8
-  //           hls.loadSource(video.src);
-  //           hls.attachMedia(video);
-  //         },
-  //       },
-  //     };
-  //   },
-  // },
+  logo: {
+    type: String,
+    default: "/logo-svg.svg",
+  },
   video: {
     type: Object,
     // eslint-disable-next-line vue/require-valid-default-prop
@@ -171,6 +149,7 @@ const props = defineProps({
 onMounted(() => {
   let player: any = {
     container: videoRef.value,
+    userId: props.userId,
     preventClickToggle: props.preventClickToggle,
     pic: props.pic,
     autoplay: props.autoplay,
@@ -182,7 +161,6 @@ onMounted(() => {
     preload: props.preload,
     volume: props.volume,
     playbackSpeed: props.playbackSpeed,
-    // logo: props.logo,
     video: props.video,
     contextmenu: props.contextmenu,
     highlight: props.highlight,
@@ -193,21 +171,8 @@ onMounted(() => {
   }
   player.autoplay = true;
   state.instance = new DPlayer(player);
-  videoStore().video_id = props.videoId;
-
+  liveStore().user_id = props.userId
 });
-
-// onUpdated(() => {
-//   if (state.instance) {
-//     // 如果需要播放的不是当前video 则暂停
-//     if (props.onPlayIndex != props.videoIndex) {
-//       state.instance.video.pause();
-//     } else {
-//       state.instance.video.play();
-//       videoStore().video_id = props.videoId;
-//     }
-//   }
-// });
 
 // 销毁
 onBeforeUnmount(() => {

@@ -99,8 +99,14 @@ const router = createRouter({
       component: () => import("../view/ClassifiedView.vue"),
     },
     {
-      path: "/live",
+      path: "/liveSquare",
+      name: "liveSquare",
+      component: () => import("../view/LiveSquareView.vue"),
+    },
+    {
+      path: "/live/:id",
       name: "live",
+      props: true,
       component: () => import("../view/LiveView.vue"),
     },
     {

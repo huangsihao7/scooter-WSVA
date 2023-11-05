@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 23:44:28
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-01 22:30:28
+ * @LastEditTime: 2023-11-05 22:09:36
  * @Description: 数据结构
  * @FilePath: \scooter-WSVA\frontend\src\apis\interface.ts
  */
@@ -21,6 +21,16 @@ interface VideoType {
   star_count: number;
   share_count: number;
   duration: string;
+}
+
+interface LiveType{
+  user_id: number;
+  avatar: string;
+  name: string;
+  live_play_url: string;
+  live_cover_url: string;
+  is_follow: boolean;
+  signature: string;
 }
 
 interface CommentType {
@@ -70,4 +80,4 @@ interface FollowCardType {
   video_id: number;
 }
 
-export type { VideoType, DownloadType, UserType, CommentType, FollowCardType };
+export type { VideoType, DownloadType, UserType, CommentType, FollowCardType,LiveType };

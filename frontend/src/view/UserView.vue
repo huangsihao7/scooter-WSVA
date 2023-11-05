@@ -42,7 +42,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .user {
-  // padding: 5vh 5vw 0 5vw;
 
   .interaction {
     margin-top: 10px;

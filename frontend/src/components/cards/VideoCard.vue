@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 17:31:36
+ * @LastEditTime: 2023-11-05 21:06:02
  * @Description: 各个视频分类的视频卡片列表渲染
  * @FilePath: \scooter-WSVA\frontend\src\components\cards\VideoCard.vue
 -->
@@ -10,8 +10,10 @@
 import { NScrollbar, NSpace } from "naive-ui";
 import VideoCardListCom from "@/components/video/VideoCardListCom.vue";
 interface propsType {
+  // 用户视频卡片
   isScroll: boolean;
   videos: any;
+  // 分类视频卡片
   deletable?: boolean;
 }
 const props = defineProps<propsType>();

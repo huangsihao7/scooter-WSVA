@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 17:46:37
+ * @LastEditTime: 2023-11-05 21:46:24
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardListCom.vue
  * @Description: 卡片形式的视频信息展示组件
 -->
@@ -27,9 +27,6 @@ const message = useMessage();
 const handleShowVideo = (info: VideoType) => {
   router.push({ name: "video", params: { id: info.video_id } });
 };
-
-// 跳转路由，展示视频
-const GetVideoLink = () => {};
 
 // 删除我的视频
 const deleteVideo = (info: any) => {
@@ -70,7 +67,7 @@ onMounted(() => {
         <NIcon><Trash /></NIcon>
       </template>
     </NButton>
-    <div class="video-space" style="position: relative" @click="GetVideoLink">
+    <div class="video-space" style="position: relative">
       <NTag
         class="time"
         round

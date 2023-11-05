@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-05 20:58:13
+ * @LastEditTime: 2023-11-05 22:31:58
  * @Description: 侧边导航栏组件
- * @FilePath: \scooter-WSVA\frontend\src\components\Menu\SubMenu.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\menu\SubMenu.vue
 -->
 <template>
   <NMenu
@@ -122,7 +122,7 @@ const menuOptions: MenuOption[] = [
         RouterLink,
         {
           to: {
-            name: "live",
+            name: "liveSquare",
             params: {
               lang: "zh-CN",
             },
@@ -130,7 +130,7 @@ const menuOptions: MenuOption[] = [
         },
         { default: () => "直播" },
       ),
-    key: "live",
+    key: "liveSquare",
     icon: renderIcon(VideocamIcon),
   },
   {
