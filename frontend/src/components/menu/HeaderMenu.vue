@@ -2,9 +2,9 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 23:29:51
+ * @LastEditTime: 2023-11-05 23:35:23
  * @Description: 顶部导航栏组件
- * @FilePath: \scooter-WSVA\frontend\src\components\Menu\HeaderMenu.vue
+ * @FilePath: \scooter-WSVA\frontend\src\components\menu\HeaderMenu.vue
 -->
 <script lang="ts" setup>
 import { watch, h, ref, Component, reactive, onMounted, VNodeChild } from "vue";
@@ -48,6 +48,8 @@ const historyTabVisible = ref<boolean>(true);
 const dropOptions = ref<DropdownOption[]>();
 // 投稿表单数据
 const isVideoFormVisible = ref<boolean>(false);
+// 直播表单数据
+const isLiveFormVisible = ref<boolean>(false);
 // 登录表单数据
 const loginFormVisible = ref<boolean>(false);
 
@@ -105,7 +107,7 @@ const doSearch = (isHistory: boolean, historyValue?: string) => {
 };
 
 //投稿渲染
-function renderBtn() {
+function renderPostBtn() {
   return () =>
     h(
       NButton,
@@ -120,6 +122,25 @@ function renderBtn() {
         },
       },
       "投稿",
+    );
+}
+
+//直播渲染
+function renderLiveBtn() {
+  return () =>
+    h(
+      NButton,
+      {
+        attr: {
+          id: "post-btn",
+        },
+        round: true,
+        renderIcon: renderIcon(Add),
+        onClick: () => {
+          getLiveForm();
+        },
+      },
+      "我要直播",
     );
 }
 
@@ -253,8 +274,12 @@ const loggedMenuOptions: MenuOption[] = [
     key: "search",
   },
   {
-    label: renderBtn(),
+    label: renderPostBtn(),
     key: "post-btn",
+  },
+  {
+    label: renderLiveBtn(),
+    key: "live-btn",
   },
   {
     label: renderAvatar(userStore().avatar),
@@ -359,8 +384,13 @@ const getPostVideoForm = () => {
   isVideoFormVisible.value = true;
 };
 
+// 获取我要直播dialogue
+const getLiveForm = () =>{
+  isLiveFormVisible.value = true
+}
+
 // 投稿完成后的回调
-const updateVisible = (flag: boolean) => {
+const updatePostVideoVisible = (flag: boolean) => {
   isVideoFormVisible.value = flag;
 };
 
@@ -389,6 +419,17 @@ watch(
     }
   },
 );
+
+import { useClipboard } from "@vueuse/core";
+const { copy, copied } = useClipboard();
+const url = ref<string>('')
+// 直播链接复制成功回调
+const handleCopy = () => {
+  copy(url.value);
+  message.success("复制成功");
+  isLiveFormVisible.value = false;
+};
+
 </script>
 
 <template>
@@ -486,8 +527,21 @@ watch(
     </NModal>
     <PostVedioCom
       :video-form-visible="isVideoFormVisible"
-      @visible-update="updateVisible"
+      @visible-update="updatePostVideoVisible"
     />
+    <PostVedioCom
+      :video-form-visible="isVideoFormVisible"
+      @visible-update="updatePostVideoVisible"
+    />
+    <NModal :closable="false" v-model:show="isLiveFormVisible" preset="dialog" title="我要直播">
+      您的直播推流地址为:{{ url }} 
+      <template #action>
+        <NSpin v-if="copied">
+          <NButton round> 复制中 </NButton>
+        </NSpin>
+        <NButton v-else round @click="handleCopy"> 复制 </NButton>
+      </template>
+    </NModal>
   </div>
 </template>
 
@@ -542,16 +596,4 @@ watch(
   flex-grow: 1;
 }
 
-#post-btn {
-  margin-left: 20vw;
-}
-
-.aaa {
-  background-color: #409eff;
-}
-
-.post-btn {
-  margin: auto;
-  margin-right: 5px;
-}
 </style>
