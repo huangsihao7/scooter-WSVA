@@ -231,7 +231,7 @@ const loggedMenuOptions: MenuOption[] = [
               },
               class: "h-input",
               round: true,
-              placeholder: "搜索",
+              placeholder: "世界那么大，我想去看看🕶️",
               onKeydown: (e) => {
                 if (e.key == "Enter") {
                   doSearch(false);

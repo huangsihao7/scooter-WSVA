@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 17:59:05
+ * @LastEditTime: 2023-11-05 23:11:02
  * @Description: 用户卡片列表
  * @FilePath: \scooter-WSVA\frontend\src\components\cards\UserCard.vue
 -->
@@ -162,7 +162,7 @@ const cancleFollow = (item: any, _index: any) => {
       <NGrid
         v-if="usersList.length != 0"
         :x-gap="12"
-        cols="2 s:2 m:3 l:4 xl:5 2xl:7"
+        cols="2 s:3 m:4 l:5 xl:6 2xl:8"
         responsive="screen"
       >
         <NGi v-for="(info, index) in usersList" :key="index">
@@ -171,7 +171,7 @@ const cancleFollow = (item: any, _index: any) => {
               <img
                 v-if="info.cover_url"
                 v-lazy="info.cover_url"
-                class="img"
+                class="image-css"
                 @click="handleShowVedio(info)"
               />
               <NEmpty
@@ -252,9 +252,13 @@ const cancleFollow = (item: any, _index: any) => {
   margin: 2vh 2vw;
 }
 .card {
-  height: 60vh;
+  height: 50vh;
   width: 100%;
-
+  .image-css{
+    height: 40vh;
+    width: 100%;
+    object-fit: fill;
+  }
   .header-info {
     display: flex;
     margin-top: 20px;

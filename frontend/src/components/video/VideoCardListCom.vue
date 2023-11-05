@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-05 21:46:24
+ * @LastEditTime: 2023-11-05 23:09:11
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardListCom.vue
  * @Description: 卡片形式的视频信息展示组件
 -->
@@ -152,11 +152,11 @@ onMounted(() => {
   .image-css {
     width: 100%;
     object-fit: fill;
-    height: 50vh;
+    height: 40vh;
   }
 
   .n-card .n-card-cover img {
-    height: 60vh;
+    height: 50vh;
   }
 
   .video-space {
