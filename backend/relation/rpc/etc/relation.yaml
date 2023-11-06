@@ -22,3 +22,6 @@ DB:
 UserRpc:
   Target: consul://172.22.110.66:8501/user.rpc?wait=14s
   Timeout: 20000
+Telemetry:
+  Name: wsva
+  Endpoint: http://172.22.110.66:14278/api/traces

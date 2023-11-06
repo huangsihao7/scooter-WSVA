@@ -16,3 +16,6 @@ DB:
   MaxOpenConns: 100
   ConnMaxLifetime: 3600
 RecommendUrl: http://172.22.121.54:8088
+Telemetry:
+  Name: wsva
+  Endpoint: http://172.22.110.66:14278/api/traces

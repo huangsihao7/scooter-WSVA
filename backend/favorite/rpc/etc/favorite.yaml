@@ -16,7 +16,7 @@ UserRpc:
   Target: consul://172.22.110.66:8501/user.rpc?wait=14s
   Timeout: 20000
 Telemetry:
-  Name: favorite.api
+  Name: wsva
   Endpoint: http://172.22.110.66:14278/api/traces
 BizRedis:
   Host: 172.22.110.66:6388

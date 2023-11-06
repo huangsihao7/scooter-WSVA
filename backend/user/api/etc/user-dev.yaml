@@ -15,5 +15,5 @@ Bucket: wy-video
 OssUrl: http://s327crbzf.hn-bkt.clouddn.com
 Prometheus:
   Host: 0.0.0.0
-  Port: 9081
+  Port: 9774
   Path: /metrics

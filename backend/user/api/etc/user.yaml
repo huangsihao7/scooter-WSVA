@@ -17,3 +17,6 @@ Prometheus:
   Host: 0.0.0.0
   Port: 9770
   Path: /metrics
+Telemetry:
+  Name: wsva
+  Endpoint: http://172.22.110.66:14278/api/traces

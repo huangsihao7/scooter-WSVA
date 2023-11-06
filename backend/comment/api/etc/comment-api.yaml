@@ -10,6 +10,9 @@ Auth:
   AccessExpire: 86400
 RecommendUrl: http://172.22.121.54:8088
 Prometheus:
-  Host: 172.22.121.53
+  Host: 0.0.0.0
   Port: 9774
   Path: /metrics
+Telemetry:
+  Name: wsva
+  Endpoint: http://172.22.110.66:14278/api/traces
