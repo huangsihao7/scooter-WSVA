@@ -116,7 +116,7 @@ const goFriends = () => {
         color="#409eff85"
         @click="editVisible = true"
       >
-      编辑资料
+        编辑资料
         <template #icon>
           <span class="iconfont icon-bianji"></span>
         </template>

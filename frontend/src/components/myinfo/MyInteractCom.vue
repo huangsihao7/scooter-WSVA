@@ -12,7 +12,7 @@
     justify-content="space-evenly"
     @update-value="handleUpdate"
   >
-    <NTabPane name="work" >
+    <NTabPane name="work">
       <template #tab>
         <span class="iconfont icon-shipin2 tab-icon"></span>
         作品
@@ -45,7 +45,7 @@
         </template>
       </NEmpty>
     </NTabPane>
-    <NTabPane name="collect" >
+    <NTabPane name="collect">
       <template #tab>
         <span class="iconfont icon-shoucang tab-icon"></span>
         收藏
@@ -59,7 +59,7 @@
         </template>
       </NEmpty>
     </NTabPane>
-    <NTabPane name="history" >
+    <NTabPane name="history">
       <template #tab>
         <span class="iconfont icon-lishijilu tab-icon"></span>
         浏览记录
@@ -158,7 +158,7 @@ const handleUpdate = (paneName: string) => {
 };
 </script>
 <style>
-.tab-icon{
+.tab-icon {
   margin-right: 6px;
   font-size: 20px;
 }

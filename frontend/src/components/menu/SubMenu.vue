@@ -42,7 +42,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "推荐" },
       ),
     key: "rec",
-    icon: renderIcon('icon-faxian'),
+    icon: renderIcon("icon-faxian"),
   },
   {
     label: () =>
@@ -59,7 +59,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "关注" },
       ),
     key: "follow",
-    icon: renderIcon('icon-dianzan2'),
+    icon: renderIcon("icon-dianzan2"),
   },
   {
     label: () =>
@@ -76,7 +76,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "我的" },
       ),
     key: "user",
-    icon: renderIcon('icon-wode'),
+    icon: renderIcon("icon-wode"),
   },
   {
     key: "divider-1",
@@ -102,7 +102,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "热门" },
       ),
     key: "hot",
-    icon: renderIcon('icon-redu'),
+    icon: renderIcon("icon-redu"),
   },
   {
     label: () =>
@@ -119,7 +119,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "直播" },
       ),
     key: "liveSquare",
-    icon: renderIcon('icon-zhibo'),
+    icon: renderIcon("icon-zhibo"),
   },
   {
     label: () =>
@@ -136,7 +136,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "娱乐" },
       ),
     key: "recreation",
-    icon: renderIcon('icon-youxi'),
+    icon: renderIcon("icon-youxi"),
   },
   {
     label: () =>
@@ -153,7 +153,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "体育" },
       ),
     key: "sports",
-    icon: renderIcon('icon-jiangpai'),
+    icon: renderIcon("icon-jiangpai"),
   },
   {
     label: () =>
@@ -170,7 +170,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "食物" },
       ),
     key: "food",
-    icon: renderIcon('icon-kafei'),
+    icon: renderIcon("icon-kafei"),
   },
   {
     label: () =>
@@ -187,7 +187,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "二次元" },
       ),
     key: "cartoon",
-    icon: renderIcon('icon-xingqiu'),
+    icon: renderIcon("icon-xingqiu"),
   },
   {
     label: () =>
@@ -204,15 +204,16 @@ const menuOptions: MenuOption[] = [
         { default: () => "知识" },
       ),
     key: "knowledge",
-    icon: renderIcon('icon-tushu'),
+    icon: renderIcon("icon-tushu"),
   },
 ];
 
 // 渲染图标
 function renderIcon(iconfontName: string) {
-  return () => h('span', {
-    class: ['iconfont', iconfontName]
-  });
+  return () =>
+    h("span", {
+      class: ["iconfont", iconfontName],
+    });
 }
 
 // 获取当前页面的末尾路由
@@ -245,7 +246,7 @@ onBeforeMount(() => {
   height: 100%;
 }
 
-.n-menu-item-content__icon{
+.n-menu-item-content__icon {
   margin-right: 0px !important;
 }
 </style>

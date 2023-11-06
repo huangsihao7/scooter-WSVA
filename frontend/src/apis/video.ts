@@ -62,14 +62,14 @@ export function getVideosList() {
 
 export function getCategoryVideosList(category: number) {
   return service({
-    url: `/feed/CategoryVideosList?category=${category}`, 
+    url: `/feed/CategoryVideosList?category=${category}`,
     method: "get",
   });
 }
 
 export function getRecommendVideosList(video_id: number) {
   return service({
-    url: `/feed/neighbors?video_id=${video_id}`, 
+    url: `/feed/neighbors?video_id=${video_id}`,
     method: "get",
   });
 }

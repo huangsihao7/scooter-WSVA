@@ -8,8 +8,8 @@ export function launchLive() {
 }
 
 export function getLiveList() {
-    return service({
-        url: "/live/list", 
-        method: "get",
-    });
+  return service({
+    url: "/live/list",
+    method: "get",
+  });
 }

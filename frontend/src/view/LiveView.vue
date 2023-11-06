@@ -18,14 +18,9 @@ const liveId = computed(() =>
   route.params.id ? parseInt(route.params.id.toString()) : liveStore().live_id,
 );
 // 播放路由
-const url = computed(() =>
-  liveStore().live_url
-);
-
-
+const url = computed(() => liveStore().live_url);
 </script>
 <template>
-  {{ url }}1111111111111111{{  liveId }}
   <LivePlus :live-id="liveId" :url="url" />
 </template>
 

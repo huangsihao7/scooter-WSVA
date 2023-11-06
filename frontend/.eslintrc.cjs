@@ -37,7 +37,8 @@ module.exports = defineConfig({
     rules: {
         // 'no-undef': 'off',
         // 禁止使用 var
-        'no-var': 'error',
+        // 'no-var': 'error',
+        "no-self-assign": "off",
         semi: 'off',
         // 优先使用 interface 而不是 type
         '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],

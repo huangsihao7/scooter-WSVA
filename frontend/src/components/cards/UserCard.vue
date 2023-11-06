@@ -254,7 +254,7 @@ const cancleFollow = (item: any, _index: any) => {
 .card {
   height: 50vh;
   width: 100%;
-  .image-css{
+  .image-css {
     height: 40vh;
     width: 100%;
     object-fit: fill;

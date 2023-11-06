@@ -22,7 +22,7 @@ import {
   NFormItemRow,
   NDropdown,
   useMessage,
-  NSpin
+  NSpin,
 } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import { userStore } from "@/stores/user";
@@ -69,18 +69,19 @@ onMounted(() => {
   menuClass.value = userStore().token
     ? "header-menu-login"
     : "header-menu-logout";
-  launchLive().then((res:any)=>{
+  launchLive().then((res: any) => {
     // url.value = res
-    url.value = res.stream_url
-  })
+    url.value = res.stream_url;
+  });
 });
 
 // 渲染图标
 // 渲染图标
 function renderIcon(iconfontName: string, otherClassName?: string) {
-  return () => h('span', {
-    class: ['iconfont', iconfontName, otherClassName]
-  });
+  return () =>
+    h("span", {
+      class: ["iconfont", iconfontName, otherClassName],
+    });
 }
 const searchHistoryNum = ref<number>(0);
 
@@ -122,7 +123,7 @@ function renderPostBtn() {
           id: "post-btn",
         },
         round: true,
-        renderIcon: renderIcon('icon-shangchuan'),
+        renderIcon: renderIcon("icon-shangchuan"),
         onClick: () => {
           getPostVideoForm();
         },
@@ -141,7 +142,7 @@ function renderLiveBtn() {
           id: "post-btn",
         },
         round: true,
-        renderIcon: renderIcon('icon-zhibo-'),
+        renderIcon: renderIcon("icon-zhibo-"),
         onClick: () => {
           getLiveForm();
         },
@@ -167,10 +168,10 @@ function renderAvatar(avatarSrc: string) {
 const renderHistory = () => {
   let hisChild = historyStore().historyData;
   let children = [];
-  if(hisChild.length != 0){
+  if (hisChild.length != 0) {
     let deleteChild = {
-    label: "删除历史记录",
-    key: "delete",
+      label: "删除历史记录",
+      key: "delete",
     };
     children[0] = deleteChild;
     hisChild.forEach((item: any) => {
@@ -273,7 +274,7 @@ const loggedMenuOptions: MenuOption[] = [
               },
             },
             {
-              suffix: renderIcon('icon-sousuo', 'search-icon'),
+              suffix: renderIcon("icon-sousuo", "search-icon"),
             },
           ),
         ],
@@ -392,9 +393,9 @@ const getPostVideoForm = () => {
 };
 
 // 获取我要直播dialogue
-const getLiveForm = () =>{
-  isLiveFormVisible.value = true
-}
+const getLiveForm = () => {
+  isLiveFormVisible.value = true;
+};
 
 // 投稿完成后的回调
 const updatePostVideoVisible = (flag: boolean) => {
@@ -429,14 +430,13 @@ watch(
 
 import { useClipboard } from "@vueuse/core";
 const { copy, copied } = useClipboard();
-const url = ref<string>('')
+const url = ref<string>("");
 // 直播链接复制成功回调
 const handleCopy = () => {
   copy(url.value);
   message.success("复制成功");
   isLiveFormVisible.value = false;
 };
-
 </script>
 
 <template>
@@ -540,8 +540,13 @@ const handleCopy = () => {
       :video-form-visible="isVideoFormVisible"
       @visible-update="updatePostVideoVisible"
     />
-    <NModal :closable="false" v-model:show="isLiveFormVisible" preset="dialog" title="我要直播">
-      您的直播推流地址为: {{ url }} 
+    <NModal
+      v-model:show="isLiveFormVisible"
+      :closable="false"
+      preset="dialog"
+      title="我要直播"
+    >
+      您的直播推流地址为: {{ url }}
       <template #action>
         <NSpin v-if="copied">
           <NButton round> 复制中 </NButton>
@@ -603,12 +608,11 @@ const handleCopy = () => {
   flex-grow: 1;
 }
 
-.search-icon{
+.search-icon {
   font-family: "iconfont" !important;
   font-size: 18px !important;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 </style>
