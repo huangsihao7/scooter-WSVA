@@ -44,6 +44,7 @@ func (l *PopularVideosLogic) PopularVideos(req *types.PopularVideosListReq) (res
 			ReadVid: req.ReadedVideoId,
 		})
 	}
+	//cuo
 	if err != nil {
 		return nil, err
 	}
