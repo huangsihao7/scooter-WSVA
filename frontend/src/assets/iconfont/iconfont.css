@@ -2,17 +2,33 @@
   font-family: "iconfont"; /* Project id 4317311 */
   /* Color fonts */
   src: 
-       url('iconfont.woff2?t=1699248141422') format('woff2'),
-       url('iconfont.woff?t=1699248141422') format('woff'),
-       url('iconfont.ttf?t=1699248141422') format('truetype');
+       url('iconfont.woff2?t=1699249650547') format('woff2'),
+       url('iconfont.woff?t=1699249650547') format('woff'),
+       url('iconfont.ttf?t=1699249650547') format('truetype');
 }
 
 .iconfont {
   font-family: "iconfont" !important;
-  font-size: 16px;
+  font-size: 23px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-zhibo-:before {
+  content: "\e656";
+}
+
+.icon-bianji:before {
+  content: "\e62f";
+}
+
+.icon-lishijilu:before {
+  content: "\100cc";
+}
+
+.icon-dianzan2:before {
+  content: "\e670";
 }
 
 .icon-dianzan1:before {

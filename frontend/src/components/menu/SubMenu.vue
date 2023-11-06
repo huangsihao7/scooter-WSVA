@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-06 13:31:49
+ * @LastEditTime: 2023-11-06 13:40:45
  * @Description: 侧边导航栏组件
  * @FilePath: \scooter-WSVA\frontend\src\components\menu\SubMenu.vue
 -->
@@ -17,22 +17,10 @@
 </template>
 
 <script lang="ts" setup>
-import { Component, h, onBeforeMount, ref, watch } from "vue";
+import { h, onBeforeMount, ref, watch } from "vue";
 import type { MenuOption } from "naive-ui";
-import { NIcon, NMenu } from "naive-ui";
+import { NMenu } from "naive-ui";
 import { RouterLink } from "vue-router";
-import {
-  Videocam as VideocamIcon,
-  Basketball as SportsIcon,
-  Book as KnowledgeIcon,
-  Diamond as RecIcon,
-  FastFood as FoodIcon,
-  GameController as RecreationIcon,
-  Home as UserIcon,
-  Person as FollowIcon,
-  PlanetSharp as CartoonIcon,
-  Rocket as HotIcon,
-} from "@vicons/ionicons5";
 import { routeStore } from "@/stores/route";
 
 const defaultActive = ref<any>("");
@@ -54,7 +42,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "推荐" },
       ),
     key: "rec",
-    icon: renderIcon('icon-dianzan1'),
+    icon: renderIcon('icon-faxian'),
   },
   {
     label: () =>
@@ -71,7 +59,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "关注" },
       ),
     key: "follow",
-    icon: renderIcon(FollowIcon),
+    icon: renderIcon('icon-dianzan2'),
   },
   {
     label: () =>
@@ -88,7 +76,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "我的" },
       ),
     key: "user",
-    icon: renderIcon(UserIcon),
+    icon: renderIcon('icon-wode'),
   },
   {
     key: "divider-1",
@@ -114,7 +102,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "热门" },
       ),
     key: "hot",
-    icon: renderIcon(HotIcon),
+    icon: renderIcon('icon-redu'),
   },
   {
     label: () =>
@@ -131,7 +119,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "直播" },
       ),
     key: "liveSquare",
-    icon: renderIcon(VideocamIcon),
+    icon: renderIcon('icon-zhibo'),
   },
   {
     label: () =>
@@ -148,7 +136,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "娱乐" },
       ),
     key: "recreation",
-    icon: renderIcon(RecreationIcon),
+    icon: renderIcon('icon-youxi'),
   },
   {
     label: () =>
@@ -165,7 +153,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "体育" },
       ),
     key: "sports",
-    icon: renderIcon(SportsIcon),
+    icon: renderIcon('icon-jiangpai'),
   },
   {
     label: () =>
@@ -182,7 +170,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "食物" },
       ),
     key: "food",
-    icon: renderIcon(FoodIcon),
+    icon: renderIcon('icon-kafei'),
   },
   {
     label: () =>
@@ -199,7 +187,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "二次元" },
       ),
     key: "cartoon",
-    icon: renderIcon(CartoonIcon),
+    icon: renderIcon('icon-xingqiu'),
   },
   {
     label: () =>
@@ -216,13 +204,12 @@ const menuOptions: MenuOption[] = [
         { default: () => "知识" },
       ),
     key: "knowledge",
-    icon: renderIcon(KnowledgeIcon),
+    icon: renderIcon('icon-tushu'),
   },
 ];
 
 // 渲染图标
 function renderIcon(iconfontName: string) {
-  // return () => h(NIcon, null, { default: () => h(icon) });
   return () => h('span', {
     class: ['iconfont', iconfontName]
   });
@@ -253,8 +240,12 @@ onBeforeMount(() => {
 });
 </script>
 
-<style scoped>
+<style>
 .tac {
   height: 100%;
+}
+
+.n-menu-item-content__icon{
+  margin-right: 0px !important;
 }
 </style>

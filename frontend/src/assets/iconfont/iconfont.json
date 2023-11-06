@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "5830636",
+      "name": "直播-01",
+      "font_class": "zhibo-",
+      "unicode": "e656",
+      "unicode_decimal": 58966
+    },
+    {
+      "icon_id": "6978127",
+      "name": "编辑",
+      "font_class": "bianji",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "29797313",
+      "name": "历史记录",
+      "font_class": "lishijilu",
+      "unicode": "100cc",
+      "unicode_decimal": 65740
+    },
+    {
+      "icon_id": "8666821",
+      "name": "点赞",
+      "font_class": "dianzan2",
+      "unicode": "e670",
+      "unicode_decimal": 58992
+    },
+    {
       "icon_id": "37978683",
       "name": "点赞",
       "font_class": "dianzan1",

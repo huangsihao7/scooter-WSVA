@@ -10,9 +10,8 @@
 import { onMounted, ref } from "vue";
 import { userStore } from "@/stores/user";
 import { getUserInfo } from "@/apis/user";
-import { NAvatar, NButton, NDivider, NGrid, NGridItem, NIcon } from "naive-ui";
+import { NAvatar, NButton, NDivider, NGrid, NGridItem } from "naive-ui";
 import InfoEditCom from "./InfoEditCom.vue";
-import { CashOutline as CashIcon } from "@vicons/ionicons5";
 import { useRouter } from "vue-router";
 import { routeStore } from "@/stores/route";
 
@@ -117,12 +116,10 @@ const goFriends = () => {
         color="#409eff85"
         @click="editVisible = true"
       >
+      编辑资料
         <template #icon>
-          <NIcon>
-            <CashIcon />
-          </NIcon>
+          <span class="iconfont icon-bianji"></span>
         </template>
-        编辑资料
       </NButton>
       <InfoEditCom
         v-if="userInfo"

@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 17:31:55
+ * @LastEditTime: 2023-11-06 14:03:07
  * @Description: 我的页面的视频信息展示组件
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyInteractCom.vue
 -->
@@ -12,7 +12,11 @@
     justify-content="space-evenly"
     @update-value="handleUpdate"
   >
-    <NTabPane name="work" tab="作品">
+    <NTabPane name="work" >
+      <template #tab>
+        <span class="iconfont icon-shipin2 tab-icon"></span>
+        作品
+      </template>
       <VideoCard
         v-if="!showEmpty"
         :is-scroll="false"
@@ -27,7 +31,11 @@
         </template>
       </NEmpty>
     </NTabPane>
-    <NTabPane name="favourite" tab="喜欢">
+    <NTabPane name="favourite">
+      <template #tab>
+        <span class="iconfont icon-dianzan1 tab-icon"></span>
+        喜欢
+      </template>
       <VideoCard v-if="!showEmpty" :is-scroll="false" :videos="videos" />
       <NEmpty v-else description="没有喜欢的视频哦~">
         <template #icon>
@@ -37,7 +45,11 @@
         </template>
       </NEmpty>
     </NTabPane>
-    <NTabPane name="collect" tab="收藏">
+    <NTabPane name="collect" >
+      <template #tab>
+        <span class="iconfont icon-shoucang tab-icon"></span>
+        收藏
+      </template>
       <VideoCard v-if="!showEmpty" :is-scroll="false" :videos="videos" />
       <NEmpty v-else description="没有收藏的视频哦~">
         <template #icon>
@@ -47,7 +59,11 @@
         </template>
       </NEmpty>
     </NTabPane>
-    <NTabPane name="history" tab="观看历史">
+    <NTabPane name="history" >
+      <template #tab>
+        <span class="iconfont icon-lishijilu tab-icon"></span>
+        浏览记录
+      </template>
       <VideoCard v-if="!showEmpty" :is-scroll="false" :videos="videos" />
       <NEmpty v-else description="没有浏览过视频哦~">
         <template #icon>
@@ -141,4 +157,9 @@ const handleUpdate = (paneName: string) => {
   }
 };
 </script>
-<style></style>
+<style>
+.tab-icon{
+  margin-right: 6px;
+  font-size: 20px;
+}
+</style>

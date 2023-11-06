@@ -2,15 +2,14 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-06 11:52:07
+ * @LastEditTime: 2023-11-06 13:53:49
  * @Description: 顶部导航栏组件
  * @FilePath: \scooter-WSVA\frontend\src\components\menu\HeaderMenu.vue
 -->
 <script lang="ts" setup>
-import { watch, h, ref, Component, reactive, onMounted, VNodeChild } from "vue";
+import { watch, h, ref, reactive, onMounted, VNodeChild } from "vue";
 import {
   DropdownOption,
-  NIcon,
   NMenu,
   NInput,
   NButton,
@@ -26,7 +25,6 @@ import {
   NSpin
 } from "naive-ui";
 import type { MenuOption } from "naive-ui";
-import { Search, Add, Trash } from "@vicons/ionicons5";
 import { userStore } from "@/stores/user";
 import { videoStore } from "@/stores/video";
 import { routeStore } from "@/stores/route";
@@ -78,10 +76,12 @@ onMounted(() => {
 });
 
 // 渲染图标
-function renderIcon(icon: Component) {
-  return () => h(NIcon, null, { default: () => h(icon) });
+// 渲染图标
+function renderIcon(iconfontName: string, otherClassName?: string) {
+  return () => h('span', {
+    class: ['iconfont', iconfontName, otherClassName]
+  });
 }
-
 const searchHistoryNum = ref<number>(0);
 
 // 搜索时把搜索记录保存
@@ -122,7 +122,7 @@ function renderPostBtn() {
           id: "post-btn",
         },
         round: true,
-        renderIcon: renderIcon(Add),
+        renderIcon: renderIcon('icon-shangchuan'),
         onClick: () => {
           getPostVideoForm();
         },
@@ -141,7 +141,7 @@ function renderLiveBtn() {
           id: "post-btn",
         },
         round: true,
-        renderIcon: renderIcon(Add),
+        renderIcon: renderIcon('icon-zhibo-'),
         onClick: () => {
           getLiveForm();
         },
@@ -169,7 +169,6 @@ const renderHistory = () => {
   let deleteChild = {
     label: "删除历史记录",
     key: "delete",
-    icon: renderIcon(Trash),
   };
   let children = [];
   children[0] = deleteChild;
@@ -258,7 +257,7 @@ const loggedMenuOptions: MenuOption[] = [
               },
               class: "h-input",
               round: true,
-              placeholder: "世界那么大，我想去看看🕶️",
+              placeholder: "世界那么大，我想去看看",
               onKeydown: (e) => {
                 if (e.key == "Enter") {
                   doSearch(false);
@@ -272,7 +271,7 @@ const loggedMenuOptions: MenuOption[] = [
               },
             },
             {
-              suffix: renderIcon(Search),
+              suffix: renderIcon('icon-sousuo', 'search-icon'),
             },
           ),
         ],
@@ -600,6 +599,14 @@ const handleCopy = () => {
 
 .flex-grow {
   flex-grow: 1;
+}
+
+.search-icon{
+  font-family: "iconfont" !important;
+  font-size: 18px !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 </style>
