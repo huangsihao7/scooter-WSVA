@@ -341,7 +341,7 @@ deploy-backend:
       -p 8895:8895 \
       --name scooter-wsva-mq-api \
       172.22.121.50/ai-evaluation/scooter-wsva-mq-api:$CI_PIPELINE_IID
-    - docker rm -f scooter-wsva-live-rpc
+    - docker rm -f scooter-wsva-live-api
     - |
       docker run \
       -di \
