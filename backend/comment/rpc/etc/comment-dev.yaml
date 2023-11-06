@@ -16,4 +16,4 @@ DB:
   MaxOpenConns: 100
   ConnMaxLifetime: 3600
 
-AIUrl: http://172.22.121.54:8000
+AIUrl: 172.22.121.54:8000

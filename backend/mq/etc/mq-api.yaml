@@ -5,67 +5,67 @@ Timeout: 20000
 KqConsumerConf:
   Name: kqConsumer1
   Brokers:
-    - 172.22.121.54:9092
+    - ${KAFKA_HOST}:${KAFKA_PORT}
   Group: kqConsumer
-  Topic: uploadVideos
+  Topic: ${KAFKA_UPLOAD_BUCKET}
   Offset: first
   Consumers: 8
   Processors: 8
 
 KqPusherConf:
   Brokers:
-    - 172.22.121.54:9092
-  Topic: uploadVideos
+    - ${KAFKA_HOST}:${KAFKA_PORT}
+  Topic: ${KAFKA_UPLOAD_BUCKET}
 Comment:
-  Target: consul://172.22.110.66:8501/comment.rpc?wait=14s
+  Target: consul://${CONSUL_HOST}:${CONSUL_PORT}/comment.rpc?wait=14s
   Timeout: 20000
 Label:
-  Target: consul://172.22.110.66:8501/label.rpc?wait=14s
+  Target: consul://${CONSUL_HOST}:${CONSUL_PORT}/label.rpc?wait=14s
   Timeout: 20000
 Feed:
-  Target: consul://172.22.110.66:8501/feed.rpc?wait=14s
+  Target: consul://${CONSUL_HOST}:${CONSUL_PORT}/feed.rpc?wait=14s
   Timeout: 20000
 
 KqConsumerJobConf:
   Name: kqJobConsumer
   Brokers:
-    - 172.22.121.54:9092
+    - ${KAFKA_HOST}:${KAFKA_PORT}
   Group: jobConsumer
-  Topic: job
+  Topic: ${KAFKA_JOB_BUCKET}
   Offset: first
   Consumers: 8
   Processors: 8
 
 KqPusherJobConf:
   Brokers:
-    - 172.22.121.54:9092
-  Topic: job
+    - ${KAFKA_HOST}:${KAFKA_PORT}
+  Topic: ${KAFKA_JOB_BUCKET}
 
 KqSearchConsumerConf:
   Name: like-kq-consumer
   Brokers:
-    - 172.22.121.54:9092
+    - ${KAFKA_HOST}:${KAFKA_PORT}
   Group: like-kqConsumer
-  Topic: testVideos
+  Topic: ${KAFKA_LIKE_BUCKET}
   Offset: last
   Consumers: 8
   Processors: 8
 Es:
   Addresses:
-    - http://172.22.121.54:9200/
-  Username: elastic
-  Password: changeme
+    - http://${ES_HOST}:${ES_PORT}/
+  Username: ${ES_USER}
+  Password: ${ES_PASSWORD}
 KqVideoConsumerConf:
   Name: like-kq-consumer
   Brokers:
-    - 172.22.121.54:9092
+    - ${KAFKA_HOST}:${KAFKA_PORT}
   Group: like-kqConsumer
-  Topic: testVideos
+  Topic: ${KAFKA_LIKE_BUCKET}
   Offset: last
   Consumers: 8
   Processors: 8
 
-RecommendUrl: http://172.22.121.54:8088
-AIUrl: http://172.22.121.54:8000
-SecretKey: 4hf0lBad0AFg_IaShAN14JD3IbcEg8Xn4DPSX3fY
-AccessKey: cipx2awPLz7XNduXeJPtbWoTEQj7PWnV_2O727ew
+RecommendUrl: ${RECOMMEND_HOST}:${RECOMMEND_PORT}
+AIUrl: ${ML_HOST}:${ML_PORT}
+SecretKey: ${SECRET_KEY}
+AccessKey: ${ACCESS_KEY}

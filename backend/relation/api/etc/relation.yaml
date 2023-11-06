@@ -4,7 +4,7 @@ Port: 8893
 Timeout: 20000
 
 RelationRpc:
-  Target: consul://172.22.110.66:8501/relation.rpc?wait=14s
+  Target: consul://${CONSUL_HOST}:${CONSUL_PORT}/relation.rpc?wait=14s
   Timeout: 20000
 Auth:
   AccessSecret: uOvKLmVfztaXGpNYd4Z0I1SiT7MweJhl

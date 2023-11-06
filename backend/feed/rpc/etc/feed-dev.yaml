@@ -33,5 +33,4 @@ Es:
   Password: changeme
 SecretKey: 4hf0lBad0AFg_IaShAN14JD3IbcEg8Xn4DPSX3fY
 AccessKey: cipx2awPLz7XNduXeJPtbWoTEQj7PWnV_2O727ew
-RecommendUrl: http://172.22.121.54:8088
-AIUrl: http://172.22.121.54:8000
+RecommendUrl: 172.22.121.54:8088

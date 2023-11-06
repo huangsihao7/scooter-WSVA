@@ -28,7 +28,7 @@ func NewDeleteVideoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delet
 func (l *DeleteVideoLogic) DeleteVideo(in *feed.DeleteVideoReq) (*feed.DeleteVideoResp, error) {
 
 	//先从推荐系统里面删除
-	url := fmt.Sprintf("%s/api/item/%d", l.svcCtx.Config.RecommendUrl, in.Vid)
+	url := fmt.Sprintf("http://%s/api/item/%d", l.svcCtx.Config.RecommendUrl, in.Vid)
 	err := format.DeleteHttp(url)
 	if err != nil {
 		l.Logger.Error(err.Error())

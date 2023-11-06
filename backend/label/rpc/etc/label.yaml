@@ -3,10 +3,10 @@ ListenOn: 0.0.0.0:8016
 Timeout: 20000
 
 Consul:
-  Host: 172.22.110.66:8501
+  Host: ${CONSUL_HOST}:${CONSUL_PORT}
   Key: label.rpc
 DB:
-  DataSource: root:8691136f0fc946ffb141307209d3143f@tcp(172.22.110.66:3310)/qiniu?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  DataSource: ${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(${MYSQL_HOST}:${MYSQL_PORT})/${MYSQL_NAME}?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
   MaxIdleConns: 10
   MaxOpenConns: 100
   ConnMaxLifetime: 3600

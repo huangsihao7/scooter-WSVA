@@ -2,15 +2,15 @@ Name: live.rpc
 ListenOn: 0.0.0.0:8017
 Timeout: 20000
 Consul:
-  Host: 172.22.110.66:8501
+  Host: ${CONSUL_HOST}:${CONSUL_PORT}
   Key: live.rpc
 UserRpc:
-  Target: consul://172.22.110.66:8501/user.rpc?wait=14s
+  Target: consul://${CONSUL_HOST}:${CONSUL_PORT}/user.rpc?wait=14s
   Timeout: 20000
 
-LiveBucket: scooter
-PublishUrl: rtmp://pili-publish.scooter.peterli.club
-LiveUrl: pili-live-hls.scooter.peterli.club
-LiveCoverUrl: pili-snapshot.scooter.peterli.club
-SecretKey: 4hf0lBad0AFg_IaShAN14JD3IbcEg8Xn4DPSX3fY
-AccessKey: cipx2awPLz7XNduXeJPtbWoTEQj7PWnV_2O727ew
+LiveBucket: ${LIVE_BUCKET}
+PublishUrl: ${PUBLISH_URL}
+LiveUrl: ${LIVE_URL}
+LiveCoverUrl: ${LIVE_COVER_URL}
+SecretKey: ${SECRET_KEY}
+AccessKey: ${ACCESS_KEY}

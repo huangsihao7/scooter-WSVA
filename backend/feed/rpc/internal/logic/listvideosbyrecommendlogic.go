@@ -29,7 +29,7 @@ func NewListVideosByRecommendLogic(ctx context.Context, svcCtx *svc.ServiceConte
 }
 
 func (l *ListVideosByRecommendLogic) ListVideosByRecommend(in *feed.ListFeedRequest) (*feed.ListFeedResponse, error) {
-	baseurl := l.svcCtx.Config.RecommendUrl + "/api/recommend"
+	baseurl := "http://" + l.svcCtx.Config.RecommendUrl + "/api/recommend"
 	url := fmt.Sprintf("%s/%d?n=%d&offset=%d", baseurl, in.ActorId, in.Num, in.Offset)
 	println(url)
 	//向推荐系统请求推荐视频id

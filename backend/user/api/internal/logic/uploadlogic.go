@@ -79,7 +79,7 @@ func (l *UploadLogic) Upload(req *http.Request) (resp *types.UserUploadResponse,
 		return nil, code.UserUploadVideoError
 	}
 
-	baseURL := l.svcCtx.Config.OssUrl
+	baseURL := "http://" + l.svcCtx.Config.OssUrl
 	fileURL = baseURL + "/" + key
 	coverUrl := baseURL + "/" + strings.TrimSuffix(key, filepath.Ext(key)) + ".jpg"
 	println(ret.PersistentID)

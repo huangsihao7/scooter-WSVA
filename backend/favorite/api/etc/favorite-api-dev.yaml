@@ -15,4 +15,4 @@ Prometheus:
   Host: 172.22.110.170
   Port: 9080
   Path: /metrics
-RecommendUrl: http://172.22.121.54:8088
+RecommendUrl: 172.22.121.54:8088

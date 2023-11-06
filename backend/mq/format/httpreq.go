@@ -50,7 +50,7 @@ func QiNiuPost(url string, data []byte) ([]byte, error) {
 }
 
 func Feedback(recommendUrl, feedType string, vid int, uid int) {
-	baseUrl := recommendUrl + "/api/feedback"
+	baseUrl := "http://" + recommendUrl + "/api/feedback"
 	req := []map[string]interface{}{
 		{
 			"FeedbackType": feedType,

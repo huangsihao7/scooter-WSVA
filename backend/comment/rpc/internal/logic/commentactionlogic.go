@@ -64,7 +64,7 @@ func (l *CommentActionLogic) CommentAction(in *comment.CommentActionRequest) (*c
 	//添加评论
 	case 1:
 		contUrl := url.QueryEscape(contents)
-		CommentSafeUrl := l.svcCtx.Config.AIUrl + "/api/v1/speech/commentSentimentAnalysis?comment=" + contUrl
+		CommentSafeUrl := "http" + l.svcCtx.Config.AIUrl + "/api/v1/speech/commentSentimentAnalysis?comment=" + contUrl
 		println(CommentSafeUrl)
 		get, err := format.QiNiuGet(CommentSafeUrl)
 		if err != nil {

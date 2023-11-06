@@ -31,7 +31,7 @@ func NewListPopularVideosLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*feed.ListFeedResponse, error) {
-	baseurl := l.svcCtx.Config.RecommendUrl + "/api/popular"
+	baseurl := "http://" + l.svcCtx.Config.RecommendUrl + "/api/popular"
 	url := fmt.Sprintf("%s?user-id=%d&n=%d&offset=%d", baseurl, in.ActorId, in.Num, in.Offset)
 
 	getresponse, err := format.QiNiuGet(url)

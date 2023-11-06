@@ -30,7 +30,6 @@ type Config struct {
 	}
 	SecretKey    string
 	AccessKey    string
-	AIUrl        string
 	RecommendUrl string
 	Consul       consul.Conf
 }

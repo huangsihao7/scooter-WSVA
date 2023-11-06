@@ -31,7 +31,7 @@ func Upload(file multipart.File, handler *multipart.FileHeader, AccessKey string
 	if err != nil {
 		return "", err
 	}
-	fileURL := baseURL + "/" + key
+	fileURL := "http://" + baseURL + "/" + key
 	//deadline := time.Now().Add(time.Second * 3600).Unix() //1小时有效期
 	//privateAccessURL := storage.MakePrivateURL(mac, baseURL, ret.Key, deadline)
 	// 返回上传成功的信息

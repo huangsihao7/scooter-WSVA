@@ -8,4 +8,4 @@ Comment:
 Auth:
   AccessSecret: uOvKLmVfztaXGpNYd4Z0I1SiT7MweJhl
   AccessExpire: 86400
-RecommendUrl: http://172.22.121.54:8088
+RecommendUrl: 172.22.121.54:8088
