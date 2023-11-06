@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-05 23:09:11
+ * @LastEditTime: 2023-11-06 14:22:25
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardListCom.vue
  * @Description: 卡片形式的视频信息展示组件
 -->
@@ -58,7 +58,6 @@ onMounted(() => {
     <NButton
       v-if="props.deletable"
       class="btn"
-      quaternary
       circle
       type="error"
       @click="deleteVideo(info)"
@@ -181,7 +180,7 @@ onMounted(() => {
   }
 
   .card-footer {
-    height: 5vh;
+    margin-bottom: 6px;
     span,
     p,
     .content,
@@ -191,7 +190,7 @@ onMounted(() => {
 
     .other-info {
       position: absolute;
-      bottom: 0;
+      bottom: 4px;
       width: 100%;
       .name {
         display: inline-block;
@@ -220,8 +219,8 @@ onMounted(() => {
   }
   .btn {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 10px;
+    right: 10px;
   }
 }
 </style>

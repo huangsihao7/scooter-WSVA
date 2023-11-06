@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-31 19:56:09
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-03 21:56:18
+ * @LastEditTime: 2023-11-06 14:19:32
  * @Description:
  * @FilePath: \scooter-WSVA\frontend\src\theme.ts
  */
@@ -16,11 +16,10 @@ const themeOverrides: GlobalThemeOverrides = {
   },
   Button: {
     // textColor: 'red',
-    colorTarget: "red",
   },
   Card: {
     borderRadius: "25px",
-    color: "#eeeeee70",
+    color: "#fff9",
   },
 };
 
