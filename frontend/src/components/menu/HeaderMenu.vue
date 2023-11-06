@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-05 23:35:23
+ * @LastEditTime: 2023-11-06 11:29:39
  * @Description: 顶部导航栏组件
  * @FilePath: \scooter-WSVA\frontend\src\components\menu\HeaderMenu.vue
 -->
@@ -534,7 +534,7 @@ const handleCopy = () => {
       @visible-update="updatePostVideoVisible"
     />
     <NModal :closable="false" v-model:show="isLiveFormVisible" preset="dialog" title="我要直播">
-      您的直播推流地址为:{{ url }} 
+      您的直播推流地址为: {{ url }} 
       <template #action>
         <NSpin v-if="copied">
           <NButton round> 复制中 </NButton>
