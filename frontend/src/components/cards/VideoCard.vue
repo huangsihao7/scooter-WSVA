@@ -30,9 +30,12 @@ const props = defineProps<propsType>();
   </NSpace>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .card-space {
   overflow: scroll-y;
   max-height: calc(100vh - 60px);
+}
+.n-space{
+  text-align: left;
 }
 </style>
