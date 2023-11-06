@@ -46,7 +46,7 @@ service.interceptors.response.use((response) => {
   if (response.data.status_code === 200) {
     return response.data;
   } else if (response.status === 401) {
-    message.error(response.data.status_msg + "，请重新登录");
+    message.error(response.data.status_message + "，请重新登录");
     userStore().isLoggedIn = false;
     userStore().user_id = -1;
     userStore().token = "";
@@ -60,7 +60,7 @@ service.interceptors.response.use((response) => {
     window.location.reload();
     return Promise.reject();
   } else {
-    message.error(response.data.status_msg);
+    message.error(response.data.status_message);
     return Promise.reject();
   }
 });

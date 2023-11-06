@@ -102,7 +102,7 @@ const handlePostVideo = () => {
     ).then((res: any) => {
       fileUploadRef.value.clear();
       videoForm.title = "";
-      message.success(res.status_msg);
+      message.success(res.status_message);
       window.location.reload();
     });
     emit("visible-update", false);

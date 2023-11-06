@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-06 13:53:49
+ * @LastEditTime: 2023-11-06 14:28:35
  * @Description: 顶部导航栏组件
  * @FilePath: \scooter-WSVA\frontend\src\components\menu\HeaderMenu.vue
 -->
@@ -337,7 +337,7 @@ const doLogin = () => {
       window.location.reload();
       router.push("/");
     } else {
-      message.error(res.status_msg);
+      message.error(res.status_message);
     }
   });
 };

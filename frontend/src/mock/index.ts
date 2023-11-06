@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-11-04 13:22:45
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 13:33:22
+ * @LastEditTime: 2023-11-06 14:28:10
  * @Description:
  * @FilePath: \scooter-WSVA\frontend\src\mock\index.ts
  */
@@ -35,7 +35,7 @@ export default [
     response: {
       // 返回的结果集
       status_code: 200,
-      status_msg: "登录成功",
+      status_message: "登录成功",
       user: mockUser,
     },
   },
