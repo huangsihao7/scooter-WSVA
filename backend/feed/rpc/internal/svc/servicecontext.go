@@ -5,10 +5,10 @@ import (
 	gmodel2 "github.com/huangsihao7/scooter-WSVA/favorite/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/feed/gmodel"
 	"github.com/huangsihao7/scooter-WSVA/feed/rpc/internal/config"
+	"github.com/huangsihao7/scooter-WSVA/kq"
 	"github.com/huangsihao7/scooter-WSVA/pkg/es"
 	"github.com/huangsihao7/scooter-WSVA/pkg/orm"
 	"github.com/huangsihao7/scooter-WSVA/user/rpc/usesrv"
-	"github.com/zeromicro/go-queue/kq"
 	"github.com/zeromicro/go-zero/zrpc"
 )
 
@@ -42,9 +42,9 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 		VideoModel:         gmodel.NewVideoModel(db.DB),
 		StarModel:          gmodel2.NewStarModel(db.DB),
-		KqPusherTestClient: kq.NewPusher(c.KqPusherTesTConf.Brokers, c.KqPusherTesTConf.Topic),
+		KqPusherTestClient: kq.NewPusher(c.KqPusherTesTConf.Brokers, c.KqPusherTesTConf.Topic, kq.WithAllowAutoTopicCreation()),
 		HistoryModel:       gmodel.NewHistoryModel(db.DB),
-		KqPusherJobClient:  kq.NewPusher(c.KqPusherJobConf.Brokers, c.KqPusherJobConf.Topic),
+		KqPusherJobClient:  kq.NewPusher(c.KqPusherJobConf.Brokers, c.KqPusherJobConf.Topic, kq.WithAllowAutoTopicCreation()),
 		DanmuModel:         gmodel3.NewDanmuModel(db.DB),
 		CommentModel:       gmodel3.NewCommentModel(db.DB),
 		Es: es.MustNewEs(&es.Config{

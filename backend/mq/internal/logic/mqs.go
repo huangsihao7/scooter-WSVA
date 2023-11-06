@@ -2,10 +2,10 @@ package logic
 
 import (
 	"context"
+	"github.com/huangsihao7/scooter-WSVA/kq"
 	"github.com/huangsihao7/scooter-WSVA/mq/internal/config"
 	"github.com/huangsihao7/scooter-WSVA/mq/internal/svc"
 
-	"github.com/zeromicro/go-queue/kq"
 	"github.com/zeromicro/go-zero/core/service"
 )
 
