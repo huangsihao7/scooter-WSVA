@@ -346,8 +346,8 @@ deploy-backend:
       docker run \
       -di \
       -p 8896:8896 \
-      --name scooter-wsva-live-rpc \
-      172.22.121.50/ai-evaluation/scooter-wsva-live-rpc:$CI_PIPELINE_IID
+      --name scooter-wsva-live-api \
+      172.22.121.50/ai-evaluation/scooter-wsva-live-api:$CI_PIPELINE_IID
     - echo "=======deploy success======="
 deploy-nginx:
   stage: deploy
