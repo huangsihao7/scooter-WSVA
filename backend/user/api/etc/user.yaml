@@ -13,3 +13,7 @@ AccessKey: cipx2awPLz7XNduXeJPtbWoTEQj7PWnV_2O727ew
 SecretKey: 4hf0lBad0AFg_IaShAN14JD3IbcEg8Xn4DPSX3fY
 Bucket: wy-video
 OssUrl: http://s327crbzf.hn-bkt.clouddn.com
+Prometheus:
+  Host: 0.0.0.0
+  Port: 9770
+  Path: /metrics
