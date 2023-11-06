@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-06 14:03:07
+ * @LastEditTime: 2023-11-06 20:39:39
  * @Description: 我的页面的视频信息展示组件
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyInteractCom.vue
 -->
@@ -59,7 +59,7 @@
         </template>
       </NEmpty>
     </NTabPane>
-    <NTabPane name="history">
+    <NTabPane name="history" v-if="userId == userStore().user_id">
       <template #tab>
         <span class="iconfont icon-lishijilu tab-icon"></span>
         浏览记录
