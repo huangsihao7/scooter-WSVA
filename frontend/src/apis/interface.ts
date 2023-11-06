@@ -27,7 +27,7 @@ interface LiveType {
   uid: number;
   avatar: string;
   name: string;
-  live_play_url: string;
+  live_url: string;
   live_cover_url: string;
   is_follow: boolean;
   signature: string;

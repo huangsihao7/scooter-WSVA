@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-05 22:31:58
+ * @LastEditTime: 2023-11-06 13:31:49
  * @Description: 侧边导航栏组件
  * @FilePath: \scooter-WSVA\frontend\src\components\menu\SubMenu.vue
 -->
@@ -54,7 +54,7 @@ const menuOptions: MenuOption[] = [
         { default: () => "推荐" },
       ),
     key: "rec",
-    icon: renderIcon(RecIcon),
+    icon: renderIcon('icon-dianzan1'),
   },
   {
     label: () =>
@@ -221,8 +221,11 @@ const menuOptions: MenuOption[] = [
 ];
 
 // 渲染图标
-function renderIcon(icon: Component) {
-  return () => h(NIcon, null, { default: () => h(icon) });
+function renderIcon(iconfontName: string) {
+  // return () => h(NIcon, null, { default: () => h(icon) });
+  return () => h('span', {
+    class: ['iconfont', iconfontName]
+  });
 }
 
 // 获取当前页面的末尾路由

@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-06 11:29:39
+ * @LastEditTime: 2023-11-06 11:52:07
  * @Description: 顶部导航栏组件
  * @FilePath: \scooter-WSVA\frontend\src\components\menu\HeaderMenu.vue
 -->
@@ -23,6 +23,7 @@ import {
   NFormItemRow,
   NDropdown,
   useMessage,
+  NSpin
 } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import { Search, Add, Trash } from "@vicons/ionicons5";
@@ -33,6 +34,7 @@ import { login, register } from "@/apis/login";
 import router from "@/router";
 import PostVedioCom from "@/components/video/PostVideoCom.vue";
 import { historyStore } from "@/stores/historySearch";
+import { launchLive } from "@/apis/live";
 
 // 消息弹窗message
 const message = useMessage();
@@ -69,6 +71,10 @@ onMounted(() => {
   menuClass.value = userStore().token
     ? "header-menu-login"
     : "header-menu-logout";
+  launchLive().then((res:any)=>{
+    // url.value = res
+    url.value = res.stream_url
+  })
 });
 
 // 渲染图标
@@ -332,7 +338,7 @@ const doLogin = () => {
       window.location.reload();
       router.push("/");
     } else {
-      message.error(res.status_message);
+      message.error(res.status_msg);
     }
   });
 };

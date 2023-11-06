@@ -2,7 +2,7 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-05 22:49:43
+ * @LastEditTime: 2023-11-06 13:02:30
  * @FilePath: \scooter-WSVA\frontend\src\components\live\LiveCardListCom.vue
  * @Description: 卡片形式的视频信息展示组件
 -->
@@ -10,6 +10,7 @@
 import { onMounted } from "vue";
 import { NCard, NEllipsis, NAvatar, NGrid, NGridItem } from "naive-ui";
 import { LiveType } from "@/apis/interface";
+import { liveStore } from '@/stores/live'
 import { useRouter } from "vue-router";
 
 interface propsType {
@@ -22,9 +23,12 @@ const router = useRouter();
 
 // 跳转直播
 const goLive = (info: LiveType) => {
+  console.log('live_url',info.live_url)
+  liveStore().live_url = info.live_url
+  liveStore().live_id = info.uid
   router.push({
     name: "live",
-    params: { id: info.uid, url: info.live_play_url },
+    params: { id: info.uid},
   });
 };
 

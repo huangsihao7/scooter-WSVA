@@ -1,0 +1,93 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 4317311 */
+  /* Color fonts */
+  src: 
+       url('iconfont.woff2?t=1699248141422') format('woff2'),
+       url('iconfont.woff?t=1699248141422') format('woff'),
+       url('iconfont.ttf?t=1699248141422') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-dianzan1:before {
+  content: "\ecae";
+}
+
+.icon-shipin2:before {
+  content: "\ecb0";
+}
+
+.icon-shoucang:before {
+  content: "\e609";
+}
+
+.icon-tushu:before {
+  content: "\e67b";
+}
+
+.icon-qiqiu:before {
+  content: "\e68c";
+}
+
+.icon-jiangpai:before {
+  content: "\e66a";
+}
+
+.icon-shangchuan1:before {
+  content: "\e66b";
+}
+
+.icon-kafei:before {
+  content: "\e673";
+}
+
+.icon-faxian:before {
+  content: "\e686";
+}
+
+.icon-wode:before {
+  content: "\e689";
+}
+
+.icon-redu:before {
+  content: "\e68a";
+}
+
+.icon-zhibo:before {
+  content: "\e68b";
+}
+
+.icon-shipin:before {
+  content: "\e68d";
+}
+
+.icon-zhuye:before {
+  content: "\e68e";
+}
+
+.icon-xingqiu:before {
+  content: "\e68f";
+}
+
+.icon-sousuo:before {
+  content: "\e690";
+}
+
+.icon-youxi:before {
+  content: "\e691";
+}
+
+.icon-dianzan:before {
+  content: "\e66e";
+}
+
+.icon-shangchuan:before {
+  content: "\e702";
+}
+

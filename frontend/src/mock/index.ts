@@ -35,7 +35,7 @@ export default [
     response: {
       // 返回的结果集
       status_code: 200,
-      status_message: "登录成功",
+      status_msg: "登录成功",
       user: mockUser,
     },
   },

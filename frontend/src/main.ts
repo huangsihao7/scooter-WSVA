@@ -14,6 +14,7 @@ import App from "./App.vue";
 import router from "./router/index";
 import "./style.css";
 import "animate.css";
+import './assets/iconfont/iconfont.css'
 
 const pinia = createPinia();
 const app = createApp(App);

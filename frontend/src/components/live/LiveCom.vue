@@ -172,7 +172,7 @@ onMounted(() => {
   player.autoplay = true;
   state.instance = new DPlayer(player);
   liveStore().live_id = props.liveId;
-  liveStore().live_play_url = props.video.url;
+  liveStore().live_url = props.video.url;
 });
 
 // 销毁

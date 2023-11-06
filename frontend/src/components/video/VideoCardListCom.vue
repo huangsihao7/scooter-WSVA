@@ -12,7 +12,7 @@ import { NButton, NCard, NEllipsis, NIcon, NTag } from "naive-ui";
 import { Heart, Play, Trash } from "@vicons/ionicons5";
 import { VideoType } from "@/apis/interface";
 import { useRouter } from "vue-router";
-import { myDeleteVideo } from "@/apis/video";
+import { postDeleteVideo } from "@/apis/video";
 import { useMessage } from "naive-ui";
 
 interface propsType {
@@ -30,7 +30,7 @@ const handleShowVideo = (info: VideoType) => {
 
 // 删除我的视频
 const deleteVideo = (info: any) => {
-  myDeleteVideo(info.video_id).then(() => {
+  postDeleteVideo(info.video_id).then(() => {
     message.success("删除成功");
     window.location.reload();
   });
