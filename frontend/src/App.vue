@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-22 19:33:20
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 17:48:10
+ * @LastEditTime: 2023-11-06 19:01:38
  * @Description: 入口
  * @FilePath: \scooter-WSVA\frontend\src\App.vue
 -->

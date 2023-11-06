@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 7:08:43
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-05 16:52:18
+ * @LastEditTime: 2023-11-06 17:24:33
  * @FilePath: \scooter-WSVA\frontend\src\axios\index.ts
  * @Description: 请求配置
  *

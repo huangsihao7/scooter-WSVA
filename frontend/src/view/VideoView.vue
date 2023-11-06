@@ -2,12 +2,12 @@
  * @Author: Xu Ning
  * @Date: 2023-10-31 18:42:57
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 17:48:04
+ * @LastEditTime: 2023-11-06 19:18:46
  * @Description: 查看某个特定video的页面
  * @FilePath: \scooter-WSVA\frontend\src\view\VideoView.vue
 -->
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, watch } from "vue";
 import VideoPlus from "@/components/video/VideoPlus.vue";
 import {
   NEmpty,
@@ -36,7 +36,7 @@ import { VideocamOff, ChatbubbleEllipses } from "@vicons/ionicons5";
 // 评论区域是否可见
 const drawerVisible = ref<boolean>(false);
 const route = useRoute();
-const videoId = computed(() => route.params.id);
+const videoId = ref<number>(-1);
 const video = ref<any>();
 const commentlists = ref<Array<CommentType>>([]);
 // 相关推荐列表
@@ -48,12 +48,25 @@ const tabValue = ref<string>("comment");
 
 // 获取视频
 onMounted(() => {
+  if(route.params.id){
+    let id =  parseInt(route.params.id.toString()) 
+    videoId.value = id
+  }
   let vid = videoId.value.toString();
   let vidNum = parseInt(vid);
   getVideoById(vidNum).then((res: any) => {
     video.value = res.video_info;
   });
 });
+
+watch(()=>videoId.value,
+(newvalue:any)=>{
+  console.log(newvalue)
+  videoId.value = newvalue
+  getVideoById(newvalue).then((res: any) => {
+    video.value = res.video_info;
+  });
+})
 
 // 更新评论区可见状态
 const updateVisible = (video_id: number) => {
@@ -132,6 +145,7 @@ const deleteFunc = (comment_id: number) => {
 const postCommentByBtn = () => {
   doCommentApi();
 };
+
 </script>
 
 <template>
