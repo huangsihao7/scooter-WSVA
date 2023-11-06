@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-26 18:39:00
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 18:08:46
+ * @LastEditTime: 2023-11-06 20:33:32
  * @Description: 加了侧边栏等效果的视频组件
  * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoPlus.vue
 -->
@@ -28,6 +28,7 @@ import { userStore } from "@/stores/user";
 import { baseURL } from "@/axios";
 import { DownloadType } from "@/apis/interface";
 import { useClipboard } from "@vueuse/core";
+import { useRouter } from "vue-router";
 const { copy, copied } = useClipboard();
 interface propsType {
   video: VideoType;
@@ -228,6 +229,11 @@ const handleCopy = () => {
   message.success("复制成功");
   shareVisible.value = false;
 };
+const router = useRouter();
+// 跳转用户信息
+const goUserInfo = (id: number) => {
+  router.push({ name: "userinfo", params: { id: id } });
+};
 </script>
 
 <template>
@@ -251,7 +257,12 @@ const handleCopy = () => {
       <div class="video-interaction-box">
         <div class="avatar">
           <div>
-            <NAvatar round size="medium" :src="thisVideo.author.avatar" />
+            <NAvatar
+              round
+              size="medium"
+              :src="thisVideo.author.avatar"
+              @click="goUserInfo(props.video.author.id)"
+            />
           </div>
           <NButton
             v-if="!thisVideo.author.is_follow && thisVideo.author.id != userId"

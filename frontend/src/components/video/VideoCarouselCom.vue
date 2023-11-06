@@ -2,8 +2,8 @@
  * @Author: huangsihao7
  * @Date: 2023-10-30 11:17:41
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 17:40:04
- * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCardListCom.vue
+ * @LastEditTime: 2023-11-06 20:18:41
+ * @FilePath: \scooter-WSVA\frontend\src\components\video\VideoCarouselCom.vue
  * @Description: 实现上下滑动的短视频组件
 -->
 <script setup lang="ts">
@@ -52,7 +52,7 @@ const lastVideoIndex = ref<number>(0);
 const videos = ref<Array<VideoType>>();
 // const videos = reactive<VideoType[]>([]);
 // 默认预加载数
-const defaultLoad: number = 4;
+const defaultLoad: number = 2;
 // 评论列表
 const commentlists = ref<Array<CommentType>>([]);
 // 相关推荐列表

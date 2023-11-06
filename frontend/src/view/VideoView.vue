@@ -48,9 +48,9 @@ const tabValue = ref<string>("comment");
 
 // 获取视频
 onMounted(() => {
-  if(route.params.id){
-    let id =  parseInt(route.params.id.toString()) 
-    videoId.value = id
+  if (route.params.id) {
+    let id = parseInt(route.params.id.toString());
+    videoId.value = id;
   }
   let vid = videoId.value.toString();
   let vidNum = parseInt(vid);
@@ -59,14 +59,16 @@ onMounted(() => {
   });
 });
 
-watch(()=>videoId.value,
-(newvalue:any)=>{
-  console.log(newvalue)
-  videoId.value = newvalue
-  getVideoById(newvalue).then((res: any) => {
-    video.value = res.video_info;
-  });
-})
+watch(
+  () => videoId.value,
+  (newvalue: any) => {
+    console.log(newvalue);
+    videoId.value = newvalue;
+    getVideoById(newvalue).then((res: any) => {
+      video.value = res.video_info;
+    });
+  },
+);
 
 // 更新评论区可见状态
 const updateVisible = (video_id: number) => {
@@ -145,7 +147,6 @@ const deleteFunc = (comment_id: number) => {
 const postCommentByBtn = () => {
   doCommentApi();
 };
-
 </script>
 
 <template>
