@@ -12,6 +12,8 @@ doc:
 	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/favorite.json -host 172.22.121.53:7070" -api favorite/api/favorite.api -dir .
 	# relation
 	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/relation.json -host 172.22.121.53:7070" -api relation/api/relation.api -dir .
+	#live
+	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/live.json -host 172.22.121.53:7070" -api live/api/live.api -dir .
 	# comment
 	goctl api plugin -plugin goctl-swagger="swagger -filename ../scripts/swagger/api/comment.json -host 172.22.121.53:7070" -api comment/api/comment.api -dir .
 build:
@@ -28,6 +30,9 @@ build:
 	# relation
 	cd relation/rpc && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/relation_rpc" relation.go
 	cd relation/api && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/relation_api" relation.go
+	# live
+	cd live/rpc && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/live_rpc" live.go
+	cd live/api && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/live_api" live.go
 	# comment
 	cd comment/rpc && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/comment_rpc" comment.go
 	cd comment/api && CGO_ENABLED=0 go build -ldflags "-s -w" -o "../../output/comment_api" comment.go
