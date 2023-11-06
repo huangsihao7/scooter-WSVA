@@ -25,3 +25,7 @@ RecommendUrl: http://172.22.121.54:8088
 #    Hosts:
 #      - 172.22.121.53:2479
 #    Key: relation.rpc
+Prometheus:
+  Host: 0.0.0.0
+  Port: 9082
+  Path: /metricss

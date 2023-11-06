@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-28 12:30:12
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-04 17:25:45
+ * @LastEditTime: 2023-11-06 20:58:54
  * @Description: 我的页面的个人信息展示组件
  * @FilePath: \scooter-WSVA\frontend\src\components\myinfo\MyHeaderCom.vue
 -->
@@ -10,10 +10,11 @@
 import { onMounted, ref } from "vue";
 import { userStore } from "@/stores/user";
 import { getUserInfo } from "@/apis/user";
-import { NAvatar, NButton, NDivider, NGrid, NGridItem } from "naive-ui";
+import { NAvatar, NButton, NDivider, NGrid, NGridItem, useMessage } from "naive-ui";
 import InfoEditCom from "./InfoEditCom.vue";
 import { useRouter } from "vue-router";
 import { routeStore } from "@/stores/route";
+import { doFollow } from '@/apis/follow'
 
 interface propsType {
   userId: number;
@@ -24,6 +25,8 @@ const props = defineProps<propsType>();
 const userInfo = ref<any>({});
 const editVisible = ref<boolean>(false);
 const router = useRouter();
+// 是否关注用户
+const isFollow = ref<boolean>(false)
 
 // 获取用户信息
 const getUserInfoFunc = () => {
@@ -33,6 +36,7 @@ const getUserInfoFunc = () => {
   getUserInfo(uid_num).then((res: any) => {
     userInfo.value = res.user;
     let routeName = routeStore().name;
+    isFollow.value = res.user.is_follow;
     if (routeName == "user") {
       userStore().name = res.user.name;
       userStore().avatar = res.user.avatar;
@@ -69,6 +73,24 @@ const goFriends = () => {
   routeStore().name = "friends";
   router.push({ name: "friends", params: { id: props.userId } });
 };
+
+const message = useMessage()
+// 更新关注状态
+const changeFollowState = () =>{
+  let uid = parseInt(props.userId.toString())
+  if(isFollow.value){
+    isFollow.value = false;
+    // 2 取关
+    doFollow(uid,2).then(()=>{
+      message.success('取关成功')
+    })
+  }else{
+    isFollow.value = true;
+    doFollow(uid,1).then(()=>{
+      message.success('关注成功')
+    })
+  }
+}
 </script>
 
 <template>
@@ -120,6 +142,16 @@ const goFriends = () => {
         <template #icon>
           <span class="iconfont icon-bianji"></span>
         </template>
+      </NButton>
+      <NButton
+        v-else
+        strong
+        round
+        class="edit-info"
+        color="#409eff85"
+        @click="changeFollowState"
+      >
+        {{ isFollow?'已关注':'关注' }}
       </NButton>
       <InfoEditCom
         v-if="userInfo"
