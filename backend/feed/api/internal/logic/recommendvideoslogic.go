@@ -30,7 +30,7 @@ func (l *RecommendVideosLogic) RecommendVideos(req *types.RecommendVideosListReq
 	if req.Offset == 0 {
 		recommend, err = l.svcCtx.FeedRpc.ListVideosByRecommend(l.ctx, &feed.ListFeedRequest{
 			ActorId: uint32(uid),
-			Num:     5,
+			Num:     3,
 			Offset:  req.Offset,
 			ReadVid: req.ReadedVideoId,
 		})

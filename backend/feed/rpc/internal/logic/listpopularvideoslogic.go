@@ -32,7 +32,7 @@ func NewListPopularVideosLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 
 func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*feed.ListFeedResponse, error) {
 	baseurl := l.svcCtx.Config.RecommendUrl + "/api/popular"
-	url := fmt.Sprintf("%s?user-id=%d&n=%d&offset=%d", baseurl, in.ActorId, in.Num, in.Offset)
+	url := fmt.Sprintf("%s?user-id=%d&n=%d", baseurl, in.ActorId, in.Num)
 
 	getresponse, err := format.QiNiuGet(url)
 	if err != nil {
@@ -68,6 +68,7 @@ func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*f
 
 	VideoList := make([]*feed.VideoInfo, 0)
 	for _, item := range result {
+
 		id, err := strconv.Atoi(item.Id)
 		if err != nil {
 			l.Logger.Errorf("strconv.Atoi error:", err)
@@ -108,6 +109,7 @@ func (l *ListPopularVideosLogic) ListPopularVideos(in *feed.ListFeedRequest) (*f
 			CreateTime:    video.CreatedAt.Time.Format(constants.TimeFormat),
 			Duration:      video.Duration.String,
 		})
+		format.Feedback(l.svcCtx.Config.RecommendUrl, "read", id, int(in.ActorId))
 	}
 	return &feed.ListFeedResponse{
 		StatusCode: constants.ServiceOKCode,

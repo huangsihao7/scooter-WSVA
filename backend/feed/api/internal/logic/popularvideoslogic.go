@@ -32,7 +32,7 @@ func (l *PopularVideosLogic) PopularVideos(req *types.PopularVideosListReq) (res
 	if req.Offset == 0 {
 		popular, err = l.svcCtx.FeedRpc.ListPopularVideos(l.ctx, &feed.ListFeedRequest{
 			ActorId: uint32(uid),
-			Num:     5,
+			Num:     3,
 			Offset:  req.Offset,
 			ReadVid: req.ReadedVideoId,
 		})

@@ -4,7 +4,6 @@ go 1.19
 
 require (
 	github.com/elastic/go-elasticsearch/v8 v8.10.1
-	github.com/go-redis/redis_rate/v10 v10.0.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/golang/protobuf v1.5.3
 	github.com/pkg/errors v0.9.1
