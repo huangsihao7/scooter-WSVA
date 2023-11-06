@@ -18,10 +18,6 @@ UserRpc:
 Telemetry:
   Name: favorite.api
   Endpoint: http://172.22.110.66:14278/api/traces
-Prometheus:
-  Host: 172.22.121.53
-  Port: 9082
-  Path: /metrics
 BizRedis:
   Host: 172.22.110.66:6388
   Pass:
