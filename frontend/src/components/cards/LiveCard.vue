@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-27 14:13:32
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-05 21:59:07
+ * @LastEditTime: 2023-11-06 14:07:53
  * @Description: 直播卡片列表渲染
  * @FilePath: \scooter-WSVA\frontend\src\components\cards\LiveCard.vue
 -->
@@ -18,7 +18,6 @@ const props = defineProps<propsType>();
 
 <template>
   <NScrollbar v-if="props.videos.length != 0" class="card-space">
-    <!-- <NScrollbar v-if="videos.length != 0" class="card-space"> -->
     <NSpace wrap>
       <LiveCardListCom :videos="props.videos" />
     </NSpace>
@@ -43,7 +42,6 @@ const props = defineProps<propsType>();
 }
 
 .empty-space {
-  height: calc(100vh - 60px);
-  margin: 40vh;
+  margin: calc((100vh - 130px) / 2);
 }
 </style>
