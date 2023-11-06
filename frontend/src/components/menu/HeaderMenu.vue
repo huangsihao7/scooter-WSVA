@@ -166,15 +166,17 @@ function renderAvatar(avatarSrc: string) {
 // 渲染历史记录数据
 const renderHistory = () => {
   let hisChild = historyStore().historyData;
-  let deleteChild = {
+  let children = [];
+  if(hisChild.length != 0){
+    let deleteChild = {
     label: "删除历史记录",
     key: "delete",
-  };
-  let children = [];
-  children[0] = deleteChild;
-  hisChild.forEach((item: any) => {
-    children.push(item);
-  });
+    };
+    children[0] = deleteChild;
+    hisChild.forEach((item: any) => {
+      children.push(item);
+    });
+  }
   dropOptions.value = [
     {
       type: "group",
