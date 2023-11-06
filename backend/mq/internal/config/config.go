@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/zeromicro/go-queue/kq"
+	"github.com/huangsihao7/scooter-WSVA/kq"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
 )

@@ -10,6 +10,6 @@ Auth:
   AccessExpire: 86400
 RecommendUrl: http://172.22.121.54:8088
 Prometheus:
-  Host: 0.0.0.0
+  Host: 172.22.121.53
   Port: 9774
   Path: /metrics
