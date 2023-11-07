@@ -1,30 +1,26 @@
 骑上我心爱的小摩托-Scooter
 ======
 
-# 一、项目介绍
+# 一、功能演示
 
-本项目是一个基于Web的短视频应用，名为Scooter，致力于为用户提供友好的短视频浏览体验。
-- Scooter集成了推荐算法，旨在为用户提供更优质的视频观看推荐。
-- Scooter整合了语言大模型视频分析功能，不仅可以生成视频的摘要与标签，还能够进行舆论检测，为用户提供更智能的服务。
-- 在前端方面，Scooter采用了Vue框架作为开发工具，实现了弹幕互动、关注和喜欢功能等操作，提供直播服务，以增加用户的参与度和互动性。
-- 后端部分使用Go语言微服务框架go-zero，以Consul作为服务的注册和发现。Redis 作为缓存，MySQL进行持久化，同时使用 Elasticsearch 作为搜索引擎，以提供快速而准确的搜索功能。使用Kafka作为消息队列，实现服务之间的解耦和流量削峰。
+💽💽💽Demo: https://img.peterli.club/scooter/scooter-demo.mp4
+
+📢📢📢公网访问地址：http://43.139.50.140:7002/rec
+
+# 二、项目介绍
+
+Scooter一个Web端短视频应用，致力于为用户提供交互友好、功能完备的短视频浏览体验和直播体验。
+- Scooter集成了Gorse推荐算法，旨在为用户提供更个性化的推荐视频流和更权威的热门视频流。
+- Scooter接入星火大模型，通过对视频内容进行语言分析，能够生成视频摘要和标签，实现AI助手自动发布总结评论。
+- Scooter接入星火大模型，可以实现舆论检测，从而维护社区和谐。
+- 前端使用了Vue3和Ts语言开发，除了点赞、分享、收藏、评论、主页、分类等众多基础功能之外，Scooter还提供了视频弹幕互动、用户直播、带水印视频下载等特色功能，提高了功能的完备性。
+- 后端部分使用Go语言微服务框架go-zero，以Gorm作为ORM框架，Consul作为服务的注册和发现，Redis 作为缓存，MySQL进行持久化，同时使用 Elasticsearch 作为搜索引擎，以提供快速而准确的搜索功能。使用Kafka作为消息队列，实现服务之间的解耦和流量削峰。
 - 系统可观测性上，Scooter引入 Jaeger 实现链路追踪，能够对请求进行细粒度的跟踪和分析。此外，使用 Prometheus 进行服务监控并接入提供Grafana面板，实现对服务性能和资源的实时监控和可视化展示。
+- 目前该项目的弹幕功能仅支持火狐浏览器。
 
 项目详细介绍请看： https://github.com/huangsihao7/scooter-WSVA/blob/main/docs/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1.md
 
-# 二、功能演示
-
-Demo: https://img.peterli.club/scooter/scooter-demo.mp4
-
-# 三、项目分工
-
-| 团队成员 | 主要工作 |
-| -------- | -------- | 
-| 王银 | 后端架构设计、直播模块、用户模块、关系模块、视频流模块、推荐系统、音视频处理、代码审查|
-| 黄思豪  | 评论弹幕模块、点赞模块、搜索业务、DevOps、限流、链路追踪、大语言模型视频分析、缓存设计、舆论风控 、服务监控   |
-| 徐宁   |  前端开发，包括前端架构设计、前端业务模块实现等   |
-
-# 四、项目运行说明
+# 三、项目运行说明
 
 为了方便部署，scooter提供了Docker Compose一键部署脚本，下面是通过Docker Compose一键启动Scooter所有服务流程：
 1. 安装Docker、docker-compose、显卡驱动、nvidia docker runtime等运行环境
@@ -32,6 +28,22 @@ Demo: https://img.peterli.club/scooter/scooter-demo.mp4
 3. 切换到docker-compose分支。在项目根目录下运行`docker-compose -f docker-compose-setup.yml up`，这一步的目的是下载前后端依赖包，并编译前后端代码。方便下一步打包docker镜像。
 4. 更改项目根目录下的`.env`文件，如`SPARK_APPID`,`OSS_BUCKET`,`LIVE_URL`,`ES_HOST`,`WHISPER_MODEL_PATH`**等**配置文件。确保程序能正常访问七牛云服务和星火大模型等。
 5. 在项目根目录下运行`docker-compose -f docker-compose.yml up`，程序会自动下载MySQL、Redis、Gorse、Kafka、ElasticSearch、Consul、prometheus等基础环境，打包前端和后端上一步编译好的文件为Docker镜像，并启动Scooter所有服务
+
+# 四、技术架构
+## 4.1 总体架构
+
+Scooter前端使用Vue，后端使用go-zero作为微服务框架，包括API层和RPC层。API层与前端交互，提供功能中间件。RPC层实现业务逻辑，使用Consul进行服务注册和发现。存储方面，使用MySQL持久化、Redis作为缓存、Elasticsearch为搜索引擎和Kafka作为消息队列。七牛云提供视频存储和音视频分析。算法支持包括推荐算法和语言大模型。服务可观测性通过链路追踪和服务监控实现，可在Grafana展示。
+
+<img src="docs/img/fc149451-6ce9-4a4f-b461-f0f9fe9f3e05.png" style="zoom:67%;" />
+
+## 4.2 前端架构图
+
+<img src="docs/img/f2f2b5b9-6a99-4325-89e3-923fd1be3025.png" style="zoom: 50%;" />
+
+
+## 4.3 后端架构图
+
+<img src="docs/img/houduanjiegou.png" style="zoom: 67%;" />
 
 # 五、核心服务
 
@@ -46,19 +58,10 @@ Demo: https://img.peterli.club/scooter/scooter-demo.mp4
 | Live 服务 | 提供用户开启直播和查看直播服务 |
 | Event 服务 | Event服务的消费者，汇聚多个微服务发过来的信息：<br> 1.接入星火大模型提供视频摘要生成服务 <br> 2.接入七牛云提供视频审核服务<br> 3.利用Canal同步数据库的更新信息到Elasticsearch，为用户检索视频提供索引服务 |
 
-# 六、技术架构
-## 6.1 总体架构
+# 六、项目分工
 
-Scooter前端使用Vue，后端使用go-zero作为微服务框架，包括API层和RPC层。API层与前端交互，提供功能中间件。RPC层实现业务逻辑，使用Consul进行服务注册和发现。存储方面，使用MySQL持久化、Redis作为缓存、Elasticsearch为搜索引擎和Kafka作为消息队列。七牛云提供视频存储和音视频分析。算法支持包括推荐算法和语言大模型。服务可观测性通过链路追踪和服务监控实现，可在Grafana展示。
-
-<img src="docs/img/fc149451-6ce9-4a4f-b461-f0f9fe9f3e05.png" style="zoom:67%;" />
-
-## 6.2 前端架构图
-
-<img src="docs/img/f2f2b5b9-6a99-4325-89e3-923fd1be3025.png" style="zoom: 50%;" />
-
-
-## 6.3 后端架构图
-
-<img src="docs/img/houduanjiegou.png" style="zoom: 67%;" />
-
+| 团队成员 | 主要工作 |
+| -------- | -------- | 
+| 王银 | 后端架构设计、直播模块、用户模块、关系模块、视频流模块、推荐系统、音视频处理、代码审查|
+| 黄思豪  | 评论弹幕模块、点赞模块、搜索业务、DevOps、限流、链路追踪、大语言模型视频分析、缓存设计、舆论风控 、服务监控   |
+| 徐宁   |  前端开发，包括前端架构设计、前端业务模块实现等   |
