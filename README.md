@@ -5,7 +5,7 @@
 
 💽💽💽Demo: https://img.peterli.club/scooter/scooter-demo.mp4
 
-📢📢📢公网访问地址：http://home.peterli.club:54321
+📢📢📢公网访问地址：http://43.139.50.140:7002/rec
 
 # 二、项目介绍
 
