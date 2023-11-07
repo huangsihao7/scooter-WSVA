@@ -33,18 +33,32 @@ Demo: https://img.peterli.club/scooter/scooter-demo.mp4
 4. 更改项目根目录下的`.env`文件，如`SPARK_APPID`,`OSS_BUCKET`,`LIVE_URL`,`ES_HOST`,`WHISPER_MODEL_PATH`**等**配置文件。确保程序能正常访问七牛云服务和星火大模型等。
 5. 在项目根目录下运行`docker-compose -f docker-compose.yml up`，程序会自动下载MySQL、Redis、Gorse、Kafka、ElasticSearch、Consul、prometheus等基础环境，打包前端和后端上一步编译好的文件为Docker镜像，并启动Scooter所有服务
 
-### 4.1 技术架构
+# 五、核心服务
+
+| 服务名 | 作用 |
+| -------- | -------- | 
+| User 服务 | 提供登录、注册、修改个人信息、上传图片、上传视频和鉴权服务 |
+| Relation 服务 | 提供关注、取消关注、粉丝列表、关注列表和朋友列表服务 |
+| Feed 服务 | 1. 基于Gorse系统提供视频流服务，包括推荐视频流和热门视频流 <br> 2. 提供发布、删除视频服务，用户发布视频时，会将视频信息发送给Event服务 <br> 3.提供视频分类、用户作品列表、浏览记录服务 <br> 4. 提供相关推荐视频服务 <br> 5. 提供视频搜索、历史搜索记录服务 <br> 6.提供视频水印生成和下载服务 |
+| Comment 服务 | 1. 提供添加评论、删除评论、评论列表和评论数量服务 <br> 2. 接入了星火大模型，发布视频时添加视频摘要功能，评论视频时提供舆论检测功能 <br> 3.添加评论时，会将评论反馈发送给Gorse推荐系统 |
+| Danmu 服务 | 提供添加弹幕、查看视频弹幕、调整弹幕透明度服务 |
+| Favorite 服务 | 1. 提供点赞、取消点赞、用户喜欢列表和喜欢数量等服务 <br> 2. 提供收藏、取消收藏、用户收藏列表和收藏数量等服务 <br> 3. 用户点赞/收藏视频时，会将该点赞/收藏指标反馈发送给Gorse推荐系统 |
+| Live 服务 | 提供用户开启直播和查看直播服务 |
+| Event 服务 | 1. Event服务的消费者，汇聚多个微服务发过来的信息，接入星火大模型，来生成视频摘要，接入七牛云来进行视频审核，接入ElasticSearch TODO:xxxxxxx 黄思豪 |
+
+# 六、技术架构
+## 6.1 总体架构
 
 Scooter前端使用Vue，后端使用go-zero作为微服务框架，包括API层和RPC层。API层与前端交互，提供功能中间件。RPC层实现业务逻辑，使用Consul进行服务注册和发现。存储方面，使用MySQL持久化、Redis作为缓存、Elasticsearch为搜索引擎和Kafka作为消息队列。七牛云提供视频存储和音视频分析。算法支持包括推荐算法和语言大模型。服务可观测性通过链路追踪和服务监控实现，可在Grafana展示。
 
 <img src="docs/img/fc149451-6ce9-4a4f-b461-f0f9fe9f3e05.png" style="zoom:67%;" />
 
-### 4.2 前端架构图
+## 6.2 前端架构图
 
 <img src="docs/img/f2f2b5b9-6a99-4325-89e3-923fd1be3025.png" style="zoom: 50%;" />
 
 
-### 4.3 后端架构图
+## 6.3 后端架构图
 
 <img src="docs/img/houduanjiegou.png" style="zoom: 67%;" />
 
