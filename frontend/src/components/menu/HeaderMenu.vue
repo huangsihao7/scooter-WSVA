@@ -2,7 +2,7 @@
  * @Author: Xu Ning
  * @Date: 2023-10-25 16:22:40
  * @LastEditors: Xu Ning
- * @LastEditTime: 2023-11-06 14:28:35
+ * @LastEditTime: 2023-11-07 15:02:26
  * @Description: 顶部导航栏组件
  * @FilePath: \scooter-WSVA\frontend\src\components\menu\HeaderMenu.vue
 -->
@@ -76,7 +76,6 @@ onMounted(() => {
 });
 
 // 渲染图标
-// 渲染图标
 function renderIcon(iconfontName: string, otherClassName?: string) {
   return () =>
     h("span", {
@@ -84,10 +83,19 @@ function renderIcon(iconfontName: string, otherClassName?: string) {
     });
 }
 const searchHistoryNum = ref<number>(0);
+  const equalSignRegex = /=/;
 
+function hasEqualSign(input:any) {
+  return equalSignRegex.test(input);
+}
 // 搜索时把搜索记录保存
 const doSearch = (isHistory: boolean, historyValue?: string) => {
   let searchValue = "";
+  let isSafe = hasEqualSign(searchContent.value)
+  if(isSafe){
+    message.error('您的输入非法，请重新输入')
+    return
+  }
   if (isHistory && historyValue) {
     searchValue = historyValue;
     searchContent.value = historyValue;
