@@ -1,7 +1,11 @@
 骑上我心爱的小摩托-Scooter
 ======
 
-# 一、项目介绍
+# 一、功能演示
+
+Demo: https://img.peterli.club/scooter/scooter-demo.mp4
+
+# 二、项目介绍
 
 Scooter一个Web端短视频应用，致力于为用户提供交互友好、功能完备的短视频浏览体验和直播体验。
 - Scooter集成了Gorse推荐算法，旨在为用户提供更个性化的推荐视频流和更权威的热门视频流。
@@ -13,10 +17,6 @@ Scooter一个Web端短视频应用，致力于为用户提供交互友好、功�
 - 目前该项目的弹幕功能仅支持火狐浏览器。
 
 项目详细介绍请看： https://github.com/huangsihao7/scooter-WSVA/blob/main/docs/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1.md
-
-# 二、功能演示
-
-Demo: https://img.peterli.club/scooter/scooter-demo.mp4
 
 # 三、项目分工
 
