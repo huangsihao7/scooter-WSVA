@@ -5,6 +5,8 @@
 
 💽💽💽Demo: https://img.peterli.club/scooter/scooter-demo.mp4
 
+📢📢📢公网访问地址：http://home.peterli.club:54321
+
 # 二、项目介绍
 
 Scooter一个Web端短视频应用，致力于为用户提供交互友好、功能完备的短视频浏览体验和直播体验。
@@ -18,15 +20,7 @@ Scooter一个Web端短视频应用，致力于为用户提供交互友好、功�
 
 项目详细介绍请看： https://github.com/huangsihao7/scooter-WSVA/blob/main/docs/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1.md
 
-# 三、项目分工
-
-| 团队成员 | 主要工作 |
-| -------- | -------- | 
-| 王银 | 后端架构设计、直播模块、用户模块、关系模块、视频流模块、推荐系统、音视频处理、代码审查|
-| 黄思豪  | 评论弹幕模块、点赞模块、搜索业务、DevOps、限流、链路追踪、大语言模型视频分析、缓存设计、舆论风控 、服务监控   |
-| 徐宁   |  前端开发，包括前端架构设计、前端业务模块实现等   |
-
-# 四、项目运行说明
+# 三、项目运行说明
 
 为了方便部署，scooter提供了Docker Compose一键部署脚本，下面是通过Docker Compose一键启动Scooter所有服务流程：
 1. 安装Docker、docker-compose、显卡驱动、nvidia docker runtime等运行环境
@@ -34,6 +28,22 @@ Scooter一个Web端短视频应用，致力于为用户提供交互友好、功�
 3. 切换到docker-compose分支。在项目根目录下运行`docker-compose -f docker-compose-setup.yml up`，这一步的目的是下载前后端依赖包，并编译前后端代码。方便下一步打包docker镜像。
 4. 更改项目根目录下的`.env`文件，如`SPARK_APPID`,`OSS_BUCKET`,`LIVE_URL`,`ES_HOST`,`WHISPER_MODEL_PATH`**等**配置文件。确保程序能正常访问七牛云服务和星火大模型等。
 5. 在项目根目录下运行`docker-compose -f docker-compose.yml up`，程序会自动下载MySQL、Redis、Gorse、Kafka、ElasticSearch、Consul、prometheus等基础环境，打包前端和后端上一步编译好的文件为Docker镜像，并启动Scooter所有服务
+
+# 四、技术架构
+## 4.1 总体架构
+
+Scooter前端使用Vue，后端使用go-zero作为微服务框架，包括API层和RPC层。API层与前端交互，提供功能中间件。RPC层实现业务逻辑，使用Consul进行服务注册和发现。存储方面，使用MySQL持久化、Redis作为缓存、Elasticsearch为搜索引擎和Kafka作为消息队列。七牛云提供视频存储和音视频分析。算法支持包括推荐算法和语言大模型。服务可观测性通过链路追踪和服务监控实现，可在Grafana展示。
+
+<img src="docs/img/fc149451-6ce9-4a4f-b461-f0f9fe9f3e05.png" style="zoom:67%;" />
+
+## 4.2 前端架构图
+
+<img src="docs/img/f2f2b5b9-6a99-4325-89e3-923fd1be3025.png" style="zoom: 50%;" />
+
+
+## 4.3 后端架构图
+
+<img src="docs/img/houduanjiegou.png" style="zoom: 67%;" />
 
 # 五、核心服务
 
@@ -48,19 +58,10 @@ Scooter一个Web端短视频应用，致力于为用户提供交互友好、功�
 | Live 服务 | 提供用户开启直播和查看直播服务 |
 | Event 服务 | Event服务的消费者，汇聚多个微服务发过来的信息：<br> 1.接入星火大模型提供视频摘要生成服务 <br> 2.接入七牛云提供视频审核服务<br> 3.利用Canal同步数据库的更新信息到Elasticsearch，为用户检索视频提供索引服务 |
 
-# 六、技术架构
-## 6.1 总体架构
+# 六、项目分工
 
-Scooter前端使用Vue，后端使用go-zero作为微服务框架，包括API层和RPC层。API层与前端交互，提供功能中间件。RPC层实现业务逻辑，使用Consul进行服务注册和发现。存储方面，使用MySQL持久化、Redis作为缓存、Elasticsearch为搜索引擎和Kafka作为消息队列。七牛云提供视频存储和音视频分析。算法支持包括推荐算法和语言大模型。服务可观测性通过链路追踪和服务监控实现，可在Grafana展示。
-
-<img src="docs/img/fc149451-6ce9-4a4f-b461-f0f9fe9f3e05.png" style="zoom:67%;" />
-
-## 6.2 前端架构图
-
-<img src="docs/img/f2f2b5b9-6a99-4325-89e3-923fd1be3025.png" style="zoom: 50%;" />
-
-
-## 6.3 后端架构图
-
-<img src="docs/img/houduanjiegou.png" style="zoom: 67%;" />
-
+| 团队成员 | 主要工作 |
+| -------- | -------- | 
+| 王银 | 后端架构设计、直播模块、用户模块、关系模块、视频流模块、推荐系统、音视频处理、代码审查|
+| 黄思豪  | 评论弹幕模块、点赞模块、搜索业务、DevOps、限流、链路追踪、大语言模型视频分析、缓存设计、舆论风控 、服务监控   |
+| 徐宁   |  前端开发，包括前端架构设计、前端业务模块实现等   |
