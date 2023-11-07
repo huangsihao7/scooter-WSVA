@@ -45,3 +45,20 @@ Demo: https://img.peterli.club/scooter/scooter-demo.mp4
 | Favorite 服务 | 1. 提供点赞、取消点赞、用户喜欢列表和喜欢数量等服务 <br> 2. 提供收藏、取消收藏、用户收藏列表和收藏数量等服务 <br> 3. 用户点赞/收藏视频时，会将该点赞/收藏指标反馈发送给Gorse推荐系统 |
 | Live 服务 | 提供用户开启直播和查看直播服务 |
 | Event 服务 | Event服务的消费者，汇聚多个微服务发过来的信息：<br> 1.接入星火大模型提供视频摘要生成服务 <br> 2.接入七牛云提供视频审核服务<br> 3.利用Canal同步数据库的更新信息到Elasticsearch，为用户检索视频提供索引服务 |
+
+# 六、技术架构
+## 6.1 总体架构
+
+Scooter前端使用Vue，后端使用go-zero作为微服务框架，包括API层和RPC层。API层与前端交互，提供功能中间件。RPC层实现业务逻辑，使用Consul进行服务注册和发现。存储方面，使用MySQL持久化、Redis作为缓存、Elasticsearch为搜索引擎和Kafka作为消息队列。七牛云提供视频存储和音视频分析。算法支持包括推荐算法和语言大模型。服务可观测性通过链路追踪和服务监控实现，可在Grafana展示。
+
+<img src="docs/img/fc149451-6ce9-4a4f-b461-f0f9fe9f3e05.png" style="zoom:67%;" />
+
+## 6.2 前端架构图
+
+<img src="docs/img/f2f2b5b9-6a99-4325-89e3-923fd1be3025.png" style="zoom: 50%;" />
+
+
+## 6.3 后端架构图
+
+<img src="docs/img/houduanjiegou.png" style="zoom: 67%;" />
+
