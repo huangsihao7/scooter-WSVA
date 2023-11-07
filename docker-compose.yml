@@ -1,25 +1,226 @@
 version: '3.8'
 
 services:
+  #user_rpc
+  scooter-user-rpc:
+    build:
+      context: ./backend
+      dockerfile: deployments/user_rpc.Dockerfile
+    container_name: scooter-user-rpc
+    env_file:
+      - .env
+    networks:
+      - scooter
+    depends_on:
+      - mysql
+      - redis
+    restart: unless-stopped
+  #relation_rpc
+  scooter-relation-rpc:
+    build:
+      context: ./backend
+      dockerfile: deployments/relation_rpc.Dockerfile
+    container_name: scooter-relation-rpc
+    env_file:
+      - .env
+    networks:
+      - scooter
+    depends_on:
+      - mysql
+      - scooter-user-rpc
+    restart: unless-stopped
+  #live_rpc
+  scooter-live-rpc:
+    build:
+      context: ./backend
+      dockerfile: deployments/live_rpc.Dockerfile
+    container_name: scooter-live-rpc
+    env_file:
+      - .env
+    networks:
+      - scooter
+    depends_on:
+      - scooter-user-rpc
+    restart: unless-stopped
+  #label_rpc
+  scooter-label-rpc:
+    build:
+      context: ./backend
+      dockerfile: deployments/label_rpc.Dockerfile
+    container_name: scooter-label-rpc
+    env_file:
+      - .env
+    networks:
+      - scooter
+    depends_on:
+      - mysql
+    restart: unless-stopped
+  #favorite_rpc
+  scooter-favorite-rpc:
+    build:
+      context: ./backend
+      dockerfile: deployments/favorite_rpc.Dockerfile
+    container_name: scooter-favorite-rpc
+    env_file:
+      - .env
+    networks:
+      - scooter
+    depends_on:
+      - mysql
+      - scooter-user-rpc
+      - redis
+    restart: unless-stopped
+  #comment_rpc
+  scooter-comment-rpc:
+    build:
+      context: ./backend
+      dockerfile: deployments/comment_rpc.Dockerfile
+    container_name: scooter-comment-rpc
+    env_file:
+      - .env
+    networks:
+      - scooter
+    depends_on:
+      - mysql
+      - scooter-user-rpc
+    restart: unless-stopped
+  #feed_rpc
+  scooter-feed-rpc:
+    build:
+      context: ./backend
+      dockerfile: deployments/feed_rpc.Dockerfile
+    container_name: scooter-feed-rpc
+    env_file:
+      - .env
+    networks:
+      - scooter
+    depends_on:
+      - mysql
+      - scooter-user-rpc
+      - gorse
+      - kafka
+    restart: unless-stopped
+  #user_api
   scooter-user-api:
     build:
       context: ./backend
       dockerfile: deployments/user_api.Dockerfile
     container_name: scooter-user-api
-    environment:
-      OSS_URL: 1234567fgdfdgsdfgdfgsgf
+    env_file:
+      - .env
     ports:
       - 8890:8890
     networks:
       - scooter
+    depends_on:
+      - scooter-user-rpc
+    restart: unless-stopped
+  #relation_api
+  scooter-relation-api:
+    build:
+      context: ./backend
+      dockerfile: deployments/relation_api.Dockerfile
+    container_name: scooter-relation-api
+    env_file:
+      - .env
+    ports:
+      - 8893:8893
+    networks:
+      - scooter
+    depends_on:
+      - scooter-relation-rpc
+    restart: unless-stopped
+  #live_api
+  scooter-live-api:
+    build:
+      context: ./backend
+      dockerfile: deployments/live_api.Dockerfile
+    container_name: scooter-live-api
+    env_file:
+      - .env
+    ports:
+      - 8896:8896
+    networks:
+      - scooter
+    depends_on:
+      - scooter-live-rpc
+    restart: unless-stopped
+  #favorite_api
+  scooter-favorite-api:
+    build:
+      context: ./backend
+      dockerfile: deployments/favorite_api.Dockerfile
+    container_name: scooter-favorite-api
+    env_file:
+      - .env
+    ports:
+      - 8892:8892
+    networks:
+      - scooter
+    depends_on:
+      - scooter-favorite-rpc
+      - gorse
+    restart: unless-stopped
+  #comment_api
+  scooter-comment-api:
+    build:
+      context: ./backend
+      dockerfile: deployments/comment_api.Dockerfile
+    container_name: scooter-comment-api
+    env_file:
+      - .env
+    ports:
+      - 8894:8894
+    networks:
+      - scooter
+    depends_on:
+      - scooter-favorite-rpc
+      - gorse
+    restart: unless-stopped
+  #feed_api
+  scooter-feed-api:
+    build:
+      context: ./backend
+      dockerfile: deployments/feed_api.Dockerfile
+    container_name: scooter-feed-api
+    env_file:
+      - .env
+    ports:
+      - 8891:8891
+    networks:
+      - scooter
+    depends_on:
+      - scooter-feed-rpc
+    restart: unless-stopped
+  #mq_api
+  scooter-mq-api:
+    build:
+      context: ./backend
+      dockerfile: deployments/mq_api.Dockerfile
+    container_name: scooter-mq-api
+    env_file:
+      - .env
+    ports:
+      - 8895:8895
+    networks:
+      - scooter
+    depends_on:
+      - scooter-feed-rpc
+      - kafka
+      - scooter-comment-rpc
+      - scooter-label-rpc
+      - gorse
+    restart: unless-stopped
   scooter-nginx:
     build:
       context: ./scripts/nginx
-      # args:
-        # - HOST="127.0.0.1"
+      args:
+        - BASE_URL=${BASE_URL}
     container_name: scooter-nginx
     ports:
       - 7070:7070
+    env_file:
+      - .env
     networks:
       - scooter
   scooter-ml:
@@ -32,12 +233,50 @@ services:
       - 8000:8000
     networks:
       - scooter
+  grafana:
+    image: grafana/grafana-oss:10.2.0
+    container_name: scooter-grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - ./scripts/grafana/grafana.ini:/etc/grafana/grafana.ini
+    networks:
+      - scooter
+    restart: unless-stopped
+  prometheus:
+    image: prom/prometheus:v2.47.2
+    container_name: scooter-prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./scripts/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - scooter
+    restart: unless-stopped
+  elasticsearch:
+    image: elasticsearch:8.10.4
+    container_name: scooter-elasticsearch
+    environment:
+      discovery.type: single-node
+    networks:
+      - scooter
+    restart: unless-stopped
+  consul:
+    image: consul:1.15
+    container_name: scooter-consul
+    ports:
+      - 8500:8500
+    networks:
+      - scooter
+    restart: unless-stopped
   mysql:
     image: mysql:8
     container_name: scooter-mysql
-    ports:
-      - 3306:3306
+    # ports:
+    #   - 3306:3306
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time_zone='+8:00'
+    volumes:
+      - ./backend/sql/qiniu.sql:/docker-entrypoint-initdb.d/qiniu.sql
     environment:
       MYSQL_ROOT_PASSWORD: scooter
       MYSQL_DATABASE: scooter
@@ -49,9 +288,9 @@ services:
     image: zhenghaoz/gorse-in-one:0.4.14
     container_name: scooter-gorse
     restart: unless-stopped
-    ports:
-      - 8086:8086   # gRPC port
-      - 8088:8088   # HTTP port
+    # ports:
+    #   - 8086:8086   # gRPC port
+    #   - 8088:8088   # HTTP port
     environment:
       # Use Redis as cache storage backend.
       GORSE_CACHE_STORE: redis://scooter-redis:6379
@@ -83,18 +322,18 @@ services:
   redis:
     image: redis:7-alpine
     container_name: scooter-redis
-    ports:
-      - 6379:6379
+    # ports:
+    #   - 6379:6379
     networks:
       - scooter
     restart: unless-stopped
   kafka:
-    image: 'bitnami/kafka:3.3.1'
+    image: bitnami/kafka:3.3.1
     container_name: scooter-kafka
-    ports:
-      - 9092:9092
-      - 9093:9093
-      - 9094:9094
+    # ports:
+    #   - 9092:9092
+    #   - 9093:9093
+    #   - 9094:9094
     environment:
       - KAFKA_ENABLE_KRAFT=yes
       - KAFKA_CFG_PROCESS_ROLES=broker,controller
@@ -108,7 +347,7 @@ services:
       - KAFKA_KRAFT_CLUSTER_ID=r4zt_wrqTRuT7W2NJsB_GA
   kafka-ui:
     container_name: kafka-ui
-    image: 'provectuslabs/kafka-ui:latest'
+    image: provectuslabs/kafka-ui:latest
     ports:
       - "8080:8080"
     environment:
