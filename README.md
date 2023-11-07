@@ -33,18 +33,18 @@ Demo: https://img.peterli.club/scooter/scooter-demo.mp4
 4. 更改项目根目录下的`.env`文件，如`SPARK_APPID`,`OSS_BUCKET`,`LIVE_URL`,`ES_HOST`,`WHISPER_MODEL_PATH`**等**配置文件。确保程序能正常访问七牛云服务和星火大模型等。
 5. 在项目根目录下运行`docker-compose -f docker-compose.yml up`，程序会自动下载MySQL、Redis、Gorse、Kafka、ElasticSearch、Consul、prometheus等基础环境，打包前端和后端上一步编译好的文件为Docker镜像，并启动Scooter所有服务
 
-### 4.2.1 技术架构
+### 4.1 技术架构
 
 Scooter前端使用Vue，后端使用go-zero作为微服务框架，包括API层和RPC层。API层与前端交互，提供功能中间件。RPC层实现业务逻辑，使用Consul进行服务注册和发现。存储方面，使用MySQL持久化、Redis作为缓存、Elasticsearch为搜索引擎和Kafka作为消息队列。七牛云提供视频存储和音视频分析。算法支持包括推荐算法和语言大模型。服务可观测性通过链路追踪和服务监控实现，可在Grafana展示。
 
 <img src="docs/img/fc149451-6ce9-4a4f-b461-f0f9fe9f3e05.png" style="zoom:67%;" />
 
-### 4.2.2 前端架构图
+### 4.2 前端架构图
 
 <img src="docs/img/f2f2b5b9-6a99-4325-89e3-923fd1be3025.png" style="zoom: 50%;" />
 
 
-### 4.2.3 后端架构图
+### 4.3 后端架构图
 
 <img src="docs/img/houduanjiegou.png" style="zoom: 67%;" />
 
