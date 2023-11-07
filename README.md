@@ -3,7 +3,7 @@
 
 # 一、功能演示
 
-名片🎞📀💽💾🎥🎬📺Demo: https://img.peterli.club/scooter/scooter-demo.mp4
+💽💽💽Demo: https://img.peterli.club/scooter/scooter-demo.mp4
 
 # 二、项目介绍
 
