@@ -22,7 +22,7 @@ func main() {
 	flag.Parse()
 	logx.DisableStat()
 	var c config.Config
-	conf.MustLoad(*configFile, &c)
+	conf.MustLoad(*configFile, &c, conf.UseEnv())
 	server := rest.MustNewServer(c.RestConf, rest.WithUnauthorizedCallback(handler.JwtUnauthorizedResult), rest.WithCustomCors(nil, func(w http.ResponseWriter) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Headers", "*")
