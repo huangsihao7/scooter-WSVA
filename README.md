@@ -1,6 +1,8 @@
 骑上我心爱的小摩托-Scooter
 ======
 
+<img src="docs/img/logo.png"/>
+
 # 一、功能演示
 
 💽💽💽Demo: https://img.peterli.club/scooter/scooter-demo.mp4
